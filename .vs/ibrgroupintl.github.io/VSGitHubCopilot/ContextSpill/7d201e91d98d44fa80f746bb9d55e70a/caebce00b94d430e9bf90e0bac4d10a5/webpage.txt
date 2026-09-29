@@ -1,0 +1,804 @@
+﻿Extracted web page content in markdown format:
+[Start contents for https://dev.to/eunit/linkedin-jobs-api-36m7]
+Skip to content 
+
+Navigation menu [ ![DEV Community](https://media2.dev.to/dynamic/image/quality=100/https://dev-to-uploads.s3.amazonaws.com/uploads/logos/resized_logo_UQww2soKuUsjaOGNB38o.png)
+](https://dev.to/) 
+
+Search [ Powered by Algolia Search ](https://www.algolia.com/developers/?utm_source=devto&utm_medium=referral) 
+
+[ Log in ](https://dev.to/enter?signup_subforem=1) [ Create account ](https://dev.to/enter?signup_subforem=1&state=new-user) 
+
+## DEV Community
+
+Close 
+
+![Image](https://assets.dev.to/assets/heart-plus-active-9ea3b22f2bc311281db911d416166c5f430636e76b15cd5df6b3b841d830eefa.svg)
+Add reaction 
+
+![Image](https://assets.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg)
+Like ![Image](https://assets.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg)
+Unicorn ![Image](https://assets.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg)
+Exploding Head ![Image](https://assets.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg)
+Raised Hands ![Image](https://assets.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg)
+Fire Jump to Comments Save Boost 
+
+Pick as gem 
+
+More... 
+
+Copy link Copy link 
+
+Copied to Clipboard 
+
+[ Share to X ](https://twitter.com/intent/tweet?text=%22LinkedIn%20Jobs%20API%22%20by%20Emmanuel%20Uchenna%20%23DEVCommunity%20https%3A%2F%2Fdev.to%2Feunit%2Flinkedin-jobs-api-36m7) [ 
+Share to LinkedIn ](https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdev.to%2Feunit%2Flinkedin-jobs-api-36m7&title=LinkedIn%20Jobs%20API&summary=Outline%20%20%20%20Introduction%20What%20you%20will%20learn%20What%20you%20can%20use%20LinkedIn%20Jobs%20API%20for%20How%20to...&source=DEV%20Community) [ 
+Share to Facebook ](https://www.facebook.com/sharer.php?u=https%3A%2F%2Fdev.to%2Feunit%2Flinkedin-jobs-api-36m7) [ 
+Share to Mastodon ](https://s2f.kytta.dev/?text=https%3A%2F%2Fdev.to%2Feunit%2Flinkedin-jobs-api-36m7) [
+Report Abuse](https://dev.to/report-abuse) 
+
+[ ![Cover image for LinkedIn Jobs API](https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbahlfbqde5mfhxnpkj98.png)
+](https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fbahlfbqde5mfhxnpkj98.png) 
+
+[![Emmanuel Uchenna](https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F118821%2F5bddf58c-edd7-47c2-a806-44f549477601.jpg)
+](https://dev.to/eunit) 
+
+[Emmanuel Uchenna](https://dev.to/eunit) Posted on Aug 6, 2022 • Edited on Mar 23, 2024 
+
+![Image](https://assets.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg)
+![Image](https://assets.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg)
+![Image](https://assets.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg)
+![Image](https://assets.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg)
+![Image](https://assets.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg)
+# LinkedIn Jobs API 
+
+[#linkedin](https://dev.to/t/linkedin) [#jobs](https://dev.to/t/jobs) [#api](https://dev.to/t/api) [
+#postings](https://dev.to/t/postings) 
+
+## Outline 
+
+- Introduction
+- What you will learn
+- What you can use LinkedIn Jobs API for
+- How to get access to LinkedIn Jobs API
+- Getting started with access
+- Job Posting Categories
+- Posting job details
+- Limitations of LinkedIn Jobs API
+- Further readings
+
+## Introduction 
+
+[LinkedIn](https://www.linkedin.com/)'s Job Posting API enables authorized third
+parties such as clients, [ATS systems](https://www.techtarget.com/searchhrsoftware/definition/applicant-tracking-system-ATS)
+, and job distributors to post jobs directly to LinkedIn on behalf of customers.
+Jobs that are already created externally on [ATS](https://www.techtarget.com/searchhrsoftware/definition/applicant-tracking-system-ATS)
+, company size, or job board can be automatically ingested by LinkedIn. LinkedIn
+provides various solutions to ingest such jobs to your customers, partner ATSs'
+and Job Distributors.
+
+[![LinkedIn Job Posting API](https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fi9m967ej7ju0bz26wskk.png)
+](https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fi9m967ej7ju0bz26wskk.png)
+
+## What you will learn 
+
+In this article, I shall walk you through understanding what [LinkedIn Job
+Posting API](https://docs.microsoft.com/en-us/linkedin/talent/job-postings/job-posting-overview) 
+is all about, how you will integrate LinkedIn's Jobs Posting API to your ATS to
+directly post job openings to LinkedIn.
+
+## What you can use LinkedIn Jobs API for 
+
+The LinkedIn Job Posting API allows members who use it (authorized third parties
+such as clients, ATS systems, and job distributors) to automatically post jobs
+to LinkedIn from their [Applicant Tracking System (ATS)](https://www.techtarget.com/searchhrsoftware/definition/applicant-tracking-system-ATS)
+, instead of manually posting via their LinkedIn Recruiter account. This API is
+typically utilized by recruiter clients who are currently using a job
+distribution tool. It allows them (people) to post a job to various sites at one
+time, including LinkedIn. ATS partners no longer need login or password
+information to post on behalf of clients.
+
+The LinkedIn jobs API in simple terms is used to publish jobs on LinkedIn on
+behalf of the hiring organization, making it simpler for recruiters to find
+candidates who are a good fit for their open positions.
+
+It is, however, important to point out that this feature is not available to 
+Recruiter Online or Recruiter Lite accounts.
+
+## How to get access to LinkedIn Jobs API 
+
+The use of LinkedIn's APIs is restricted to those developers approved by
+LinkedIn. In order to get access to LinkedIn's Jobs APIs, you will need to reach
+out to your LinkedIn Relationship Manager or Business Development contact as you
+will need to meet certain criteria and sign an API agreement with data
+restrictions to use this integration. If you are not yet a LinkedIn Talent
+Solutions Partner, please complete the [LinkedIn Talent Solutions Partner
+Request Form](https://business.linkedin.com/talent-solutions/ats-partners/partner-application)
+.
+
+There are several [restrictions or obligations](https://docs.microsoft.com/en-us/linkedin/talent/job-postings/api/overview) 
+you need to be aware of from LinkedIn. These include but are not limited to:
+
+- Acknowledging that LinkedIn acts as a passive conduit for the online
+distribution and publication of job listings and LinkedIn is not responsible for
+screening or monitoring job listings. Jobs posted to the LinkedIn Service
+(including via the LinkedIn APIs) may be posted only for lawful purposes by
+individuals and employers seeking employees.
+- You will ensure that you agree to the [LinkedIn Jobs Terms and Conditions](https://www.linkedin.com/legal/jobs-terms-conditions) 
+before posting any jobs to the LinkedIn Service via your partner’s application
+and shall have a method of keeping track of which of its customers have agreed
+to the [LinkedIn Jobs Terms and Conditions](https://www.linkedin.com/legal/jobs-terms-conditions) 
+and when and shall furnish such information to LinkedIn upon request.
+- Shall not market any job listings to be distributed via LinkedIn or its
+syndication network as a "free way to post jobs to LinkedIn" or anything
+substantially similar in any marketing or sales materials. Please refer to a [
+comprehensive list of these conditions](https://docs.microsoft.com/en-us/linkedin/talent/job-postings/api/overview)
+.
+
+## Getting started with access 
+
+You must be granted access to test resources and have your API applications
+enabled to access the job posting API endpoints before you can start developing.
+The actions listed below must be taken to seek access to use the LinkedIn Job
+Posting API:
+
+- For the integration, [create API applications](https://www.linkedin.com/developer/apps)
+. Per integration, you are allowed to create two API applications: one for use
+in production and the other for testing and development. Please contact the
+LinkedIn Business Development point of contact to fill up the Partner Onboarding
+Form.
+
+## Job Posting Categories 
+
+The following two job categories broadly define the ways to post jobs on
+LinkedIn:
+
+- Basic Jobs - These are free job posts gathered by LinkedIn from external
+sources such as ATS, job boards, distributors, and aggregators across the web to
+create a comprehensive job-seeking experience for LinkedIn members. Basic jobs
+can be posted using [Job Postings API](https://docs.microsoft.com/en-us/linkedin/talent/job-postings/api/sync-job-postings) 
+or [XML feeds](https://docs.microsoft.com/en-us/linkedin/talent/job-postings/xml-feeds)
+.
+
+- Promoted Jobs - These are paid job postings. You can directly post promoted
+jobs using [Job Postings API](https://docs.microsoft.com/en-us/linkedin/talent/job-postings/api/sync-job-postings)
+. For customers with paid job slots, the API allows posting jobs directly into
+their job slots.
+
+
+## Posting job details 
+
+To create a job, post the job by providing a unique `externalJobPostingId` 
+value and set the `jobPostingOperationType` as `CREATE`.
+
+### API Endpoint 
+
+Use the following endpoint to submit a task to create, close, update, or renew
+one or more jobs asynchronously: 
+
+```
+POST https://api.linkedin.com/v2/simpleJobPostings
+```
+
+Enter fullscreen mode Exit fullscreen mode 
+
+### API Authorization 
+
+All requests below require access tokens obtained via the [OAuth2.0 Client
+Credentials flow](https://docs.microsoft.com/en-us/linkedin/shared/authentication/client-credentials-flow)
+.
+
+## Sample Request for Basic Jobs 
+
+To publish a job as a free job, you need to provide the `listingType` field
+value as `BASIC`.
+
+API Header:
+
+The header for making the request is `X-Restli-Method: batch_create`. 
+
+```
+Authorization: Bearer {token}
+x-restli-method: batch_create
+```
+
+Enter fullscreen mode Exit fullscreen mode Sample Request Body: 
+
+```
+{
+ "elements": [{
+   "integrationContext": "urn:li:organization:2414183",
+   "companyApplyUrl": "http://linkedin.com",
+   "description": "We are looking for a passionate Software Engineer to design, develop and install software solutions. Software Engineer responsibilities include gathering user requirements, defining system functionality and writing code in various languages. Our ideal candidates are familiar with the software development life cycle (SDLC) from preliminary system analysis to tests and deployment.",
+   "employmentStatus": "PART_TIME",
+   "externalJobPostingId": "1234",
+   "listedAt": 1440716666,
+   "jobPostingOperationType": "CREATE",
+   "title": "Software Engineer",
+   "location": "India",
+   "workplaceTypes": [
+    "remote"
+   ]
+  },
+  {
+   "integrationContext": "urn:li:organization:2414183",
+   "companyApplyUrl": "http://linkedin.com",
+   "description": "We are looking for a passionate Software Engineer to design, develop and install software solutions. Software Engineer responsibilities include gathering user requirements, defining system functionality, and writing code in various languages. Our ideal candidates are familiar with the software development life cycle (SDLC) from preliminary system analysis to tests and deployment.",
+   "employmentStatus": "PART_TIME",
+   "externalJobPostingId": "1234",
+   "listedAt": 1440716666,
+   "jobPostingOperationType": "CREATE",
+   "title": "Software Engineer",
+   "location": "San Francisco, CA",
+   "workplaceTypes": [
+    "hybrid"
+   ]
+  },
+  {
+   "integrationContext": "urn:li:organization:2414183",
+   "companyApplyUrl": "http://linkedin.com",
+   "description": "We are looking for a passionate Senior Software Engineer to design, develop and install software solutions. Software Engineer responsibilities include gathering user requirements, defining system functionality, and writing code in various languages. Our ideal candidates are familiar with the software development life cycle (SDLC) from preliminary system analysis to tests and deployment.",
+   "employmentStatus": "PART_TIME",
+   "externalJobPostingId": "789",
+   "listedAt": 1440716666,
+   "jobPostingOperationType": "CREATE",
+   "title": "Senior Software Engineer",
+   "location": "San Francisco, CA"
+  }
+ ]
+}
+```
+
+Enter fullscreen mode Exit fullscreen mode 
+
+## Limitations of LinkedIn Jobs API 
+
+The LinkedIn jobs API is constantly evolving. One of the biggest drawbacks of
+this API is that, when you sign up as a developer to gain access to the API,
+LinkedIn grants you a limit of 100,000 API calls per day. However, if you run
+different scripts, you will eventually get stopped after 300 calls with an error
+stating that the throttle limit exceeds.
+
+### Meaning of throttles 
+
+API throttling is the process of limiting the number of API requests a user can
+make in a certain period. To prevent abuse and ensure service stability, all API
+requests are rate-limited.
+
+Rate limits specify the maximum number of API calls that can be made in 24
+hours. These limits reset at midnight UTC every day.
+
+There are three types of throttles applied to all API keys: Application
+throttles: These throttles limit the number of each API call your application
+can make using its API key. User throttles: These throttles limit the number of
+calls for any individual user of your application. Developer throttles: For
+people listed as developers on their API keys, they will see user throttles that
+are approximately four times higher than the user throttles for most calls. But
+your users will experience the User throttle limits, which are lower. These rate
+limits can be extended or the throttling limits can be increased to give
+developers more space to explore and build things for the user.
+
+## Further readings 
+
+- [LinkedIn API Products](https://developer.linkedin.com/product-catalog) 
+catalog.
+- [Create Jobs - LinkedIn](https://docs.microsoft.com/en-us/linkedin/talent/job-postings/api/create-jobs)
+
+Follow me on Twitter [eunit99](https://twitter.com/eunit99) for more contents.
+
+## Top comments (9) 
+
+Subscribe 
+
+![pic](https://media2.dev.to/dynamic/image/width=256,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png)
+Personal Trusted User 
+
+[ Create template ](https://dev.to/settings/response-templates) Templates let
+you quickly answer FAQs or store snippets for re-use.
+
+Submit Preview [Dismiss](https://dev.to/404.html) 
+
+Collapse Expand 
+
+[ ![ismailofuz profile image](https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F977668%2Fbeb8c9e8-05e8-4353-9dcd-8fba909f2568.jpeg)
+](https://dev.to/ismailofuz) 
+
+[ Sirojiddin Ismoilov ](https://dev.to/ismailofuz) 
+
+Sirojiddin Ismoilov 
+
+[ ![Image](https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F977668%2Fbeb8c9e8-05e8-4353-9dcd-8fba909f2568.jpeg)
+Sirojiddin Ismoilov ](https://dev.to/ismailofuz) 
+
+Follow 
+
+Software engineer from Uzbekistan 
+
+- 
+
+Education 
+
+Tashkent university of information technologies 
+- 
+
+Work 
+
+Support IT Solutions company 
+- 
+
+Joined 
+
+Nov 23, 2022 
+
+• Nov 23 '22 
+
+Dropdown menu 
+
+- Copy link
+- 
+- Hide 
+- 
+- 
+- 
+
+Hi there. I used information below but why I get ({ "serviceErrorCode": 100, 
+"message": "Not enough permissions to access: POST /simpleJobPostings", 
+"status": 403 }) response, Please help me
+
+Like comment: Like comment: 3 likes Like Comment button Reply Collapse Expand 
+
+[ ![aymennf profile image](https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1098305%2Fa6aced0d-e4d0-4a18-b68b-632635616cc9.jpeg)
+](https://dev.to/aymennf) 
+
+[ AymenNF ](https://dev.to/aymennf) 
+
+AymenNF 
+
+[ ![Image](https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1098305%2Fa6aced0d-e4d0-4a18-b68b-632635616cc9.jpeg)
+AymenNF ](https://dev.to/aymennf) 
+
+Follow 
+
+- 
+
+Joined 
+
+Jun 9, 2023 
+
+• Jun 9 '23 
+
+Dropdown menu 
+
+- Copy link
+- 
+- Hide 
+- 
+- 
+- 
+
+Hey, i have the same problem, if you have fixed it can you help me on it please?
+
+Like comment: Like comment: 3 likes Like Comment button Reply Collapse Expand 
+
+[ ![eunit profile image](https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F118821%2F5bddf58c-edd7-47c2-a806-44f549477601.jpg)
+](https://dev.to/eunit) 
+
+[ Emmanuel Uchenna ](https://dev.to/eunit) 
+
+Emmanuel Uchenna 
+
+[ ![Image](https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F118821%2F5bddf58c-edd7-47c2-a806-44f549477601.jpg)
+Emmanuel Uchenna ](https://dev.to/eunit) 
+
+Follow 
+
+Emmanuel is an experienced and enthusiastic software developer and technical
+writer with 5+ years of professional experience. He focuses on full-stack web
+development. 
+
+- 
+
+Email 
+
+[eunitwap@gmail.com](mailto:eunitwap@gmail.com) 
+- 
+
+Location 
+
+Earth 
+- 
+
+Education 
+
+Alex Ekwueme Federal University 
+- 
+
+Pronouns 
+
+He/Him 
+- 
+
+Work 
+
+Software Developer and Technical Writer 
+- 
+
+Joined 
+
+Nov 30, 2018 
+
+• May 27 '24 
+
+Dropdown menu 
+
+- Copy link
+- 
+- Hide 
+- 
+- 
+- 
+
+Check out this [LinkedIn Job Postings](https://apify.com/eunit/linkedin-job-postings-scraper) 
+scraper to get the latest LinkedIn job postings. 
+
+It is designed for both personal and professional use, simply enter your
+LinkedIn job search page URL to extract tailored job titles, companies names,
+locations, job URL and more. This scraper handles infinite scrolling and exports
+data to any format such CSV, JSON, XML and more.
+
+Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand 
+
+[ ![deepak_23 profile image](https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1520805%2Fcb8314a7-62b9-41ad-a656-2f2f63113328.jpg)
+](https://dev.to/deepak_23) 
+
+[ Deepaksakthi V K ](https://dev.to/deepak_23) 
+
+Deepaksakthi V K 
+
+[ ![Image](https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1520805%2Fcb8314a7-62b9-41ad-a656-2f2f63113328.jpg)
+Deepaksakthi V K ](https://dev.to/deepak_23) 
+
+Follow 
+
+Engineering junior 
+
+- 
+
+Joined 
+
+May 23, 2024 
+
+• May 23 '24 
+
+Dropdown menu 
+
+- Copy link
+- 
+- Hide 
+- 
+- 
+- 
+
+Hi brother, did you fix the issue?
+
+Like comment: Like comment: 2 likes Like Thread Thread 
+
+[ ![eunit profile image](https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F118821%2F5bddf58c-edd7-47c2-a806-44f549477601.jpg)
+](https://dev.to/eunit) 
+
+[ Emmanuel Uchenna ](https://dev.to/eunit) 
+
+Emmanuel Uchenna 
+
+[ ![Image](https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F118821%2F5bddf58c-edd7-47c2-a806-44f549477601.jpg)
+Emmanuel Uchenna ](https://dev.to/eunit) 
+
+Follow 
+
+Emmanuel is an experienced and enthusiastic software developer and technical
+writer with 5+ years of professional experience. He focuses on full-stack web
+development. 
+
+- 
+
+Email 
+
+[eunitwap@gmail.com](mailto:eunitwap@gmail.com) 
+- 
+
+Location 
+
+Earth 
+- 
+
+Education 
+
+Alex Ekwueme Federal University 
+- 
+
+Pronouns 
+
+He/Him 
+- 
+
+Work 
+
+Software Developer and Technical Writer 
+- 
+
+Joined 
+
+Nov 30, 2018 
+
+• May 27 '24 
+
+Dropdown menu 
+
+- Copy link
+- 
+- Hide 
+- 
+- 
+- 
+
+Check out this [LinkedIn Job Postings](https://apify.com/eunit/linkedin-job-postings-scraper) 
+scraper to get the latest LinkedIn job postings. 
+
+It is designed for both personal and professional use, simply enter your
+LinkedIn job search page URL to extract tailored job titles, companies names,
+locations, job URL and more. This scraper handles infinite scrolling and exports
+data to any format such CSV, JSON, XML and more.
+
+Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand 
+
+[ ![deepak_23 profile image](https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1520805%2Fcb8314a7-62b9-41ad-a656-2f2f63113328.jpg)
+](https://dev.to/deepak_23) 
+
+[ Deepaksakthi V K ](https://dev.to/deepak_23) 
+
+Deepaksakthi V K 
+
+[ ![Image](https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1520805%2Fcb8314a7-62b9-41ad-a656-2f2f63113328.jpg)
+Deepaksakthi V K ](https://dev.to/deepak_23) 
+
+Follow 
+
+Engineering junior 
+
+- 
+
+Joined 
+
+May 23, 2024 
+
+• May 23 '24 
+
+Dropdown menu 
+
+- Copy link
+- 
+- Hide 
+- 
+- 
+- 
+
+I do get the same error!!
+
+Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand 
+
+[ ![kautilya_vaidya_4fa1a1b7f profile image](https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F2491417%2F692a48eb-abcd-477b-8769-3140ddee8de9.jpg)
+](https://dev.to/kautilya_vaidya_4fa1a1b7f) 
+
+[ Kautilya Vaidya ](https://dev.to/kautilya_vaidya_4fa1a1b7f) 
+
+Kautilya Vaidya 
+
+[ ![Image](https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F2491417%2F692a48eb-abcd-477b-8769-3140ddee8de9.jpg)
+Kautilya Vaidya ](https://dev.to/kautilya_vaidya_4fa1a1b7f) 
+
+Follow 
+
+- 
+
+Joined 
+
+Nov 27, 2024 
+
+• Nov 27 '24 
+
+Dropdown menu 
+
+- Copy link
+- 
+- Hide 
+- 
+- 
+- 
+
+{ "status": 403, "serviceErrorCode": 100, "code": "ACCESS_DENIED", "message":
+"Not enough permissions to access: simpleJobPostings.CREATE.NO_VERSION" }
+
+Like comment: Like comment: 1 like Like Comment button Reply 
+
+Collapse Expand 
+
+[ ![vitidev profile image](https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1148822%2F9cefebab-d8b4-4f1d-ba53-f033a2fbf9d2.jpeg)
+](https://dev.to/vitidev) 
+
+[ Vikash Tiwari ](https://dev.to/vitidev) 
+
+Vikash Tiwari 
+
+[ ![Image](https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1148822%2F9cefebab-d8b4-4f1d-ba53-f033a2fbf9d2.jpeg)
+Vikash Tiwari ](https://dev.to/vitidev) 
+
+Follow 
+
+- 
+
+Joined 
+
+Aug 29, 2023 
+
+• Aug 29 '23 • Edited on Aug 29 • Edited 
+
+Dropdown menu 
+
+- Copy link
+- 
+- Hide 
+- 
+- 
+- 
+
+Hi, I'm facing Same Issue.. ({ { "serviceErrorCode": 100, "message": "Not enough
+permissions to access: POST /simpleJobPostings", "status": 403 }
+
+Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand 
+
+[ ![violachacon profile image](https://media2.dev.to/dynamic/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F936448%2F55ff8e17-8f16-4466-9e3b-ac851340c14c.jpg)
+](https://dev.to/violachacon) 
+
+Info Comment hidden by post author - thread only accessible via permalink 
+
+[ ViolaChacon ](https://dev.to/violachacon) 
+
+ViolaChacon 
+
+[ ![Image](https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F936448%2F55ff8e17-8f16-4466-9e3b-ac851340c14c.jpg)
+ViolaChacon ](https://dev.to/violachacon) 
+
+Follow 
+
+Working as a Rail transportation occupation at Video Concepts . It's been almost 5
+years since I started working here . with this i am exploring something new ya
+wadoodo for husband love . 
+
+- 
+
+Location 
+
+4266 Buckhannan Avenue Camillus, NY 13031 
+- 
+
+Work 
+
+Video Concepts, Rail transportation occupation 
+- 
+
+Joined 
+
+Oct 3, 2022 
+
+• Oct 3 '22 
+
+Dropdown menu 
+
+- Copy link
+- 
+- Unhide 
+- 
+- 
+- 
+
+keep enhancing your informative and valuable post with us . [ya wadoodo for
+husband love](https://6109a360d6ae2.site123.me/ya-wadudu-wazifa-for-husband)
+
+Comment hidden by post author 
+
+Some comments have been hidden by the post's author - [find out more](https://dev.to/faq) 
+
+[Code of Conduct](https://dev.to/code-of-conduct) • [Report abuse](https://dev.to/report-abuse) 
+
+Are you sure you want to hide this comment? It will become hidden in your post,
+but will still be visible via the comment's permalink. 
+
+Hide child comments as well
+
+Confirm 
+
+For further actions, you may consider blocking this person and/or [reporting
+abuse](https://dev.to/report-abuse)
+
+[ ![Image](https://media2.dev.to/dynamic/image/width=90,height=90,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F118821%2F5bddf58c-edd7-47c2-a806-44f549477601.jpg)
+Emmanuel Uchenna ](https://dev.to/eunit) 
+
+Follow 
+
+Emmanuel is an experienced and enthusiastic software developer and technical
+writer with 5+ years of professional experience. He focuses on full-stack web
+development. 
+
+- 
+
+Location 
+
+Earth 
+- 
+
+Education 
+
+Alex Ekwueme Federal University 
+- 
+
+Pronouns 
+
+He/Him 
+- 
+
+Work 
+
+Software Developer and Technical Writer 
+- 
+
+Joined 
+
+Nov 30, 2018 
+
+### More from [Emmanuel Uchenna](https://dev.to/eunit) 
+
+[ How to download Instagram videos and Reels at scale with Apify #instagram #
+api #apify #video ](https://dev.to/eunit/how-to-download-instagram-videos-and-reels-at-scale-with-apify-2ilg) [ 
+How to Scrape LinkedIn Job Postings with Python: A Step-by-Step Guide #scraping 
+#jobs #linkedin #apify ](https://dev.to/eunit/how-to-scrape-linkedin-job-postings-with-python-a-step-by-step-guide-5bi3) 
+
+[DEV Community](https://dev.to/) — A space to discuss and keep up software
+development and manage your software career 
+
+- [ Home ](https://dev.to/) 
+- [ DEV Challenges ](https://dev.to/challenges) 
+- [ DEV++ ](https://dev.to/++) 
+- [ Videos ](https://dev.to/videos) 
+- [ DEV Education Tracks ](https://dev.to/deved) 
+- [ DEV Help ](https://dev.to/help) 
+- [ Advertise on DEV ](https://dev.to/advertise) 
+- [ Organization Accounts ](https://dev.to/organizations) 
+- [ DEV Showcase ](https://dev.to/showcase) 
+- [ About ](https://dev.to/about) 
+- [ Contact ](https://dev.to/contact) 
+- [ Free Postgres Database ](https://dev.to/free-postgres-database-tier) 
+- [ DEV Shop ](https://shop.forem.com/) 
+- [ MLH ](https://mlh.io/) 
+
+- [ Code of Conduct ](https://dev.to/code-of-conduct) 
+- [ Privacy Policy ](https://dev.to/privacy) 
+- [ Terms of Use ](https://dev.to/terms) 
+
+Built on [Forem](https://www.forem.com/) — the [open source](https://dev.to/t/opensource) 
+software that powers [DEV](https://dev.to/) and other inclusive communities.
+
+Made with love and [Ruby on Rails](https://dev.to/t/rails). DEV Community © 2016
+- 2026.
+
+![DEV Community](https://media2.dev.to/dynamic/image/width=190,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png)
+We're a place where coders share, stay up-to-date and grow their careers. 
+
+[ Log in ](https://dev.to/enter?signup_subforem=1) [ Create account ](https://dev.to/enter?signup_subforem=1&state=new-user) 
+
+![Image](https://assets.dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg)
+![Image](https://assets.dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg)
+![Image](https://assets.dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg)
+![Image](https://assets.dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg)
+![Image](https://assets.dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg)
+
+[End contents for https://dev.to/eunit/linkedin-jobs-api-36m7]

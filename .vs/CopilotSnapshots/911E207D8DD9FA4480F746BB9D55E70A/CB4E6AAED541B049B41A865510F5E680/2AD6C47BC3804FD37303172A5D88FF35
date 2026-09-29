@@ -1,0 +1,975 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="theme-color" content="#0284c7" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, follow" />
+  <title>Live Feed — LinkedIn Jobs Board</title>
+  <link rel="stylesheet" href="/resource-centre.css" />
+  <link rel="stylesheet" href="/index.css" />
+  <link rel="stylesheet" href="/mobile-compat.css" />
+  <link rel="stylesheet" href="/page-transition.css" />
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script defer src="/firebase-config.js"></script>
+  <style>
+	:root {
+	  --muted: #5b687a;
+	  --panel: #ffffff;
+	  --border: #dbe3ee;
+	  --shadow: 0 10px 28px rgba(2, 6, 23, 0.08);
+	  --ink: #0f172a;
+	  --brand: #0284c7;
+	  --brand-2: #0b2a6f;
+	  --good: #16a34a;
+	  --warn: #ca8a04;
+	  --error: #dc2626;
+	}
+
+	* { box-sizing: border-box; }
+	html, body { margin: 0; padding: 0; }
+	body {
+	  font-family: 'Open Sans', Arial, sans-serif;
+	  color: var(--ink);
+	  background: linear-gradient(180deg, #f5f9ff 0%, #ffffff 100%);
+	}
+
+	.page-wrapper {
+	  background: #fff;
+	  max-width: 1920px;
+	  min-height: 100vh;
+	  margin: 0 auto;
+	  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+	}
+
+	.auth-shell {
+	  max-width: 820px;
+	  margin: 2rem auto;
+	  padding: 2rem;
+	  border-radius: 16px;
+	  border: 1px solid var(--border);
+	  background: linear-gradient(145deg, #fff 0%, #f6fbff 100%);
+	  text-align: center;
+	  box-shadow: var(--shadow);
+	}
+
+	.live-shell {
+	  display: none;
+	  max-width: 1240px;
+	  margin: 0 auto 3rem;
+	  padding: 0 1rem;
+	}
+
+	.sidebar-menu-shell {
+	  display: none;
+	  position: fixed;
+	  top: 88px;
+	  left: 24px;
+	  width: 240px;
+	  background: #ffffff;
+	  border: 1px solid var(--border);
+	  border-radius: 12px;
+	  box-shadow: 0 10px 24px rgba(2, 6, 23, 0.12);
+	  padding: 10px 0;
+	  z-index: 950;
+	}
+
+	.sidebar-menu-link {
+	  display: block;
+	  padding: 11px 14px;
+	  margin: 2px 8px;
+	  border-radius: 8px;
+	  color: #092a4b;
+	  text-decoration: none;
+	  font-size: 0.95rem;
+	  font-weight: 600;
+	  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+	}
+
+	.sidebar-menu-link:hover,
+	.sidebar-menu-link:focus,
+	.sidebar-menu-link.active {
+	  background: #092a4b;
+	  color: #ffffff;
+	  transform: translateX(3px);
+	}
+
+	.sidebar-menu-icon {
+	  display: inline-block;
+	  width: 1.25em;
+	  min-width: 1.25em;
+	  text-align: center;
+	  margin-right: 0.65em;
+	  font-size: 1.15em;
+	  vertical-align: middle;
+	  opacity: 0.88;
+	}
+
+	.hero-shell,
+	.composer-shell,
+	.feed-shell,
+	.info-shell {
+	  background: var(--panel);
+	  border: 1px solid var(--border);
+	  border-radius: 18px;
+	  box-shadow: var(--shadow);
+	}
+
+	.hero-shell { padding: 1.5rem; margin: 1.5rem 0 1rem; }
+	.hero-grid {
+	  display: grid;
+	  grid-template-columns: 1.3fr 0.7fr;
+	  gap: 1rem;
+	  align-items: stretch;
+	}
+
+	.badge {
+	  display: inline-flex;
+	  align-items: center;
+	  gap: 8px;
+	  font-size: 0.8rem;
+	  font-weight: 800;
+	  text-transform: uppercase;
+	  letter-spacing: 0.04em;
+	  color: #0f3d63;
+	  background: #dbeafe;
+	  border: 1px solid #bfdbfe;
+	  border-radius: 999px;
+	  padding: 6px 10px;
+	}
+
+	h1, h2, h3 { color: #092a4b; margin-top: 0; }
+	h1 { margin: 12px 0 10px; font-size: clamp(1.9rem, 4vw, 3rem); line-height: 1.1; }
+	.lead { margin: 0; color: var(--muted); font-size: 1.02rem; max-width: 70ch; }
+
+	.metric-panel {
+	  display: grid;
+	  gap: 10px;
+	  align-content: start;
+	}
+
+	.metric {
+	  border-radius: 14px;
+	  background: linear-gradient(145deg, #0b2a6f, #0284c7);
+	  color: #fff;
+	  padding: 14px;
+	  box-shadow: 0 10px 18px rgba(2, 44, 84, 0.18);
+	}
+
+	.metric strong { display: block; font-size: 1.5rem; margin-bottom: 4px; }
+	.metric span { font-size: 0.95rem; opacity: 0.96; }
+
+	.section { margin: 1rem 0 1.5rem; }
+	.section-header { margin-bottom: 0.9rem; }
+	.section-header p { margin: 0; color: var(--muted); }
+
+	.composer-grid {
+	  display: grid;
+	  grid-template-columns: 1.15fr 0.85fr;
+	  gap: 1rem;
+	  padding: 1.25rem;
+	}
+
+	.panel-card {
+	  background: #f8fbff;
+	  border: 1px solid #e3ebf5;
+	  border-radius: 14px;
+	  padding: 1rem;
+	}
+
+	.form-grid {
+	  display: grid;
+	  grid-template-columns: repeat(2, minmax(0, 1fr));
+	  gap: 12px;
+	}
+
+	.field { display: grid; gap: 6px; }
+	.field.full { grid-column: 1 / -1; }
+	label { font-size: 0.92rem; font-weight: 700; color: #12304f; }
+	input, select, textarea {
+	  width: 100%;
+	  border: 1px solid #cfd9e6;
+	  border-radius: 10px;
+	  padding: 11px 12px;
+	  font: inherit;
+	  color: var(--ink);
+	  background: #fff;
+	  outline: none;
+	  transition: border-color .15s ease, box-shadow .15s ease;
+	}
+	textarea { min-height: 130px; resize: vertical; }
+	input:focus, select:focus, textarea:focus {
+	  border-color: #0284c7;
+	  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+	}
+
+	.btn-row {
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 10px;
+	  margin-top: 14px;
+	}
+
+	.btn {
+	  display: inline-flex;
+	  align-items: center;
+	  justify-content: center;
+	  gap: 8px;
+	  border-radius: 10px;
+	  padding: 10px 14px;
+	  text-decoration: none;
+	  font-weight: 700;
+	  border: 1px solid transparent;
+	  cursor: pointer;
+	  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+	}
+	.btn:hover { transform: translateY(-1px); }
+	.btn-primary {
+	  color: #fff;
+	  background: linear-gradient(135deg, #0284c7, #0b2a6f);
+	  box-shadow: 0 10px 24px rgba(47, 123, 255, 0.22);
+	}
+	.btn-ghost {
+	  color: #092a4b;
+	  border-color: #cdd8e5;
+	  background: #fff;
+	}
+	.btn-danger {
+	  color: #fff;
+	  border: none;
+	  background: linear-gradient(135deg, #ef4444, #b91c1c);
+	}
+	.btn-small {
+	  border-radius: 8px;
+	  padding: 8px 12px;
+	  font-size: .9rem;
+	  font-weight: 700;
+	  border: 1px solid #cdd8e5;
+	  color: #092a4b;
+	  background: #fff;
+	}
+	.btn-small.accept {
+	  border: none;
+	  color: #fff;
+	  background: linear-gradient(135deg, #0284c7, #0b2a6f);
+	}
+
+	.status-note {
+	  min-height: 1.3rem;
+	  margin: 12px 0 0;
+	  color: var(--muted);
+	  word-break: break-word;
+	}
+
+	.status-pill {
+	  display: inline-flex;
+	  align-items: center;
+	  gap: 6px;
+	  border-radius: 999px;
+	  padding: 5px 10px;
+	  font-size: .82rem;
+	  font-weight: 800;
+	  text-transform: uppercase;
+	  letter-spacing: .04em;
+	}
+	.status-draft { background: #fef3c7; color: #92400e; }
+	.status-ready { background: #dbeafe; color: #1d4ed8; }
+	.status-queued { background: #dbeafe; color: #1d4ed8; }
+	.status-published { background: #dcfce7; color: #166534; }
+	.status-error { background: #fee2e2; color: #991b1b; }
+
+	.tips-list {
+	  margin: 0;
+	  padding-left: 18px;
+	  color: #334155;
+	}
+	.tips-list li + li { margin-top: 8px; }
+
+	.feed-toolbar {
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 10px;
+	  align-items: center;
+	  justify-content: space-between;
+	  margin-bottom: 12px;
+	}
+
+	.feed-filters {
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 10px;
+	}
+	.feed-filters input,
+	.feed-filters select {
+	  min-width: 220px;
+	}
+
+	.jobs-grid {
+	  display: grid;
+	  grid-template-columns: repeat(2, minmax(0, 1fr));
+	  gap: 14px;
+	}
+
+	.job-card {
+	  background: #fff;
+	  border: 1px solid #dbe3ee;
+	  border-radius: 16px;
+	  padding: 1rem;
+	  box-shadow: 0 8px 22px rgba(2, 6, 23, .06);
+	  display: grid;
+	  gap: 10px;
+	}
+
+	.job-card h3 {
+	  margin: 0;
+	  color: #0b2a6f;
+	  font-size: 1.08rem;
+	}
+
+	.job-meta {
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 8px;
+	  color: var(--muted);
+	  font-size: .92rem;
+	}
+
+	.job-description {
+	  margin: 0;
+	  color: #334155;
+	  white-space: pre-wrap;
+	}
+
+	.job-actions {
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 8px;
+	  align-items: center;
+	}
+
+	.info-grid {
+	  display: grid;
+	  grid-template-columns: repeat(3, minmax(0, 1fr));
+	  gap: 14px;
+	}
+
+	.info-card {
+	  background: linear-gradient(145deg, #ffffff, #f7fbff);
+	  border: 1px solid #dbe3ee;
+	  border-radius: 16px;
+	  padding: 1rem;
+	}
+
+	.info-card h3 { margin-bottom: 8px; }
+	.info-card p { margin: 0; color: #334155; }
+
+	.cookie-bar {
+	  margin: 0 auto 12px;
+	  max-width: 1240px;
+	  border-radius: 12px;
+	  border: 1px solid var(--border);
+	  background: rgba(247, 251, 255, 0.98);
+	  padding: 12px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	  gap: 10px;
+	  flex-wrap: wrap;
+	  text-align: center;
+	}
+
+	.footer-links {
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  flex-wrap: wrap;
+	  gap: 12px;
+	  margin-bottom: 10px;
+	}
+
+	.footer-links a { color: #64748b; text-decoration: none; }
+	.footer-links a:hover { color: #0284c7; }
+
+	@media (max-width: 980px) {
+	  .hero-grid,
+	  .composer-grid,
+	  .jobs-grid,
+	  .info-grid,
+	  .form-grid {
+		grid-template-columns: 1fr;
+	  }
+	  .sidebar-menu-shell {
+		position: static;
+		width: 100%;
+		max-width: 1240px;
+		margin: 12px auto;
+	  }
+	  .resource-nav, .site-header {
+		background: #0B2A6F !important;
+		border-bottom: 1px solid #0B2A6F !important;
+		backdrop-filter: none !important;
+	  }
+	}
+  </style>
+</head>
+<body class="auth-pending">
+  <div class="page-wrapper">
+	<header class="resource-nav" role="banner">
+	  <div class="container container-nav">
+		<div class="logo" style="display:flex;align-items:center;gap:12px">
+		  <img src="/160.jpg" alt="Impact logo" class="site-logo" style="height:36px;width:auto;display:block" />
+		  <span class="site-title" style="color:lightgrey">Premium</span>
+		</div>
+		<div class="user-menu" style="margin-left:auto;display:flex;align-items:center;gap:12px">
+		  <div class="auth-profile-chip" data-auth-profile>
+			<img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo" />
+			<span class="auth-profile-name" data-auth-name></span>
+		  </div>
+		  <a class="btn btn-outline nav-login" href="/login.html" id="signInLink">Sign In</a>
+		  <button class="btn btn-outline" id="signOutBtn" style="display:none">Sign Out</button>
+		</div>
+	  </div>
+	</header>
+
+	<nav id="topNavMenu" class="sidebar-menu-shell" aria-label="Members navigation">
+	  <a class="sidebar-menu-link" href="https://www.ibrecruitment.com"><span class="sidebar-menu-icon" aria-hidden="true">🏠</span> Home</a>
+	  <a class="sidebar-menu-link" href="/editprofile.html"><span class="sidebar-menu-icon" aria-hidden="true">👤</span> Edit Profile</a>
+	  <a class="sidebar-menu-link" href="/members.html"><span class="sidebar-menu-icon" aria-hidden="true">🧑‍🤝‍🧑</span> Members Area</a>
+	  <a class="sidebar-menu-link" href="/insights.html"><span class="sidebar-menu-icon" aria-hidden="true">💡</span> Insights Archive</a>
+	  <a class="sidebar-menu-link" href="/uploads.html"><span class="sidebar-menu-icon" aria-hidden="true">📤</span> Resume Uploads</a>
+	  <a class="sidebar-menu-link active" href="/livefeed.html"><span class="sidebar-menu-icon" aria-hidden="true">📡</span> Live Feed</a>
+	  <a class="sidebar-menu-link" href="/settings.html"><span class="sidebar-menu-icon" aria-hidden="true">⚙️</span> Account Settings</a>
+	  <a class="sidebar-menu-link" href="https://editor.ibrecruitment.com/claude.html" target="_blank" rel="noopener noreferrer"><span class="sidebar-menu-icon" aria-hidden="true">🤖</span> Ask Claude Code</a>
+	  <a class="sidebar-menu-link" href="https://www.ibrecruitment.com/contact" target="_blank" rel="noopener noreferrer"><span class="sidebar-menu-icon" aria-hidden="true">✉️</span> Contact Sales</a>
+	  <a class="sidebar-menu-link" href="/directory.html"><span class="sidebar-menu-icon" aria-hidden="true">📇</span> Member Directory</a>
+	</nav>
+
+	<script>
+	  function updateSidebarVisibility() {
+		var sidebar = document.getElementById('topNavMenu');
+		if (document.body.classList.contains('has-sidebar')) {
+		  sidebar.style.display = 'block';
+		} else {
+		  sidebar.style.display = 'none';
+		}
+	  }
+	  document.addEventListener('DOMContentLoaded', updateSidebarVisibility);
+	  var observer = new MutationObserver(updateSidebarVisibility);
+	  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+	</script>
+
+	<section id="loginSection" class="auth-shell">
+	  <h1 style="margin:0;color:#092a4b">LinkedIn Live Feed</h1>
+	  <p style="margin:.75rem 0 1.25rem;color:var(--muted)">Sign in to create job adverts, save drafts, and prepare listings for manual posting to LinkedIn.</p>
+	  <a class="btn btn-primary" href="/login.html">Go to Sign In</a>
+	  <p style="margin:1rem 0 0;color:#64748b;font-size:.95rem">LinkedIn posting is completed manually by an authorized company page administrator.</p>
+	</section>
+
+	<main id="liveShell" class="live-shell" role="main">
+	  <section class="hero-shell section">
+		<div class="hero-grid">
+		  <div>
+			<span class="badge">Manual LinkedIn Posting</span>
+			<h1>Prepare job adverts in live feed, then we post them to LinkedIn manually.</h1>
+			<p class="lead">Create, review, and store job listings in the authenticated feed. When ready, copy the advert into your LinkedIn Company Page and mark it as posted here.</p>
+		  </div>
+		  <aside class="metric-panel" aria-label="Live feed metrics">
+			<div class="metric"><strong id="metricTotal">0</strong><span>Total adverts in the feed</span></div>
+			<div class="metric"><strong id="metricReady">0</strong><span>Ready for manual posting</span></div>
+			<div class="metric"><strong id="metricDrafts">0</strong><span>Drafts saved by logged-in users</span></div>
+		  </aside>
+		</div>
+	  </section>
+
+	  <section class="section composer-shell">
+		<div class="composer-grid">
+		  <div>
+			<div class="section-header">
+			  <h2>Post a job advert</h2>
+			  <p>Save a draft or add the completed advert to the feed as ready for manual posting.</p>
+			</div>
+			<form id="jobForm" autocomplete="off">
+			  <div class="form-grid">
+				<div class="field">
+				  <label for="jobTitle">Job title</label>
+				  <input id="jobTitle" name="jobTitle" type="text" placeholder="Senior Recruiter" required />
+				</div>
+				<div class="field">
+				  <label for="companyName">Company name</label>
+				  <input id="companyName" name="companyName" type="text" placeholder="Your company name" required />
+				</div>
+				<div class="field">
+				  <label for="location">Location</label>
+				  <input id="location" name="location" type="text" placeholder="London, UK" required />
+				</div>
+				<div class="field">
+				  <label for="employmentType">Employment type</label>
+				  <select id="employmentType" name="employmentType" required>
+					<option value="">Select one</option>
+					<option>Full-time</option>
+					<option>Part-time</option>
+					<option>Contract</option>
+					<option>Temporary</option>
+					<option>Internship</option>
+				  </select>
+				</div>
+				<div class="field">
+				  <label for="workplaceType">Workplace type</label>
+				  <select id="workplaceType" name="workplaceType" required>
+					<option value="">Select one</option>
+					<option>On-site</option>
+					<option>Hybrid</option>
+					<option>Remote</option>
+				  </select>
+				</div>
+				<div class="field">
+				  <label for="applyUrl">Apply URL</label>
+				  <input id="applyUrl" name="applyUrl" type="url" placeholder="https://..." />
+				</div>
+				<div class="field">
+				  <label for="salaryRange">Salary range</label>
+				  <input id="salaryRange" name="salaryRange" type="text" placeholder="£45k - £55k" />
+				</div>
+				<div class="field full">
+				  <label for="jobDescription">Job description</label>
+				  <textarea id="jobDescription" name="jobDescription" placeholder="Outline responsibilities, requirements, and benefits." required></textarea>
+				</div>
+				<div class="field full">
+				  <label for="postingNotes">Posting notes</label>
+				  <textarea id="postingNotes" name="postingNotes" placeholder="Optional internal notes, screening rules, or approval comments."></textarea>
+				</div>
+			  </div>
+			  <div class="btn-row">
+				<button type="button" class="btn btn-ghost" id="saveDraftBtn">Save Draft</button>
+				<button type="submit" class="btn btn-primary" id="addToFeedBtn">Add as Ready to Post</button>
+				<button type="reset" class="btn btn-danger">Clear Form</button>
+			  </div>
+			  <p id="formStatus" class="status-note" aria-live="polite"></p>
+			</form>
+		  </div>
+		  <aside class="panel-card">
+		  <h3>Manual posting checklist</h3>
+			<ul class="tips-list">
+			<li>Review the title, location, employment type, and description before posting.</li>
+			<li>Open LinkedIn and post the advert through your Company Page using an authorized account.</li>
+			<li>Include the application link and salary range in the LinkedIn advert when appropriate.</li>
+			<li>After posting, return here and select “Mark as Posted” on the listing.</li>
+			</ul>
+		  </aside>
+		</div>
+	  </section>
+
+	  <section class="section info-shell">
+		<div class="section-header" style="padding:1.25rem 1.25rem 0;">
+		  <h2>Manual posting workflow</h2>
+		  <p>Use the feed to prepare and track adverts; LinkedIn publication is a separate manual step.</p>
+		</div>
+		<div class="info-grid" style="padding:0 1.25rem 1.25rem;">
+		  <div class="info-card">
+			<h3>1. Create the advert</h3>
+			<p>Enter the role, company, location, salary, and job description. Save as a draft if it needs review.</p>
+		  </div>
+		  <div class="info-card">
+			<h3>2. Post on LinkedIn</h3>
+			<p>Copy the advert details and publish it using an authorized LinkedIn Company Page account.</p>
+		  </div>
+		  <div class="info-card">
+			<h3>3. Track status</h3>
+			<p>Track which adverts are drafts, ready to post, or manually marked as posted.</p>
+		  </div>
+		</div>
+	  </section>
+
+	  <section class="section feed-shell">
+		<div style="padding:1.25rem;">
+		  <div class="feed-toolbar">
+			<div class="section-header" style="margin-bottom:0;">
+			  <h2 style="margin-bottom:4px;">Live job adverts</h2>
+				<p>Firestore-backed feed of drafts, ready-to-post adverts, and manually posted jobs.</p>
+			</div>
+			<div class="feed-filters" aria-label="Feed filters">
+			  <input id="searchInput" type="search" placeholder="Search title, company, or location" />
+			  <select id="statusFilter">
+				<option value="all">All statuses</option>
+				<option value="draft">Drafts</option>
+				<option value="ready">Ready to post</option>
+				<option value="published">Published</option>
+			  </select>
+			</div>
+		  </div>
+		  <div id="jobsGrid" class="jobs-grid"></div>
+		  <p id="jobsEmptyState" class="status-note" style="text-align:center; margin:1rem 0 0;">No job adverts yet. Sign in and add the first one.</p>
+		</div>
+	  </section>
+
+	  <section class="section info-shell">
+		<div style="padding:1.25rem;">
+		  <div class="section-header">
+			<h2>Why this page works well for LinkedIn Jobs</h2>
+			<p>It stores advert content securely and leaves LinkedIn publishing to an authorized human operator.</p>
+		  </div>
+		  <div class="info-grid">
+			<div class="info-card">
+			  <h3>Secure by design</h3>
+			  <p>Only authenticated users can create adverts, and signed-in members can review the live feed.</p>
+			</div>
+			<div class="info-card">
+			  <h3>Operational visibility</h3>
+			  <p>Recruiters see draft, ready-to-post, and manually posted states without leaving the dashboard.</p>
+			</div>
+			<div class="info-card">
+			  <h3>LinkedIn-aware</h3>
+			  <p>The page keeps the information needed to compose a Company Page advert, without connecting to LinkedIn APIs.</p>
+			</div>
+		  </div>
+		</div>
+	  </section>
+
+	  <div id="cookieConsentBar" class="cookie-bar">
+		<div>
+		  This website uses cookies to improve your experience.
+		  <a href="/cookies.html" style="color:#0b2a6f">Cookie Policy</a>
+		  <span aria-hidden="true">|</span>
+		  <a href="/privacy.html" style="color:#0b2a6f">Privacy Policy</a>
+		</div>
+		<div style="display:inline-flex;gap:8px;flex-wrap:wrap;">
+		  <button id="cookieDeclineBtn" class="btn-small" type="button">Decline</button>
+		  <button id="cookieAcceptBtn" class="btn-small accept" type="button">Accept</button>
+		</div>
+	  </div>
+	</main>
+
+	<footer class="site-footer" role="contentinfo" style="padding: 0 0 28px;">
+	  <div class="container">
+		<div class="footer-links footer-social" style="margin-top:12px;">
+		  <a href="https://www.linkedin.com/company/ibrgroupintl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn" style="display:inline-flex;align-items:center;justify-content:center;">
+			<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+			  <path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.25 3.9 3.25 5s.89 2 2 2 2-.9 2-2-.9-2-2-2zM20.75 13.38C20.75 10.2 19.07 8.25 16.28 8.25c-1.5 0-2.18.83-2.55 1.41V8.5h-3.38V20h3.38v-6.37c0-1.68.32-3.31 2.4-3.31 2.06 0 2.09 1.93 2.09 3.42V20h3.38v-6.62z"/>
+			</svg>
+		  </a>
+		</div>
+		<div class="footer-links">
+		  <a href="/terms.html">Terms</a>
+		  <span aria-hidden="true">|</span>
+		  <a href="/privacy.html">Privacy</a>
+		  <span aria-hidden="true">|</span>
+		  <a href="/cookies.html">Cookies</a>
+		</div>
+		<p style="margin:0; text-align:center; color:#475569">© 2026 Impact in Business Recruitment. All rights reserved.</p>
+	  </div>
+	</footer>
+  </div>
+
+  <script>
+	(function () {
+	  var cookieName = 'ibr_cookie_consent_v1';
+	  function setCookie(name, value, days) {
+		var d = new Date();
+		d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+		document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+	  }
+	  function getCookie(name) {
+		var v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+		return v ? decodeURIComponent(v.pop()) : null;
+	  }
+	  var bar = document.getElementById('cookieConsentBar');
+	  if (!bar) return;
+	  if (getCookie(cookieName)) {
+		bar.style.display = 'none';
+		return;
+	  }
+	  var accept = document.getElementById('cookieAcceptBtn');
+	  var decline = document.getElementById('cookieDeclineBtn');
+	  if (accept) accept.addEventListener('click', function () { setCookie(cookieName, 'accepted', 365); bar.style.display = 'none'; });
+	  if (decline) decline.addEventListener('click', function () { setCookie(cookieName, 'declined', 365); bar.style.display = 'none'; });
+	})();
+  </script>
+
+  <script>
+	window.addEventListener('DOMContentLoaded', function () {
+	  if (!window.firebase || !window.firebaseConfig) return;
+	  try { firebase.initializeApp(window.firebaseConfig); } catch (e) {}
+
+	  var auth = firebase.auth();
+	  var db = firebase.firestore();
+	  var liveShell = document.getElementById('liveShell');
+	  var loginSection = document.getElementById('loginSection');
+	  var signOutBtn = document.getElementById('signOutBtn');
+	  var signInLink = document.getElementById('signInLink');
+	  var jobsGrid = document.getElementById('jobsGrid');
+	  var jobsEmptyState = document.getElementById('jobsEmptyState');
+	  var formStatus = document.getElementById('formStatus');
+	  var searchInput = document.getElementById('searchInput');
+	  var statusFilter = document.getElementById('statusFilter');
+	  var saveDraftBtn = document.getElementById('saveDraftBtn');
+	  var jobForm = document.getElementById('jobForm');
+	  var unsubscribeJobs = null;
+	  var currentUser = null;
+	  var allJobs = [];
+
+	  var metricTotal = document.getElementById('metricTotal');
+	  var metricReady = document.getElementById('metricReady');
+	  var metricDrafts = document.getElementById('metricDrafts');
+
+	  function escapeHtml(value) {
+		return String(value || '').replace(/[&<>"]/g, function (ch) {
+		  return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch];
+		});
+	  }
+
+	  function normalizeText(value) {
+		return String(value || '').toLowerCase().trim();
+	  }
+
+	  function setStatus(message, kind) {
+		if (!formStatus) return;
+		formStatus.textContent = message || '';
+		formStatus.style.color = kind === 'error' ? '#b91c1c' : kind === 'success' ? '#166534' : '#5b687a';
+	  }
+
+	  function getFormData() {
+		return {
+		  jobTitle: document.getElementById('jobTitle').value.trim(),
+		  companyName: document.getElementById('companyName').value.trim(),
+		  location: document.getElementById('location').value.trim(),
+		  employmentType: document.getElementById('employmentType').value,
+		  workplaceType: document.getElementById('workplaceType').value,
+		  applyUrl: document.getElementById('applyUrl').value.trim(),
+		  salaryRange: document.getElementById('salaryRange').value.trim(),
+		  jobDescription: document.getElementById('jobDescription').value.trim(),
+		  postingNotes: document.getElementById('postingNotes').value.trim()
+		};
+	  }
+
+	  function fillForm(job) {
+		document.getElementById('jobTitle').value = job.jobTitle || '';
+		document.getElementById('companyName').value = job.companyName || '';
+		document.getElementById('location').value = job.location || '';
+		document.getElementById('employmentType').value = job.employmentType || '';
+		document.getElementById('workplaceType').value = job.workplaceType || '';
+		document.getElementById('applyUrl').value = job.applyUrl || '';
+		document.getElementById('salaryRange').value = job.salaryRange || '';
+		document.getElementById('jobDescription').value = job.jobDescription || '';
+		document.getElementById('postingNotes').value = job.postingNotes || '';
+	  }
+
+	  function renderJobs() {
+		if (!jobsGrid) return;
+		var search = normalizeText(searchInput ? searchInput.value : '');
+		var status = statusFilter ? statusFilter.value : 'all';
+		var filtered = allJobs.filter(function (job) {
+		  var jobStatus = job.postingState === 'queued' ? 'ready' : job.postingState;
+		  var matchesStatus = status === 'all' || jobStatus === status;
+		  var haystack = [job.jobTitle, job.companyName, job.location, job.employmentType, job.workplaceType, job.salaryRange, job.postingState].join(' ').toLowerCase();
+		  var matchesSearch = !search || haystack.indexOf(search) !== -1;
+		  return matchesStatus && matchesSearch;
+		});
+
+		if (metricTotal) metricTotal.textContent = String(allJobs.length);
+		if (metricReady) metricReady.textContent = String(allJobs.filter(function (job) { return job.postingState === 'ready' || job.postingState === 'queued'; }).length);
+		if (metricDrafts) metricDrafts.textContent = String(allJobs.filter(function (job) { return job.postingState === 'draft'; }).length);
+
+		if (!filtered.length) {
+		  jobsGrid.innerHTML = '';
+		  if (jobsEmptyState) jobsEmptyState.style.display = 'block';
+		  return;
+		}
+
+		if (jobsEmptyState) jobsEmptyState.style.display = 'none';
+		jobsGrid.innerHTML = filtered.map(function (job) {
+		  var displayStatus = job.postingState === 'queued' ? 'ready' : (job.postingState || 'draft');
+		  var statusLabel = displayStatus === 'ready' ? 'Ready to post' : displayStatus === 'published' ? 'Posted' : displayStatus;
+		  var statusClass = 'status-' + displayStatus;
+		  var publishedAt = job.publishedAt && job.publishedAt.toDate ? job.publishedAt.toDate() : (job.publishedAt ? new Date(job.publishedAt) : null);
+		  var createdAt = job.createdAt && job.createdAt.toDate ? job.createdAt.toDate() : (job.createdAt ? new Date(job.createdAt) : null);
+		  var postedDate = publishedAt || createdAt;
+		  var postedLabel = postedDate ? postedDate.toLocaleString() : 'Just now';
+		  var applyButton = job.applyUrl ? '<a class="btn btn-ghost" href="' + escapeHtml(job.applyUrl) + '" target="_blank" rel="noopener noreferrer">Open application</a>' : '';
+		  var editButton = job.uid === (currentUser && currentUser.uid) ? '<button class="btn btn-small" type="button" data-edit-job="' + escapeHtml(job.id) + '">Edit</button>' : '';
+		  var markPostedButton = job.uid === (currentUser && currentUser.uid) && displayStatus !== 'published' ? '<button class="btn btn-small" type="button" data-mark-posted="' + escapeHtml(job.id) + '">Mark as Posted</button>' : '';
+		  return '' +
+			'<article class="job-card">' +
+			  '<div style="display:flex;justify-content:space-between;gap:10px;align-items:start;flex-wrap:wrap;">' +
+				'<div>' +
+				  '<h3>' + escapeHtml(job.jobTitle) + '</h3>' +
+				  '<div class="job-meta"><span>' + escapeHtml(job.companyName) + '</span><span>•</span><span>' + escapeHtml(job.location) + '</span></div>' +
+				'</div>' +
+				'<span class="status-pill ' + statusClass + '">' + escapeHtml(statusLabel) + '</span>' +
+			  '</div>' +
+			  '<div class="job-meta"><span>' + escapeHtml(job.employmentType || 'Employment type not set') + '</span><span>•</span><span>' + escapeHtml(job.workplaceType || 'Workplace type not set') + '</span><span>•</span><span>' + escapeHtml(postedLabel) + '</span></div>' +
+			  (job.salaryRange ? '<div class="job-meta"><span>Salary: ' + escapeHtml(job.salaryRange) + '</span></div>' : '') +
+			  '<p class="job-description">' + escapeHtml(job.jobDescription) + '</p>' +
+			  '<div class="job-actions">' +
+				applyButton +
+				editButton +
+				markPostedButton +
+				'<button class="btn btn-ghost" type="button" data-reuse-job="' + escapeHtml(job.id) + '">Reuse</button>' +
+			  '</div>' +
+			'</article>';
+		}).join('');
+	  }
+
+	  function attachCardActions() {
+		jobsGrid.querySelectorAll('[data-edit-job]').forEach(function (button) {
+		  button.addEventListener('click', function () {
+			var job = allJobs.find(function (entry) { return entry.id === button.getAttribute('data-edit-job'); });
+			if (!job) return;
+			fillForm(job);
+			setStatus('Loaded the selected advert back into the form for editing.', 'success');
+		  });
+		jobsGrid.querySelectorAll('[data-mark-posted]').forEach(function (button) {
+		  button.addEventListener('click', async function () {
+			var job = allJobs.find(function (entry) { return entry.id === button.getAttribute('data-mark-posted'); });
+			if (!job || job.uid !== (currentUser && currentUser.uid)) return;
+			try {
+			  await db.collection('jobAdverts').doc(job.id).update({
+				postingState: 'published',
+				publishedAt: firebase.firestore.FieldValue.serverTimestamp(),
+				updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+			  });
+			  setStatus('Marked as posted on LinkedIn.', 'success');
+			} catch (error) {
+			  setStatus('Unable to update the advert: ' + (error.message || 'unknown error'), 'error');
+			}
+		  });
+		});
+		});
+		jobsGrid.querySelectorAll('[data-reuse-job]').forEach(function (button) {
+		  button.addEventListener('click', function () {
+			var job = allJobs.find(function (entry) { return entry.id === button.getAttribute('data-reuse-job'); });
+			if (!job) return;
+			fillForm(job);
+			setStatus('Copied the selected advert into the composer.', 'success');
+		  });
+		});
+	  }
+
+	  function bindRealtimeFeed() {
+		if (unsubscribeJobs) unsubscribeJobs();
+		unsubscribeJobs = db.collection('jobAdverts').orderBy('createdAt', 'desc').limit(100).onSnapshot(function (snapshot) {
+		  allJobs = snapshot.docs.map(function (doc) {
+			var data = doc.data() || {};
+			data.id = doc.id;
+			return data;
+		  });
+		  renderJobs();
+		  attachCardActions();
+		}, function (error) {
+		  console.error(error);
+		  setStatus('Unable to load the job feed: ' + (error.message || 'unknown error'), 'error');
+		});
+	  }
+
+	  async function saveJobAdvert(postingState) {
+		if (!currentUser) {
+		  setStatus('Please sign in before creating job adverts.', 'error');
+		  return null;
+		}
+
+		var payload = getFormData();
+		if (!payload.jobTitle || !payload.companyName || !payload.location || !payload.employmentType || !payload.workplaceType || !payload.jobDescription) {
+		  setStatus('Please complete all required fields before saving or adding the advert to the feed.', 'error');
+		  return null;
+		}
+
+		var now = firebase.firestore.FieldValue.serverTimestamp();
+		var docData = {
+		  uid: currentUser.uid,
+		  authorName: currentUser.displayName || '',
+		  authorEmail: currentUser.email || '',
+		  jobTitle: payload.jobTitle,
+		  companyName: payload.companyName,
+		  location: payload.location,
+		  employmentType: payload.employmentType,
+		  workplaceType: payload.workplaceType,
+		  applyUrl: payload.applyUrl,
+		  salaryRange: payload.salaryRange,
+		  jobDescription: payload.jobDescription,
+		  postingNotes: payload.postingNotes,
+		  postingState: postingState,
+		  createdAt: now,
+		  updatedAt: now
+		};
+
+		var docRef = await db.collection('jobAdverts').add(docData);
+		return { id: docRef.id, data: docData };
+	  }
+
+	  async function handleSaveDraft() {
+		try {
+		  setStatus('Saving draft...', '');
+		  var saved = await saveJobAdvert('draft');
+		  if (!saved) return;
+		  setStatus('Draft saved to the live feed.', 'success');
+		  jobForm.reset();
+		} catch (error) {
+		  console.error(error);
+		  setStatus('Unable to save draft: ' + (error.message || 'unknown error'), 'error');
+		}
+	  }
+
+	  async function handleAddToFeed(event) {
+		event.preventDefault();
+		try {
+		  setStatus('Adding advert to the live feed...', '');
+		  var saved = await saveJobAdvert('ready');
+		  if (!saved) return;
+		  setStatus('Advert is ready. Post it manually to LinkedIn when approved.', 'success');
+		  jobForm.reset();
+		} catch (error) {
+		  console.error(error);
+		  setStatus('Unable to add advert to the feed: ' + (error.message || 'unknown error'), 'error');
+		}
+	  }
+
+	  auth.onAuthStateChanged(function (user) {
+		currentUser = user || null;
+		if (user) {
+		  document.body.classList.add('has-sidebar');
+		  loginSection.style.display = 'none';
+		  liveShell.style.display = 'block';
+		  signOutBtn.style.display = 'inline-flex';
+		  signInLink.style.display = 'none';
+		  bindRealtimeFeed();
+		} else {
+		  document.body.classList.remove('has-sidebar');
+		  loginSection.style.display = 'block';
+		  liveShell.style.display = 'none';
+		  signOutBtn.style.display = 'none';
+		  signInLink.style.display = 'inline-flex';
+		  if (unsubscribeJobs) {
+			unsubscribeJobs();
+			unsubscribeJobs = null;
+		  }
+		  allJobs = [];
+		}
+	  });
+
+	  if (signOutBtn) {
+		signOutBtn.addEventListener('click', function () {
+		  auth.signOut();
+		});
+	  }
+
+	  if (saveDraftBtn) {
+		saveDraftBtn.addEventListener('click', handleSaveDraft);
+	  }
+	  if (jobForm) {
+		jobForm.addEventListener('submit', handleAddToFeed);
+		jobForm.addEventListener('reset', function () {
+		  setStatus('Form cleared.', '');
+		});
+	  }
+	  if (searchInput) {
+		searchInput.addEventListener('input', renderJobs);
+	  }
+	  if (statusFilter) {
+		statusFilter.addEventListener('change', renderJobs);
+	  }
+	});
+  </script>
+</body>
+</html>

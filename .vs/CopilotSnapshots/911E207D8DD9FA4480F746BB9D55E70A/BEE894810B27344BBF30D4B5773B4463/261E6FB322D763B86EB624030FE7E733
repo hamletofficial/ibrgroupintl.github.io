@@ -1,0 +1,57 @@
+﻿rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public Profiles: Each user can create/update their own, all can read
+    match /publicProfiles/{uid} {
+      allow read: if true;
+      allow create, update: if request.auth != null && request.auth.uid == uid &&
+        request.resource.data.keys().hasOnly([
+          'uid',
+          'firstName',
+          'lastName',
+          'bio',
+          'email',
+          'updatedAt',
+          'isPublic',
+          'imageDataUrl'
+        ]) &&
+        request.resource.data.uid == request.auth.uid &&
+        request.resource.data.firstName is string &&
+        request.resource.data.lastName is string &&
+        request.resource.data.bio is string &&
+        request.resource.data.email is string &&
+        request.resource.data.updatedAt is timestamp &&
+        request.resource.data.isPublic == true;
+      allow delete: if false;
+    }
+
+    // Messages: Only recipient can read/update their messages, no public write
+    match /messages/{messageId} {
+  		allow read: if request.auth != null && resource.data.recipientUid == request.auth.uid;
+  		allow create: if request.auth != null && request.resource.data.recipientUid == request.auth.uid;
+  		allow update: if request.auth != null && resource.data.recipientUid == request.auth.uid;
+  		allow delete: if false;
+}
+
+    // Resume Uploads: Only owner can create/read their uploads
+    match /resumeUploads/{docId} {
+      allow read, create: if request.auth != null && (
+        (request.method == 'get' && resource.data.uid == request.auth.uid) ||
+        (request.method == 'create' && request.resource.data.uid == request.auth.uid)
+      );
+      allow update, delete: if false;
+    }
+
+    // Insights Feed: Read for all signed-in users, no public write
+    match /insightsFeed/{docId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if false;
+    }
+
+    // Fallback: Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

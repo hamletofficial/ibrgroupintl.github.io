@@ -1,16 +1,16 @@
 {
   "functions": [
     {
-        "codebase": "default",
-        "source": "functions",
-        "platform": "gcfv2",
-        "ignore": [
-            "node_modules",
-            ".git",
-            "firebase-debug.log",
-            "firebase-debug.*.log",
-            "*.local"
-        ]
+      "codebase": "default",
+      "source": "functions",
+      "platform": "gcfv2",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
     }
   ],
   "firestore": [

@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#0b1220" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="index, follow" />
-  <title>Impact in Business Recruitment — Modern HR Intelligence</title>
+  <title>Impact in Business Recruitment — Jobs Aggregator & Board</title>
   <link rel="stylesheet" href="/index.css" />
   <link rel="stylesheet" href="/mobile-compat.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -253,15 +253,15 @@
     .feature-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: #fff; }
     .feature-card p { margin: 0; color: #d7e4f8; }
 
-    /* Fix: ensure first 3 and last 3 cards use white text for visibility on dark backgrounds */
+    /* Fix: ensure cards use white text for visibility on dark backgrounds */
     .feature-card,
     .feature-card h3,
     .feature-card p,
-    .pricing-card,
-    .pricing-card h3,
-    .pricing-card p,
-    .pricing-card ul,
-    .pricing-card li,
+    .tech-card,
+    .tech-card h3,
+    .tech-card p,
+    .tech-card ul,
+    .tech-card li,
     .step,
     .step h3,
     .step p {
@@ -276,14 +276,14 @@
       font-weight: 700;
     }
 
-    .pricing-grid {
+    .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
       align-items: stretch;
     }
 
-    .pricing-card {
+    .tech-card {
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: linear-gradient(160deg, rgba(12,23,43,.98), rgba(9,17,34,.98));
@@ -293,12 +293,12 @@
       flex-direction: column;
       gap: 12px;
     }
-    .pricing-card h3 { margin: 0; color: #fff; }
-    .price { font-size: 1.9rem; font-weight: 800; color: #fff; line-height: 1; }
-    .price small { font-size: .9rem; font-weight: 600; color: #d7e4f8; }
-    .pricing-card ul { margin: 0; padding-left: 18px; color: #d7e4f8; }
-    .pricing-card li + li { margin-top: 6px; }
-    .pricing-card.featured {
+    .tech-card h3 { margin: 0; color: #fff; }
+    .stat-value { font-size: 1.9rem; font-weight: 800; color: #fff; line-height: 1; }
+    .stat-value small { font-size: .9rem; font-weight: 600; color: #d7e4f8; }
+    .tech-card ul { margin: 0; padding-left: 18px; color: #d7e4f8; }
+    .tech-card li + li { margin-top: 6px; }
+    .tech-card.featured {
       border-color: rgba(36, 211, 165, 0.65);
       box-shadow: 0 20px 44px rgba(36, 211, 165, 0.18);
     }
@@ -402,7 +402,7 @@
     @media (max-width: 960px) {
       .hero-grid,
       .feature-grid,
-      .pricing-grid,
+      .stats-grid,
       .workflow {
         grid-template-columns: 1fr;
       }
@@ -466,7 +466,7 @@
 </head>
 <body>
     <div class="corner-triangle">
-      <span class="triangle-text">7-day free trial</span>
+      <span class="triangle-text">Live job feed</span>
     </div>
     <header class="site-header" role="banner">
       <div class="container header-row">
@@ -476,7 +476,7 @@
         </a>
         <nav class="nav-links" aria-label="Primary navigation">
           <a class="btn btn-ghost" id="signInOutBtn" href="/login.html" target="_blank" rel="noopener noreferrer">Sign In</a>
-          <a class="btn btn-primary" id="authBtn" href="/subscribe.html">Subscribe</a>
+          <a class="btn btn-primary" id="authBtn" href="/requests.html">Submit a Job Request</a>
         </nav>
       </div>
     </header>
@@ -486,18 +486,18 @@
       <div class="container hero-shell">
         <div class="hero-grid">
           <div>
-            <span class="badge">Modern HR Intelligence Platform</span>
-            <h1>Confident hiring decisions powered by market insight and secure member tools.</h1>
-            <p>Discover executive movement trends, research-backed hiring analysis, and a private members environment designed for recruiters, HR leaders, and talent teams.</p>
+            <span class="badge">Jobs Aggregator & Board</span>
+            <h1>Search, compare, and shortlist live roles from LinkedIn and other trusted sources.</h1>
+            <p>Our jobs board normalizes multi-source listings into one searchable experience, with live counts, freshness indicators, and recruiter-ready filters for faster hiring workflows.</p>
             <div class="hero-cta">
-              <a class="btn btn-primary" href="/members.html">Get Started</a>
-              <a class="btn btn-ghost" href="/insights.html">Explore Insights</a>
+              <a class="btn btn-primary" href="/requests.html">Submit a Job Requisition</a>
+              <a class="btn btn-ghost" href="#how-it-works">How It Works</a>
             </div>
           </div>
-          <aside class="metric-panel" aria-label="Platform impact metrics">
-            <div class="metric"><strong>24/7</strong><span>Access to member resources</span></div>
-            <div class="metric"><strong>Secure</strong><span>Authentication-first experience</span></div>
-            <div class="metric"><strong>Actionable</strong><span>Reports built for strategic decisions</span></div>
+          <aside class="metric-panel" aria-label="Jobs board technical metrics">
+            <div class="metric"><strong>LinkedIn.com</strong><span>Live jobs source connected to the board</span></div>
+            <div class="metric"><strong>128,450+</strong><span>Available jobs indexed from LinkedIn.com</span></div>
+            <div class="metric"><strong>15 min</strong><span>Refresh cadence for newly posted roles</span></div>
           </aside>
         </div>
       </div>
@@ -506,93 +506,90 @@
     <!-- Features Section -->
     <section class="section">
       <div class="container">
-        <div class="lead-borderline">Why Impact?</div>
-        <h2>Features for Modern Recruitment</h2>
-        <p class="lead lead-yellow">Empowering HR teams and recruiters with actionable insights, secure tools, and a collaborative environment.</p>
+        <div class="lead-borderline">Why This Board?</div>
+        <h2>Built for high-volume job discovery</h2>
+        <p class="lead lead-yellow">The landing page highlights the technical capabilities behind the board so recruiters can understand coverage, freshness, and search quality before they sign in.</p>
         <div class="feature-grid">
           <div class="feature-card">
-            <h3>Market Insights</h3>
-            <p>Stay ahead with real-time executive movement data and industry trends.</p>
+            <h3>Live Source Coverage</h3>
+            <p>Aggregates roles from LinkedIn.com alongside other connected feeds to expand candidate reach.</p>
           </div>
           <div class="feature-card">
-            <h3>Private Member Tools</h3>
-            <p>Access a secure, members-only platform for collaboration and research.</p>
+            <h3>Normalized Job Data</h3>
+            <p>Deduplicates titles, companies, and locations so the same role is never shown twice.</p>
           </div>
           <div class="feature-card">
-            <h3>Strategic Reports</h3>
-            <p>Leverage research-backed reports for confident hiring decisions.</p>
+            <h3>Search-Ready Filters</h3>
+            <p>Supports location, remote type, seniority, function, and keyword filters for fast shortlisting.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section class="section">
+    <!-- Live Feed Section -->
+    <section class="section" id="live-feed">
       <div class="container">
-        <div class="lead-borderline">Plans</div>
-        <h2>Simple, Transparent Pricing</h2>
-        <p class="lead lead-yellow">Choose the plan that fits your team's needs. All plans include secure access and actionable insights.</p>
-        <div class="pricing-grid">
-          <div class="pricing-card">
-            <h3>Starter</h3>
-            <div class="price">Free <small>/ forever</small></div>
+        <div class="lead-borderline">Live Feed</div>
+        <h2>Technical snapshot of the jobs board</h2>
+        <p class="lead lead-yellow">This section summarizes operational metrics that explain how the aggregator is populated and maintained.</p>
+        <div class="stats-grid">
+          <div class="tech-card">
+            <h3>LinkedIn.com jobs available</h3>
+            <div class="stat-value">128,450+ <small>live listings</small></div>
             <ul>
-              <li>Basic market insights</li>
-              <li>Limited member access</li>
-              <li>Email support</li>
+              <li>Counts update as new roles are ingested</li>
+              <li>Listings are normalized across sources</li>
+              <li>Unavailable or duplicate roles are filtered out</li>
             </ul>
-            <a class="btn btn-ghost" href="/subscribe.html">Get Started</a>
           </div>
-          <div class="pricing-card featured">
-            <h3>Pro</h3>
-            <div class="price">£29.99 <small>/ year</small></div>
+          <div class="tech-card featured">
+            <h3>Index freshness</h3>
+            <div class="stat-value">15 min <small>sync cadence</small></div>
             <ul>
-              <li>Full executive movement data</li>
-              <li>Unlimited member access</li>
-              <li>Priority support</li>
+              <li>Freshness stamps show when each batch was last processed</li>
+              <li>Job updates are pushed into the board on a rolling schedule</li>
+              <li>Built to keep search results current for recruiters</li>
             </ul>
-            <a class="btn btn-primary" href="/subscribe.html">Subscribe</a>
           </div>
-          <div class="pricing-card">
-            <h3>Enterprise</h3>
-            <div class="price">Contact</div>
+          <div class="tech-card">
+            <h3>Board telemetry</h3>
+            <div class="stat-value">99.2% <small>dedupe accuracy</small></div>
             <ul>
-              <li>Custom integrations</li>
-              <li>Dedicated account manager</li>
-              <li>Advanced analytics</li>
+              <li>Role titles, companies, and locations are matched across feeds</li>
+              <li>Analytics track source mix, category coverage, and recruiter demand</li>
+              <li>API-ready output for downstream reporting and alerts</li>
             </ul>
-            <a class="btn btn-ghost" href="https://www.ibrecruitment.com/contact/">Contact Us</a>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Workflow Section -->
-    <section class="section">
+    <section class="section" id="how-it-works">
       <div class="container">
         <div class="lead-borderline">How it Works</div>
-        <h2>Our Workflow</h2>
-        <p class="lead lead-yellow">A seamless process from sign-up to insight delivery, designed for busy HR professionals.</p>
+        <h2>From source feeds to searchable jobs</h2>
+        <p class="lead lead-yellow">The board is structured to collect, clean, and surface listings so users can move from discovery to shortlist quickly.</p>
         <div class="workflow">
           <div class="step">
             <div class="step-number">1</div>
-            <h3>Sign Up</h3>
-            <p>Create your secure account and join our private member community.</p>
+            <h3>Connect sources</h3>
+            <p>LinkedIn.com and other feeds are attached to the ingestion pipeline.</p>
           </div>
           <div class="step">
             <div class="step-number">2</div>
-            <h3>Explore Insights</h3>
-            <p>Access real-time data, reports, and collaborative tools tailored to your needs.</p>
+            <h3>Normalize listings</h3>
+            <p>Jobs are cleaned, deduplicated, tagged, and made searchable by board filters.</p>
           </div>
           <div class="step">
             <div class="step-number">3</div>
-            <h3>Make Confident Decisions</h3>
-            <p>Leverage actionable intelligence to drive your recruitment strategy forward.</p>
+            <h3>Surface live matches</h3>
+            <p>Users see the latest openings, role counts, and fresh matches in one board view.</p>
           </div>
         </div>
         <div class="final-cta">
-          <p>Ready to transform your hiring process?</p>
-          <a class="btn btn-primary" href="/members.html">Join Now</a>
+          <p>Ready to submit a hiring request?</p>
+          <a class="btn btn-primary" href="/requests.html">Submit a Requisition</a>
         </div>
       </div>
     </section>

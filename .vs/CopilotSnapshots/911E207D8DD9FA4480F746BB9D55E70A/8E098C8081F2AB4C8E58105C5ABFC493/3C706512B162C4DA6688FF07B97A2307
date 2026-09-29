@@ -1,0 +1,685 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="index, follow" />
+  <title>Impact in Business Recruitment — Modern HR Intelligence</title>
+  <link rel="stylesheet" href="/index.css" />
+  <link rel="stylesheet" href="/mobile-compat.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet" />
+  <!-- Firebase SDKs and config -->
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="/firebase-config.js"></script>
+  <style>
+    :root {
+      --bg: #060b17;
+      --bg-soft: #0e172a;
+      --card: #0f1c33;
+      --muted: #b7c6dc;
+      --text: #f2f7ff;
+      --line: #2b3f62;
+      --brand: #2f7bff;
+      --brand-2: #00b7ff;
+      --accent: #24d3a5;
+      --warning: #ffc857;
+      --radius: 16px;
+      --shadow: 0 18px 40px rgba(2, 8, 23, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+    body {
+      min-height: 100vh;
+      font-family: 'Open Sans', Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 700px at 85% -15%, rgba(47,123,255,.35), transparent 55%),
+                  radial-gradient(900px 520px at -5% 18%, rgba(0,183,255,.2), transparent 55%),
+                  var(--bg);
+      line-height: 1.55;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 2rem));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background: rgba(6, 11, 23, 0.72);
+      border-bottom: 1px solid rgba(159, 176, 202, 0.16);
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 74px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid rgba(159, 176, 202, 0.35);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 10px;
+      padding: 10px 14px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-ghost {
+      color: var(--text);
+      border-color: rgba(159, 176, 202, 0.35);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 10px 24px rgba(47, 123, 255, 0.32);
+    }
+
+    .hero {
+      padding: 68px 0 36px;
+    }
+
+    .hero-shell {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(47,123,255,.12), rgba(15,28,51,.78));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 28px;
+      padding: 34px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: #cff8ff;
+      background: rgba(0,183,255,.15);
+      border: 1px solid rgba(0,183,255,.42);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+
+    h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(1.8rem, 4.2vw, 3rem);
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #d7e4f8;
+      max-width: 62ch;
+    }
+
+    .hero-cta {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .metric-panel {
+      border: 1px solid rgba(159,176,202,.25);
+      border-radius: 16px;
+      background: rgba(6, 11, 23, 0.55);
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .metric {
+      border: 1px solid rgba(159,176,202,.2);
+      background: rgba(9, 18, 35, 0.95);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    .metric strong { font-size: 1.18rem; color: #fff; display: block; }
+    .metric span { color: #d7e4f8; font-size: .9rem; }
+
+    .section {
+      padding: 36px 0;
+    }
+
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.35rem, 2.5vw, 2rem);
+      color: #ffffff;
+    }
+    .section .lead { color: #d7e4f8; margin: 0 0 18px; }
+    .lead-yellow, .section .lead-yellow {
+      color: #ffc857 !important;
+    }
+
+    .lead-borderline {
+      display: inline-block;
+      position: relative;
+      top: -16px;
+      margin: 0 auto 4px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(159, 176, 202, 0.38);
+      background: rgba(8, 16, 30, 0.92);
+      color: #dce8fa;
+      box-shadow: 0 0 0 1px rgba(43, 63, 98, 0.55);
+    }
+
+    .heading-dark-chip {
+      display: inline-block;
+      color: #0f2445;
+      background: rgba(229, 238, 255, 0.96);
+      border: 1px solid rgba(16, 35, 63, 0.18);
+      border-radius: 10px;
+      padding: 8px 12px;
+    }
+
+    .lead-dark-chip {
+      display: inline-block;
+      color: #1b345a;
+      background: rgba(229, 238, 255, 0.92);
+      border: 1px solid rgba(16, 35, 63, 0.14);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-top: 10px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .feature-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(12,23,43,.98), rgba(9,17,34,.98));
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .feature-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: #fff; }
+    .feature-card p { margin: 0; color: #d7e4f8; }
+
+    /* Fix: ensure first 3 and last 3 cards use white text for visibility on dark backgrounds */
+    .feature-card,
+    .feature-card h3,
+    .feature-card p,
+    .pricing-card,
+    .pricing-card h3,
+    .pricing-card p,
+    .pricing-card ul,
+    .pricing-card li,
+    .step,
+    .step h3,
+    .step p {
+      color: #ffffff !important;
+    }
+
+    .feature-card .cta-link {
+      margin-top: 14px;
+      display: inline-flex;
+      color: #d6f4ff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(12,23,43,.98), rgba(9,17,34,.98));
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .pricing-card h3 { margin: 0; color: #fff; }
+    .price { font-size: 1.9rem; font-weight: 800; color: #fff; line-height: 1; }
+    .price small { font-size: .9rem; font-weight: 600; color: #d7e4f8; }
+    .pricing-card ul { margin: 0; padding-left: 18px; color: #d7e4f8; }
+    .pricing-card li + li { margin-top: 6px; }
+    .pricing-card.featured {
+      border-color: rgba(36, 211, 165, 0.65);
+      box-shadow: 0 20px 44px rgba(36, 211, 165, 0.18);
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(9, 18, 35, 0.95);
+      padding: 16px;
+    }
+    .step h3 { margin: 0 0 8px; color: #fff; }
+    .step p { margin: 0; color: #d7e4f8; }
+
+    .step-number {
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--brand-2));
+      color: #05202a;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .final-cta {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px;
+      text-align: center;
+      background: linear-gradient(145deg, rgba(36,211,165,.18), rgba(11,20,36,.94));
+    }
+
+    .final-cta p { color: #d7e4f8; margin: 0 0 14px; }
+
+    .site-footer {
+      margin-top: 24px;
+      border-top: 1px solid rgba(159,176,202,.16);
+      padding: 22px 0 28px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .footer-social {
+      margin-bottom: 8px;
+    }
+
+    .footer-links a { color: var(--muted); text-decoration: none; }
+
+    .cookie-bar {
+      margin: 0 auto 12px;
+      max-width: 1120px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(11, 20, 36, .92);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+
+    .cookie-actions {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-small {
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: .9rem;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255,255,255,.04);
+    }
+    .btn-small.accept {
+      border: none;
+      color: #021a2a;
+      background: linear-gradient(135deg, var(--warning), #ffda7a);
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .feature-grid,
+      .pricing-grid,
+      .workflow {
+        grid-template-columns: 1fr;
+      }
+      .hero-grid { padding: 22px; }
+      .header-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+      }
+      .brand {
+        margin-bottom: 0;
+      }
+      .nav-links {
+        padding-right: 90px; /* Move buttons inward to clear the ribbon */
+      }
+      .footer-links { gap: 8px; margin-bottom: 8px; }
+      .footer-social { margin-bottom: 4px; }
+    }
+
+    /* Corner Triangle Ribbon */
+    .corner-triangle {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      z-index: 200;
+      border-top: 160px solid #ffc857;
+      border-left: 160px solid transparent;
+      pointer-events: none;
+    }
+    .corner-triangle .triangle-text {
+      position: fixed;
+      top: 45px;
+      right: -30px;
+      width: 180px;
+      color: #0b1220;
+      font-weight: 800;
+      font-size: 1.08rem;
+      text-align: center;
+      transform: rotate(45deg);
+      letter-spacing: 0.04em;
+      z-index: 201;
+      pointer-events: auto;
+      user-select: none;
+      background: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+    }
+
+    @media (max-width: 900px) {
+      #signInOutBtn,
+      #authBtn {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+    <div class="corner-triangle">
+      <span class="triangle-text">7-day free trial</span>
+    </div>
+    <header class="site-header" role="banner">
+      <div class="container header-row">
+        <a class="brand" href="/index.html" aria-label="home">
+          <img src="/160.jpg" alt="Impact logo" />
+          <span>Premium</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a class="btn btn-ghost" id="signInOutBtn" href="/login.html" target="_blank" rel="noopener noreferrer">Sign In</a>
+          <a class="btn btn-primary" id="authBtn" href="/subscribe.html">Subscribe</a>
+        </nav>
+      </div>
+    </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-shell">
+        <div class="hero-grid">
+          <div>
+            <span class="badge">Modern HR Intelligence Platform</span>
+            <h1>Confident hiring decisions powered by market insight and secure member tools.</h1>
+            <p>Discover executive movement trends, research-backed hiring analysis, and a private members environment designed for recruiters, HR leaders, and talent teams.</p>
+            <div class="hero-cta">
+              <a class="btn btn-primary" href="/members.html">Get Started</a>
+              <a class="btn btn-ghost" href="/insights.html">Explore Insights</a>
+            </div>
+          </div>
+          <aside class="metric-panel" aria-label="Platform impact metrics">
+            <div class="metric"><strong>24/7</strong><span>Access to member resources</span></div>
+            <div class="metric"><strong>Secure</strong><span>Authentication-first experience</span></div>
+            <div class="metric"><strong>Actionable</strong><span>Reports built for strategic decisions</span></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section">
+      <div class="container">
+        <div class="lead-borderline">Why Impact?</div>
+        <h2>Features for Modern Recruitment</h2>
+        <p class="lead lead-yellow">Empowering HR teams and recruiters with actionable insights, secure tools, and a collaborative environment.</p>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>Market Insights</h3>
+            <p>Stay ahead with real-time executive movement data and industry trends.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Private Member Tools</h3>
+            <p>Access a secure, members-only platform for collaboration and research.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Strategic Reports</h3>
+            <p>Leverage research-backed reports for confident hiring decisions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="section">
+      <div class="container">
+        <div class="lead-borderline">Plans</div>
+        <h2>Simple, Transparent Pricing</h2>
+        <p class="lead lead-yellow">Choose the plan that fits your team's needs. All plans include secure access and actionable insights.</p>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>Starter</h3>
+            <div class="price">Free <small>/ forever</small></div>
+            <ul>
+              <li>Basic market insights</li>
+              <li>Limited member access</li>
+              <li>Email support</li>
+            </ul>
+            <a class="btn btn-ghost" href="/subscribe.html">Get Started</a>
+          </div>
+          <div class="pricing-card featured">
+            <h3>Pro</h3>
+            <div class="price">£29.99 <small>/ year</small></div>
+            <ul>
+              <li>Full executive movement data</li>
+              <li>Unlimited member access</li>
+              <li>Priority support</li>
+            </ul>
+            <a class="btn btn-primary" href="/subscribe.html">Subscribe</a>
+          </div>
+          <div class="pricing-card">
+            <h3>Enterprise</h3>
+            <div class="price">Contact</div>
+            <ul>
+              <li>Custom integrations</li>
+              <li>Dedicated account manager</li>
+              <li>Advanced analytics</li>
+            </ul>
+            <a class="btn btn-ghost" href="https://www.ibrecruitment.com/contact/">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section class="section">
+      <div class="container">
+        <div class="lead-borderline">How it Works</div>
+        <h2>Our Workflow</h2>
+        <p class="lead lead-yellow">A seamless process from sign-up to insight delivery, designed for busy HR professionals.</p>
+        <div class="workflow">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Sign Up</h3>
+            <p>Create your secure account and join our private member community.</p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Explore Insights</h3>
+            <p>Access real-time data, reports, and collaborative tools tailored to your needs.</p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Make Confident Decisions</h3>
+            <p>Leverage actionable intelligence to drive your recruitment strategy forward.</p>
+          </div>
+        </div>
+        <div class="final-cta">
+          <p>Ready to transform your hiring process?</p>
+          <a class="btn btn-primary" href="/members.html">Join Now</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div id="cookieConsentBar" class="cookie-bar">
+        <div>
+          This website uses cookies to improve your experience.
+          <a href="/cookies.html" style="color:#cde9ff">Cookie Policy</a>
+          <span aria-hidden="true">|</span>
+          <a href="/privacy.html" style="color:#cde9ff">Privacy Policy</a>
+        </div>
+        <div class="cookie-actions">
+          <button id="cookieDeclineBtn" class="btn-small" type="button">Decline</button>
+          <button id="cookieAcceptBtn" class="btn-small accept" type="button">Accept</button>
+        </div>
+      </div>
+
+      <div class="footer-links footer-social">
+        <a href="https://www.linkedin.com/company/ibrgroupintl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn" style="display:inline-flex;align-items:center;justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.25 3.9 3.25 5s.89 2 2 2 2-.9 2-2-.9-2-2-2zM20.75 13.38C20.75 10.2 19.07 8.25 16.28 8.25c-1.5 0-2.18.83-2.55 1.41V8.5h-3.38V20h3.38v-6.37c0-1.68.32-3.31 2.4-3.31 2.06 0 2.09 1.93 2.09 3.42V20h3.38v-6.62z"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="footer-links">
+        <a href="/terms.html">Terms</a>
+        <span aria-hidden="true">|</span>
+        <a href="/privacy.html">Privacy</a>
+        <span aria-hidden="true">|</span>
+        <a href="/cookies.html">Cookies</a>
+      </div>
+      <p style="margin:0; text-align:center; color:#FFF">© 2026 Impact in Business Recruitment. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var cookieName = 'ibr_cookie_consent_v1';
+      function setCookie(name, value, days) {
+        var d = new Date();
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+      }
+      function getCookie(name) {
+        var v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+        return v ? decodeURIComponent(v.pop()) : null;
+      }
+      var bar = document.getElementById('cookieConsentBar');
+      if (!bar) return;
+      if (getCookie(cookieName)) {
+        bar.style.display = 'none';
+        return;
+      }
+      var accept = document.getElementById('cookieAcceptBtn');
+      var decline = document.getElementById('cookieDeclineBtn');
+      if (accept) accept.addEventListener('click', function () { setCookie(cookieName, 'accepted', 365); bar.style.display = 'none'; });
+      if (decline) decline.addEventListener('click', function () { setCookie(cookieName, 'declined', 365); bar.style.display = 'none'; });
+    })();
+  </script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      if (!window.firebase || !window.firebaseConfig) return;
+      try { firebase.initializeApp(window.firebaseConfig); } catch (e) {}
+      const auth = firebase.auth();
+      const signInOutBtn = document.getElementById('signInOutBtn');
+      auth.onAuthStateChanged(function(user) {
+        if (user) {
+          signInOutBtn.textContent = 'Sign Out';
+          signInOutBtn.href = '#';
+          signInOutBtn.removeAttribute('target');
+          signInOutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.signOut().then(function() {
+              window.location.reload();
+            });
+          }, { once: true });
+        } else {
+          signInOutBtn.textContent = 'Sign In';
+          signInOutBtn.href = '/login.html';
+          signInOutBtn.setAttribute('target', '_blank');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

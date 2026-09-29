@@ -45,16 +45,17 @@
 	  margin: 2rem auto 3rem;
 	}
 
+	/* Sidebar menu (shared across member pages) */
 	.sidebar-menu-shell {
 	  display: none;
 	  position: fixed;
 	  top: 88px;
 	  left: 24px;
-	  width: 240px;
-	  background: #fff;
-	  border: 1px solid var(--border);
+	  width: 220px;
+	  background: #ffffff;
+	  border: 1px solid #dbe3ee;
 	  border-radius: 12px;
-	  box-shadow: 0 10px 24px rgba(2, 6, 23, .12);
+	  box-shadow: 0 10px 24px rgba(2, 6, 23, 0.12);
 	  padding: 10px 0;
 	  z-index: 950;
 	}
@@ -66,16 +67,16 @@
 	  border-radius: 8px;
 	  color: #092a4b;
 	  text-decoration: none;
-	  font-size: .95rem;
+	  font-size: 0.95rem;
 	  font-weight: 600;
-	  transition: background-color .2s ease, color .2s ease, transform .2s ease;
+	  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 	}
 
 	.sidebar-menu-link:hover,
 	.sidebar-menu-link:focus,
 	.sidebar-menu-link.active {
 	  background: #092a4b;
-	  color: #fff;
+	  color: #ffffff;
 	  transform: translateX(3px);
 	}
 
@@ -83,11 +84,11 @@
 	  display: inline-block;
 	  width: 1.25em;
 	  min-width: 1.25em;
-	  margin-right: .65em;
 	  text-align: center;
+	  margin-right: 0.65em;
 	  font-size: 1.15em;
 	  vertical-align: middle;
-	  opacity: .88;
+	  opacity: 0.88;
 	}
 
 	body.has-sidebar #requestShell { margin-left: 260px; }
@@ -105,7 +106,7 @@
 	  .sidebar-menu-shell {
 		position: static;
 		width: 100%;
-		max-width: 1040px;
+		max-width: 900px;
 		margin: 12px auto;
 	  }
 	  body.has-sidebar #requestShell { margin-left: auto; }
@@ -257,13 +258,18 @@
 	  <a class="sidebar-menu-link" href="/directory.html"><span class="sidebar-menu-icon" aria-hidden="true">📇</span> Member Directory</a>
 	</nav>
 	<script>
+	  // Show/hide sidebar menu based on authentication
 	  function updateSidebarVisibility() {
 		var sidebar = document.getElementById('topNavMenu');
-		sidebar.style.display = document.body.classList.contains('has-sidebar') ? 'block' : 'none';
+		if (document.body.classList.contains('has-sidebar')) {
+		  sidebar.style.display = 'block';
+		} else {
+		  sidebar.style.display = 'none';
+		}
 	  }
 	  document.addEventListener('DOMContentLoaded', updateSidebarVisibility);
-	  var sidebarObserver = new MutationObserver(updateSidebarVisibility);
-	  sidebarObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+	  var observer = new MutationObserver(updateSidebarVisibility);
+	  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 	</script>
 
 	<section id="loginSection" class="auth-card">
@@ -384,7 +390,6 @@
 	  try { firebase.initializeApp(window.firebaseConfig); } catch (error) {}
 
 	  var auth = firebase.auth();
-	  var functions = firebase.functions();
 	  var loginSection = document.getElementById('loginSection');
 	  var requestShell = document.getElementById('requestShell');
 	  var signInLink = document.getElementById('signInLink');
@@ -419,6 +424,7 @@
 	  }
 
 	  auth.onAuthStateChanged(function (user) {
+		document.body.classList.remove('auth-pending');
 		if (user) {
 		  document.body.classList.add('has-sidebar');
 		  loginSection.style.display = 'none';
@@ -445,7 +451,7 @@
 		setStatus('Sending your requisition…', '');
 
 		try {
-		  var submitRequest = functions.httpsCallable('submitJobRequisition');
+		  var submitRequest = firebase.functions().httpsCallable('submitJobRequisition');
 		  await submitRequest(getFormData());
 		  form.reset();
 		  setStatus('Requisition submitted. The recruitment team has been notified.', 'success');

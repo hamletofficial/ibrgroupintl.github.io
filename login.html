@@ -16,6 +16,7 @@
   </script>
   <link rel="stylesheet" href="/index.css">
   <link rel="stylesheet" href="/mobile-compat.css">
+  <link rel="stylesheet" href="/login-mobile.css">
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
@@ -46,15 +47,15 @@
       padding-right: clamp(0.75rem, 4vw, 1.5rem);
     }
     .login-main{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;padding:clamp(20px,5vh,40px) 16px;width:100%;max-width:100%;overflow-x:clip}
-    .card{box-sizing:border-box;width:100%;max-width:min(420px,100%);background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));border-radius:14px;padding:30px;box-shadow:0 24px 48px rgba(2,6,23,0.18);border:1px solid rgba(148,163,184,0.3)}
+    .card{box-sizing:border-box;width:100%;max-width:min(420px,100%);background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));border-radius:14px;padding:30px;box-shadow:0 24px 48px rgba(2,6,23,0.18);border:1px solid rgba(148,163,184,0.3);overflow:hidden}
     h1{font-size:1.35rem;margin:0 0 8px;color:var(--text);letter-spacing:0.01em}
     .login-security-chip{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;margin:0 auto 14px;width:fit-content;max-width:100%;border-radius:999px;background:rgba(2,132,199,0.09);color:#0f3d63;border:1px solid rgba(2,132,199,0.22);font-size:0.82rem;font-weight:700}
     .login-lock-icon{font-size:0.92rem;line-height:1}
     #signin-title { text-align: center; }
     .lead { text-align: center; }
     p.lead{color:var(--rc-text-dim, var(--muted));margin:0 0 20px}
-    .actions{display:flex;flex-direction:column;gap:12px;margin-top:4px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:10px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600;min-height:48px;transition:transform 0.2s ease,box-shadow 0.2s ease,background-color 0.2s ease}
+    .actions{display:flex;flex-direction:column;gap:12px;margin-top:4px;width:100%;max-width:100%}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:10px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600;min-height:48px;transition:box-shadow 0.2s ease,background-color 0.2s ease,border-color 0.2s ease}
     .btn-primary{background:var(--accent);color:#fff}
     .btn-outline{background:transparent;border:1px solid var(--rc-border, var(--border));color:var(--rc-text-dim, var(--muted))}
     .btn-outline:hover{border-color:#0284c7;color:#0f3d63;background:rgba(2,132,199,0.06)}
@@ -188,7 +189,7 @@
       .card{padding:20px}
       h1{font-size:1.05rem}
       .btn{padding:10px;border-radius:10px}
-      .actions > .btn,.actions > .google-btn{width:100%}
+      .actions > .btn,.actions > .google-btn,.portal-return-btn{width:100%;max-width:100%;min-width:0}
       .actions{gap:10px}
       .note{font-size:0.82rem}
       .login-security-chip{font-size:0.76rem;padding:7px 10px}
@@ -235,7 +236,7 @@
         </span>
         <span class="google-btn-text">Sign in with Google</span>
       </button>
-      <a class="btn btn-outline" href="/index.html">Return to User Portal</a>
+      <a class="btn btn-outline portal-return-btn" href="/index.html">Return to User Portal</a>
     </div>
     <ul class="trust-points" aria-label="Security highlights">
       <li>Encrypted authentication session</li>

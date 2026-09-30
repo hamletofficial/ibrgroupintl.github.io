@@ -4,6 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Secure Login</title>
+  <script>
+    (function () {
+      var cookiePrefix = 'ibr_cookie_consent_v1=';
+      var hasConsent = document.cookie.split(';').some(function (cookie) {
+        cookie = cookie.trim();
+        return cookie.indexOf(cookiePrefix) === 0 && cookie.length > cookiePrefix.length;
+      });
+      if (hasConsent) document.documentElement.classList.add('has-cookie-consent');
+    })();
+  </script>
   <link rel="stylesheet" href="/index.css">
   <link rel="stylesheet" href="/mobile-compat.css">
   <!-- Firebase client SDKs -->
@@ -14,6 +24,7 @@
   <script defer src="/mobile-compat.js"></script>
   <style>
     /* Minimal, neutral login card styling */
+    html.has-cookie-consent #cookieConsentBar{display:none!important}
     /* Use column layout so footer sits below content; center main area vertically */
     body{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;margin:0;background:radial-gradient(1200px 600px at 50% -150px, rgba(2,132,199,0.14), transparent 55%),var(--rc-bg, var(--site-bg));position:relative;color:var(--text)}
     .login-main{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;padding:clamp(20px,5vh,40px) 16px}
@@ -343,31 +354,6 @@
 
 
   <script src="/index.js" defer></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', function() {
-      var cookieName = 'ibr_cookie_consent_v1';
-      function setCookie(name, value, days) {
-        var d = new Date();
-        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-        document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
-      }
-      function getCookie(name) {
-        var v = document.cookie.match('(^|;)\s*' + name + '\s*=\s*([^;]+)');
-        return v ? decodeURIComponent(v.pop()) : null;
-      }
-      var bar = document.getElementById('cookieConsentBar');
-      if (!bar) return;
-      if (getCookie(cookieName)) {
-        bar.style.display = 'none';
-        return;
-      }
-      var accept = document.getElementById('cookieAcceptBtn');
-      var decline = document.getElementById('cookieDeclineBtn');
-      if (accept) accept.addEventListener('click', function() { setCookie(cookieName, 'accepted', 365); bar.style.display = 'none'; });
-      if (decline) decline.addEventListener('click', function() { setCookie(cookieName, 'declined', 365); bar.style.display = 'none'; });
-    });
-  </script>
-
   <!-- Inline cookie consent UI placed in footer for login page -->
   <footer class="resource-footer" role="contentinfo">
     <div class="container" style="text-align:center">
@@ -378,6 +364,44 @@
           <button id="cookieAcceptBtn" type="button" style="background:var(--accent);border:none;color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer;">Accept</button>
         </div>
       </div>
+      <script>
+        (function () {
+          var cookieName = 'ibr_cookie_consent_v1';
+          function setCookie(name, value, days) {
+            var expires = new Date();
+            expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+            document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/;SameSite=Lax';
+          }
+          function getCookie(name) {
+            var prefix = name + '=';
+            var cookie = document.cookie.split(';').map(function (part) {
+              return part.trim();
+            }).find(function (part) {
+              return part.indexOf(prefix) === 0;
+            });
+            if (!cookie) return null;
+            try {
+              return decodeURIComponent(cookie.slice(prefix.length));
+            } catch (error) {
+              return cookie.slice(prefix.length);
+            }
+          }
+
+          var bar = document.getElementById('cookieConsentBar');
+          if (!bar || getCookie(cookieName)) {
+            if (bar) bar.style.display = 'none';
+            return;
+          }
+          var accept = document.getElementById('cookieAcceptBtn');
+          var decline = document.getElementById('cookieDeclineBtn');
+          function saveConsent(value) {
+            setCookie(cookieName, value, 365);
+            bar.style.display = 'none';
+          }
+          if (accept) accept.addEventListener('click', function () { saveConsent('accepted'); });
+          if (decline) decline.addEventListener('click', function () { saveConsent('declined'); });
+        })();
+      </script>
       <div style="margin:12px 0;display:flex;gap:16px;justify-content:center;align-items:center;">
         <a href="/terms.html" style="color:var(--muted);text-decoration:none;font-size:0.9rem;">Terms of Service</a>
         <span style="color:var(--muted)">|</span>

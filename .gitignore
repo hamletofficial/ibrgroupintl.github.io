@@ -1,5 +1,6 @@
 .vs/ibrgroupintl.github.io.slnx/v18/.wsuo
 *.vsidx
+.vs
 
 # Dependency directories
 node_modules/

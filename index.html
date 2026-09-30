@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="theme-color" content="#0b1220" />
+  <meta name="theme-color" content="#f4f7f2" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="index, follow" />
   <title>Impact in Business Recruitment — Jobs Aggregator & Board</title>
@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/mobile-compat.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
   <!-- Firebase SDKs and config -->
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
@@ -462,17 +462,177 @@
         display: none !important;
       }
     }
+
+    /* Fresh editorial theme: warm canvas, evergreen accents, and clear contrast.
+       Keep the existing responsive layout and component structure intact. */
+    :root {
+      --bg: #f4f7f2;
+      --bg-soft: #eaf1eb;
+      --card: #ffffff;
+      --muted: #53645f;
+      --text: #17342e;
+      --line: #d4e2da;
+      --brand: #146b59;
+      --brand-2: #43a18a;
+      --accent: #e9a544;
+      --warning: #efb64e;
+      --radius: 18px;
+      --shadow: 0 18px 42px rgba(25, 66, 53, 0.11);
+      --font-body: 'DM Sans', 'Segoe UI', Arial, sans-serif;
+    }
+
+    html { background: var(--bg); }
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background:
+        radial-gradient(950px 560px at 88% -10%, rgba(67, 161, 138, .17), transparent 60%),
+        radial-gradient(760px 460px at -8% 22%, rgba(233, 165, 68, .11), transparent 58%),
+        var(--bg);
+    }
+
+    h1, h2, h3 { font-family: var(--font-body); color: var(--text); }
+    h1, .section h2 { letter-spacing: -0.035em; }
+
+    .site-header {
+      background: rgba(244, 247, 242, .88);
+      border-bottom-color: rgba(37, 89, 71, .13);
+      backdrop-filter: blur(14px);
+    }
+    .brand img {
+      border-color: rgba(20, 107, 89, .22);
+      box-shadow: 0 5px 14px rgba(25, 66, 53, .12);
+    }
+    .btn { border-radius: 12px; }
+    .btn-ghost {
+      color: var(--text);
+      border-color: #c6d8ce;
+      background: rgba(255, 255, 255, .72);
+    }
+    .btn-ghost:hover {
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(25, 66, 53, .1);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 10px 22px rgba(20, 107, 89, .22);
+    }
+    .btn-primary:hover { box-shadow: 0 13px 27px rgba(20, 107, 89, .28); }
+
+    .hero-shell {
+      border-color: #d1e2d8;
+      background: linear-gradient(140deg, rgba(255, 255, 255, .98), rgba(232, 243, 236, .96));
+      box-shadow: 0 24px 60px rgba(25, 66, 53, .12);
+    }
+    .badge {
+      color: #155644;
+      background: #e1f1e8;
+      border-color: #b8dcc8;
+    }
+    .hero p { color: #4f625c; }
+    .metric-panel {
+      border-color: #d6e4dc;
+      background: rgba(255, 255, 255, .74);
+    }
+    .metric {
+      border-color: #e0eae4;
+      background: #fff;
+    }
+    .metric strong { color: #175b4c; }
+    .metric span { color: #5a6c65; }
+
+    .section h2 { color: var(--text); }
+    .section .lead,
+    .lead-yellow,
+    .section .lead-yellow { color: var(--muted) !important; }
+    .lead-borderline {
+      border-color: #d4e3da;
+      background: #e9f2ec;
+      color: #24614f;
+      box-shadow: none;
+      font-weight: 700;
+    }
+    .feature-card,
+    .tech-card,
+    .step {
+      border-color: #d8e4dd;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(25, 66, 53, .075);
+    }
+    .feature-card,
+    .feature-card h3,
+    .feature-card p,
+    .tech-card,
+    .tech-card h3,
+    .tech-card p,
+    .tech-card ul,
+    .tech-card li,
+    .step,
+    .step h3,
+    .step p {
+      color: var(--text) !important;
+    }
+    .feature-card h3, .tech-card h3, .step h3 { color: #175b4c !important; }
+    .tech-card.featured {
+      border-color: #8fc8ad;
+      box-shadow: 0 18px 36px rgba(34, 127, 94, .12);
+    }
+    .stat-value { color: #146b59; }
+    .stat-value small { color: #61736b; }
+    .step-number {
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    }
+    .final-cta {
+      border-color: #cfe1d6;
+      background: linear-gradient(140deg, #e7f3ec, #f9f5e9);
+    }
+    .final-cta p { color: #4f625c; }
+    .site-footer { border-top-color: #d9e4dd; }
+    .footer-links a { color: #53645f; }
+    .cookie-bar {
+      border-color: #d4e2da;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(25, 66, 53, .08);
+    }
+    #cookieConsentBar a { color: #146b59 !important; }
+    .site-footer > .container > p { color: var(--muted) !important; }
+    .btn-small {
+      color: var(--text);
+      border-color: #d2dfd7;
+      background: #f8faf8;
+      cursor: pointer;
+    }
+    .btn-small.accept {
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    }
+    .corner-triangle { border-top-color: var(--warning); }
+    .corner-triangle .triangle-text { color: #17342e; }
+
+    :where(a, button):focus-visible {
+      outline: 3px solid rgba(20, 107, 89, .55);
+      outline-offset: 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
     <div class="corner-triangle">
-      <span class="triangle-text">Live job feed</span>
+      <span class="triangle-text">Hiring requests</span>
     </div>
     <header class="site-header" role="banner">
       <div class="container header-row">
         <a class="brand" href="/index.html" aria-label="home">
           <img src="/160.jpg" alt="Impact logo" />
-          <span>Premium</span>
+          <span>Impact in Business Recruitment</span>
         </a>
         <nav class="nav-links" aria-label="Primary navigation">
           <a class="btn btn-ghost" id="signInOutBtn" href="/login.html" target="_blank" rel="noopener noreferrer">Sign In</a>

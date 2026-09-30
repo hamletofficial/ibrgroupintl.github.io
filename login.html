@@ -45,6 +45,55 @@
     #error{color:#b00020;font-size:0.92rem;display:none;margin:8px 0 12px;padding:10px 12px;background:rgba(176,0,32,0.08);border:1px solid rgba(176,0,32,0.2);border-radius:8px}
     /* Page-scoped container centering for login page only */
     .login-page .container{display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .login-page .cookie-bar {
+      margin: 0 auto 12px;
+      max-width: 1120px;
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 12px;
+      border: 1px solid #d4e2da;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(25, 66, 53, .08);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+    .login-page .cookie-bar > div:first-child {
+      flex: 1 1 280px;
+      color: var(--muted);
+      text-align: center;
+    }
+    .login-page .cookie-actions {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-page .cookie-bar a { color: #146b59 !important; }
+    .login-page .btn-small {
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: .9rem;
+      font-weight: 700;
+      border: 1px solid #d2dfd7;
+      color: var(--text);
+      background: #f8faf8;
+      cursor: pointer;
+    }
+    .login-page .btn-small.accept {
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, #0284c7, #0b2a6f);
+    }
+    @media (max-width: 720px) {
+      .login-page #cookieConsentBar { flex-direction: column; align-items: center; }
+      .login-page #cookieConsentBar button { width: auto; min-width: 120px; }
+    }
     /* Links block inside the card: horizontal and centered */
     .meta-links{display:flex;flex-direction:row;gap:12px;justify-content:center;align-items:center}
     .trust-points{margin:14px 0 2px;padding:0;list-style:none;display:grid;gap:7px}
@@ -357,11 +406,16 @@
   <!-- Inline cookie consent UI placed in footer for login page -->
   <footer class="resource-footer" role="contentinfo">
     <div class="container" style="text-align:center">
-      <div id="cookieConsentBar" style="width:100%;max-width:1200px;margin:0 auto 12px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px;border-radius:8px;background:rgba(2,6,23,0.06);">
-        <div style="flex:1;min-width:220px;color:var(--muted)">We use cookies to improve your experience. By using this site you agree to our use of cookies. <a href="/privacy.html" style="color:var(--text);text-decoration:underline;margin-left:8px">Learn more</a></div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <button id="cookieDeclineBtn" type="button" style="background:transparent;border:1px solid rgba(0,0,0,0.08);color:var(--text);padding:8px 12px;border-radius:8px;cursor:pointer;">Decline</button>
-          <button id="cookieAcceptBtn" type="button" style="background:var(--accent);border:none;color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer;">Accept</button>
+      <div id="cookieConsentBar" class="cookie-bar">
+        <div>
+          This website uses cookies to improve your experience.
+          <a href="/cookies.html">Cookie Policy</a>
+          <span aria-hidden="true">|</span>
+          <a href="/privacy.html">Privacy Policy</a>
+        </div>
+        <div class="cookie-actions">
+          <button id="cookieDeclineBtn" class="btn-small" type="button">Decline</button>
+          <button id="cookieAcceptBtn" class="btn-small accept" type="button">Accept</button>
         </div>
       </div>
       <script>

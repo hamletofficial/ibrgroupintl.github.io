@@ -1,14 +1,10 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const Parser = require('rss-parser');
-const postmark = require('postmark');
 const { defineSecret } = require('firebase-functions/params');
 
 admin.initializeApp();
 const postmarkToken = defineSecret('POSTMARK_BROADCAST_TOKEN');
 
-// Shared RSS parser and URL
-const parser = new Parser();
 const SUBSTACK_RSS_URL = 'https://substack.ibrecruitment.com/feed';
 
 // Cloud Function: Fetch RSS feed and store entries in Firestore
@@ -20,6 +16,8 @@ exports.fetchAndStoreRssToInsightsFeed = functions
     memory: '256MB',
   })
   .pubsub.schedule('every 15 minutes').onRun(async (context) => {
+    const Parser = require('rss-parser');
+    const parser = new Parser();
     const feed = await parser.parseURL(SUBSTACK_RSS_URL);
     const db = admin.firestore();
     const batch = db.batch();
@@ -57,6 +55,7 @@ exports.adminFetchAndRelayRss = functions
     const post = snap.data();
     const postRef = snap.ref;
     // Get the secret value at runtime
+    const postmark = require('postmark');
     const postmarkClient = new postmark.ServerClient(postmarkToken.value());
 
     // 1. Idempotency: Check if already notified
@@ -253,6 +252,7 @@ exports.submitJobRequisition = functions
     const subjectTitle = requisition.jobTitle.replace(/[\r\n]+/g, ' ').slice(0, 160);
 
     try {
+      const postmark = require('postmark');
       const postmarkClient = new postmark.ServerClient(postmarkToken.value());
       const email = {
         From: 'admin-messages@ibrecruitment.com',
@@ -260,7 +260,7 @@ exports.submitJobRequisition = functions
         Subject: `Job requisition request: ${subjectTitle}`,
         HtmlBody: `<html><body style="font-family:Arial,sans-serif;color:#0f172a"><h1 style="color:#0b2a6f">New job requisition</h1><p>A requisition has been submitted through the Impact in Business Recruitment portal.</p><table style="width:100%;border-collapse:collapse">${htmlRows}</table></body></html>`,
         TextBody: `New job requisition\n\n${textBody}`,
-        MessageStream: 'broadcast',
+        MessageStream: 'outbound',
       };
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(requesterEmail)) email.ReplyTo = requesterEmail;
       await postmarkClient.sendEmail(email);

@@ -485,14 +485,10 @@
     body {
       font-family: var(--font-body);
       color: var(--text);
-      background-color: var(--bg);
-      background-image:
-        linear-gradient(180deg, rgba(244,247,242,.55), rgba(244,247,242,.82)),
-        url('/index-banner.jpg');
-      background-repeat: no-repeat;
-      background-position: center top;
-      background-size: cover;
-      background-attachment: scroll;
+      background:
+        radial-gradient(950px 560px at 88% -10%, rgba(67, 161, 138, .17), transparent 60%),
+        radial-gradient(760px 460px at -8% 22%, rgba(233, 165, 68, .11), transparent 58%),
+        var(--bg);
     }
 
     h1, h2, h3 { font-family: var(--font-body); color: var(--text); }
@@ -554,8 +550,16 @@
     #how-it-works { text-align: left; }
     #hiring-requests .feature-card,
     #requisition-details .tech-card,
-    #how-it-works .step,
-    #how-it-works .final-cta { text-align: left; }
+    #how-it-works .step { text-align: left; }
+    .final-cta,
+    #how-it-works .final-cta {
+      text-align: center;
+    }
+    .final-cta p {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
     .lead-borderline {
       border-color: #d4e3da;
       background: #e9f2ec;

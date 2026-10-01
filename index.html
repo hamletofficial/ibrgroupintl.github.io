@@ -554,11 +554,31 @@
     .final-cta,
     #how-it-works .final-cta {
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    .final-cta p {
+    .final-cta p,
+    .final-cta .btn {
       text-align: center;
       margin-left: auto;
       margin-right: auto;
+    }
+    .cookie-bar,
+    #cookieConsentBar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 10px;
+    }
+    .cookie-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
     }
     .lead-borderline {
       border-color: #d4e3da;

@@ -13,8 +13,20 @@
       "source": "functions"
     },
     {
-      "source": "sagat",
       "codebase": "sagat",
+      "disallowLegacyRuntimeConfig": true,
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "source": "sagat"
+    },
+    {
+      "source": "ryu",
+      "codebase": "ryu",
       "disallowLegacyRuntimeConfig": true,
       "ignore": [
         "node_modules",

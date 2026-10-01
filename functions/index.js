@@ -1,21 +1,20 @@
-const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { defineSecret } = require('firebase-functions/params');
+const { onDocumentCreated } = require('firebase-functions/v2/firestore');
+const { HttpsError, onCall } = require('firebase-functions/v2/https');
+const { onSchedule } = require('firebase-functions/v2/scheduler');
 
 admin.initializeApp();
 const postmarkToken = defineSecret('POSTMARK_BROADCAST_TOKEN');
 
 const SUBSTACK_RSS_URL = 'https://substack.ibrecruitment.com/feed';
 
-// Cloud Function: Fetch RSS feed and store entries in Firestore
-// Node.js 22+ compatible
-exports.fetchAndStoreRssToInsightsFeed = functions
-  .runWith({
-    // Node.js 22 is default for new Firebase projects, but can be set in firebase.json if needed
-    timeoutSeconds: 120,
-    memory: '256MB',
-  })
-  .pubsub.schedule('every 15 minutes').onRun(async (context) => {
+// Gen 2 scheduled function: Fetch RSS feed and store entries in Firestore
+exports.fetchAndStoreRssToInsightsFeed = onSchedule({
+  schedule: 'every 15 minutes',
+  timeoutSeconds: 120,
+  memory: '256MiB',
+}, async (event) => {
     const Parser = require('rss-parser');
     const parser = new Parser();
     const feed = await parser.parseURL(SUBSTACK_RSS_URL);
@@ -44,14 +43,15 @@ exports.fetchAndStoreRssToInsightsFeed = functions
     }
     if (newCount > 0) await batch.commit();
     return { inserted: newCount };
-  });
+});
 
 
-exports.adminFetchAndRelayRss = functions
-  .runWith({ secrets: [postmarkToken] })
-  .firestore
-  .document('insightsFeed/{postId}')
-  .onCreate(async (snap, context) => {
+exports.adminFetchAndRelayRss = onDocumentCreated({
+  document: 'insightsFeed/{postId}',
+  secrets: [postmarkToken],
+}, async (event) => {
+    const snap = event.data;
+    if (!snap) return null;
     const post = snap.data();
     const postRef = snap.ref;
     // Get the secret value at runtime
@@ -126,23 +126,23 @@ exports.adminFetchAndRelayRss = functions
       console.error('Error sending emails or updating document:', err);
     }
     return null;
-  });
+});
 // --- End adminFetchAndRelayRss and dependencies ---
 
 function readRequisitionText(data, field, maxLength, required = false) {
   const value = data[field];
   if (value === undefined || value === null || value === '') {
     if (required) {
-      throw new functions.https.HttpsError('invalid-argument', `${field} is required.`);
+      throw new HttpsError('invalid-argument', `${field} is required.`);
     }
     return '';
   }
   if (typeof value !== 'string' || value.trim().length > maxLength) {
-    throw new functions.https.HttpsError('invalid-argument', `${field} must be text of at most ${maxLength} characters.`);
+    throw new HttpsError('invalid-argument', `${field} must be text of at most ${maxLength} characters.`);
   }
   const normalized = value.trim();
   if (required && !normalized) {
-    throw new functions.https.HttpsError('invalid-argument', `${field} is required.`);
+    throw new HttpsError('invalid-argument', `${field} is required.`);
   }
   return normalized;
 }
@@ -157,15 +157,14 @@ function escapeHtml(value) {
   })[character]);
 }
 
-exports.submitJobRequisition = functions
-  .runWith({
-    timeoutSeconds: 30,
-    memory: '256MB',
-    secrets: [postmarkToken],
-  })
-  .https.onCall(async (data, context) => {
-    if (!context.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'Sign in before submitting a job requisition.');
+exports.submitJobRequisition = onCall({
+  timeoutSeconds: 30,
+  memory: '256MiB',
+  secrets: [postmarkToken],
+}, async (request) => {
+    const data = request.data;
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'Sign in before submitting a job requisition.');
     }
 
     const allowedFields = [
@@ -175,7 +174,7 @@ exports.submitJobRequisition = functions
       'requirements', 'additionalNotes',
     ];
     if (!data || typeof data !== 'object' || Object.keys(data).some((field) => !allowedFields.includes(field))) {
-      throw new functions.https.HttpsError('invalid-argument', 'The requisition submission contains invalid fields.');
+      throw new HttpsError('invalid-argument', 'The requisition submission contains invalid fields.');
     }
 
     const requisition = {
@@ -201,31 +200,31 @@ exports.submitJobRequisition = functions
     const budgetStatuses = ['Yes', 'No', 'Pending'];
     const openings = Number(data.numberOfOpenings);
     if (!Number.isInteger(openings) || openings < 1 || openings > 500) {
-      throw new functions.https.HttpsError('invalid-argument', 'Number of openings must be between 1 and 500.');
+      throw new HttpsError('invalid-argument', 'Number of openings must be between 1 and 500.');
     }
     if (!workplaceTypes.includes(requisition.workplaceType) || !employmentTypes.includes(requisition.employmentType) ||
         !urgencyLevels.includes(requisition.urgency) || !budgetStatuses.includes(requisition.budgetApproved)) {
-      throw new functions.https.HttpsError('invalid-argument', 'One or more selected requisition options are invalid.');
+      throw new HttpsError('invalid-argument', 'One or more selected requisition options are invalid.');
     }
     requisition.numberOfOpenings = openings;
 
     if (requisition.targetStartDate && !/^\d{4}-\d{2}-\d{2}$/.test(requisition.targetStartDate)) {
-      throw new functions.https.HttpsError('invalid-argument', 'Target start date must use YYYY-MM-DD format.');
+      throw new HttpsError('invalid-argument', 'Target start date must use YYYY-MM-DD format.');
     }
     if (requisition.applicationUrl) {
       let applicationUrl;
       try {
         applicationUrl = new URL(requisition.applicationUrl);
       } catch (err) {
-        throw new functions.https.HttpsError('invalid-argument', 'Application link must be a valid URL.');
+        throw new HttpsError('invalid-argument', 'Application link must be a valid URL.');
       }
       if (!['http:', 'https:'].includes(applicationUrl.protocol)) {
-        throw new functions.https.HttpsError('invalid-argument', 'Application link must use HTTP or HTTPS.');
+        throw new HttpsError('invalid-argument', 'Application link must use HTTP or HTTPS.');
       }
     }
 
-    const requesterName = String(context.auth.token.name || 'Signed-in user').slice(0, 160);
-    const requesterEmail = String(context.auth.token.email || '').slice(0, 254);
+    const requesterName = String(request.auth.token.name || 'Signed-in user').slice(0, 160);
+    const requesterEmail = String(request.auth.token.email || '').slice(0, 254);
     const emailFields = [
       ['Job title', requisition.jobTitle],
       ['Department / team', requisition.department],
@@ -267,6 +266,6 @@ exports.submitJobRequisition = functions
       return { ok: true, message: 'Requisition notification sent.' };
     } catch (err) {
       console.error('Unable to send job requisition notification through Postmark:', err);
-      throw new functions.https.HttpsError('internal', 'Unable to send your requisition notification. Please try again later.');
+      throw new HttpsError('internal', 'Unable to send your requisition notification. Please try again later.');
     }
   });

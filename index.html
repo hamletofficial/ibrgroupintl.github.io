@@ -626,46 +626,8 @@
       color: #fff;
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
     }
-    .announcement-carousel {
-      color: #111;
-      background: #d4af37;
-      border-bottom: 1px solid #a88820;
-    }
-    .announcement-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 16px;
-      min-height: 54px;
-      padding-block: 8px;
-    }
-    .announcement-message {
-      margin: 0;
-      color: #111;
-      font-weight: 600;
-    }
-    .announcement-message a { color: #111; text-decoration: underline; }
-    .announcement-message[hidden] { display: none; }
-    .announcement-controls { display: flex; align-items: center; gap: 6px; color: #111; }
-    .announcement-controls button {
-      min-width: 34px;
-      min-height: 34px;
-      padding: 4px 8px;
-      border: 1px solid rgba(17, 17, 17, .4);
-      border-radius: 7px;
-      color: #111;
-      background: rgba(255, 255, 255, .28);
-      font: inherit;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .announcement-controls button:hover { background: rgba(255, 255, 255, .55); }
     .corner-triangle { border-top-color: var(--brand); }
     .corner-triangle .triangle-text { color: #fff; }
-
-    @media (max-width: 640px) {
-      .announcement-row { grid-template-columns: 1fr auto; gap: 4px 12px; }
-    }
 
     :where(a, button):focus-visible {
       outline: 3px solid rgba(20, 107, 89, .55);
@@ -686,21 +648,6 @@
       <span class="triangle-text">Automated ATS</span>
     </div>
     <header class="site-header" role="banner">
-      <section class="announcement-carousel" aria-label="Updates" aria-roledescription="carousel">
-        <div class="container announcement-row">
-          <div class="announcement-slides" aria-live="polite" aria-atomic="true">
-            <p class="announcement-message" data-announcement-slide="true">Hiring? <a href="/requests.html">Submit a job requisition</a> for our recruitment team to review.</p>
-            <p class="announcement-message" data-announcement-slide="true" hidden="hidden">Looking for your next opportunity? Explore the latest roles on our jobs board.</p>
-            <p class="announcement-message" data-announcement-slide="true" hidden="hidden">Members can <a href="/members.html">access the members area</a> to manage their profile and recruitment requests.</p>
-          </div>
-          <div class="announcement-controls" role="group" aria-label="Announcement controls">
-            <button type="button" data-announcement-previous="true" aria-label="Previous announcement">‹</button>
-            <span data-announcement-count="true" aria-label="Announcement position">1 / 3</span>
-            <button type="button" data-announcement-next="true" aria-label="Next announcement">›</button>
-            <button type="button" data-announcement-toggle="true" aria-label="Pause announcements" aria-pressed="false">Pause</button>
-          </div>
-        </div>
-      </section>
       <div class="container header-row">
         <a class="brand" href="/index.html" aria-label="home">
           <img src="/160.jpg" alt="Impact logo" />
@@ -862,67 +809,6 @@
     </div>
   </footer>
 
-  <script>
-    (function () {
-      var carousel = document.querySelector('.announcement-carousel');
-      if (!carousel) return;
-      var slides = Array.prototype.slice.call(carousel.querySelectorAll('[data-announcement-slide]'));
-      var counter = carousel.querySelector('[data-announcement-count]');
-      var toggle = carousel.querySelector('[data-announcement-toggle]');
-      var current = 0;
-      var timer;
-      var paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var hovered = false;
-      var focused = false;
-
-      toggle.textContent = paused ? 'Play' : 'Pause';
-      toggle.setAttribute('aria-label', paused ? 'Resume announcements' : 'Pause announcements');
-      toggle.setAttribute('aria-pressed', String(paused));
-
-      function showSlide(index) {
-        slides[current].hidden = true;
-        current = (index + slides.length) % slides.length;
-        slides[current].hidden = false;
-        counter.textContent = (current + 1) + ' / ' + slides.length;
-      }
-
-      function startRotation() {
-        window.clearInterval(timer);
-        if (!paused) {
-          if (!hovered) {
-            if (!focused) timer = window.setInterval(function () { showSlide(current + 1); }, 7000);
-          }
-        }
-      }
-
-      carousel.querySelector('[data-announcement-previous]').addEventListener('click', function () {
-        showSlide(current - 1);
-        startRotation();
-      });
-      carousel.querySelector('[data-announcement-next]').addEventListener('click', function () {
-        showSlide(current + 1);
-        startRotation();
-      });
-      toggle.addEventListener('click', function () {
-        paused = !paused;
-        toggle.textContent = paused ? 'Play' : 'Pause';
-        toggle.setAttribute('aria-label', paused ? 'Resume announcements' : 'Pause announcements');
-        toggle.setAttribute('aria-pressed', String(paused));
-        startRotation();
-      });
-
-      carousel.addEventListener('mouseenter', function () { hovered = true; startRotation(); });
-      carousel.addEventListener('mouseleave', function () { hovered = false; startRotation(); });
-      carousel.addEventListener('focusin', function () { focused = true; startRotation(); });
-      carousel.addEventListener('focusout', function (event) {
-        if (!carousel.contains(event.relatedTarget)) {
-          focused = false;
-          startRotation();
-        }
-      });
-      startRotation();
-    })();
-  </script>
   <script>
     (function () {
       var cookieName = 'ibr_cookie_consent_v1';

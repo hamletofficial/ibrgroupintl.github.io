@@ -2,8 +2,20 @@
   "functions": [
     {
       "codebase": "default",
-      "source": "functions",
       "platform": "gcfv2",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "source": "functions"
+    },
+    {
+      "source": "sagat",
+      "codebase": "sagat",
+      "disallowLegacyRuntimeConfig": true,
       "ignore": [
         "node_modules",
         ".git",
@@ -13,16 +25,12 @@
       ]
     }
   ],
-  "firestore": [
-    {
-      "database": "(default)",
-      "rules": "firestore.rules"
-    },
-    {
-      "database": "ibusername",
-      "rules": "firestore.rules"
-    }
-  ],
+  "firestore": {
+    "database": "(default)",
+    "location": "nam5",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
   "hosting": {
     "public": "public",
     "ignore": [

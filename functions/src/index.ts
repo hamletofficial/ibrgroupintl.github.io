@@ -9,9 +9,8 @@
  */
 
 import {setGlobalOptions} from "firebase-functions";
-import {onRequest, onCall} from "firebase-functions/v2/https";
+import {onCall} from "firebase-functions/v2/https";
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
-import * as logger from "firebase-functions/logger";
 
 import * as express from "express";
 import * as admin from "firebase-admin";

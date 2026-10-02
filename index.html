@@ -549,11 +549,11 @@
     .section .lead,
     .lead-yellow,
     .section .lead-yellow { color: var(--muted) !important; }
-    #hiring-requests,
-    #requisition-details,
+    #media-relations,
+    #media-details,
     #how-it-works { text-align: left; }
-    #hiring-requests .feature-card,
-    #requisition-details .tech-card,
+    #media-relations .feature-card,
+    #media-details .tech-card,
     #how-it-works .step { text-align: left; }
     .final-cta,
     #how-it-works .final-cta {
@@ -655,7 +655,7 @@
         </a>
         <nav class="nav-links" aria-label="Primary navigation">
           <a class="btn btn-ghost" id="signInOutBtn" href="/login.html" target="_blank" rel="noopener noreferrer">Sign In</a>
-          <a class="btn btn-primary" id="authBtn" href="/requests.html">Submit a Job Requisition</a>
+          <a class="btn btn-primary" id="authBtn" href="/requests.html">Submit a Media Brief</a>
         </nav>
       </div>
     </header>
@@ -665,38 +665,38 @@
       <div class="container hero-shell">
         <div class="hero-grid">
           <div>
-            <span class="badge">Jobs Board & Hiring Requests</span>
-            <h1>Send your job spec to our team of friendly recruiters by completing a free job requisition form.</h1>
-            <p>Explore the option of submitting a structured job requisition for our recruiters to review. All job order referrals made will be considered.</p>
+            <span class="badge">Press & Media Relations</span>
+            <h1>Send a press or media brief to our strategic communications team.</h1>
+            <p>Share the original press release, company, and press officer details so the team can review the announcement.</p>
             <div class="hero-cta">
-              <a class="btn btn-primary" href="/requests.html">Submit a Job Requisition</a>
+              <a class="btn btn-primary" href="/requests.html">Submit a Media Brief</a>
               <a class="btn btn-ghost" href="#how-it-works">How It Works</a>
 			  <a class="btn btn-ghost" href="/about.html">About IB</a>
             </div>
           </div>
-          <aside class="metric-panel" aria-label="Job requisition submission overview">
-            <div class="metric"><strong>Sign in</strong><span>Requisition submission is available to authenticated users</span></div>
-            <div class="metric"><strong>Structured brief</strong><span>Capture role requirements and hiring context in one form</span></div>
-            <div class="metric"><strong>Recruitment review</strong><span>Submitted requests are sent to the recruitment team</span></div>
+          <aside class="metric-panel" aria-label="Press communication overview">
+            <div class="metric"><strong>Sign in</strong><span>Media brief submission is available to authenticated users</span></div>
+            <div class="metric"><strong>Structured brief</strong><span>Capture the release link, company, and spokesperson in one form</span></div>
+            <div class="metric"><strong>Recruitment review</strong><span>Submitted briefs are sent to the communications team</span></div>
           </aside>
         </div>
       </div>
     </section>
 
     <!-- Features Section -->
-    <section class="section" id="hiring-requests">
+    <section class="section" id="media-relations">
       <div class="container">
-        <div class="lead-borderline">Hiring Requests</div>
-        <h2>A clearer brief for every search</h2>
-        <p class="lead lead-yellow">Signed-in users can provide the information needed to understand the job opening and route it to our recruitment team for review.</p>
+        <div class="lead-borderline">Media Relations</div>
+        <h2>A clearer brief for every announcement</h2>
+        <p class="lead lead-yellow">Signed-in users can send a strategic communications brief, including the original press release and the press officer contact.</p>
         <div class="feature-grid">
           <div class="feature-card">
             <h3>Role &amp; team details</h3>
-            <p>Specify the job title, department, hiring manager, work location, work arrangement, employment type, and number of openings.</p>
+            <p>Name the company, press or media officer, phone number, and email.</p>
           </div>
           <div class="feature-card">
-            <h3>Hiring plan</h3>
-            <p>Include a target start date, salary range, hiring priority, budget approval status, and an application or role link.</p>
+            <h3>Release link</h3>
+            <p>Include the original press release URL, headline, announcement type, and embargo date or role link.</p>
           </div>
           <div class="feature-card">
             <h3>Role expectations</h3>
@@ -706,38 +706,38 @@
       </div>
     </section>
 
-    <!-- Requisition Details Section -->
-    <section class="section" id="requisition-details">
+    <!-- Communications Details Section -->
+    <section class="section" id="media-details">
       <div class="container">
-        <div class="lead-borderline">Requisition Details</div>
-        <h2>Everything needed to start the conversation</h2>
-        <p class="lead lead-yellow">The request form combines role information, hiring constraints, and follow-up details in one submission.</p>
+        <div class="lead-borderline">Communications Details</div>
+        <h2>Everything needed to brief the media team</h2>
+        <p class="lead lead-yellow">The form collects the release, company, and press officer so the team can follow up.</p>
         <div class="stats-grid">
           <div class="tech-card">
-            <h3>Opening profile</h3>
+            <h3>Organisation</h3>
             <div class="stat-value">Role <small>&amp; team</small></div>
             <ul>
-              <li>Title, department, and hiring manager</li>
-              <li>Location, work arrangement, and employment type</li>
-              <li>Number of openings and target start date</li>
+              <li>Company name and press officer</li>
+              <li>Phone number and officer email</li>
+              <li>Account used for the signed-in submission</li>
             </ul>
           </div>
           <div class="tech-card featured">
-            <h3>Hiring plan</h3>
+            <h3>Release link</h3>
             <div class="stat-value">Priority <small>&amp; budget</small></div>
             <ul>
-              <li>Hiring priority and budget approval status</li>
-              <li>Optional salary range and role link</li>
-              <li>Context to help the team review the request</li>
+              <li>Original press release link</li>
+              <li>Headline and announcement type</li>
+              <li>Optional embargo date</li>
             </ul>
           </div>
           <div class="tech-card">
-            <h3>Role brief</h3>
+            <h3>Message</h3>
             <div class="stat-value">Scope <small>&amp; skills</small></div>
             <ul>
-              <li>Responsibilities and expected outcomes</li>
-              <li>Required experience and qualifications</li>
-              <li>Additional notes and requester email for follow-up</li>
+              <li>Key message for the announcement</li>
+              <li>Supporting notes for the media team</li>
+              <li>Officer email for follow-up</li>
             </ul>
           </div>
         </div>
@@ -748,28 +748,28 @@
     <section class="section" id="how-it-works">
       <div class="container">
         <div class="lead-borderline">How It Works</div>
-        <h2>From hiring need to recruitment review</h2>
-        <p class="lead lead-yellow">Submit a requisition through the authenticated request form and the recruitment team will be notified for review.</p>
+        <h2>From announcement to media follow-up</h2>
+        <p class="lead lead-yellow">Submit a press brief through the authenticated form and the communications team will be notified for review.</p>
         <div class="workflow">
           <div class="step">
             <div class="step-number">1</div>
             <h3>Sign in</h3>
-            <p>Authenticate with your account to access the job requisition form.</p>
+            <p>Authenticate with your account to access the press and media form.</p>
           </div>
           <div class="step">
             <div class="step-number">2</div>
-            <h3>Share the role brief</h3>
-            <p>Complete the required role, hiring plan, and responsibilities fields; your account email is included for follow-up.</p>
+            <h3>Share the announcement</h3>
+            <p>Add the press release link, company, press officer, phone, and email for follow-up.</p>
           </div>
           <div class="step">
             <div class="step-number">3</div>
             <h3>Submit for review</h3>
-            <p>The request is sent to the recruitment team, and the page confirms when the submission succeeds.</p>
+            <p>The brief is sent to the communications team, and the page confirms when the submission succeeds.</p>
           </div>
         </div>
         <div class="final-cta">
-          <p>Ready to submit a hiring request?</p>
-          <a class="btn btn-primary" href="/requests.html">Submit a Requisition</a>
+          <p>Ready to submit a media brief?</p>
+          <a class="btn btn-primary" href="/requests.html">Submit a Media Brief</a>
         </div>
       </div>
     </section>

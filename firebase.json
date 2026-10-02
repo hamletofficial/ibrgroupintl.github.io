@@ -22,10 +22,12 @@
         "firebase-debug.*.log",
         "*.local"
       ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ],
       "source": "sagat"
     },
     {
-      "source": "ryu",
       "codebase": "ryu",
       "disallowLegacyRuntimeConfig": true,
       "ignore": [
@@ -34,11 +36,15 @@
         "firebase-debug.log",
         "firebase-debug.*.log",
         "*.local"
-      ]
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ],
+      "source": "ryu"
     }
   ],
   "firestore": {
-    "database": "(default)",
+    "database": "chung-lee",
     "location": "nam5",
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
@@ -50,5 +56,66 @@
       "**/.*",
       "**/node_modules/**"
     ]
+  },
+  "emulators": {
+    "dataconnect": {
+      "dataDir": "dataconnect/.dataconnect/pgliteData"
+    }
+  },
+  "dataconnect": {
+    "source": "dataconnect"
+  },
+  "apphosting": [
+    {
+      "backendId": "my-web-app",
+      "rootDir": "/",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "functions"
+      ]
+    },
+    {
+      "backendId": "mbison",
+      "rootDir": "/",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "functions"
+      ]
+    },
+    {
+      "backendId": "mbison",
+      "rootDir": "/",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "functions"
+      ]
+    }
+  ],
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "remoteconfig": {
+    "template": "remoteconfig.template.json"
+  },
+  "extensions": {},
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "auth": {
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "securelogin",
+        "supportEmail": "uk-hr-enquiries@ibrecruitment.com"
+      }
+    }
   }
 }

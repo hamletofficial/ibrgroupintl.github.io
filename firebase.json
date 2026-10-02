@@ -1,129 +1,127 @@
 {
-  "functions": [
-    {
-      "codebase": "default",
-      "platform": "gcfv2",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "source": "functions"
+    "functions": [
+        {
+            "codebase": "default",
+            "platform": "gcfv2",
+            "ignore": [
+                "node_modules",
+                ".git",
+                "firebase-debug.log",
+                "firebase-debug.*.log",
+                "*.local"
+            ],
+            "source": "functions"
+        },
+        {
+            "codebase": "sagat",
+            "disallowLegacyRuntimeConfig": true,
+            "ignore": [
+                "node_modules",
+                ".git",
+                "firebase-debug.log",
+                "firebase-debug.*.log",
+                "*.local"
+            ],
+            "source": "sagat"
+        },
+        {
+            "codebase": "ryu",
+            "disallowLegacyRuntimeConfig": true,
+            "ignore": [
+                "node_modules",
+                ".git",
+                "firebase-debug.log",
+                "firebase-debug.*.log",
+                "*.local"
+            ],
+            "source": "ryu"
+        },
+        {
+            "codebase": "ken",
+            "disallowLegacyRuntimeConfig": true,
+            "ignore": [
+                "node_modules",
+                ".git",
+                "firebase-debug.log",
+                "firebase-debug.*.log",
+                "*.local"
+            ],
+            "source": "ken"
+        }
+    ],
+    "firestore": {
+        "database": "chung-lee",
+        "location": "nam5",
+        "rules": "firestore.rules",
+        "indexes": "firestore.indexes.json"
     },
-    {
-      "codebase": "sagat",
-      "disallowLegacyRuntimeConfig": true,
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "source": "sagat"
+    "hosting": {
+        "public": "public",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ]
     },
-    {
-      "codebase": "ryu",
-      "disallowLegacyRuntimeConfig": true,
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "source": "ryu"
+    "emulators": {
+        "dataconnect": {
+            "dataDir": "dataconnect/.dataconnect/pgliteData"
+        }
     },
-    {
-      "codebase": "ken",
-      "disallowLegacyRuntimeConfig": true,
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run lint"
-      ]
-    }
-  ],
-  "firestore": {
-    "database": "chung-lee",
-    "location": "nam5",
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
-  "hosting": {
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
-  },
-  "emulators": {
     "dataconnect": {
-      "dataDir": "dataconnect/.dataconnect/pgliteData"
-    }
-  },
-  "dataconnect": {
-    "source": "dataconnect"
-  },
-  "apphosting": [
-    {
-      "backendId": "my-web-app",
-      "rootDir": "/",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "functions"
-      ]
+        "source": "dataconnect"
     },
-    {
-      "backendId": "mbison",
-      "rootDir": "/",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "functions"
-      ]
+    "apphosting": [
+        {
+            "backendId": "my-web-app",
+            "rootDir": "/",
+            "ignore": [
+                "node_modules",
+                ".git",
+                "firebase-debug.log",
+                "firebase-debug.*.log",
+                "functions"
+            ]
+        },
+        {
+            "backendId": "mbison",
+            "rootDir": "/",
+            "ignore": [
+                "node_modules",
+                ".git",
+                "firebase-debug.log",
+                "firebase-debug.*.log",
+                "functions"
+            ]
+        },
+        {
+            "backendId": "mbison",
+            "rootDir": "/",
+            "ignore": [
+                "node_modules",
+                ".git",
+                "firebase-debug.log",
+                "firebase-debug.*.log",
+                "functions"
+            ]
+        }
+    ],
+    "storage": {
+        "rules": "storage.rules"
     },
-    {
-      "backendId": "mbison",
-      "rootDir": "/",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "functions"
-      ]
+    "remoteconfig": {
+        "template": "remoteconfig.template.json"
+    },
+    "extensions": {},
+    "database": {
+        "rules": "database.rules.json"
+    },
+    "auth": {
+        "providers": {
+            "googleSignIn": {
+                "oAuthBrandDisplayName": "securelogin",
+                "supportEmail": "uk-hr-enquiries@ibrecruitment.com"
+            }
+        }
     }
-  ],
-  "storage": {
-    "rules": "storage.rules"
-  },
-  "remoteconfig": {
-    "template": "remoteconfig.template.json"
-  },
-  "extensions": {},
-  "database": {
-    "rules": "database.rules.json"
-  },
-  "auth": {
-    "providers": {
-      "googleSignIn": {
-        "oAuthBrandDisplayName": "securelogin",
-        "supportEmail": "uk-hr-enquiries@ibrecruitment.com"
-      }
-    }
-  }
 }

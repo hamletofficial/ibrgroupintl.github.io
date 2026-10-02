@@ -1,0 +1,40 @@
+[debug] [2026-10-02T15:37:29.234Z] ----------------------------------------------------------------------
+[debug] [2026-10-02T15:37:29.250Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2026-10-02T15:37:29.252Z] CLI Version:   15.15.0
+[debug] [2026-10-02T15:37:29.253Z] Platform:      win32
+[debug] [2026-10-02T15:37:29.253Z] Node Version:  v24.21.0
+[debug] [2026-10-02T15:37:29.254Z] Time:          Fri Oct 02 2026 16:37:29 GMT+0100 (British Summer Time)
+[debug] [2026-10-02T15:37:29.255Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-10-02T15:37:39.720Z] Field "/functions" in "firebase.json" is possibly invalid: must be object
+[debug] [2026-10-02T15:37:39.721Z] Field "/functions" in "firebase.json" is possibly invalid: must be object
+[debug] [2026-10-02T15:37:39.721Z] Object "/functions/0" in "firebase.json" has unknown property: {"additionalProperty":"platform"}
+[debug] [2026-10-02T15:37:39.722Z] Object "/functions/0" in "firebase.json" is missing required property: {"missingProperty":"remoteSource"}
+[debug] [2026-10-02T15:37:39.722Z] Field "/functions/0" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2026-10-02T15:37:39.722Z] Field "/functions" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2026-10-02T15:37:39.763Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-10-02T15:37:39.767Z] > authorizing via signed-in user (uk-hr-enquiries@ibrecruitment.com)
+[debug] [2026-10-02T15:37:39.767Z] [iam] checking project wale-491805 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2026-10-02T15:37:39.779Z] Checked if tokens are valid: false, expires at: 1790947638850
+[debug] [2026-10-02T15:37:39.780Z] Checked if tokens are valid: false, expires at: 1790947638850
+[debug] [2026-10-02T15:37:39.781Z] > refreshing access token with scopes: []
+[debug] [2026-10-02T15:37:39.799Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-10-02T15:37:39.799Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-10-02T15:37:40.600Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-10-02T15:37:40.601Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-10-02T15:37:40.646Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions [none]
+[debug] [2026-10-02T15:37:40.647Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions  x-goog-user-project=wale-491805
+[debug] [2026-10-02T15:37:40.647Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2026-10-02T15:37:41.135Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions 200
+[debug] [2026-10-02T15:37:41.135Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2026-10-02T15:37:41.136Z] Checked if tokens are valid: true, expires at: 1790959059602
+[debug] [2026-10-02T15:37:41.137Z] Checked if tokens are valid: true, expires at: 1790959059602
+[debug] [2026-10-02T15:37:41.138Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/wale-491805/serviceAccounts/wale-491805@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2026-10-02T15:37:41.138Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/wale-491805/serviceAccounts/wale-491805@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2026-10-02T15:37:42.207Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/wale-491805/serviceAccounts/wale-491805@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2026-10-02T15:37:42.208Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/wale-491805/serviceAccounts/wale-491805@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'wale-491805'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint

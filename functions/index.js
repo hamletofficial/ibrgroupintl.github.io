@@ -1,10 +1,12 @@
 const admin = require('firebase-admin');
+const { getFirestore } = require('firebase-admin/firestore');
 const { defineSecret } = require('firebase-functions/params');
 const { onDocumentCreated } = require('firebase-functions/v2/firestore');
 const { HttpsError, onCall } = require('firebase-functions/v2/https');
 const { onSchedule } = require('firebase-functions/v2/scheduler');
 
 admin.initializeApp();
+const requisitionsDb = getFirestore(admin.app(), 'chung-lee');
 const postmarkToken = defineSecret('POSTMARK_BROADCAST_TOKEN');
 const postmarkOutboundToken = defineSecret('POSTMARK_OUTBOUND_TOKEN');
 
@@ -232,31 +234,7 @@ exports.submitJobRequisition = onCall({
 
     const requesterName = String(request.auth.token.name || 'Signed-in user').slice(0, 160);
     const requesterEmail = String(request.auth.token.email || '').slice(0, 254);
-    const emailFields = [
-      ['Job title', requisition.jobTitle],
-      ['Department / team', requisition.department],
-      ['Hiring manager', requisition.hiringManager],
-      ['Work location', requisition.workLocation],
-      ['Work arrangement', requisition.workplaceType],
-      ['Employment type', requisition.employmentType],
-      ['Number of openings', String(requisition.numberOfOpenings)],
-      ['Target start date', requisition.targetStartDate || 'Not specified'],
-      ['Salary range', requisition.salaryRange || 'Not specified'],
-      ['Hiring priority', requisition.urgency],
-      ['Budget approved', requisition.budgetApproved],
-      ['Application / role link', requisition.applicationUrl || 'Not provided'],
-      ['Role summary and responsibilities', requisition.jobDescription],
-      ['Required experience and qualifications', requisition.requirements || 'Not provided'],
-      ['Additional notes', requisition.additionalNotes || 'Not provided'],
-      ['Submitted by', requesterName],
-      ['Requester email', requesterEmail || 'Not available'],
-    ];
-    const htmlRows = emailFields.map(([label, value]) =>
-      `<tr><th style="padding:10px;text-align:left;vertical-align:top;border-bottom:1px solid #e2e8f0;color:#12304f;width:230px">${escapeHtml(label)}</th><td style="padding:10px;white-space:pre-wrap;border-bottom:1px solid #e2e8f0;color:#334155">${escapeHtml(value)}</td></tr>`
-    ).join('');
-    const textBody = emailFields.map(([label, value]) => `${label}:\n${value}`).join('\n\n');
-    const subjectTitle = requisition.jobTitle.replace(/[\r\n]+/g, ' ').slice(0, 160);
-    const requisitionRef = admin.firestore().collection('jobRequisitions').doc();
+    const requisitionRef = requisitionsDb.collection('jobRequisitions').doc();
 
     try {
       await requisitionRef.create({
@@ -272,6 +250,35 @@ exports.submitJobRequisition = onCall({
     }
 
     try {
+      const savedSnapshot = await requisitionRef.get();
+      if (!savedSnapshot.exists) {
+        throw new Error('Saved requisition document was not found.');
+      }
+      const savedRequisition = savedSnapshot.data();
+      const emailFields = [
+        ['Job title', savedRequisition.jobTitle],
+        ['Department / team', savedRequisition.department],
+        ['Hiring manager', savedRequisition.hiringManager],
+        ['Work location', savedRequisition.workLocation],
+        ['Work arrangement', savedRequisition.workplaceType],
+        ['Employment type', savedRequisition.employmentType],
+        ['Number of openings', String(savedRequisition.numberOfOpenings)],
+        ['Target start date', savedRequisition.targetStartDate || 'Not specified'],
+        ['Salary range', savedRequisition.salaryRange || 'Not specified'],
+        ['Hiring priority', savedRequisition.urgency],
+        ['Budget approved', savedRequisition.budgetApproved],
+        ['Application / role link', savedRequisition.applicationUrl || 'Not provided'],
+        ['Role summary and responsibilities', savedRequisition.jobDescription],
+        ['Required experience and qualifications', savedRequisition.requirements || 'Not provided'],
+        ['Additional notes', savedRequisition.additionalNotes || 'Not provided'],
+        ['Submitted by', savedRequisition.requesterName],
+        ['Requester email', savedRequisition.requesterEmail || 'Not available'],
+      ];
+      const htmlRows = emailFields.map(([label, value]) =>
+        `<tr><th style="padding:10px;text-align:left;vertical-align:top;border-bottom:1px solid #e2e8f0;color:#12304f;width:230px">${escapeHtml(label)}</th><td style="padding:10px;white-space:pre-wrap;border-bottom:1px solid #e2e8f0;color:#334155">${escapeHtml(value)}</td></tr>`
+      ).join('');
+      const textBody = emailFields.map(([label, value]) => `${label}:\n${value}`).join('\n\n');
+      const subjectTitle = savedRequisition.jobTitle.replace(/[\r\n]+/g, ' ').slice(0, 160);
       const email = {
         From: 'admin-messages@ibrecruitment.com',
         To: 'uk-hr-enquiries@ibrecruitment.com',
@@ -280,11 +287,13 @@ exports.submitJobRequisition = onCall({
         TextBody: `New job requisition\n\n${textBody}`,
         MessageStream: 'outbound',
       };
-      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(requesterEmail)) email.ReplyTo = requesterEmail;
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(savedRequisition.requesterEmail || '')) {
+        email.ReplyTo = savedRequisition.requesterEmail;
+      }
       await sendJobRequisitionOutboundNotification(email);
       return { ok: true, requisitionId: requisitionRef.id, message: 'Requisition notification sent.' };
     } catch (err) {
-      console.error('Unable to send job requisition notification through Postmark:', err);
+      console.error('Unable to load saved job requisition or send its Postmark notification:', err);
       throw new HttpsError(
         'internal',
         'Your requisition was saved, but the recruitment team could not be notified. Please contact them directly.',

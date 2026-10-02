@@ -4,6 +4,7 @@ const {getFirestore} = require("firebase-admin/firestore");
 const {defineSecret} = require("firebase-functions/params");
 const {HttpsError, onCall} = require("firebase-functions/v2/https");
 const {onDocumentCreated} = require("firebase-functions/v2/firestore");
+const {onSchedule} = require("firebase-functions/v2/scheduler");
 
 const postmarkOutboundToken = defineSecret("POSTMARK_OUTBOUND_TOKEN");
 
@@ -128,6 +129,7 @@ exports.submitPressCommunications = onCall({
     requesterEmail: String(request.auth.token.email || "").slice(0, 254),
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
     notificationHandledByCallable: true,
+    notificationSent: false,
   });
   const ref = getPressDb().collection("pressCommunications").doc();
   await ref.create(saved);
@@ -155,4 +157,27 @@ exports.sendPressCommunicationEmail = onDocumentCreated({
   if (submission.notificationSent || submission.notificationHandledByCallable) return;
   await sendPostmark(submission);
   await snap.ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
+});
+
+exports.retryPressCommunicationEmail = onSchedule({
+  schedule: "every 5 minutes",
+  region: "us-central1",
+  secrets: [postmarkOutboundToken],
+  timeoutSeconds: 60,
+  memory: "256MiB",
+}, async function() {
+  const pending = await getPressDb().collection("pressCommunications").where("notificationSent", "==", false).limit(20).get();
+  for (const doc of pending.docs) {
+    const submission = doc.data() || {};
+    const createdAt = submission.createdAt && submission.createdAt.toMillis ? submission.createdAt.toMillis() : Date.now();
+    if (Date.now() - createdAt > 15 * 60 * 1000) {
+      console.error("Press notification still unsent after 15 minutes:", doc.id);
+    }
+    try {
+      await sendPostmark(submission);
+      await doc.ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
+    } catch (err) {
+      console.error("Retry could not send press notification:", doc.id, err);
+    }
+  }
 });

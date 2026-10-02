@@ -1,3 +1,4 @@
+const https = require("https");
 const admin = require("firebase-admin");
 const {getFirestore} = require("firebase-admin/firestore");
 const {defineSecret} = require("firebase-functions/params");
@@ -94,9 +95,7 @@ exports.sendPressCommunicationEmail = onDocumentCreated({
     ["Message", submission.summary || ""],
     ["Notes", submission.notes || "Not provided"],
   ];
-  const postmark = require("postmark");
-  const client = new postmark.ServerClient(postmarkOutboundToken.value());
-  await client.sendEmail({
+  const payload = JSON.stringify({
     From: "admin-messages@ibrecruitment.com",
     To: "uk-hr-enquiries@ibrecruitment.com",
     ReplyTo: submission.officerEmail || undefined,
@@ -104,6 +103,29 @@ exports.sendPressCommunicationEmail = onDocumentCreated({
     TextBody: textBody(rows),
     HtmlBody: "<p>" + textBody(rows).replace(/\n/g, "<br>") + "</p>",
     MessageStream: "outbound",
+  });
+  await new Promise(function(resolve, reject) {
+    const req = https.request({
+      hostname: "api.postmarkapp.com",
+      path: "/email",
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-Postmark-Server-Token": postmarkOutboundToken.value(),
+        "Content-Length": Buffer.byteLength(payload),
+      },
+    }, function(res) {
+      let body = "";
+      res.on("data", function(chunk) { body += chunk; });
+      res.on("end", function() {
+        if (res.statusCode >= 200 && res.statusCode < 300) resolve(body);
+        else reject(new Error("Postmark " + res.statusCode + ": " + body));
+      });
+    });
+    req.on("error", reject);
+    req.write(payload);
+    req.end();
   });
   await snap.ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
 });

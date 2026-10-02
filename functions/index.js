@@ -26,8 +26,67 @@ function escapeHtml(value) {
     "&": "&",
     "<": "<",
     ">": ">",
+    '"': """,
     "'": "&#39;",
   })[character]);
+}
+
+function briefRows(submission) {
+  return [
+    ["Company", submission.companyName || ""],
+    ["Headline", submission.headline || ""],
+    ["Announcement type", submission.announcementType || ""],
+    ["Press officer", submission.pressOfficer || ""],
+    ["Officer email", submission.officerEmail || ""],
+    ["Phone", submission.phoneNumber || "Not provided"],
+    ["Press release", submission.pressReleaseUrl || ""],
+    ["Embargo", submission.embargoDate || "Not specified"],
+    ["Message", submission.summary || ""],
+    ["Notes", submission.notes || "Not provided"],
+    ["Submitted by", submission.requesterName || "Signed-in user"],
+    ["Requester email", submission.requesterEmail || "Not available"],
+  ];
+}
+
+function textBody(rows) {
+  return rows.map(function(row) { return row[0] + ":\n" + row[1]; }).join("\n\n");
+}
+
+function sendPostmark(submission) {
+  const rows = briefRows(submission);
+  const body = textBody(rows);
+  const payload = JSON.stringify({
+    From: "admin-messages@ibrecruitment.com",
+    To: "support@ibrecruitment.com",
+    ReplyTo: submission.officerEmail || undefined,
+    Subject: "Press communication: " + String(submission.headline || "New brief").replace(/[\r\n]+/g, " ").slice(0, 160),
+    TextBody: body,
+    HtmlBody: "<p>" + escapeHtml(body).replace(/\n/g, "<br>") + "</p>",
+    MessageStream: "outbound",
+  });
+  return new Promise(function(resolve, reject) {
+    const req = https.request({
+      hostname: "api.postmarkapp.com",
+      path: "/email",
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-Postmark-Server-Token": postmarkOutboundToken.value(),
+        "Content-Length": Buffer.byteLength(payload),
+      },
+    }, function(res) {
+      let responseBody = "";
+      res.on("data", function(chunk) { responseBody += chunk; });
+      res.on("end", function() {
+        if (res.statusCode >= 200 && res.statusCode < 300) resolve(responseBody);
+        else reject(new Error("Postmark " + res.statusCode + ": " + responseBody));
+      });
+    });
+    req.on("error", reject);
+    req.write(payload);
+    req.end();
+  });
 }
 
 exports.submitPressCommunications = onCall({
@@ -62,14 +121,23 @@ exports.submitPressCommunications = onCall({
   let pressUrl;
   try { pressUrl = new URL(submission.pressReleaseUrl); } catch (err) { throw new HttpsError("invalid-argument", "Press release link must be a valid URL."); }
   if (pressUrl.protocol !== "http:" && pressUrl.protocol !== "https:") throw new HttpsError("invalid-argument", "Press release link must use HTTP or HTTPS.");
-  const ref = pressDb.collection("pressCommunications").doc();
-  await ref.create(Object.assign({}, submission, {
+  const saved = Object.assign({}, submission, {
     requesterUid: request.auth.uid,
     requesterName: String(request.auth.token.name || "Signed-in user").slice(0, 160),
     requesterEmail: String(request.auth.token.email || "").slice(0, 254),
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
-  }));
-  return {ok: true, saved: true, submissionId: ref.id};
+    notificationHandledByCallable: true,
+  });
+  const ref = pressDb.collection("pressCommunications").doc();
+  await ref.create(saved);
+  try {
+    await sendPostmark(saved);
+    await ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
+  } catch (err) {
+    console.error("Unable to send press communication notification through Postmark:", err);
+    throw new HttpsError("internal", "The brief was saved, but the support notification could not be sent.", {saved: true, submissionId: ref.id});
+  }
+  return {ok: true, saved: true, notified: true, submissionId: ref.id};
 });
 
 exports.sendPressCommunicationEmail = onDocumentCreated({
@@ -83,49 +151,7 @@ exports.sendPressCommunicationEmail = onDocumentCreated({
   const snap = event.data;
   if (!snap) return;
   const submission = snap.data() || {};
-  const rows = [
-    ["Company", submission.companyName || ""],
-    ["Headline", submission.headline || ""],
-    ["Announcement type", submission.announcementType || ""],
-    ["Press officer", submission.pressOfficer || ""],
-    ["Officer email", submission.officerEmail || ""],
-    ["Phone", submission.phoneNumber || "Not provided"],
-    ["Press release", submission.pressReleaseUrl || ""],
-    ["Embargo", submission.embargoDate || "Not specified"],
-    ["Message", submission.summary || ""],
-    ["Notes", submission.notes || "Not provided"],
-  ];
-  const payload = JSON.stringify({
-    From: "admin-messages@ibrecruitment.com",
-    To: "support@ibrecruitment.com",
-    ReplyTo: submission.officerEmail || undefined,
-    Subject: "Press communication: " + String(submission.headline || "New brief").slice(0, 160),
-    TextBody: textBody(rows),
-    HtmlBody: "<p>" + textBody(rows).replace(/\n/g, "<br>") + "</p>",
-    MessageStream: "outbound",
-  });
-  await new Promise(function(resolve, reject) {
-    const req = https.request({
-      hostname: "api.postmarkapp.com",
-      path: "/email",
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-Postmark-Server-Token": postmarkOutboundToken.value(),
-        "Content-Length": Buffer.byteLength(payload),
-      },
-    }, function(res) {
-      let body = "";
-      res.on("data", function(chunk) { body += chunk; });
-      res.on("end", function() {
-        if (res.statusCode >= 200 && res.statusCode < 300) resolve(body);
-        else reject(new Error("Postmark " + res.statusCode + ": " + body));
-      });
-    });
-    req.on("error", reject);
-    req.write(payload);
-    req.end();
-  });
+  if (submission.notificationSent || submission.notificationHandledByCallable) return;
+  await sendPostmark(submission);
   await snap.ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
 });

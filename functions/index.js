@@ -97,7 +97,7 @@ exports.sendPressCommunicationEmail = onDocumentCreated({
   ];
   const payload = JSON.stringify({
     From: "admin-messages@ibrecruitment.com",
-    To: "uk-hr-enquiries@ibrecruitment.com",
+    To: "support@ibrecruitment.com",
     ReplyTo: submission.officerEmail || undefined,
     Subject: "Press communication: " + String(submission.headline || "New brief").slice(0, 160),
     TextBody: textBody(rows),

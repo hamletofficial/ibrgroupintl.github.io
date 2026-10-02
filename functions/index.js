@@ -167,6 +167,7 @@ async function sendJobRequisitionOutboundNotification(email) {
 }
 
 exports.submitJobRequisition = onCall({
+  invoker: 'public',
   timeoutSeconds: 30,
   memory: '256MiB',
   secrets: [postmarkOutboundToken],

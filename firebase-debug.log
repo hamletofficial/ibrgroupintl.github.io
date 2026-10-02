@@ -1,0 +1,54 @@
+[debug] [2026-10-02T08:25:19.627Z] ----------------------------------------------------------------------
+[debug] [2026-10-02T08:25:19.735Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js functions:secrets:set POSTMARK_OUTBOUND_TOKEN
+[debug] [2026-10-02T08:25:19.740Z] CLI Version:   15.15.0
+[debug] [2026-10-02T08:25:19.741Z] Platform:      win32
+[debug] [2026-10-02T08:25:19.742Z] Node Version:  v24.21.0
+[debug] [2026-10-02T08:25:19.743Z] Time:          Fri Oct 02 2026 09:25:19 GMT+0100 (British Summer Time)
+[debug] [2026-10-02T08:25:19.745Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-10-02T08:25:21.777Z] Field "/functions" in "firebase.json" is possibly invalid: must be object
+[debug] [2026-10-02T08:25:21.778Z] Field "/functions" in "firebase.json" is possibly invalid: must be object
+[debug] [2026-10-02T08:25:21.779Z] Object "/functions/0" in "firebase.json" has unknown property: {"additionalProperty":"platform"}
+[debug] [2026-10-02T08:25:21.779Z] Object "/functions/0" in "firebase.json" is missing required property: {"missingProperty":"remoteSource"}
+[debug] [2026-10-02T08:25:21.780Z] Field "/functions/0" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2026-10-02T08:25:21.780Z] Field "/functions" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2026-10-02T08:25:21.833Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-10-02T08:25:21.834Z] > authorizing via signed-in user (uk-hr-enquiries@ibrecruitment.com)
+[debug] [2026-10-02T08:25:21.862Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-10-02T08:25:21.862Z] > authorizing via signed-in user (uk-hr-enquiries@ibrecruitment.com)
+[debug] [2026-10-02T08:25:21.863Z] [iam] checking project wale-491805 for permissions ["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.update","secretmanager.versions.add"]
+[debug] [2026-10-02T08:25:21.869Z] Checked if tokens are valid: false, expires at: 1790928535473
+[debug] [2026-10-02T08:25:21.870Z] Checked if tokens are valid: false, expires at: 1790928535473
+[debug] [2026-10-02T08:25:21.871Z] > refreshing access token with scopes: []
+[debug] [2026-10-02T08:25:21.894Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-10-02T08:25:21.894Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-10-02T08:25:22.830Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-10-02T08:25:22.831Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-10-02T08:25:22.883Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions [none]
+[debug] [2026-10-02T08:25:22.884Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions  x-goog-user-project=wale-491805
+[debug] [2026-10-02T08:25:22.884Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2026-10-02T08:25:23.796Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions 200
+[debug] [2026-10-02T08:25:23.797Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2026-10-02T08:25:23.802Z] Checked if tokens are valid: true, expires at: 1790933121832
+[debug] [2026-10-02T08:25:23.802Z] Checked if tokens are valid: true, expires at: 1790933121832
+[debug] [2026-10-02T08:25:23.803Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805 [none]
+[debug] [2026-10-02T08:25:24.010Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805 200
+[debug] [2026-10-02T08:25:24.011Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805 {"projectNumber":"753131375199","projectId":"wale-491805","lifecycleState":"ACTIVE","name":"wale-491805","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-10-01T22:37:54.330Z"}
+[debug] [2026-10-02T08:25:24.014Z] Checked if tokens are valid: true, expires at: 1790933121832
+[debug] [2026-10-02T08:25:24.014Z] Checked if tokens are valid: true, expires at: 1790933121832
+[debug] [2026-10-02T08:25:24.015Z] >>> [apiv2][query] GET https://secretmanager.googleapis.com/v1/projects/wale-491805/secrets/POSTMARK_OUTBOUND_TOKEN [none]
+[debug] [2026-10-02T08:25:24.511Z] <<< [apiv2][status] GET https://secretmanager.googleapis.com/v1/projects/wale-491805/secrets/POSTMARK_OUTBOUND_TOKEN 200
+[debug] [2026-10-02T08:25:24.512Z] <<< [apiv2][body] GET https://secretmanager.googleapis.com/v1/projects/wale-491805/secrets/POSTMARK_OUTBOUND_TOKEN {"name":"projects/753131375199/secrets/POSTMARK_OUTBOUND_TOKEN","replication":{"automatic":{}},"createTime":"2026-10-02T05:59:50.368518Z","labels":{"firebase-managed":"functions"},"etag":"\"165cd53d91e9a6\""}
+[debug] [2026-10-02T08:25:29.444Z] ExitPromptError: User force closed the prompt with SIGINT
+    at Interface.sigint (C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\@inquirer\core\dist\commonjs\lib\create-prompt.js:101:37)
+    at Interface.emit (node:events:514:28)
+    at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1343:18)
+    at ReadStream.onkeypress (node:internal/readline/interface:289:20)
+    at ReadStream.emit (node:events:526:24)
+    at emitKeys (node:internal/readline/utils:371:14)
+    at emitKeys.next (<anonymous>)
+    at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+    at ReadStream.emit (node:events:514:28)
+    at addChunk (node:internal/streams/readable:568:12)
+[error] 
+[error] Error: An unexpected error has occurred.

@@ -5,9 +5,12 @@ const {defineSecret} = require("firebase-functions/params");
 const {HttpsError, onCall} = require("firebase-functions/v2/https");
 const {onDocumentCreated} = require("firebase-functions/v2/firestore");
 
-if (!admin.apps.length) admin.initializeApp();
-const pressDb = getFirestore(admin.app(), "chung-lee");
 const postmarkOutboundToken = defineSecret("POSTMARK_OUTBOUND_TOKEN");
+
+function getPressDb() {
+  if (!admin.apps.length) admin.initializeApp();
+  return getFirestore(admin.app(), "chung-lee");
+}
 
 function readText(data, field, maxLength, required) {
   const value = data && data[field];
@@ -126,7 +129,7 @@ exports.submitPressCommunications = onCall({
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
     notificationHandledByCallable: true,
   });
-  const ref = pressDb.collection("pressCommunications").doc();
+  const ref = getPressDb().collection("pressCommunications").doc();
   await ref.create(saved);
   try {
     await sendPostmark(saved);

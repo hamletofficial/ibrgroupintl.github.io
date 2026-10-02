@@ -1,10 +1,10 @@
 // public/firebase-config.js
 // replace the placeholders with values from Firebase Console
 window.firebaseConfig = {
-  apiKey: "AIzaSyCcsm1Pvh_h1M1OySEXTYeZnOtBUAYExio",
-  authDomain: "wale-491803.firebaseapp.com",
-  projectId: "wale-491803",
-  storageBucket: "wale-491803.firebasestorage.app",
-  appId: "1:916707769747:web:dcc1f83b793c101e7d7c66"
+  apiKey: "AIzaSyChWtcZbStdG0ep7FdL8OG6ESgSXtzDZ1k",
+  authDomain: "wale-491805.firebaseapp.com",
+  projectId: "wale-491805",
+  storageBucket: "wale-491805.firebasestorage.app",
+  appId: "1:753131375199:web:87d3eef7edda42d640a9ea"
   // other fields (messagingSenderId, measurementId) may be added if available
 };

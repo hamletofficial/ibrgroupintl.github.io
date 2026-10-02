@@ -7,7 +7,7 @@ const { onSchedule } = require('firebase-functions/v2/scheduler');
 admin.initializeApp();
 const postmarkToken = defineSecret('POSTMARK_BROADCAST_TOKEN');
 
-const SUBSTACK_RSS_URL = 'https://substack.ibrecruitment.com/feed';
+const SUBSTACK_RSS_URL = 'https://blogs.ibrecruitment.com/feed';
 
 // Gen 2 scheduled function: Fetch RSS feed and store entries in Firestore
 exports.fetchAndStoreRssToInsightsFeed = onSchedule({

@@ -9,7 +9,7 @@ const postmarkToken = defineSecret('POSTMARK_BROADCAST_TOKEN');
 
 // Shared RSS parser and URL
 const parser = new Parser();
-const SUBSTACK_RSS_URL = 'https://substack.ibrecruitment.com/feed';
+const SUBSTACK_RSS_URL = 'https://blogs.ibrecruitment.com/feed';
 
 // Cloud Function: Fetch RSS feed and store entries in Firestore
 // Node.js 22+ compatible

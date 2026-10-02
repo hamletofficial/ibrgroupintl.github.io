@@ -46,7 +46,7 @@ exports.fetchAndStoreRssToInsightsFeed = onSchedule({
 });
 
 
-exports.adminFetchAndRelayRss = onDocumentCreated({
+exports.relayInsightOnCreate = onDocumentCreated({
   document: 'insightsFeed/{postId}',
   secrets: [postmarkToken],
 }, async (event) => {
@@ -127,7 +127,7 @@ exports.adminFetchAndRelayRss = onDocumentCreated({
     }
     return null;
 });
-// --- End adminFetchAndRelayRss and dependencies ---
+// --- End relayInsightOnCreate and dependencies ---
 
 function readRequisitionText(data, field, maxLength, required = false) {
   const value = data[field];

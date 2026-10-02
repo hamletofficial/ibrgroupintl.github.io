@@ -3,7 +3,7 @@
     "projectNumber": "753131375199",
     "projectId": "wale-491805",
     "appId": "1:753131375199:web:87d3eef7edda42d640a9ea",
-    "realtimeDatabaseInstanceUri": "https://wale-491805-default-rtdb.firebaseio.com",
+    "realtimeDatabaseInstanceUri": "",
     "realtimeDatabaseUrl": "",
     "storageBucket": "wale-491805.firebasestorage.app",
     "locationId": "",

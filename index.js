@@ -26,7 +26,7 @@ exports.fetchAndStoreRssToInsightsFeed = functions
     let newCount = 0;
 
     for (const entry of feed.items) {
-      // Use a deterministic ID (e.g., GUID or link) to avoid duplicates
+      
       const docId = Buffer.from(entry.guid || entry.link).toString('base64').replace(/\//g, '_');
       const docRef = db.collection('insightsFeed').doc(docId);
       const docSnap = await docRef.get();

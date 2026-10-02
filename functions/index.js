@@ -26,7 +26,6 @@ function escapeHtml(value) {
     "&": "&",
     "<": "<",
     ">": ">",
-    "\"": """,
     "'": "&#39;",
   })[character]);
 }

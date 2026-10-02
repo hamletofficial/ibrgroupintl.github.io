@@ -22,12 +22,10 @@ function readText(data, field, maxLength, required) {
 }
 
 function escapeHtml(value) {
-  return String(value || "").replace(/[&<>"']/g, (character) => ({
+  return String(value || "").replace(/[&<>]/g, (character) => ({
     "&": "&",
     "<": "<",
     ">": ">",
-    '"': """,
-    "'": "&#39;",
   })[character]);
 }
 

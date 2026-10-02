@@ -6,6 +6,7 @@ const { onSchedule } = require('firebase-functions/v2/scheduler');
 
 admin.initializeApp();
 const postmarkToken = defineSecret('POSTMARK_BROADCAST_TOKEN');
+const postmarkOutboundToken = defineSecret('POSTMARK_OUTBOUND_TOKEN');
 
 const SUBSTACK_RSS_URL = 'https://blogs.ibrecruitment.com/feed';
 
@@ -157,10 +158,16 @@ function escapeHtml(value) {
   })[character]);
 }
 
+async function sendJobRequisitionOutboundNotification(email) {
+  const postmark = require('postmark');
+  const postmarkClient = new postmark.ServerClient(postmarkOutboundToken.value());
+  await postmarkClient.sendEmail(email);
+}
+
 exports.submitJobRequisition = onCall({
   timeoutSeconds: 30,
   memory: '256MiB',
-  secrets: [postmarkToken],
+  secrets: [postmarkOutboundToken],
 }, async (request) => {
     const data = request.data;
     if (!request.auth) {
@@ -251,8 +258,6 @@ exports.submitJobRequisition = onCall({
     const subjectTitle = requisition.jobTitle.replace(/[\r\n]+/g, ' ').slice(0, 160);
 
     try {
-      const postmark = require('postmark');
-      const postmarkClient = new postmark.ServerClient(postmarkToken.value());
       const email = {
         From: 'admin-messages@ibrecruitment.com',
         To: 'uk-hr-enquiries@ibrecruitment.com',
@@ -262,7 +267,7 @@ exports.submitJobRequisition = onCall({
         MessageStream: 'outbound',
       };
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(requesterEmail)) email.ReplyTo = requesterEmail;
-      await postmarkClient.sendEmail(email);
+      await sendJobRequisitionOutboundNotification(email);
       return { ok: true, message: 'Requisition notification sent.' };
     } catch (err) {
       console.error('Unable to send job requisition notification through Postmark:', err);

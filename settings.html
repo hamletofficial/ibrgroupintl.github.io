@@ -119,6 +119,7 @@
   </div>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <script defer src="/header-profile.js"></script>
   <script defer src="/mobile-compat.js"></script>
@@ -144,7 +145,7 @@
         signInLink.style.display = 'inline-flex';
         document.body.classList.remove('auth-pending', 'has-sidebar');
       }
-      function showSignedIn(user) {
+      async function showSignedIn(user) {
         loginSection.style.display = 'none';
         settingsShell.style.display = 'block';
         signOutBtn.style.display = 'inline-flex';
@@ -155,6 +156,17 @@
         settingsUserEmail.textContent = user.email || 'Not available';
         settingsUserId.textContent = user.uid || '-';
         settingsLastLogin.textContent = user.metadata && user.metadata.lastSignInTime ? new Date(user.metadata.lastSignInTime).toLocaleString() : '-';
+        try {
+          const profileSnapshot = await firebase.firestore().collection('publicProfiles').doc(user.uid).get();
+          const profileEmail = profileSnapshot.exists ? profileSnapshot.get('email') : '';
+          if (auth.currentUser && auth.currentUser.uid === user.uid) {
+            settingsUserEmail.textContent = typeof profileEmail === 'string' && profileEmail.trim()
+              ? profileEmail.trim()
+              : user.email || 'Not available';
+          }
+        } catch (error) {
+          console.error('Unable to load profile email from Firestore:', error);
+        }
       }
       auth.onAuthStateChanged(function (user) {
         if (!user) { showSignedOut(); return; }

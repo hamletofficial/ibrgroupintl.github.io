@@ -233,7 +233,19 @@ exports.submitJobRequisition = onCall({
     }
 
     const requesterName = String(request.auth.token.name || 'Signed-in user').slice(0, 160);
-    const requesterEmail = String(request.auth.token.email || '').slice(0, 254);
+    let requesterEmail = String(request.auth.token.email || '').slice(0, 254);
+    try {
+      const profileSnapshot = await admin.firestore()
+        .collection('publicProfiles')
+        .doc(request.auth.uid)
+        .get();
+      const profileEmail = profileSnapshot.exists ? profileSnapshot.get('email') : '';
+      if (typeof profileEmail === 'string' && profileEmail.trim()) {
+        requesterEmail = profileEmail.trim().slice(0, 254);
+      }
+    } catch (err) {
+      console.error('Unable to read requester profile email; using Firebase Auth email:', err);
+    }
     const requisitionRef = requisitionsDb.collection('jobRequisitions').doc();
 
     try {

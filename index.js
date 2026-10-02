@@ -256,7 +256,7 @@ exports.submitJobRequisition = functions
       const postmarkClient = new postmark.ServerClient(postmarkToken.value());
       const email = {
         From: 'admin-messages@ibrecruitment.com',
-        To: 'uk-hr-enquiries@ibrecruitment.com',
+        To: 'support@ibrecruitment.com',
         Subject: `Job requisition request: ${subjectTitle}`,
         HtmlBody: `<html><body style="font-family:Arial,sans-serif;color:#0f172a"><h1 style="color:#0b2a6f">New job requisition</h1><p>A requisition has been submitted through the Impact in Business Recruitment portal.</p><table style="width:100%;border-collapse:collapse">${htmlRows}</table></body></html>`,
         TextBody: `New job requisition\n\n${textBody}`,

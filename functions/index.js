@@ -167,7 +167,9 @@ async function sendJobRequisitionOutboundNotification(email) {
 }
 
 exports.submitJobRequisition = onCall({
+  region: 'us-central1',
   invoker: 'public',
+  cors: true,
   timeoutSeconds: 30,
   memory: '256MiB',
   secrets: [postmarkOutboundToken],

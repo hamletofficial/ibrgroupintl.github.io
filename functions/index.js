@@ -22,13 +22,12 @@ function readText(data, field, maxLength, required = false) {
 }
 
 function escapeHtml(value) {
-  return String(value || "").replace(/[&<>"']/g, (character) => ({
-    "&": "&",
-    "<": "<",
-    ">": ">",
-    "\"": """,
-    "'": "&#39;",
-  })[character]);
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, '&#39;');
 }
 
 exports.submitPressCommunications = onCall({

@@ -2,6 +2,7 @@ const admin = require("firebase-admin");
 const {getFirestore} = require("firebase-admin/firestore");
 const {defineSecret} = require("firebase-functions/params");
 const {HttpsError, onCall} = require("firebase-functions/v2/https");
+const {onDocumentCreated} = require("firebase-functions/v2/firestore");
 
 if (!admin.apps.length) admin.initializeApp();
 const pressDb = getFirestore(admin.app(), "chung-lee");
@@ -62,33 +63,42 @@ exports.submitPressCommunications = onCall({
     requesterEmail: String(request.auth.token.email || "").slice(0, 254),
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
   }));
-  try {
-    const postmark = require("postmark");
-    const client = new postmark.ServerClient(postmarkOutboundToken.value());
-    const rows = [
-      ["Company", submission.companyName],
-      ["Headline", submission.headline],
-      ["Announcement type", submission.announcementType],
-      ["Press officer", submission.pressOfficer],
-      ["Officer email", submission.officerEmail],
-      ["Phone", submission.phoneNumber || "Not provided"],
-      ["Press release", submission.pressReleaseUrl],
-      ["Embargo", submission.embargoDate || "Not specified"],
-      ["Message", submission.summary],
-      ["Notes", submission.notes || "Not provided"],
-    ];
-    await client.sendEmail({
-      From: "admin-messages@ibrecruitment.com",
-      To: "uk-hr-enquiries@ibrecruitment.com",
-      ReplyTo: submission.officerEmail,
-      Subject: "Press communication: " + submission.headline.slice(0, 160),
-      TextBody: textBody(rows),
-      HtmlBody: "<p>" + textBody(rows).replace(/\n/g, "<br>") + "</p>",
-      MessageStream: "outbound",
-    });
-    return {ok: true, saved: true, notificationSent: true, submissionId: ref.id};
-  } catch (err) {
-    console.error("Press notification failed:", err);
-    return {ok: true, saved: true, notificationSent: false, submissionId: ref.id, message: err && err.message ? err.message : "Postmark notification failed."};
-  }
+  return {ok: true, saved: true, submissionId: ref.id};
+});
+
+exports.sendPressCommunicationEmail = onDocumentCreated({
+  document: "pressCommunications/{submissionId}",
+  database: "chung-lee",
+  region: "us-central1",
+  secrets: [postmarkOutboundToken],
+  timeoutSeconds: 30,
+  memory: "256MiB",
+}, async function(event) {
+  const snap = event.data;
+  if (!snap) return;
+  const submission = snap.data() || {};
+  const rows = [
+    ["Company", submission.companyName || ""],
+    ["Headline", submission.headline || ""],
+    ["Announcement type", submission.announcementType || ""],
+    ["Press officer", submission.pressOfficer || ""],
+    ["Officer email", submission.officerEmail || ""],
+    ["Phone", submission.phoneNumber || "Not provided"],
+    ["Press release", submission.pressReleaseUrl || ""],
+    ["Embargo", submission.embargoDate || "Not specified"],
+    ["Message", submission.summary || ""],
+    ["Notes", submission.notes || "Not provided"],
+  ];
+  const postmark = require("postmark");
+  const client = new postmark.ServerClient(postmarkOutboundToken.value());
+  await client.sendEmail({
+    From: "admin-messages@ibrecruitment.com",
+    To: "uk-hr-enquiries@ibrecruitment.com",
+    ReplyTo: submission.officerEmail || undefined,
+    Subject: "Press communication: " + String(submission.headline || "New brief").slice(0, 160),
+    TextBody: textBody(rows),
+    HtmlBody: "<p>" + textBody(rows).replace(/\n/g, "<br>") + "</p>",
+    MessageStream: "outbound",
+  });
+  await snap.ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
 });

@@ -277,9 +277,17 @@
           if (userStatus && signInActions) { userStatus.classList.remove('active'); signInActions.style.display = 'flex'; }
         }
         let redirectTimer = null;
+        function postLoginPath() {
+          try {
+            var next = new URLSearchParams(window.location.search).get('next') || '';
+            if (next.charAt(0) === '/' && next.charAt(1) !== '/' && next.indexOf('\\') === -1 && next.indexOf('://') === -1) return next;
+          } catch (error) {}
+          return '/members.html';
+        }
         function redirectToPortal() {
           if (redirectTimer) return;
-          redirectTimer = setTimeout(function () { window.location.replace('/members.html'); }, 500);
+          var target = postLoginPath();
+          redirectTimer = setTimeout(function () { window.location.replace(target); }, 500);
         }
         auth.onAuthStateChanged(function(user) {
           if (user) { showUserStatus(user); redirectToPortal(); }
@@ -301,7 +309,7 @@
             loadingNotice.style = 'text-align:center;margin-top:2rem;font-size:1.2rem;color:#0284c7;';
             document.body.innerHTML = '';
             document.body.appendChild(loadingNotice);
-            setTimeout(() => { window.location.href = '/members.html'; }, 2000);
+            setTimeout(() => { window.location.href = postLoginPath(); }, 2000);
           } catch (err) {
             console.warn('Popup failed, falling back to redirect', err);
             try { await auth.signInWithRedirect(provider); } catch (rerr) { showError(rerr.message || 'Authentication failed'); }

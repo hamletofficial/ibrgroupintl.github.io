@@ -41,8 +41,8 @@
 	}
 
 	.request-shell {
-	  width: min(1040px, calc(100% - 2rem));
-	  margin: 2rem auto 3rem;
+	  width: min(1120px, calc(100% - 2rem));
+	  margin: clamp(1.25rem, 4vw, 3rem) auto 3rem;
 	}
 
 	.sidebar-menu-shell {
@@ -112,18 +112,27 @@
 	}
 
 	.intro-card {
-	  padding: clamp(1.25rem, 4vw, 2.25rem);
+	  position: relative;
+	  overflow: hidden;
+	  padding: clamp(1.5rem, 5vw, 3.25rem);
 	  margin-bottom: 1.25rem;
-	  background: linear-gradient(145deg, #fff 0%, #f2f8ff 100%);
+	  color: #fff;
+	  border: 0;
+	  background: radial-gradient(circle at 90% 10%, rgba(56, 189, 248, .28), transparent 30%), linear-gradient(130deg, #071d49 0%, #0b2a6f 58%, #075985 100%);
+	  box-shadow: 0 18px 42px rgba(7, 29, 73, .2);
 	}
+	.intro-card h1 { max-width: 16ch; color: #fff; font-size: clamp(2rem, 5vw, 3.35rem); }
+	.intro-card p { max-width: 65ch; color: rgba(255, 255, 255, .82); font-size: 1.02rem; line-height: 1.7; }
+	.intro-points { display: flex; flex-wrap: wrap; gap: .55rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
+	.intro-points li { padding: .45rem .75rem; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; color: #e0f2fe; background: rgba(255,255,255,.08); font-size: .84rem; font-weight: 700; }
 
 	.eyebrow {
 	  display: inline-flex;
 	  border-radius: 999px;
 	  padding: 6px 11px;
-	  color: #0f3d63;
-	  background: #dbeafe;
-	  border: 1px solid #bfdbfe;
+	  color: #e0f2fe;
+	  background: rgba(14, 165, 233, .18);
+	  border: 1px solid rgba(186, 230, 253, .35);
 	  font-size: .8rem;
 	  font-weight: 800;
 	  letter-spacing: .04em;
@@ -132,7 +141,7 @@
 
 	h1, h2, h3 { color: #092a4b; }
 	h1 { margin: 12px 0 8px; font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.14; }
-	.intro-card p { max-width: 72ch; margin: 0; color: var(--muted); }
+	.intro-card > p { max-width: 65ch; margin: 0; color: rgba(255, 255, 255, .82); }
 
 	.auth-card {
 	  display: none;
@@ -143,15 +152,19 @@
 	  background: linear-gradient(145deg, #fff 0%, #f6fbff 100%);
 	}
 
-	.request-card { padding: clamp(1rem, 3vw, 1.75rem); }
-	.request-card h2 { margin: 0 0 6px; }
+	.request-card { padding: clamp(1.1rem, 3.5vw, 2.25rem); }
+	.request-card h2 { margin: 0 0 6px; font-size: clamp(1.45rem, 3vw, 1.85rem); }
 	.form-intro { margin: 0 0 1.25rem; color: var(--muted); }
+	.form-section { min-width: 0; margin: 1.5rem 0 0; padding: 1.25rem 0 0; border: 0; border-top: 1px solid #e8eef6; }
+	.form-section legend { padding: 0 .55rem 0 0; color: #0b2a6f; font-size: 1.04rem; font-weight: 800; }
+	.section-hint { margin: .15rem 0 1rem; color: var(--muted); font-size: .88rem; }
 
 	.form-grid {
 	  display: grid;
 	  grid-template-columns: repeat(2, minmax(0, 1fr));
 	  gap: 14px;
 	}
+	input:hover, select:hover, textarea:hover { border-color: #94a3b8; }
 
 	.field { display: grid; gap: 6px; }
 	.field.full { grid-column: 1 / -1; }
@@ -205,6 +218,7 @@
 	.form-status { min-height: 1.4rem; margin: 0; color: var(--muted); }
 	.form-status.success { color: #166534; }
 	.form-status.error { color: #b91c1c; }
+	.form-status { flex: 1 1 300px; }
 
 	.privacy-note { margin: 14px 0 0; color: var(--muted); font-size: .88rem; }
 
@@ -219,6 +233,7 @@
 	@media (max-width: 640px) {
 	  .form-grid { grid-template-columns: 1fr; }
 	  .field.full { grid-column: auto; }
+	  .form-section { padding-top: 1rem; }
 	  .form-footer { align-items: stretch; }
 	  .submit-button { width: 100%; }
 	}
@@ -278,14 +293,22 @@
 	  <section class="intro-card">
 		<span class="eyebrow">Hiring request</span>
 		<h1>Submit a job requisition</h1>
-		<p>Share the role requirements and hiring context. We’ll send the completed request to the recruitment team for review.</p>
+		<p>Give our recruitment team a clear brief so we can understand the role, align on the hiring plan, and follow up with the right questions.</p>
+		<ul class="intro-points" aria-label="Submission information">
+		  <li>Secure, signed-in submissions</li>
+		  <li>Saved to your requisition record</li>
+		  <li>Recruiter follow-up</li>
+		</ul>
 	  </section>
 
 	  <section class="request-card" aria-labelledby="requestTitle">
 		<h2 id="requestTitle">Requisition details</h2>
-		<p class="form-intro">Fields marked with <span class="required">*</span> are required.</p>
+		<p class="form-intro">Fields marked with <span class="required">*</span> are required. Your request is saved securely before notification is sent.</p>
 		<form id="requisitionForm" autocomplete="on">
-		  <div class="form-grid">
+		  <fieldset class="form-section">
+			<legend>Role and team</legend>
+			<p class="section-hint">Start with the role, hiring contact, and where the work will take place.</p>
+			<div class="form-grid">
 			<div class="field">
 			  <label for="jobTitle">Job title <span class="required">*</span></label>
 			  <input id="jobTitle" name="jobTitle" type="text" maxlength="160" required />
@@ -311,6 +334,12 @@
 				<option value="Remote">Remote</option>
 			  </select>
 			</div>
+			</div>
+		  </fieldset>
+		  <fieldset class="form-section">
+			<legend>Hiring plan</legend>
+			<p class="section-hint">Share the expected start date, budget readiness, and the urgency of the hire.</p>
+			<div class="form-grid">
 			<div class="field">
 			  <label for="employmentType">Employment type <span class="required">*</span></label>
 			  <select id="employmentType" name="employmentType" required>
@@ -356,6 +385,12 @@
 			  <label for="applicationUrl">Application / role link</label>
 			  <input id="applicationUrl" name="applicationUrl" type="url" maxlength="500" placeholder="https://..." />
 			</div>
+			</div>
+		  </fieldset>
+		  <fieldset class="form-section">
+			<legend>Role brief</legend>
+			<p class="section-hint">Describe the outcomes, responsibilities, qualifications, and any helpful context.</p>
+			<div class="form-grid">
 			<div class="field full">
 			  <label for="jobDescription">Role summary and responsibilities <span class="required">*</span></label>
 			  <textarea id="jobDescription" name="jobDescription" maxlength="6000" required></textarea>
@@ -369,12 +404,13 @@
 			  <label for="additionalNotes">Additional notes</label>
 			  <textarea id="additionalNotes" name="additionalNotes" maxlength="3000" placeholder="Approval context, preferred timeline, or other relevant information."></textarea>
 			</div>
-		  </div>
+			</div>
+		  </fieldset>
 		  <div class="form-footer">
 			<button class="submit-button" id="submitButton" type="submit">Submit requisition</button>
 			<p class="form-status" id="formStatus" aria-live="polite"></p>
 		  </div>
-		  <p class="privacy-note">Your account email will be included as the requester so the recruitment team can follow up.</p>
+		  <p class="privacy-note">Your account email will be included as the requester so the recruitment team can follow up. If email notification is temporarily unavailable, the form will confirm that your requisition was saved.</p>
 		</form>
 	  </section>
 	</main>
@@ -448,9 +484,13 @@
 
 		try {
 		  var submitRequest = firebase.functions().httpsCallable('submitJobRequisition');
-		  await submitRequest(getFormData());
+		  var result = await submitRequest(getFormData());
 		  form.reset();
-		  setStatus('Requisition submitted. The recruitment team has been notified.', 'success');
+		  if (result.data && result.data.saved && result.data.notificationSent === false) {
+			setStatus('Your requisition was saved' + (result.data.requisitionId ? ' (reference ' + result.data.requisitionId + ')' : '') + ', but the recruitment team could not be notified. Please contact them directly; do not submit it again.', 'error');
+		  } else {
+			setStatus('Requisition submitted and the recruitment team has been notified.', 'success');
+		  }
 		} catch (error) {
 		  console.error('Job requisition submission failed:', error);
 		  if (error.details && error.details.saved) {

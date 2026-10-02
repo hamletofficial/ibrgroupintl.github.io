@@ -303,13 +303,21 @@ exports.submitJobRequisition = onCall({
         email.ReplyTo = savedRequisition.requesterEmail;
       }
       await sendJobRequisitionOutboundNotification(email);
-      return { ok: true, requisitionId: requisitionRef.id, message: 'Requisition notification sent.' };
+      return {
+        ok: true,
+        saved: true,
+        notificationSent: true,
+        requisitionId: requisitionRef.id,
+        message: 'Requisition notification sent.',
+      };
     } catch (err) {
       console.error('Unable to load saved job requisition or send its Postmark notification:', err);
-      throw new HttpsError(
-        'internal',
-        'Your requisition was saved, but the recruitment team could not be notified. Please contact them directly.',
-        { saved: true, requisitionId: requisitionRef.id }
-      );
+      return {
+        ok: true,
+        saved: true,
+        notificationSent: false,
+        requisitionId: requisitionRef.id,
+        message: 'Your requisition was saved, but the recruitment team could not be notified. Please contact them directly; do not submit it again.',
+      };
     }
   });

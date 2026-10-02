@@ -256,6 +256,20 @@ exports.submitJobRequisition = onCall({
     ).join('');
     const textBody = emailFields.map(([label, value]) => `${label}:\n${value}`).join('\n\n');
     const subjectTitle = requisition.jobTitle.replace(/[\r\n]+/g, ' ').slice(0, 160);
+    const requisitionRef = admin.firestore().collection('jobRequisitions').doc();
+
+    try {
+      await requisitionRef.create({
+        ...requisition,
+        requesterUid: request.auth.uid,
+        requesterName,
+        requesterEmail,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+    } catch (err) {
+      console.error('Unable to save job requisition to Firestore:', err);
+      throw new HttpsError('internal', 'Unable to save your requisition. Please try again later.');
+    }
 
     try {
       const email = {
@@ -268,9 +282,13 @@ exports.submitJobRequisition = onCall({
       };
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(requesterEmail)) email.ReplyTo = requesterEmail;
       await sendJobRequisitionOutboundNotification(email);
-      return { ok: true, message: 'Requisition notification sent.' };
+      return { ok: true, requisitionId: requisitionRef.id, message: 'Requisition notification sent.' };
     } catch (err) {
       console.error('Unable to send job requisition notification through Postmark:', err);
-      throw new HttpsError('internal', 'Unable to send your requisition notification. Please try again later.');
+      throw new HttpsError(
+        'internal',
+        'Your requisition was saved, but the recruitment team could not be notified. Please contact them directly.',
+        { saved: true, requisitionId: requisitionRef.id }
+      );
     }
   });

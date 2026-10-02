@@ -453,7 +453,12 @@
 		  setStatus('Requisition submitted. The recruitment team has been notified.', 'success');
 		} catch (error) {
 		  console.error('Job requisition submission failed:', error);
-		  setStatus(error.message || 'Unable to submit your requisition. Please try again.', 'error');
+		  if (error.details && error.details.saved) {
+			form.reset();
+			setStatus('Your requisition was saved, but the recruitment team could not be notified. Please contact them directly; you do not need to resubmit.', 'error');
+		  } else {
+			setStatus(error.message || 'Unable to submit your requisition. Please try again.', 'error');
+		  }
 		} finally {
 		  submitButton.disabled = false;
 		}

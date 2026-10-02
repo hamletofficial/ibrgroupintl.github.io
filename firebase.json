@@ -37,7 +37,6 @@
       "source": "ryu"
     },
     {
-      "source": "ken",
       "codebase": "ken",
       "disallowLegacyRuntimeConfig": true,
       "ignore": [
@@ -49,7 +48,8 @@
       ],
       "predeploy": [
         "npm --prefix \"$RESOURCE_DIR\" run lint"
-      ]
+      ],
+      "source": "ken"
     }
   ],
   "firestore": {

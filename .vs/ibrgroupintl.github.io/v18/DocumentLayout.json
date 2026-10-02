@@ -3,6 +3,9 @@
   "WorkspaceRootPath": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\44746\\.copilot\\plans\\plan-fix-functions-deploy-predeploy.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|MarkdownSecurePreview"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\functions\\index.js||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:functions\\index.js||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
@@ -152,7 +155,7 @@
         },
         {
           "DockedWidth": 152,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -163,12 +166,20 @@
               "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{7513ff4e-9271-4984-bbcd-46ff9e185399}"
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "plan-fix-functions-deploy-predeploy.md [Preview]",
+              "DocumentMoniker": "C:\\Users\\44746\\.copilot\\plans\\plan-fix-functions-deploy-predeploy.md",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\..\\.copilot\\plans\\plan-fix-functions-deploy-predeploy.md",
+              "ToolTip": "C:\\Users\\44746\\.copilot\\plans\\plan-fix-functions-deploy-predeploy.md [Preview]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\..\\.copilot\\plans\\plan-fix-functions-deploy-predeploy.md [Preview]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-10-02T12:12:19.659Z",
+              "EditorCaption": " [Preview]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 34,
               "Title": "package.json",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\sagat\\package.json",
               "RelativeDocumentMoniker": "sagat\\package.json",
@@ -181,7 +192,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "index.js",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\functions\\index.js",
               "RelativeDocumentMoniker": "functions\\index.js",
@@ -194,15 +205,15 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{7513ff4e-9271-4984-bbcd-46ff9e185399}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "requests.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\requests.html",
               "RelativeDocumentMoniker": "requests.html",
@@ -215,7 +226,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "README.md",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\README.md",
               "RelativeDocumentMoniker": "README.md",
@@ -228,7 +239,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "plan-persist-job-requisitions-before-email.md [Preview]",
               "DocumentMoniker": "C:\\Users\\44746\\.copilot\\plans\\plan-persist-job-requisitions-before-email.md",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\..\\.copilot\\plans\\plan-persist-job-requisitions-before-email.md",
@@ -240,7 +251,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "firebase-config.json",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\firebase-config.json",
               "RelativeDocumentMoniker": "firebase-config.json",
@@ -253,7 +264,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "firebase-config.js",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\firebase-config.js",
               "RelativeDocumentMoniker": "firebase-config.js",
@@ -266,7 +277,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "index.js",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\index.js",
               "RelativeDocumentMoniker": "index.js",
@@ -279,7 +290,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "plan-repair-the-requisition-notification-callable.md [Preview]",
               "DocumentMoniker": "C:\\Users\\44746\\.copilot\\plans\\plan-repair-the-requisition-notification-callable.md",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\..\\.copilot\\plans\\plan-repair-the-requisition-notification-callable.md",
@@ -291,7 +302,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 32,
               "Title": "package.json",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\functions\\package.json",
               "RelativeDocumentMoniker": "functions\\package.json",
@@ -304,7 +315,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 33,
               "Title": "package-lock.json",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\functions\\package-lock.json",
               "RelativeDocumentMoniker": "functions\\package-lock.json",
@@ -317,7 +328,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "index.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\index.html",
               "RelativeDocumentMoniker": "index.html",
@@ -330,7 +341,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "copilot-instructions.md",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\.github\\copilot-instructions.md",
               "RelativeDocumentMoniker": ".github\\copilot-instructions.md",
@@ -343,7 +354,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "livefeed.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\livefeed.html",
               "RelativeDocumentMoniker": "livefeed.html",
@@ -356,7 +367,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "settings.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\settings.html",
               "RelativeDocumentMoniker": "settings.html",
@@ -369,7 +380,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "login.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\login.html",
               "RelativeDocumentMoniker": "login.html",
@@ -382,7 +393,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 31,
               "Title": "contact.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\contact.html",
               "RelativeDocumentMoniker": "contact.html",
@@ -395,7 +406,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "invoice.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\invoice.html",
               "RelativeDocumentMoniker": "invoice.html",
@@ -408,7 +419,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "members.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\members.html",
               "RelativeDocumentMoniker": "members.html",
@@ -421,7 +432,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "editprofile.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\editprofile.html",
               "RelativeDocumentMoniker": "editprofile.html",
@@ -434,7 +445,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "insights.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\insights.html",
               "RelativeDocumentMoniker": "insights.html",
@@ -447,7 +458,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "uploads.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\uploads.html",
               "RelativeDocumentMoniker": "uploads.html",
@@ -460,7 +471,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "success.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\success.html",
               "RelativeDocumentMoniker": "success.html",
@@ -473,7 +484,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "loggedout.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\loggedout.html",
               "RelativeDocumentMoniker": "loggedout.html",
@@ -486,7 +497,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "directory.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\directory.html",
               "RelativeDocumentMoniker": "directory.html",
@@ -499,7 +510,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "cookies.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\cookies.html",
               "RelativeDocumentMoniker": "cookies.html",
@@ -512,7 +523,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "terms.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\terms.html",
               "RelativeDocumentMoniker": "terms.html",
@@ -525,7 +536,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "privacy.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\privacy.html",
               "RelativeDocumentMoniker": "privacy.html",
@@ -538,7 +549,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 25,
               "Title": "about.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\about.html",
               "RelativeDocumentMoniker": "about.html",
@@ -551,7 +562,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": ".gitignore",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -564,7 +575,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 27,
               "Title": "404.html",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\404.html",
               "RelativeDocumentMoniker": "404.html",
@@ -577,7 +588,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 28,
               "Title": "firestore.rules",
               "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\firestore.rules",
               "RelativeDocumentMoniker": "firestore.rules",
@@ -590,7 +601,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 29,
               "Title": "plan-remove-linkedin-api-publishing.md [Preview]",
               "DocumentMoniker": "C:\\Users\\44746\\.copilot\\plans\\plan-remove-linkedin-api-publishing.md",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\..\\.copilot\\plans\\plan-remove-linkedin-api-publishing.md",
@@ -602,7 +613,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 30,
               "Title": "plan-live-linkedin-jobs-feed.md [Preview]",
               "DocumentMoniker": "C:\\Users\\44746\\.copilot\\plans\\plan-live-linkedin-jobs-feed.md",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\..\\.copilot\\plans\\plan-live-linkedin-jobs-feed.md",
@@ -611,6 +622,10 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
               "WhenOpened": "2026-09-29T07:16:13.099Z",
               "EditorCaption": " [Preview]"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             }
           ]
         },

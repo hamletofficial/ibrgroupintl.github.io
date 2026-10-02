@@ -42,9 +42,12 @@
     .muted, .section-hint, .field-hint, .privacy-note, .status-note { color: var(--muted); }
     .hero-points { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 0; padding: 0; list-style: none; }
     .hero-points li { padding: .4rem .7rem; border: 1px solid #dbe3ee; border-radius: 999px; background: #f6fbff; color: #092a4b; font-size: .82rem; font-weight: 700; }
-    .signin-steps { list-style: none; margin: 0 0 1.2rem; padding: 0; display: grid; gap: .65rem; text-align: left; }
-    .signin-steps li { padding: .8rem 1rem; border: 1px solid #dbe3ee; border-radius: 12px; background: #fff; }
-    .signin-actions { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+    .signin-steps { list-style: none; margin: 1.25rem 0; padding: 0; display: grid; gap: .75rem; text-align: left; }
+    .signin-steps li { display: grid; grid-template-columns: 2rem 1fr; gap: .15rem .75rem; align-items: start; padding: .9rem 1rem; border: 1px solid #dbe3ee; border-radius: 12px; background: #fff; }
+    .signin-steps .step-no { grid-row: 1 / span 2; display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 999px; background: #f5f9ff; color: #0284c7; font-weight: 700; }
+    .signin-steps strong { color: #092a4b; }
+    .signin-steps span { display: block; color: var(--muted); font-size: .92rem; line-height: 1.45; }
+    .signin-actions { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; margin-top: .25rem; }
     .form-section { margin: 1.25rem 0 0; padding: 1rem 0 0; border: 0; border-top: 1px solid #eef2f7; }
     .form-section legend { padding-right: .6rem; color: #092a4b; font-weight: 700; }
     .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
@@ -103,9 +106,9 @@
       <h1 id="loginTitle">Sign in to brief the communications team</h1>
       <p class="muted">Strategic announcements stay with signed-in members. Sign in, then send the narrative, timing, and spokesperson details.</p>
       <ol class="signin-steps" aria-label="What happens after sign-in">
-        <li><strong>Sign in</strong><span class="muted">  Use your Google account through the secure portal.</span></li>
-        <li><strong>Shape the brief</strong><span class="muted">  Capture the headline, audience, embargo, and the message to carry.</span></li>
-        <li><strong>Desk review</strong><span class="muted">  The brief is saved and sent for communications follow-up.</span></li>
+        <li><span class="step-no" aria-hidden="true">1</span><strong>Sign in</strong><span>Use your Google account through the secure portal.</span></li>
+        <li><span class="step-no" aria-hidden="true">2</span><strong>Shape the brief</strong><span>Capture the headline, audience, embargo, and the message to carry.</span></li>
+        <li><span class="step-no" aria-hidden="true">3</span><strong>Desk review</strong><span>The brief is saved and sent for communications follow-up.</span></li>
       </ol>
       <div class="signin-actions">
         <a class="btn btn-primary" href="/login.html?next=%2Frequests.html">Sign in to continue</a>

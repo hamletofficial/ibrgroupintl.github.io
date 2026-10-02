@@ -83,11 +83,12 @@ exports.submitPressCommunications = onCall({
       ReplyTo: submission.officerEmail,
       Subject: "Press communication: " + submission.headline.slice(0, 160),
       TextBody: textBody(rows),
+      HtmlBody: "<p>" + textBody(rows).replace(/\n/g, "<br>") + "</p>",
       MessageStream: "outbound",
     });
     return {ok: true, saved: true, notificationSent: true, submissionId: ref.id};
   } catch (err) {
     console.error("Press notification failed:", err);
-    return {ok: true, saved: true, notificationSent: false, submissionId: ref.id};
+    return {ok: true, saved: true, notificationSent: false, submissionId: ref.id, message: err && err.message ? err.message : "Postmark notification failed."};
   }
 });

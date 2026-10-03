@@ -435,6 +435,9 @@
             console.error('LinkedIn code exchange failed', err);
             var detail = (err && (err.details || err.message)) || 'LinkedIn sign-in failed.';
             if (detail === 'INTERNAL' && err && err.customData) detail = err.customData.message || detail;
+            if (/user code failed to load/i.test(String(detail))) {
+              detail = 'LinkedIn sign-in function did not start. Create the LINKEDIN_CLIENT_SECRET secret, then deploy exchangeLinkedInAuth from the repository root (not the functions folder).';
+            }
             showError(detail);
           });
         }

@@ -8,3 +8,4 @@ window.firebaseConfig = {
   appId: "1:753131375199:web:87d3eef7edda42d640a9ea"
   // other fields (messagingSenderId, measurementId) may be added if available
 };
+window.linkedinClientId = window.linkedinClientId || "";

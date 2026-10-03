@@ -256,7 +256,7 @@ exports.exchangeLinkedInAuth = onCall({
     if (!tokenJson.id_token) {
       throw new HttpsError("failed-precondition", "LinkedIn did not return an ID token. Enable Sign In with LinkedIn using OpenID Connect and request the openid scope.");
     }
-    return {idToken: tokenJson.id_token, accessToken: tokenJson.access_token || "", email: profile.email || "", name: profile.name || ""};
+    return {idToken: tokenJson.id_token, accessToken: tokenJson.access_token || "", email: profile.email || "", name: profile.name || "", picture: profile.picture || ""};
   } catch (err) {
     if (err instanceof HttpsError) throw err;
     console.error("exchangeLinkedInAuth failed", err);

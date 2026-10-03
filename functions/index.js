@@ -108,8 +108,9 @@ exports.submitPressCommunications = onCall({
   const data = request.data || {};
   if (!request.auth) throw new HttpsError("unauthenticated", "Sign in before submitting a press communication.");
   const allowed = ["companyName", "pressOfficer", "officerEmail", "destinationEmail", "phoneNumber", "pressReleaseUrl", "headline", "announcementType", "embargoDate", "summary", "notes"];
-  if (Object.keys(data).some(function(field) { return allowed.indexOf(field) === -1; })) {
-    throw new HttpsError("invalid-argument", "The press submission contains invalid fields.");
+  var unexpected = Object.keys(data).filter(function(field) { return allowed.indexOf(field) === -1; });
+  if (unexpected.length) {
+    throw new HttpsError("invalid-argument", "The press submission contains invalid fields: " + unexpected.join(", "));
   }
   const types = ["Press release", "Media statement", "Interview request", "Spokesperson briefing", "Statement"];
   const submission = {

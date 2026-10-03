@@ -327,60 +327,71 @@
           var target = postLoginPath();
           redirectTimer = setTimeout(function () { window.location.replace(target); }, 300);
         }
+        let redirectSettled = false;
         function finishSignIn(user) {
-          if (!user) return;
+          if (!user || !redirectSettled) return;
           showUserStatus(user);
           window.location.replace(postLoginPath());
+        }
+        function markRedirectSettled() {
+          redirectSettled = true;
+          if (auth.currentUser) finishSignIn(auth.currentUser);
+        }
+        function shouldUseRedirect(err) {
+          var code = err && err.code;
+          return code === 'auth/popup-blocked' || code === 'operation-not-supported-in-this-environment' || code === 'auth/operation-not-supported-in-this-environment' || code === 'auth/web-storage-unsupported';
         }
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function (err) {
           console.warn('Auth persistence could not be set', err);
         });
         auth.getRedirectResult().then(function (result) {
           try { sessionStorage.removeItem('linkedin_redirect_pending'); } catch (error) {}
+          markRedirectSettled();
           if (result && result.user) finishSignIn(result.user);
         }).catch(function (err) {
+          markRedirectSettled();
           console.error('Redirect result error', err);
-          showError(err.message || 'Sign-in could not be completed after the provider redirect.');
+          if (err && err.code && err.code !== 'auth/no-auth-event') {
+            showError(err.message || 'Sign-in could not be completed after the provider redirect.');
+          }
         });
         auth.onAuthStateChanged(function(user) {
           if (user) finishSignIn(user);
           else if (!redirectTimer) hideUserStatus();
         });
-        async function signInWithGoogle() {
+        async function signInWithProvider(provider) {
           rememberNext();
-          const provider = new firebase.auth.GoogleAuthProvider();
           try {
             const result = await auth.signInWithPopup(provider);
-            showUserStatus(result.user);
-            const loadingNotice = document.createElement('div');
-            loadingNotice.textContent = 'Loading your member area, please wait...';
-            loadingNotice.style = 'text-align:center;margin-top:2rem;font-size:1.2rem;color:#0284c7;';
-            document.body.innerHTML = '';
-            document.body.appendChild(loadingNotice);
-            setTimeout(() => { window.location.href = postLoginPath(); }, 2000);
+            redirectSettled = true;
+            finishSignIn(result.user);
           } catch (err) {
-            console.warn('Popup failed, falling back to redirect', err);
-            try { await auth.signInWithRedirect(provider); } catch (rerr) { showError(rerr.message || 'Authentication failed'); }
+            if (!shouldUseRedirect(err)) {
+              console.warn('Popup sign-in stopped', err);
+              showError(err.message || 'Authentication failed');
+              return;
+            }
+            console.warn('Popup unavailable, falling back to redirect', err);
+            try { await auth.signInWithRedirect(provider); }
+            catch (rerr) { showError(rerr.message || 'Authentication failed'); }
           }
+        }
+        async function signInWithGoogle() {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          provider.setCustomParameters({ prompt: 'select_account' });
+          await signInWithProvider(provider);
         }
         async function signOut() {
           try { await auth.signOut(); hideUserStatus(); if (errEl) errEl.style.display = 'none'; }
           catch (err) { showError('Sign out failed: ' + (err.message || 'Unknown error')); }
         }
         async function signInWithLinkedIn() {
-          rememberNext();
           const provider = new firebase.auth.OAuthProvider("oidc.linkedin-secure-login");
           provider.addScope("openid");
           provider.addScope("profile");
           provider.addScope("email");
-          try {
-            await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-            try { sessionStorage.setItem('linkedin_redirect_pending', '1'); } catch (error) {}
-            await auth.signInWithRedirect(provider);
-          } catch (err) {
-            console.error("LinkedIn redirect failed", err);
-            showError(err.message || "LinkedIn sign-in is not configured. Add the oidc.linkedin-secure-login provider in Firebase Authentication.");
-          }
+          try { sessionStorage.setItem('linkedin_redirect_pending', '1'); } catch (error) {}
+          await signInWithProvider(provider);
         }
         window.startLinkedInSignIn = function (event) {
           if (event) event.preventDefault();

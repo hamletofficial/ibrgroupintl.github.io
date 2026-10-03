@@ -1,6 +1,10 @@
 (function () {
   'use strict';
 
+  function linkedInPhoto() {
+    try { return sessionStorage.getItem('linkedin_photo') || ''; } catch (error) { return ''; }
+  }
+
   function updateProfile(user) {
     var chips = document.querySelectorAll('[data-auth-profile]');
     chips.forEach(function (chip) {
@@ -10,7 +14,8 @@
       if (user) {
         if (nameEl) nameEl.textContent = user.displayName || user.email || 'Member';
         if (photoEl) {
-          photoEl.src = user.photoURL || '/160.jpg';
+          photoEl.referrerPolicy = 'no-referrer';
+          photoEl.src = user.photoURL || linkedInPhoto() || '/160.jpg';
           photoEl.alt = (user.displayName || 'Member') + ' profile photo';
         }
         chip.style.display = 'inline-flex';

@@ -253,15 +253,10 @@ exports.exchangeLinkedInAuth = onCall({
     if (!profileResponse.ok || !profile.sub) {
       throw new HttpsError("unauthenticated", "LinkedIn profile could not be read: " + (profile.message || profileText.slice(0, 180)));
     }
-    try { admin.app(); } catch (err) { admin.initializeApp(); }
-    let token;
-    try {
-      token = await admin.auth().createCustomToken("linkedin:" + profile.sub, {email: profile.email || "", name: profile.name || ""});
-    } catch (err) {
-      console.error("createCustomToken failed", err);
-      throw new HttpsError("failed-precondition", "Firebase could not mint a custom token. Grant the function service account Service Account Token Creator (roles/iam.serviceAccountTokenCreator).");
+    if (!tokenJson.id_token) {
+      throw new HttpsError("failed-precondition", "LinkedIn did not return an ID token. Enable Sign In with LinkedIn using OpenID Connect and request the openid scope.");
     }
-    return {token: token, email: profile.email || "", name: profile.name || ""};
+    return {idToken: tokenJson.id_token, accessToken: tokenJson.access_token || "", email: profile.email || "", name: profile.name || ""};
   } catch (err) {
     if (err instanceof HttpsError) throw err;
     console.error("exchangeLinkedInAuth failed", err);

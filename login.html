@@ -433,7 +433,9 @@
             finishSignIn(result.user);
           }).catch(function (err) {
             console.error('LinkedIn code exchange failed', err);
-            showError((err && err.message) || 'LinkedIn sign-in failed.');
+            var detail = (err && (err.details || err.message)) || 'LinkedIn sign-in failed.';
+            if (detail === 'INTERNAL' && err && err.customData) detail = err.customData.message || detail;
+            showError(detail);
           });
         }
         function signInWithLinkedIn() {

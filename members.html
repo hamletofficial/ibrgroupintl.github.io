@@ -33,6 +33,19 @@
   </style>
 </head>
 <body class="auth-pending">
+  <script>
+    (function () {
+      try {
+        if (!sessionStorage.getItem('ibr_auth_transition')) return;
+      } catch (error) { return; }
+      document.documentElement.classList.add('auth-arriving');
+      var overlay = document.createElement('div');
+      overlay.className = 'page-transition-overlay active';
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.innerHTML = '<div class="page-transition-card" role="status" aria-live="polite"><span class="page-transition-spinner" aria-hidden="true"></span><span class="page-transition-label">Opening Members Area…</span></div>';
+      document.body.appendChild(overlay);
+    })();
+  </script>
   <div class="page-wrapper">
     <header class="resource-nav" role="banner">
       <div class="container container-nav">

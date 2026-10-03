@@ -100,6 +100,8 @@
 
   function ensureOverlay() {
     if (overlayEl) return overlayEl;
+    overlayEl = document.querySelector('.page-transition-overlay');
+    if (overlayEl) return overlayEl;
 
     overlayEl = document.createElement('div');
     overlayEl.className = 'page-transition-overlay';
@@ -212,7 +214,33 @@
     navigate();
   }
 
-  function schedulePrefetchRetries() {
+  function consumeAuthArrival() {
+    var pending = '';
+    try { pending = sessionStorage.getItem('ibr_auth_transition') || ''; } catch (e) { return; }
+    if (!pending) return;
+
+    setOverlayLabel('Opening Members Area…');
+    showOverlay();
+    var started = Date.now();
+
+    function settle() {
+      var wait = Math.max(0, 520 - (Date.now() - started));
+      window.setTimeout(function () {
+        try { sessionStorage.removeItem('ibr_auth_transition'); } catch (e) {}
+        document.documentElement.classList.remove('auth-arriving');
+        hideOverlay();
+      }, wait);
+    }
+
+    var tries = 0;
+    function tick() {
+      tries += 1;
+      var pendingAuth = document.body.classList.contains('auth-pending');
+      if (!pendingAuth || tries > 40) settle();
+      else window.setTimeout(tick, 50);
+    }
+    tick();
+  }
     for (let i = 1; i <= 6; i += 1) {
       window.setTimeout(prefetchProtectedPages, i * 700);
       window.setTimeout(highlightCurrentSidebarLink, i * 700);
@@ -221,6 +249,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     ensureOverlay();
+    consumeAuthArrival();
     document.addEventListener('click', handleClick, true);
     prefetchProtectedPages();
     highlightCurrentSidebarLink();
@@ -228,8 +257,11 @@
   });
 
   window.addEventListener('pageshow', function () {
+    var arriving = false;
+    try { arriving = !!sessionStorage.getItem('ibr_auth_transition'); } catch (e) {}
     navigating = false;
-    hideOverlay();
+    if (!arriving) hideOverlay();
+    else consumeAuthArrival();
     highlightCurrentSidebarLink();
   });
 })();

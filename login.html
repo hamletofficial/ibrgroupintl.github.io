@@ -367,19 +367,10 @@
           provider.addScope("profile");
           provider.addScope("email");
           try {
-            const result = await auth.signInWithPopup(provider);
-            showUserStatus(result.user);
-            const loadingNotice = document.createElement("div");
-            loadingNotice.textContent = "Loading your member area, please wait...";
-            loadingNotice.style = "text-align:center;margin-top:2rem;font-size:1.2rem;color:#0284c7;";
-            document.body.innerHTML = "";
-            document.body.appendChild(loadingNotice);
-            setTimeout(() => { window.location.href = postLoginPath(); }, 2000);
+            await auth.signInWithRedirect(provider);
           } catch (err) {
-            if (err && err.code === "auth/popup-closed-by-user") return;
-            console.warn("LinkedIn popup failed, falling back to redirect", err);
-            try { rememberNext(); await auth.signInWithRedirect(provider); }
-            catch (rerr) { showError(rerr.message || "LinkedIn sign-in is not configured. Add the oidc.linkedin provider in Firebase Authentication."); }
+            console.error("LinkedIn redirect failed", err);
+            showError(err.message || "LinkedIn sign-in is not configured. Add the oidc.linkedin provider in Firebase Authentication.");
           }
         }
         var linkedinBtn = document.getElementById("linkedinBtn");

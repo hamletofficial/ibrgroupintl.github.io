@@ -429,7 +429,22 @@
             if (data.idToken) {
               var provider = new firebase.auth.OAuthProvider('oidc.linkedin-secure-login');
               var credential = provider.credential({idToken: data.idToken, accessToken: data.accessToken || undefined});
-              return auth.signInWithCredential(credential);
+              return auth.signInWithCredential(credential).then(function (result) {
+                var picture = data.picture || '';
+                if (!picture) {
+                  try {
+                    var payload = JSON.parse(atob(data.idToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+                    picture = payload.picture || '';
+                  } catch (error) {}
+                }
+                var profile = {displayName: data.name || (result.user && result.user.displayName) || undefined};
+                if (picture) profile.photoURL = picture;
+                try { if (picture) sessionStorage.setItem('linkedin_photo', picture); } catch (error) {}
+                if (result.user && picture && result.user.photoURL !== picture) {
+                  return result.user.updateProfile(profile).then(function () { return result.user.reload(); }).then(function () { return result; });
+                }
+                return result;
+              });
             }
             if (data.token) return auth.signInWithCustomToken(data.token);
             throw new Error('LinkedIn sign-in did not return an ID token.');

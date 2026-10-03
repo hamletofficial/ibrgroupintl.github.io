@@ -363,7 +363,7 @@
         }
         async function signInWithLinkedIn() {
           rememberNext();
-          const provider = new firebase.auth.OAuthProvider("oidc.linkedin");
+          const provider = new firebase.auth.OAuthProvider("oidc.linkedin-secure-login");
           provider.addScope("openid");
           provider.addScope("profile");
           provider.addScope("email");
@@ -371,7 +371,7 @@
             await auth.signInWithRedirect(provider);
           } catch (err) {
             console.error("LinkedIn redirect failed", err);
-            showError(err.message || "LinkedIn sign-in is not configured. Add the oidc.linkedin provider in Firebase Authentication.");
+            showError(err.message || "LinkedIn sign-in is not configured. Add the oidc.linkedin-secure-login provider in Firebase Authentication.");
           }
         }
         window.startLinkedInSignIn = function (event) {

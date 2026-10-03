@@ -427,18 +427,23 @@
           return fn({code: code, clientId: clientId, redirectUri: linkedInRedirectUri()}).then(function (result) {
             var token = result && result.data && result.data.token;
             if (!token) throw new Error('LinkedIn sign-in did not return a Firebase token.');
-            return auth.signInWithCustomToken(token);
+            return auth.signInWithCustomToken(token).catch(function (err) {
+              throw new Error('Custom token was rejected: ' + ((err && (err.code + ' ' + err.message)) || 'unknown'));
+            });
           }).then(function (result) {
             redirectSettled = true;
             finishSignIn(result.user);
           }).catch(function (err) {
             console.error('LinkedIn code exchange failed', err);
+            var code = err && err.code ? err.code + ': ' : '';
             var detail = (err && (err.details || err.message)) || 'LinkedIn sign-in failed.';
-            if (detail === 'INTERNAL' && err && err.customData) detail = err.customData.message || detail;
-            if (/user code failed to load/i.test(String(detail))) {
-              detail = 'LinkedIn sign-in function did not start. Create the LINKEDIN_CLIENT_SECRET secret, then deploy exchangeLinkedInAuth from the repository root (not the functions folder).';
+            if (detail === 'INTERNAL') {
+              detail = 'The exchange function crashed after LinkedIn accepted the code. Grant the Cloud Functions service account roles/iam.serviceAccountTokenCreator, then redeploy exchangeLinkedInAuth.';
             }
-            showError(detail);
+            if (/user code failed to load/i.test(String(detail))) {
+              detail = 'LinkedIn sign-in function did not start. Create LINKEDIN_CLIENT_SECRET, then deploy from the repository root.';
+            }
+            showError(code + detail);
           });
         }
         function signInWithLinkedIn() {

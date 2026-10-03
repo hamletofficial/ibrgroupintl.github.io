@@ -358,6 +358,16 @@
           return code === 'auth/popup-blocked' || code === 'auth/operation-not-supported-in-this-environment' || code === 'auth/web-storage-unsupported';
         }
 
+        var linkedInCode = new URLSearchParams(window.location.search).get('code');
+        var linkedInState = new URLSearchParams(window.location.search).get('state');
+        var expectedState = '';
+        try { expectedState = sessionStorage.getItem('linkedin_oauth_state') || ''; } catch (error) {}
+        if (linkedInCode && linkedInState && linkedInState === expectedState) {
+          try { sessionStorage.removeItem('linkedin_oauth_state'); } catch (error) {}
+          history.replaceState({}, document.title, window.location.pathname);
+          completeLinkedInCode(linkedInCode);
+        }
+
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function (err) {
           console.warn('Auth persistence could not be set', err);
         });
@@ -404,12 +414,43 @@
           provider.setCustomParameters({ prompt: 'select_account' });
           return signInWithProvider(provider);
         }
+        function linkedInRedirectUri() {
+          return window.location.origin + '/login.html';
+        }
+        function completeLinkedInCode(code) {
+          var clientId = window.linkedinClientId;
+          if (!clientId) {
+            showError('Set window.linkedinClientId in firebase-config.js. Firebase OIDC cannot send LinkedIn the client secret.');
+            return Promise.resolve();
+          }
+          var fn = firebase.app().functions('us-central1').httpsCallable('exchangeLinkedInAuth');
+          return fn({code: code, clientId: clientId, redirectUri: linkedInRedirectUri()}).then(function (result) {
+            var token = result && result.data && result.data.token;
+            if (!token) throw new Error('LinkedIn sign-in did not return a Firebase token.');
+            return auth.signInWithCustomToken(token);
+          }).then(function (result) {
+            redirectSettled = true;
+            finishSignIn(result.user);
+          }).catch(function (err) {
+            console.error('LinkedIn code exchange failed', err);
+            showError((err && err.message) || 'LinkedIn sign-in failed.');
+          });
+        }
         function signInWithLinkedIn() {
-          var provider = new firebase.auth.OAuthProvider('oidc.linkedin-secure-login');
-          provider.addScope('openid');
-          provider.addScope('profile');
-          provider.addScope('email');
-          return signInWithProvider(provider);
+          var clientId = window.linkedinClientId;
+          if (!clientId) {
+            showError('Set window.linkedinClientId in firebase-config.js. LinkedIn requires the client secret on the server, not in the Firebase OIDC handler.');
+            return;
+          }
+          rememberNext();
+          var state = Math.random().toString(36).slice(2) + Date.now().toString(36);
+          try { sessionStorage.setItem('linkedin_oauth_state', state); } catch (error) {}
+          var url = 'https://www.linkedin.com/oauth/v2/authorization?response_type=code'
+            + '&client_id=' + encodeURIComponent(clientId)
+            + '&redirect_uri=' + encodeURIComponent(linkedInRedirectUri())
+            + '&scope=' + encodeURIComponent('openid profile email')
+            + '&state=' + encodeURIComponent(state);
+          window.location.assign(url);
         }
         function signOut() {
           auth.signOut().then(function () {

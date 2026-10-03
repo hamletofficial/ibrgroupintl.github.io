@@ -335,9 +335,12 @@
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function (err) {
           console.warn('Auth persistence could not be set', err);
         });
+        var pendingRedirect = false;
+        try { pendingRedirect = sessionStorage.getItem('linkedin_redirect_pending') === '1'; } catch (error) {}
         auth.getRedirectResult().then(function (result) {
+          try { sessionStorage.removeItem('linkedin_redirect_pending'); } catch (error) {}
           if (result && result.user) finishSignIn(result.user);
-          else if (!auth.currentUser) showError('LinkedIn returned to this page, but Firebase did not keep a signed-in session. Check that ats.ibrecruitment.com is an authorized domain.');
+          else if (pendingRedirect && !auth.currentUser) showError('LinkedIn returned to this page, but Firebase did not keep a signed-in session. Add ats.ibrecruitment.com under Firebase Authentication, Settings, Authorized domains.');
         }).catch(function (err) {
           console.error('Redirect result error', err);
           showError(err.message || 'Sign-in could not be completed after the provider redirect.');
@@ -375,6 +378,7 @@
           provider.addScope("email");
           try {
             await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+            try { sessionStorage.setItem('linkedin_redirect_pending', '1'); } catch (error) {}
             await auth.signInWithRedirect(provider);
           } catch (err) {
             console.error("LinkedIn redirect failed", err);

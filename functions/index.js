@@ -1,272 +1,242 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-const Parser = require('rss-parser');
-const postmark = require('postmark');
-const { defineSecret } = require('firebase-functions/params');
+const https = require("https");
+const admin = require("firebase-admin");
+const {getFirestore} = require("firebase-admin/firestore");
+const {defineSecret} = require("firebase-functions/params");
+const {HttpsError, onCall} = require("firebase-functions/v2/https");
+const {onDocumentCreated} = require("firebase-functions/v2/firestore");
+const {onSchedule} = require("firebase-functions/v2/scheduler");
 
-admin.initializeApp();
-const postmarkToken = defineSecret('POSTMARK_BROADCAST_TOKEN');
+const postmarkOutboundToken = defineSecret("POSTMARK_OUTBOUND_TOKEN");
+const linkedInClientSecret = defineSecret("LINKEDIN_CLIENT_SECRET");
 
-// Shared RSS parser and URL
-const parser = new Parser();
-const SUBSTACK_RSS_URL = 'https://blogs.ibrecruitment.com/feed';
-
-// Cloud Function: Fetch RSS feed and store entries in Firestore
-// Node.js 22+ compatible
-exports.fetchAndStoreRssToInsightsFeed = functions
-  .runWith({
-    // Node.js 22 is default for new Firebase projects, but can be set in firebase.json if needed
-    timeoutSeconds: 120,
-    memory: '256MB',
-  })
-  .pubsub.schedule('every 15 minutes').onRun(async (context) => {
-    const feed = await parser.parseURL(SUBSTACK_RSS_URL);
-    const db = admin.firestore();
-    const batch = db.batch();
-    let newCount = 0;
-
-    for (const entry of feed.items) {
-      
-      const docId = Buffer.from(entry.guid || entry.link).toString('base64').replace(/\//g, '_');
-      const docRef = db.collection('insightsFeed').doc(docId);
-      const docSnap = await docRef.get();
-      if (!docSnap.exists) {
-        batch.set(docRef, {
-          title: entry.title || '',
-          snippet: entry.contentSnippet || entry.summary || '',
-          link: entry.link || '',
-          timestamp: entry.isoDate ? new Date(entry.isoDate).getTime() : Date.now(),
-          notified: false,
-          test: false,
-          rssSource: 'substack',
-          guid: entry.guid || entry.link || '',
-        });
-        newCount++;
-      }
-    }
-    if (newCount > 0) await batch.commit();
-    return { inserted: newCount };
-  });
-
-
-exports.adminFetchAndRelayRss = functions
-  .runWith({ secrets: [postmarkToken] })
-  .firestore
-  .document('insightsFeed/{postId}')
-  .onCreate(async (snap, context) => {
-    const post = snap.data();
-    const postRef = snap.ref;
-    // Get the secret value at runtime
-    const postmarkClient = new postmark.ServerClient(postmarkToken.value());
-
-    // 1. Idempotency: Check if already notified
-    if (post.notified) return null;
-
-    // 2 & 4. Time limit and test/old data filtering
-    const now = Date.now();
-    const postTime = post.timestamp || now;
-    const maxAgeMs = 24 * 60 * 60 * 1000; // 24 hours
-    if ((now - postTime) > maxAgeMs) return null;
-    if (post.test) return null;
-
-
-    // 6. Unsubscribe/Opt-Out Logic
-    let usersSnap;
-    try {
-      usersSnap = await admin.firestore().collection('publicProfiles').get();
-    } catch (err) {
-      console.error('Error fetching users:', err);
-      return null;
-    }
-    const emails = [];
-    usersSnap.forEach(doc => {
-      const data = doc.data();
-      if (data.email && !data.unsubscribed) emails.push(data.email);
-    });
-    if (emails.length === 0) return null;
-
-    // HTML5 email template with unsubscribe link
-    const htmlBody = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${post.title || 'New Premium Content'}</title>
-      </head>
-      <body style="font-family: 'Open Sans', Arial, sans-serif; color: #0f172a; background: #f5f9ff;">
-        <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(2,6,23,0.08);padding:32px;">
-          <h1 style="color:#0284c7;">${post.title || 'New Premium Content'}</h1>
-          <p style="color:#475569;font-size:1.1rem;">${post.snippet || ''}</p>
-          <a href="${post.link || '#'}" style="display:inline-block;margin:18px 0 0 0;padding:12px 24px;background:#0284c7;color:#fff;border-radius:8px;text-decoration:none;font-weight:700;">Read More</a>
-          <hr style="margin:32px 0 16px 0;border:none;border-top:1px solid #e5e7eb;">
-          <div style="font-size:0.95rem;color:#475569;text-align:center;">
-            You are receiving this email because you are a member of Impact in Business Recruitment.<br>
-            <a href="https://www.ibrecruitment.com/unsubscribe?email={{email}}" style="color:#0284c7;text-decoration:underline;">Unsubscribe</a>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
-
-    try {
-      for (let i = 0; i < emails.length; i += 50) {
-        const batch = emails.slice(i, i + 50).map(email => ({
-          From: 'admin-messages@ibrecruitment.com',
-          To: email,
-          Subject: `New Insight: ${post.title || 'Update from Impact in Business Recruitment'}`,
-          HtmlBody: htmlBody.replace('{{email}}', encodeURIComponent(email)),
-          TextBody: `${post.title || 'New Insight'}\n\n${post.snippet || ''}\n\nRead more: ${post.link || ''}\n\nUnsubscribe: https://www.ibrecruitment.com/unsubscribe?email=${encodeURIComponent(email)}`,
-          MessageStream: 'broadcast'
-        }));
-        await postmarkClient.sendEmailBatch(batch);
-      }
-      // 1. Mark as notified
-      await postRef.update({ notified: true });
-    } catch (err) {
-      console.error('Error sending emails or updating document:', err);
-    }
-    return null;
-  });
-// --- End adminFetchAndRelayRss and dependencies ---
-
-function readRequisitionText(data, field, maxLength, required = false) {
-  const value = data[field];
-  if (value === undefined || value === null || value === '') {
-    if (required) {
-      throw new functions.https.HttpsError('invalid-argument', `${field} is required.`);
-    }
-    return '';
+function getPressDb() {
+  try {
+    admin.app();
+  } catch (err) {
+    admin.initializeApp();
   }
-  if (typeof value !== 'string' || value.trim().length > maxLength) {
-    throw new functions.https.HttpsError('invalid-argument', `${field} must be text of at most ${maxLength} characters.`);
+  return getFirestore(admin.app(), "chung-lee");
+}
+
+function readText(data, field, maxLength, required) {
+  const value = data && data[field];
+  if (value === undefined || value === null || value === "") {
+    if (required) throw new HttpsError("invalid-argument", field + " is required.");
+    return "";
   }
-  const normalized = value.trim();
-  if (required && !normalized) {
-    throw new functions.https.HttpsError('invalid-argument', `${field} is required.`);
+  if (typeof value !== "string" || value.trim().length > maxLength) {
+    throw new HttpsError("invalid-argument", field + " is too long.");
   }
-  return normalized;
+  return value.trim();
 }
 
 function escapeHtml(value) {
-  return String(value || '').replace(/[&<>"']/g, (character) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
+  return String(value || "").replace(/[&<>]/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
   })[character]);
 }
 
-exports.submitJobRequisition = functions
-  .runWith({
-    timeoutSeconds: 30,
-    memory: '256MB',
-    secrets: [postmarkToken],
-  })
-  .https.onCall(async (data, context) => {
-    if (!context.auth) {
-      throw new functions.https.HttpsError('unauthenticated', 'Sign in before submitting a job requisition.');
-    }
+function briefRows(submission) {
+  return [
+    ["Company", submission.companyName || ""],
+    ["Headline", submission.headline || ""],
+    ["Announcement type", submission.announcementType || ""],
+    ["Press officer", submission.pressOfficer || ""],
+    ["Officer email", submission.officerEmail || ""],
+    ["Destination email", submission.destinationEmail || ""],
+    ["Phone", submission.phoneNumber || "Not provided"],
+    ["Press release", submission.pressReleaseUrl || ""],
+    ["Embargo", submission.embargoDate || "Not specified"],
+    ["Message", submission.summary || ""],
+    ["Notes", submission.notes || "Not provided"],
+    ["Submitted by", submission.requesterName || "Signed-in user"],
+    ["Requester email", submission.requesterEmail || "Not available"],
+  ];
+}
 
-    const allowedFields = [
-      'jobTitle', 'department', 'hiringManager', 'workLocation', 'workplaceType',
-      'employmentType', 'numberOfOpenings', 'targetStartDate', 'salaryRange',
-      'urgency', 'budgetApproved', 'applicationUrl', 'jobDescription',
-      'requirements', 'additionalNotes',
-    ];
-    if (!data || typeof data !== 'object' || Object.keys(data).some((field) => !allowedFields.includes(field))) {
-      throw new functions.https.HttpsError('invalid-argument', 'The requisition submission contains invalid fields.');
-    }
+function textBody(rows) {
+  return rows.map(function(row) { return row[0] + ":\n" + row[1]; }).join("\n\n");
+}
 
-    const requisition = {
-      jobTitle: readRequisitionText(data, 'jobTitle', 160, true),
-      department: readRequisitionText(data, 'department', 120, true),
-      hiringManager: readRequisitionText(data, 'hiringManager', 120, true),
-      workLocation: readRequisitionText(data, 'workLocation', 160, true),
-      workplaceType: readRequisitionText(data, 'workplaceType', 20, true),
-      employmentType: readRequisitionText(data, 'employmentType', 20, true),
-      targetStartDate: readRequisitionText(data, 'targetStartDate', 10),
-      salaryRange: readRequisitionText(data, 'salaryRange', 120),
-      urgency: readRequisitionText(data, 'urgency', 20, true),
-      budgetApproved: readRequisitionText(data, 'budgetApproved', 20, true),
-      applicationUrl: readRequisitionText(data, 'applicationUrl', 500),
-      jobDescription: readRequisitionText(data, 'jobDescription', 6000, true),
-      requirements: readRequisitionText(data, 'requirements', 4000),
-      additionalNotes: readRequisitionText(data, 'additionalNotes', 3000),
-    };
+function sendPostmark(submission) {
+  const rows = briefRows(submission);
+  const body = textBody(rows);
+  const recipients = [
+    submission.destinationEmail || "support@ibrecruitment.com",
+    submission.officerEmail,
+  ].filter(Boolean).filter(function(v, i, a) { return a.indexOf(v) === i; });
 
-    const workplaceTypes = ['On-site', 'Hybrid', 'Remote'];
-    const employmentTypes = ['Full-time', 'Part-time', 'Contract', 'Temporary', 'Internship'];
-    const urgencyLevels = ['Standard', 'High', 'Urgent'];
-    const budgetStatuses = ['Yes', 'No', 'Pending'];
-    const openings = Number(data.numberOfOpenings);
-    if (!Number.isInteger(openings) || openings < 1 || openings > 500) {
-      throw new functions.https.HttpsError('invalid-argument', 'Number of openings must be between 1 and 500.');
-    }
-    if (!workplaceTypes.includes(requisition.workplaceType) || !employmentTypes.includes(requisition.employmentType) ||
-        !urgencyLevels.includes(requisition.urgency) || !budgetStatuses.includes(requisition.budgetApproved)) {
-      throw new functions.https.HttpsError('invalid-argument', 'One or more selected requisition options are invalid.');
-    }
-    requisition.numberOfOpenings = openings;
-
-    if (requisition.targetStartDate && !/^\d{4}-\d{2}-\d{2}$/.test(requisition.targetStartDate)) {
-      throw new functions.https.HttpsError('invalid-argument', 'Target start date must use YYYY-MM-DD format.');
-    }
-    if (requisition.applicationUrl) {
-      let applicationUrl;
-      try {
-        applicationUrl = new URL(requisition.applicationUrl);
-      } catch (err) {
-        throw new functions.https.HttpsError('invalid-argument', 'Application link must be a valid URL.');
-      }
-      if (!['http:', 'https:'].includes(applicationUrl.protocol)) {
-        throw new functions.https.HttpsError('invalid-argument', 'Application link must use HTTP or HTTPS.');
-      }
-    }
-
-    const requesterName = String(context.auth.token.name || 'Signed-in user').slice(0, 160);
-    const requesterEmail = String(context.auth.token.email || '').slice(0, 254);
-    const emailFields = [
-      ['Job title', requisition.jobTitle],
-      ['Department / team', requisition.department],
-      ['Hiring manager', requisition.hiringManager],
-      ['Work location', requisition.workLocation],
-      ['Work arrangement', requisition.workplaceType],
-      ['Employment type', requisition.employmentType],
-      ['Number of openings', String(requisition.numberOfOpenings)],
-      ['Target start date', requisition.targetStartDate || 'Not specified'],
-      ['Salary range', requisition.salaryRange || 'Not specified'],
-      ['Hiring priority', requisition.urgency],
-      ['Budget approved', requisition.budgetApproved],
-      ['Application / role link', requisition.applicationUrl || 'Not provided'],
-      ['Role summary and responsibilities', requisition.jobDescription],
-      ['Required experience and qualifications', requisition.requirements || 'Not provided'],
-      ['Additional notes', requisition.additionalNotes || 'Not provided'],
-      ['Submitted by', requesterName],
-      ['Requester email', requesterEmail || 'Not available'],
-    ];
-    const htmlRows = emailFields.map(([label, value]) =>
-      `<tr><th style="padding:10px;text-align:left;vertical-align:top;border-bottom:1px solid #e2e8f0;color:#12304f;width:230px">${escapeHtml(label)}</th><td style="padding:10px;white-space:pre-wrap;border-bottom:1px solid #e2e8f0;color:#334155">${escapeHtml(value)}</td></tr>`
-    ).join('');
-    const textBody = emailFields.map(([label, value]) => `${label}:\n${value}`).join('\n\n');
-    const subjectTitle = requisition.jobTitle.replace(/[\r\n]+/g, ' ').slice(0, 160);
-
-    try {
-      const postmarkClient = new postmark.ServerClient(postmarkToken.value());
-      const email = {
-        From: 'admin-messages@ibrecruitment.com',
-        To: 'support@ibrecruitment.com',
-        Subject: `Job requisition request: ${subjectTitle}`,
-        HtmlBody: `<html><body style="font-family:Arial,sans-serif;color:#0f172a"><h1 style="color:#0b2a6f">New job requisition</h1><p>A requisition has been submitted through the Impact in Business Recruitment portal.</p><table style="width:100%;border-collapse:collapse">${htmlRows}</table></body></html>`,
-        TextBody: `New job requisition\n\n${textBody}`,
-        MessageStream: 'outbound',
-      };
-      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(requesterEmail)) email.ReplyTo = requesterEmail;
-      await postmarkClient.sendEmail(email);
-      return { ok: true, message: 'Requisition notification sent.' };
-    } catch (err) {
-      console.error('Unable to send job requisition notification through Postmark:', err);
-      throw new functions.https.HttpsError('internal', 'Unable to send your requisition notification. Please try again later.');
-    }
+  const payload = JSON.stringify({
+    From: "admin-messages@ibrecruitment.com",
+    To: recipients.join(","),
+    ReplyTo: submission.officerEmail || undefined,
+    Subject: "Press communication: " + String(submission.headline || "New brief").replace(/[\r\n]+/g, " ").slice(0, 160),
+    TextBody: body,
+    HtmlBody: "<p>" + escapeHtml(body).replace(/\n/g, "<br>") + "</p>",
+    MessageStream: "outbound",
   });
+  return new Promise(function(resolve, reject) {
+    const req = https.request({
+      hostname: "api.postmarkapp.com",
+      path: "/email",
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-Postmark-Server-Token": postmarkOutboundToken.value(),
+        "Content-Length": Buffer.byteLength(payload),
+      },
+    }, function(res) {
+      let responseBody = "";
+      res.on("data", function(chunk) { responseBody += chunk; });
+      res.on("end", function() {
+        if (res.statusCode >= 200 && res.statusCode < 300) resolve(responseBody);
+        else reject(new Error("Postmark " + res.statusCode + ": " + responseBody));
+      });
+    });
+    req.on("error", reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+exports.submitPressCommunications = onCall({
+  region: "us-central1",
+  invoker: "public",
+  cors: true,
+  timeoutSeconds: 30,
+  memory: "256MiB",
+  secrets: [postmarkOutboundToken],
+}, async function(request) {
+  const data = request.data || {};
+  if (!request.auth) throw new HttpsError("unauthenticated", "Sign in before submitting a press communication.");
+  const allowed = ["companyName", "pressOfficer", "officerEmail", "destinationEmail", "phoneNumber", "pressReleaseUrl", "headline", "announcementType", "embargoDate", "summary", "notes"];
+  var unexpected = Object.keys(data).filter(function(field) { return allowed.indexOf(field) === -1; });
+  if (unexpected.length) {
+    throw new HttpsError("invalid-argument", "The press submission contains invalid fields: " + unexpected.join(", "));
+  }
+  const types = ["Press release", "Media statement", "Interview request", "Spokesperson briefing", "Statement"];
+  const submission = {
+    companyName: readText(data, "companyName", 160, true),
+    pressOfficer: readText(data, "pressOfficer", 120, true),
+    officerEmail: readText(data, "officerEmail", 254, true),
+    destinationEmail: readText(data, "destinationEmail", 254, true),
+    phoneNumber: readText(data, "phoneNumber", 40, false),
+    pressReleaseUrl: readText(data, "pressReleaseUrl", 500, true),
+    headline: readText(data, "headline", 200, true),
+    announcementType: readText(data, "announcementType", 40, true),
+    embargoDate: readText(data, "embargoDate", 10, false),
+    summary: readText(data, "summary", 6000, true),
+    notes: readText(data, "notes", 3000, false),
+  };
+  if (types.indexOf(submission.announcementType) === -1) throw new HttpsError("invalid-argument", "Select a valid announcement type.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(submission.officerEmail)) throw new HttpsError("invalid-argument", "Press officer email must be valid.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(submission.destinationEmail)) throw new HttpsError("invalid-argument", "Destination email must be valid.");
+  let pressUrl;
+  try { pressUrl = new URL(submission.pressReleaseUrl); } catch (err) { throw new HttpsError("invalid-argument", "Press release link must be a valid URL."); }
+  if (pressUrl.protocol !== "http:" && pressUrl.protocol !== "https:") throw new HttpsError("invalid-argument", "Press release link must use HTTP or HTTPS.");
+  const saved = Object.assign({}, submission, {
+    requesterUid: request.auth.uid,
+    requesterName: String(request.auth.token.name || "Signed-in user").slice(0, 160),
+    requesterEmail: String(request.auth.token.email || "").slice(0, 254),
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    notificationHandledByCallable: true,
+    notificationSent: false,
+  });
+  let ref;
+  try {
+    ref = getPressDb().collection("pressCommunications").doc();
+    await ref.create(saved);
+  } catch (err) {
+    console.error("Unable to save press communication:", err);
+    throw new HttpsError("failed-precondition", "The brief could not be saved: " + (err.message || err));
+  }
+  try {
+    await sendPostmark(saved);
+  } catch (err) {
+    console.error("Unable to send press communication notification through Postmark:", err);
+    throw new HttpsError("internal", "The brief was saved, but the support notification could not be sent: " + (err.message || err), {saved: true, submissionId: ref.id});
+  }
+  try {
+    await ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
+  } catch (err) {
+    console.error("Press notification was sent, but the sent flag could not be saved:", err);
+  }
+  return {ok: true, saved: true, notified: true, submissionId: ref.id};
+});
+
+exports.sendPressCommunicationEmail = onDocumentCreated({
+  document: "pressCommunications/{submissionId}",
+  database: "chung-lee",
+  region: "us-central1",
+  secrets: [postmarkOutboundToken],
+  timeoutSeconds: 30,
+  memory: "256MiB",
+}, async function(event) {
+  const snap = event.data;
+  if (!snap) return;
+  const submission = snap.data() || {};
+  if (submission.notificationSent || submission.notificationHandledByCallable) return;
+  await sendPostmark(submission);
+  await snap.ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
+});
+
+exports.retryPressCommunicationEmail = onSchedule({
+  schedule: "every 5 minutes",
+  region: "us-central1",
+  secrets: [postmarkOutboundToken],
+  timeoutSeconds: 60,
+  memory: "256MiB",
+}, async function() {
+  const pending = await getPressDb().collection("pressCommunications").where("notificationSent", "==", false).limit(20).get();
+  for (const doc of pending.docs) {
+    const submission = doc.data() || {};
+    const createdAt = submission.createdAt && submission.createdAt.toMillis ? submission.createdAt.toMillis() : Date.now();
+    if (Date.now() - createdAt > 15 * 60 * 1000) {
+      console.error("Press notification still unsent after 15 minutes:", doc.id);
+    }
+    try {
+      await sendPostmark(submission);
+      await doc.ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
+    } catch (err) {
+      console.error("Retry could not send press notification:", doc.id, err);
+    }
+  }
+});
+
+exports.exchangeLinkedInAuth = onCall({
+  region: "us-central1",
+  invoker: "public",
+  cors: true,
+  secrets: [linkedInClientSecret],
+}, async function(request) {
+  const code = request.data && request.data.code;
+  const clientId = request.data && request.data.clientId;
+  const redirectUri = request.data && request.data.redirectUri;
+  if (!code || !clientId || !redirectUri) throw new HttpsError("invalid-argument", "LinkedIn sign-in is missing the authorization code.");
+  if (clientId === "LINKEDIN_CLIENT_ID") throw new HttpsError("failed-precondition", "Set LINKEDIN_CLIENT_ID before using LinkedIn sign-in.");
+  const body = new URLSearchParams({
+    grant_type: "authorization_code",
+    code: code,
+    redirect_uri: redirectUri,
+    client_id: clientId,
+    client_secret: linkedInClientSecret.value(),
+  });
+  const tokenResponse = await fetch("https://www.linkedin.com/oauth/v2/accessToken", {
+    method: "POST",
+    headers: {"Content-Type": "application/x-www-form-urlencoded"},
+    body: body.toString(),
+  });
+  const tokenJson = await tokenResponse.json();
+  if (!tokenResponse.ok) throw new HttpsError("unauthenticated", "LinkedIn token exchange failed.");
+  const profileResponse = await fetch("https://api.linkedin.com/v2/userinfo", {
+    headers: {Authorization: "Bearer " + tokenJson.access_token},
+  });
+  const profile = await profileResponse.json();
+  if (!profileResponse.ok || !profile.sub) throw new HttpsError("unauthenticated", "LinkedIn profile could not be read.");
+  try { admin.app(); } catch (err) { admin.initializeApp(); }
+  const token = await admin.auth().createCustomToken("linkedin:" + profile.sub, {email: profile.email || "", name: profile.name || ""});
+  return {token: token, email: profile.email || "", name: profile.name || ""};
+});

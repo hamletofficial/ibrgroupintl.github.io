@@ -326,61 +326,61 @@
         });
         auth.getRedirectResult().then((result) => {
           if (result && result.user) { showUserStatus(result.user); redirectToPortal(); }
-	  }).catch(err => console.error('Redirect result error', err));
-	  async function signInWithGoogle() {
-	  const provider = new firebase.auth.GoogleAuthProvider();
-	  try {
-	  const result = await auth.signInWithPopup(provider);
-	  showUserStatus(result.user);
-	  const loadingNotice = document.createElement('div');
-	  loadingNotice.textContent = 'Loading your member area, please wait...';
-	  loadingNotice.style = 'text-align:center;margin-top:2rem;font-size:1.2rem;color:#0284c7;';
-	  document.body.innerHTML = '';
-	  document.body.appendChild(loadingNotice);
-	  setTimeout(() => { window.location.href = postLoginPath(); }, 2000);
-	  } catch (err) {
-	  console.warn('Popup failed, falling back to redirect', err);
-	  try { await auth.signInWithRedirect(provider); } catch (rerr) { showError(rerr.message || 'Authentication failed'); }
-	  }
-	  }
-	  async function signOut() {
-	  try { await auth.signOut(); hideUserStatus(); if (errEl) errEl.style.display = 'none'; }
-	  catch (err) { showError('Sign out failed: ' + (err.message || 'Unknown error')); }
-	  }
-	  var linkedInAuth = {
-	  clientId: "78e83w1spj610a",
-	  authorizationEndpoint: "https://www.linkedin.com/oauth/v2/authorization",
-	  tokenEndpoint: "https://www.linkedin.com/oauth/v2/accessToken",
-	  userInfoEndpoint: "https://api.linkedin.com/v2/userinfo",
-	  scope: "openid profile email",
-	  redirectUri: window.location.origin + "/login.html"
-	  };
-	  var linkedinBtn = document.getElementById('linkedinBtn');
-	  function signInWithLinkedIn() {
-	  if (!linkedInAuth.clientId || linkedInAuth.clientId === "78e83w1spj610a") {
-	  showError("LinkedIn sign-in needs LINKEDIN_CLIENT_ID in login.html. Keep LINKEDIN_CLIENT_SECRET in Firebase Secret Manager.");
-	  return;
-	  }
-	  var state = Math.random().toString(36).slice(2);
-	  sessionStorage.setItem("linkedin_oauth_state", state);
-	  var url = new URL(linkedInAuth.authorizationEndpoint);
-	  url.searchParams.set("response_type", "code");
-	  url.searchParams.set("client_id", linkedInAuth.clientId);
-	  url.searchParams.set("redirect_uri", linkedInAuth.redirectUri);
-	  url.searchParams.set("scope", linkedInAuth.scope);
-	  url.searchParams.set("state", state);
-	  window.location.assign(url.toString());
-	  }
-	  async function completeLinkedInSignIn() {
-	  var params = new URLSearchParams(window.location.search);
-	  var code = params.get("code");
-	  var state = params.get("state");
-	  if (!code) return;
-	  if (state !== sessionStorage.getItem("linkedin_oauth_state")) { showError("LinkedIn sign-in could not be verified. Try again."); return; }
-	  try {
-	  var exchange = firebase.app().functions("us-central1").httpsCallable("exchangeLinkedInAuth");
-	  var result = await exchange({ code: code, redirectUri: linkedInAuth.redirectUri, clientId: linkedInAuth.clientId });
-	  var token = result.data && result.data.token;
+        }).catch(err => console.error('Redirect result error', err));
+        async function signInWithGoogle() {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          try {
+            const result = await auth.signInWithPopup(provider);
+            showUserStatus(result.user);
+            const loadingNotice = document.createElement('div');
+            loadingNotice.textContent = 'Loading your member area, please wait...';
+            loadingNotice.style = 'text-align:center;margin-top:2rem;font-size:1.2rem;color:#0284c7;';
+            document.body.innerHTML = '';
+            document.body.appendChild(loadingNotice);
+            setTimeout(() => { window.location.href = postLoginPath(); }, 2000);
+          } catch (err) {
+            console.warn('Popup failed, falling back to redirect', err);
+            try { await auth.signInWithRedirect(provider); } catch (rerr) { showError(rerr.message || 'Authentication failed'); }
+          }
+        }
+        async function signOut() {
+          try { await auth.signOut(); hideUserStatus(); if (errEl) errEl.style.display = 'none'; }
+          catch (err) { showError('Sign out failed: ' + (err.message || 'Unknown error')); }
+        }
+        var linkedInAuth = {
+          clientId: "LINKEDIN_CLIENT_ID",
+          authorizationEndpoint: "https://www.linkedin.com/oauth/v2/authorization",
+          tokenEndpoint: "https://www.linkedin.com/oauth/v2/accessToken",
+          userInfoEndpoint: "https://api.linkedin.com/v2/userinfo",
+          scope: "openid profile email",
+          redirectUri: window.location.origin + "/login.html"
+        };
+        var linkedinBtn = document.getElementById('linkedinBtn');
+        function signInWithLinkedIn() {
+          if (!linkedInAuth.clientId || linkedInAuth.clientId === "LINKEDIN_CLIENT_ID") {
+            showError("LinkedIn sign-in needs LINKEDIN_CLIENT_ID in login.html. Keep LINKEDIN_CLIENT_SECRET in Firebase Secret Manager.");
+            return;
+          }
+          var state = Math.random().toString(36).slice(2);
+          sessionStorage.setItem("linkedin_oauth_state", state);
+          var url = new URL(linkedInAuth.authorizationEndpoint);
+          url.searchParams.set("response_type", "code");
+          url.searchParams.set("client_id", linkedInAuth.clientId);
+          url.searchParams.set("redirect_uri", linkedInAuth.redirectUri);
+          url.searchParams.set("scope", linkedInAuth.scope);
+          url.searchParams.set("state", state);
+          window.location.assign(url.toString());
+        }
+        async function completeLinkedInSignIn() {
+          var params = new URLSearchParams(window.location.search);
+          var code = params.get("code");
+          var state = params.get("state");
+          if (!code) return;
+          if (state !== sessionStorage.getItem("linkedin_oauth_state")) { showError("LinkedIn sign-in could not be verified. Try again."); return; }
+          try {
+            var exchange = firebase.app().functions("us-central1").httpsCallable("exchangeLinkedInAuth");
+            var result = await exchange({ code: code, redirectUri: linkedInAuth.redirectUri, clientId: linkedInAuth.clientId });
+            var token = result.data && result.data.token;
             if (!token) throw new Error("LinkedIn sign-in did not return a session.");
             await auth.signInWithCustomToken(token);
             window.history.replaceState({}, document.title, window.location.pathname);

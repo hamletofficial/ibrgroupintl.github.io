@@ -154,10 +154,14 @@ exports.submitPressCommunications = onCall({
   }
   try {
     await sendPostmark(saved);
-    await ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
   } catch (err) {
     console.error("Unable to send press communication notification through Postmark:", err);
     throw new HttpsError("internal", "The brief was saved, but the support notification could not be sent: " + (err.message || err), {saved: true, submissionId: ref.id});
+  }
+  try {
+    await ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
+  } catch (err) {
+    console.error("Press notification was sent, but the sent flag could not be saved:", err);
   }
   return {ok: true, saved: true, notified: true, submissionId: ref.id};
 });

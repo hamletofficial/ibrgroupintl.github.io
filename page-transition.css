@@ -5,6 +5,14 @@
   --page-transition-spinner: var(--accent, #0284c7);
 }
 
+html.auth-arriving,
+html.auth-arriving body {
+  background: #0b1220;
+}
+
+html.auth-arriving body > *:not(.page-transition-overlay) {
+  visibility: hidden;
+}
 body.auth-pending #login-section,
 body.auth-pending #protected-content,
 body.auth-pending #dashboard,

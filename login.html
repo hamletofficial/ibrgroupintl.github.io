@@ -305,12 +305,21 @@
           if (userStatus && signInActions) { userStatus.classList.remove('active'); signInActions.style.display = 'flex'; }
         }
         let redirectTimer = null;
+        function safeNext(value) {
+          if (!value || value.charAt(0) !== '/' || value.charAt(1) === '/' || value.indexOf('\\') !== -1 || value.indexOf('://') !== -1) return '';
+          return value;
+        }
         function postLoginPath() {
           try {
-            var next = new URLSearchParams(window.location.search).get('next') || '';
-            if (next.charAt(0) === '/' && next.charAt(1) !== '/' && next.indexOf('\\') === -1 && next.indexOf('://') === -1) return next;
+            var stored = sessionStorage.getItem('post_login_next') || '';
+            var next = new URLSearchParams(window.location.search).get('next') || stored;
+            var safe = safeNext(next);
+            if (safe) return safe;
           } catch (error) {}
           return '/members.html';
+        }
+        function rememberNext() {
+          try { sessionStorage.setItem('post_login_next', postLoginPath()); } catch (error) {}
         }
         function redirectToPortal() {
           if (redirectTimer) return;
@@ -325,9 +334,13 @@
           }
         });
         auth.getRedirectResult().then((result) => {
-          if (result && result.user) { showUserStatus(result.user); redirectToPortal(); }
-        }).catch(err => console.error('Redirect result error', err));
+          if (result && result.user) {
+            showUserStatus(result.user);
+            window.location.replace(postLoginPath());
+          }
+        }).catch(err => { console.error('Redirect result error', err); showError(err.message || 'Sign-in could not be completed after the provider redirect.'); });
         async function signInWithGoogle() {
+          rememberNext();
           const provider = new firebase.auth.GoogleAuthProvider();
           try {
             const result = await auth.signInWithPopup(provider);
@@ -348,6 +361,7 @@
           catch (err) { showError('Sign out failed: ' + (err.message || 'Unknown error')); }
         }
         async function signInWithLinkedIn() {
+          rememberNext();
           const provider = new firebase.auth.OAuthProvider("oidc.linkedin");
           provider.addScope("openid");
           provider.addScope("profile");
@@ -362,8 +376,9 @@
             document.body.appendChild(loadingNotice);
             setTimeout(() => { window.location.href = postLoginPath(); }, 2000);
           } catch (err) {
+            if (err && err.code === "auth/popup-closed-by-user") return;
             console.warn("LinkedIn popup failed, falling back to redirect", err);
-            try { await auth.signInWithRedirect(provider); }
+            try { rememberNext(); await auth.signInWithRedirect(provider); }
             catch (rerr) { showError(rerr.message || "LinkedIn sign-in is not configured. Add the oidc.linkedin provider in Firebase Authentication."); }
           }
         }

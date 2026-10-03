@@ -8,4 +8,5 @@ window.firebaseConfig = {
   appId: "1:753131375199:web:87d3eef7edda42d640a9ea"
   // other fields (messagingSenderId, measurementId) may be added if available
 };
-window.linkedinClientId = window.linkedinClientId || "";
+// Public LinkedIn app client ID. The client secret stays in LINKEDIN_CLIENT_SECRET.
+window.linkedinClientId = "REPLACE_WITH_LINKEDIN_CLIENT_ID";

@@ -49,36 +49,26 @@
     .signin-steps strong { color: #092a4b; }
     .signin-steps span { display: block; color: var(--muted); font-size: .92rem; line-height: 1.45; }
     .signin-actions { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; margin-top: .25rem; }
-    .form-section { margin: 1.25rem 0 0; padding: 1rem 0 0; border: 0; border-top: 1px solid #eef2f7; }
-    .form-section legend { padding-right: .6rem; color: #092a4b; font-weight: 700; }
-    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-    .field { display: grid; gap: .4rem; }
+    .form-section { margin: 1.35rem 0 0; padding: 1.1rem 0 0; border: 0; border-top: 1px solid #e2e8f0; }
+    .form-section legend { padding: 0 .65rem 0 0; color: #092a4b; font-size: 1rem; font-weight: 700; }
+    .section-hint { margin: .15rem 0 .9rem; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.15rem; align-items: start; }
+    .field { display: grid; grid-template-rows: auto 46px auto; align-content: start; gap: .4rem; min-width: 0; }
     .field.full { grid-column: 1 / -1; }
-    .field label { color: #0f2f4f; font-size: .9rem; font-weight: 700; }
-    .required { color: #b91c1c; }
-    .requests-page input, .requests-page select, .requests-page textarea { width: 100%; min-height: 46px; padding: .7rem .8rem; border: 1px solid #dbe3ee; border-radius: 8px; background: #fff; color: #0f172a; font: inherit; }
-    .requests-page textarea { min-height: 128px; resize: vertical; }
+    .field.textarea { grid-template-rows: auto 128px auto; }
+    .field label { display: flex; align-items: flex-end; min-height: 1.35rem; color: #0f2f4f; font-size: .9rem; font-weight: 700; line-height: 1.3; }
+    .required { color: #b91c1c; margin-left: .2rem; }
+    .info-icon { display: inline-flex; align-items: center; justify-content: center; width: 1.1rem; height: 1.1rem; margin-left: .25rem; border-radius: 999px; background: #e0f2fe; color: #0284c7; font-size: .75rem; font-weight: 700; cursor: help; vertical-align: middle; }
+    .field-hint { min-height: 1.2rem; margin: 0; font-size: .82rem; line-height: 1.35; }
+    .requests-page input, .requests-page select, .requests-page textarea { width: 100%; height: 46px; margin: 0; padding: .7rem .8rem; border: 1px solid #dbe3ee; border-radius: 8px; background: #fff; color: #0f172a; font: inherit; }
+    .requests-page textarea { height: 128px; min-height: 128px; resize: vertical; }
     .requests-page input:focus, .requests-page select:focus, .requests-page textarea:focus { outline: 3px solid rgba(2, 132, 199, .25); border-color: #0284c7; }
-    .form-footer { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 1.25rem; }
+    .form-footer { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 1rem; margin-top: 1.35rem; }
+    .status-note { margin: 0; }
     .status-note.success { color: #047857; }
     .status-note.error { color: #b91c1c; }
-    .info-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 1.1rem;
-      height: 1.1rem;
-      margin-left: .25rem;
-      border-radius: 999px;
-      background: #e0f2fe;
-      color: #0284c7;
-      font-size: .75rem;
-      font-weight: 700;
-      cursor: help;
-      vertical-align: middle;
-    }
-    .field-hint { margin: 0; font-size: .82rem; line-height: 1.4; }
-    @media (max-width: 700px) { .form-grid { grid-template-columns: 1fr; } .field.full { grid-column: auto; } }
+    .privacy-note { margin: .9rem 0 0; }
+    @media (max-width: 700px) { .form-grid, .form-footer { grid-template-columns: 1fr; } .field.full { grid-column: auto; } }
   </style>
 </head>
 <body class="requests-page auth-pending">
@@ -148,8 +138,29 @@
           <h2 id="requestTitle">Communications brief</h2>
           <p class="muted">Complete the sections below so the desk can place the announcement. <span class="required" aria-hidden="true">*</span> Required field</p>
           <form id="pressForm" autocomplete="on">
-            <fieldset class="form-section"><legend>Organisation</legend><p class="section-hint">Who should the communications desk contact about this brief?</p><div class="form-grid"><div class="field"><label for="companyName">Company <span class="required" aria-hidden="true">*</span></label><input id="companyName" name="companyName" type="text" maxlength="160" required></div><div class="field"><label for="pressOfficer">Press officer <span class="required" aria-hidden="true">*</span></label><input id="pressOfficer" name="pressOfficer" type="text" maxlength="120" required></div><div class="field"><label for="officerEmail">Officer email <span class="required" aria-hidden="true">*</span></label><input id="officerEmail" name="officerEmail" type="email" maxlength="254" required></div><div class="field"><label for="destinationEmail">Destination email <span class="required" aria-hidden="true">*</span> <span class="info-icon" title="Use support@ibrecruitment.com unless otherwise stated. This address receives the desk notification." aria-label="Information: always use support@ibrecruitment.com unless otherwise stated">ⓘ</span></label><input id="destinationEmail" name="destinationEmail" type="email" maxlength="254" value="support@ibrecruitment.com" required placeholder="support@ibrecruitment.com"><p class="field-hint">Always use <strong>support@ibrecruitment.com</strong> unless a different address has been explicitly agreed.</p></div><div class="field"><label for="phoneNumber">Phone</label><input id="phoneNumber" name="phoneNumber" type="tel" maxlength="40"></div></div></fieldset>
-            <fieldset class="form-section"><legend>Announcement</legend><p class="section-hint">Share the line, the timing, and the message to send on.</p><div class="form-grid"><div class="field full"><label for="headline">Headline <span class="required" aria-hidden="true">*</span></label><input id="headline" name="headline" type="text" maxlength="200" required></div><div class="field"><label for="announcementType">Announcement type <span class="required" aria-hidden="true">*</span></label><select id="announcementType" name="announcementType" required><option value="">Select type</option><option>Press release</option><option>Media statement</option><option>Interview request</option><option>Spokesperson briefing</option><option>Statement</option></select></div><div class="field"><label for="embargoDate">Embargo date</label><input id="embargoDate" name="embargoDate" type="date"></div><div class="field full"><label for="pressReleaseUrl">Press release link <span class="required" aria-hidden="true">*</span></label><input id="pressReleaseUrl" name="pressReleaseUrl" type="url" maxlength="500" placeholder="https://…" required></div><div class="field full"><label for="summary">Summary <span class="required" aria-hidden="true">*</span></label><textarea id="summary" name="summary" maxlength="6000" required></textarea></div><div class="field full"><label for="notes">Notes</label><textarea id="notes" name="notes" maxlength="3000" placeholder="Audience, spokesperson availability, or holding lines."></textarea></div></div></fieldset>
+            <fieldset class="form-section">
+              <legend>Organisation</legend>
+              <p class="section-hint">Who should the communications desk contact about this brief?</p>
+              <div class="form-grid">
+                <div class="field"><label for="companyName">Company <span class="required" aria-hidden="true">*</span></label><input id="companyName" name="companyName" type="text" maxlength="160" required><p class="field-hint"></p></div>
+                <div class="field"><label for="pressOfficer">Press officer <span class="required" aria-hidden="true">*</span></label><input id="pressOfficer" name="pressOfficer" type="text" maxlength="120" required><p class="field-hint"></p></div>
+                <div class="field"><label for="officerEmail">Officer email <span class="required" aria-hidden="true">*</span></label><input id="officerEmail" name="officerEmail" type="email" maxlength="254" required><p class="field-hint"></p></div>
+                <div class="field"><label for="destinationEmail">Destination email <span class="required" aria-hidden="true">*</span></label><input id="destinationEmail" name="destinationEmail" type="email" maxlength="254" value="support@ibrecruitment.com" required placeholder="support@ibrecruitment.com"><p class="field-hint">Use support@ibrecruitment.com unless another address was agreed.</p></div>
+                <div class="field"><label for="phoneNumber">Phone</label><input id="phoneNumber" name="phoneNumber" type="tel" maxlength="40"><p class="field-hint"></p></div>
+              </div>
+            </fieldset>
+            <fieldset class="form-section">
+              <legend>Announcement</legend>
+              <p class="section-hint">Share the line, the timing, and the message to send on.</p>
+              <div class="form-grid">
+                <div class="field full"><label for="headline">Headline <span class="required" aria-hidden="true">*</span></label><input id="headline" name="headline" type="text" maxlength="200" required><p class="field-hint"></p></div>
+                <div class="field"><label for="announcementType">Announcement type <span class="required" aria-hidden="true">*</span></label><select id="announcementType" name="announcementType" required><option value="">Select type</option><option>Press release</option><option>Media statement</option><option>Interview request</option><option>Spokesperson briefing</option><option>Statement</option></select><p class="field-hint"></p></div>
+                <div class="field"><label for="embargoDate">Embargo date</label><input id="embargoDate" name="embargoDate" type="date"><p class="field-hint"></p></div>
+                <div class="field full"><label for="pressReleaseUrl">Press release link <span class="required" aria-hidden="true">*</span></label><input id="pressReleaseUrl" name="pressReleaseUrl" type="url" maxlength="500" placeholder="https://…" required><p class="field-hint"></p></div>
+                <div class="field full textarea"><label for="summary">Summary <span class="required" aria-hidden="true">*</span></label><textarea id="summary" name="summary" maxlength="6000" required></textarea><p class="field-hint"></p></div>
+                <div class="field full textarea"><label for="notes">Notes</label><textarea id="notes" name="notes" maxlength="3000" placeholder="Audience, spokesperson availability, or holding lines."></textarea><p class="field-hint"></p></div>
+              </div>
+            </fieldset>
             <div class="form-footer"><button class="btn btn-primary" id="submitButton" type="submit">Send brief</button><p class="status-note" id="formStatus" role="status" aria-live="polite"></p></div>
             <p class="privacy-note">Your account email is included so the communications desk can follow up. If a notification cannot be sent after the brief is saved, the form will tell you not to submit it again.</p>
           </form>

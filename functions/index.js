@@ -140,14 +140,20 @@ exports.submitPressCommunications = onCall({
     notificationHandledByCallable: true,
     notificationSent: false,
   });
-  const ref = getPressDb().collection("pressCommunications").doc();
-  await ref.create(saved);
+  let ref;
+  try {
+    ref = getPressDb().collection("pressCommunications").doc();
+    await ref.create(saved);
+  } catch (err) {
+    console.error("Unable to save press communication:", err);
+    throw new HttpsError("failed-precondition", "The brief could not be saved: " + (err.message || err));
+  }
   try {
     await sendPostmark(saved);
     await ref.set({notificationSent: true, notifiedAt: admin.firestore.FieldValue.serverTimestamp()}, {merge: true});
   } catch (err) {
     console.error("Unable to send press communication notification through Postmark:", err);
-    throw new HttpsError("internal", "The brief was saved, but the support notification could not be sent.", {saved: true, submissionId: ref.id});
+    throw new HttpsError("internal", "The brief was saved, but the support notification could not be sent: " + (err.message || err), {saved: true, submissionId: ref.id});
   }
   return {ok: true, saved: true, notified: true, submissionId: ref.id};
 });

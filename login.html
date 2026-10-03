@@ -327,17 +327,23 @@
           var target = postLoginPath();
           redirectTimer = setTimeout(function () { window.location.replace(target); }, 300);
         }
+        function finishSignIn(user) {
+          if (!user) return;
+          showUserStatus(user);
+          window.location.replace(postLoginPath());
+        }
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function (err) {
+          console.warn('Auth persistence could not be set', err);
+        });
         auth.getRedirectResult().then(function (result) {
-          if (result && result.user) {
-            showUserStatus(result.user);
-            window.location.replace(postLoginPath());
-          }
+          if (result && result.user) finishSignIn(result.user);
+          else if (!auth.currentUser) showError('LinkedIn returned to this page, but Firebase did not keep a signed-in session. Check that ats.ibrecruitment.com is an authorized domain.');
         }).catch(function (err) {
           console.error('Redirect result error', err);
           showError(err.message || 'Sign-in could not be completed after the provider redirect.');
         });
         auth.onAuthStateChanged(function(user) {
-          if (user) { showUserStatus(user); redirectToPortal(); }
+          if (user) finishSignIn(user);
           else if (!redirectTimer) hideUserStatus();
         });
         async function signInWithGoogle() {
@@ -368,6 +374,7 @@
           provider.addScope("profile");
           provider.addScope("email");
           try {
+            await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
             await auth.signInWithRedirect(provider);
           } catch (err) {
             console.error("LinkedIn redirect failed", err);

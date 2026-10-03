@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="/login-mobile.css">
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-functions-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <script defer src="/header-profile.js"></script>
   <script defer src="/mobile-compat.js"></script>
@@ -175,6 +176,27 @@
     .google-btn:active { background: #f1f5f9; }
     .google-btn-icon { display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; flex-shrink: 0; }
     .google-btn-text { padding-right: 0; flex: 1; text-align: center; }
+    .linkedin-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 12px;
+      min-height: 48px;
+      border-radius: 8px;
+      border: 1px solid #0A66C2;
+      background: #0A66C2;
+      color: #fff;
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 1px 2px rgba(10, 102, 194, 0.25);
+    }
+    .linkedin-btn:hover { background: #004182; border-color: #004182; }
+    .linkedin-btn:active { background: #00315f; }
+    .actions { display: flex; flex-direction: column; gap: 10px; }
     .user-status { display: none; padding: 16px; background: rgba(66, 133, 244, 0.1); border-radius: 8px; border: 1px solid rgba(66, 133, 244, 0.3); }
     .user-status.active { display: block; }
     .user-info { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
@@ -189,7 +211,7 @@
       .card{padding:20px}
       h1{font-size:1.05rem}
       .btn{padding:10px;border-radius:10px}
-      .actions > .btn,.actions > .google-btn,.portal-return-btn{width:100%;max-width:100%;min-width:0}
+      .actions > .btn,.actions > .google-btn,.actions > .linkedin-btn,.portal-return-btn{width:100%;max-width:100%;min-width:0}
       .actions{gap:10px}
       .note{font-size:0.82rem}
       .login-security-chip{font-size:0.76rem;padding:7px 10px}
@@ -235,6 +257,12 @@
           </svg>
         </span>
         <span class="google-btn-text">Sign in with Google</span>
+      </button>
+      <button id="linkedinBtn" class="linkedin-btn" type="button">
+        <span class="google-btn-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/></svg>
+        </span>
+        <span class="google-btn-text">Sign in with LinkedIn</span>
       </button>
       <a class="btn btn-outline portal-return-btn" href="/index.html">Return to User Portal</a>
     </div>
@@ -319,7 +347,50 @@
           try { await auth.signOut(); hideUserStatus(); if (errEl) errEl.style.display = 'none'; }
           catch (err) { showError('Sign out failed: ' + (err.message || 'Unknown error')); }
         }
+        var linkedInAuth = {
+          clientId: "LINKEDIN_CLIENT_ID",
+          authorizationEndpoint: "https://www.linkedin.com/oauth/v2/authorization",
+          tokenEndpoint: "https://www.linkedin.com/oauth/v2/accessToken",
+          userInfoEndpoint: "https://api.linkedin.com/v2/userinfo",
+          scope: "openid profile email",
+          redirectUri: window.location.origin + "/login.html"
+        };
+        var linkedinBtn = document.getElementById('linkedinBtn');
+        function signInWithLinkedIn() {
+          if (!linkedInAuth.clientId || linkedInAuth.clientId === "LINKEDIN_CLIENT_ID") {
+            showError("LinkedIn sign-in needs LINKEDIN_CLIENT_ID in login.html. Keep LINKEDIN_CLIENT_SECRET in Firebase Secret Manager.");
+            return;
+          }
+          var state = Math.random().toString(36).slice(2);
+          sessionStorage.setItem("linkedin_oauth_state", state);
+          var url = new URL(linkedInAuth.authorizationEndpoint);
+          url.searchParams.set("response_type", "code");
+          url.searchParams.set("client_id", linkedInAuth.clientId);
+          url.searchParams.set("redirect_uri", linkedInAuth.redirectUri);
+          url.searchParams.set("scope", linkedInAuth.scope);
+          url.searchParams.set("state", state);
+          window.location.assign(url.toString());
+        }
+        async function completeLinkedInSignIn() {
+          var params = new URLSearchParams(window.location.search);
+          var code = params.get("code");
+          var state = params.get("state");
+          if (!code) return;
+          if (state !== sessionStorage.getItem("linkedin_oauth_state")) { showError("LinkedIn sign-in could not be verified. Try again."); return; }
+          try {
+            var exchange = firebase.app().functions("us-central1").httpsCallable("exchangeLinkedInAuth");
+            var result = await exchange({ code: code, redirectUri: linkedInAuth.redirectUri, clientId: linkedInAuth.clientId });
+            var token = result.data && result.data.token;
+            if (!token) throw new Error("LinkedIn sign-in did not return a session.");
+            await auth.signInWithCustomToken(token);
+            window.history.replaceState({}, document.title, window.location.pathname);
+          } catch (err) {
+            showError(err.message || "LinkedIn sign-in failed");
+          }
+        }
         if (googleBtn) googleBtn.addEventListener('click', function(e) { e.preventDefault(); if (errEl) errEl.style.display='none'; signInWithGoogle(); });
+        if (linkedinBtn) linkedinBtn.addEventListener('click', function(e) { e.preventDefault(); if (errEl) errEl.style.display='none'; signInWithLinkedIn(); });
+        completeLinkedInSignIn();
         if (signOutBtn) signOutBtn.addEventListener('click', function(e) { e.preventDefault(); signOut(); });
       });
     })();

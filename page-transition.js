@@ -241,6 +241,8 @@
     }
     tick();
   }
+
+  function schedulePrefetchRetries() {
     for (let i = 1; i <= 6; i += 1) {
       window.setTimeout(prefetchProtectedPages, i * 700);
       window.setTimeout(highlightCurrentSidebarLink, i * 700);

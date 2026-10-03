@@ -212,31 +212,59 @@ exports.exchangeLinkedInAuth = onCall({
   cors: true,
   secrets: [linkedInClientSecret],
 }, async function(request) {
-  const code = request.data && request.data.code;
-  const clientId = request.data && request.data.clientId;
-  const redirectUri = request.data && request.data.redirectUri;
-  if (!code || !clientId || !redirectUri) throw new HttpsError("invalid-argument", "LinkedIn sign-in is missing the authorization code.");
-  if (clientId === "LINKEDIN_CLIENT_ID") throw new HttpsError("failed-precondition", "Set LINKEDIN_CLIENT_ID before using LinkedIn sign-in.");
-  const body = new URLSearchParams({
-    grant_type: "authorization_code",
-    code: code,
-    redirect_uri: redirectUri,
-    client_id: clientId,
-    client_secret: linkedInClientSecret.value(),
-  });
-  const tokenResponse = await fetch("https://www.linkedin.com/oauth/v2/accessToken", {
-    method: "POST",
-    headers: {"Content-Type": "application/x-www-form-urlencoded"},
-    body: body.toString(),
-  });
-  const tokenJson = await tokenResponse.json();
-  if (!tokenResponse.ok) throw new HttpsError("unauthenticated", "LinkedIn token exchange failed.");
-  const profileResponse = await fetch("https://api.linkedin.com/v2/userinfo", {
-    headers: {Authorization: "Bearer " + tokenJson.access_token},
-  });
-  const profile = await profileResponse.json();
-  if (!profileResponse.ok || !profile.sub) throw new HttpsError("unauthenticated", "LinkedIn profile could not be read.");
-  try { admin.app(); } catch (err) { admin.initializeApp(); }
-  const token = await admin.auth().createCustomToken("linkedin:" + profile.sub, {email: profile.email || "", name: profile.name || ""});
-  return {token: token, email: profile.email || "", name: profile.name || ""};
+  try {
+    const code = request.data && request.data.code;
+    const clientId = request.data && request.data.clientId;
+    const redirectUri = request.data && request.data.redirectUri;
+    if (!code || !clientId || !redirectUri) throw new HttpsError("invalid-argument", "LinkedIn sign-in is missing the authorization code.");
+    if (clientId === "LINKEDIN_CLIENT_ID" || clientId === "REPLACE_WITH_LINKEDIN_CLIENT_ID") {
+      throw new HttpsError("failed-precondition", "Set the LinkedIn client ID before using LinkedIn sign-in.");
+    }
+    let clientSecret = "";
+    try { clientSecret = linkedInClientSecret.value(); } catch (err) {
+      throw new HttpsError("failed-precondition", "LINKEDIN_CLIENT_SECRET is not available to exchangeLinkedInAuth.");
+    }
+    if (!clientSecret) throw new HttpsError("failed-precondition", "LINKEDIN_CLIENT_SECRET is empty.");
+    const body = new URLSearchParams({
+      grant_type: "authorization_code",
+      code: code,
+      redirect_uri: redirectUri,
+      client_id: clientId,
+      client_secret: clientSecret,
+    });
+    const tokenResponse = await fetch("https://www.linkedin.com/oauth/v2/accessToken", {
+      method: "POST",
+      headers: {"Content-Type": "application/x-www-form-urlencoded"},
+      body: body.toString(),
+    });
+    const tokenText = await tokenResponse.text();
+    let tokenJson = {};
+    try { tokenJson = JSON.parse(tokenText); } catch (err) { tokenJson = {error: tokenText.slice(0, 300)}; }
+    if (!tokenResponse.ok) {
+      const reason = tokenJson.error_description || tokenJson.error || "LinkedIn token exchange failed.";
+      throw new HttpsError("unauthenticated", "LinkedIn token exchange failed: " + reason);
+    }
+    const profileResponse = await fetch("https://api.linkedin.com/v2/userinfo", {
+      headers: {Authorization: "Bearer " + tokenJson.access_token},
+    });
+    const profileText = await profileResponse.text();
+    let profile = {};
+    try { profile = JSON.parse(profileText); } catch (err) { profile = {}; }
+    if (!profileResponse.ok || !profile.sub) {
+      throw new HttpsError("unauthenticated", "LinkedIn profile could not be read: " + (profile.message || profileText.slice(0, 180)));
+    }
+    try { admin.app(); } catch (err) { admin.initializeApp(); }
+    let token;
+    try {
+      token = await admin.auth().createCustomToken("linkedin:" + profile.sub, {email: profile.email || "", name: profile.name || ""});
+    } catch (err) {
+      console.error("createCustomToken failed", err);
+      throw new HttpsError("failed-precondition", "Firebase could not mint a custom token. Grant the function service account Service Account Token Creator (roles/iam.serviceAccountTokenCreator).");
+    }
+    return {token: token, email: profile.email || "", name: profile.name || ""};
+  } catch (err) {
+    if (err instanceof HttpsError) throw err;
+    console.error("exchangeLinkedInAuth failed", err);
+    throw new HttpsError("internal", (err && err.message) || "LinkedIn sign-in failed.");
+  }
 });

@@ -17,9 +17,9 @@
   <link rel="stylesheet" href="/index.css">
   <link rel="stylesheet" href="/mobile-compat.css">
   <link rel="stylesheet" href="/login-mobile.css">
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-functions-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-functions-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <script defer src="/header-profile.js"></script>
   <script defer src="/mobile-compat.js"></script>
@@ -233,9 +233,9 @@
   </header>
   <main class="login-main">
     <div class="card" role="main" aria-labelledby="signin-title">
-    <div class="login-security-chip"><span class="login-lock-icon">🔒</span><span>Protected sign-in via Google + Firebase</span></div>
+    <div class="login-security-chip"><span class="login-lock-icon">🔒</span><span>Protected sign-in via Firebase</span></div>
     <h1 id="signin-title">Secure Login</h1>
-    <p class="lead">Sign in with your Google account to access the protected portal.</p>
+    <p class="lead">Sign in with Google or LinkedIn. Both providers are handled by Firebase Authentication.</p>
     <div id="error" role="alert"></div>
     <div id="userStatus" class="user-status">
       <div class="user-info">
@@ -259,7 +259,7 @@
         </span>
         <span class="google-btn-text">Sign in with Google</span>
       </button>
-      <button id="linkedinBtn" class="linkedin-btn" type="button" onclick="window.startLinkedInSignIn && window.startLinkedInSignIn(event)">
+      <button id="linkedinBtn" class="linkedin-btn" type="button" >
         <span class="google-btn-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/></svg>
         </span>
@@ -272,40 +272,45 @@
       <li>Managed by Google Identity and Firebase Auth</li>
       <li>No password stored in this portal</li>
     </ul>
-    <p class="note">This site uses Firebase Authentication (Google). Your sign-in will be handled by Google and Firebase.</p>
+    <p class="note">This site uses Firebase Authentication for Google and LinkedIn. No password is stored in this portal.</p>
     <div class="meta-links" style="margin-top:12px"></div>
     </div>
   </main>
   <script>
-    (function() {
+    (function () {
       if (window._loginInitialized) return;
       window._loginInitialized = true;
+
+      function showError(msg) {
+        var errEl = document.getElementById('error');
+        if (!errEl) return;
+        errEl.textContent = msg;
+        errEl.style.display = 'block';
+      }
+
       window.addEventListener('load', function () {
-        if (!window.firebase || !window.firebaseConfig) { console.error('Firebase SDK or config not available'); return; }
-        try { firebase.initializeApp(window.firebaseConfig); } catch (e) {}
-        const auth = firebase.auth();
-        const googleBtn = document.getElementById('googleBtn');
-        const signOutBtn = document.getElementById('signOutBtn');
-        const errEl = document.getElementById('error');
-        const userStatus = document.getElementById('userStatus');
-        const signInActions = document.getElementById('signInActions');
-        const userAvatar = document.getElementById('userAvatar');
-        const userName = document.getElementById('userName');
-        const userEmail = document.getElementById('userEmail');
-        function showError(msg) { if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; } }
-        function showUserStatus(user) {
-          if (userStatus && signInActions) {
-            userStatus.classList.add('active');
-            signInActions.style.display = 'none';
-            if (userAvatar && user.photoURL) { userAvatar.src = user.photoURL; userAvatar.alt = user.displayName || 'User'; }
-            if (userName) userName.textContent = user.displayName || 'User';
-            if (userEmail) userEmail.textContent = user.email || '';
-          }
+        if (!window.firebase || !window.firebase.auth || !window.firebaseConfig) {
+          showError('Firebase Auth did not load. Reload the page and try again.');
+          return;
         }
-        function hideUserStatus() {
-          if (userStatus && signInActions) { userStatus.classList.remove('active'); signInActions.style.display = 'flex'; }
+        if (!firebase.apps.length) {
+          try { firebase.initializeApp(window.firebaseConfig); }
+          catch (err) { console.warn('Firebase already initialized', err); }
         }
-        let redirectTimer = null;
+
+        var auth = firebase.auth();
+        var googleBtn = document.getElementById('googleBtn');
+        var linkedinBtn = document.getElementById('linkedinBtn');
+        var signOutBtn = document.getElementById('signOutBtn');
+        var errEl = document.getElementById('error');
+        var userStatus = document.getElementById('userStatus');
+        var signInActions = document.getElementById('signInActions');
+        var userAvatar = document.getElementById('userAvatar');
+        var userName = document.getElementById('userName');
+        var userEmail = document.getElementById('userEmail');
+        var redirectSettled = false;
+        var redirectTimer = null;
+
         function safeNext(value) {
           if (!value || value.charAt(0) !== '/' || value.charAt(1) === '/' || value.indexOf('\\') !== -1 || value.indexOf('://') !== -1) return '';
           return value;
@@ -322,16 +327,27 @@
         function rememberNext() {
           try { sessionStorage.setItem('post_login_next', postLoginPath()); } catch (error) {}
         }
-        function redirectToPortal() {
-          if (redirectTimer) return;
-          var target = postLoginPath();
-          redirectTimer = setTimeout(function () { window.location.replace(target); }, 300);
+        function showUserStatus(user) {
+          if (!userStatus || !signInActions) return;
+          userStatus.classList.add('active');
+          signInActions.style.display = 'none';
+          if (userAvatar) {
+            userAvatar.src = user.photoURL || '/160.jpg';
+            userAvatar.alt = user.displayName || 'User';
+          }
+          if (userName) userName.textContent = user.displayName || 'User';
+          if (userEmail) userEmail.textContent = user.email || '';
         }
-        let redirectSettled = false;
+        function hideUserStatus() {
+          if (!userStatus || !signInActions) return;
+          userStatus.classList.remove('active');
+          signInActions.style.display = 'flex';
+        }
         function finishSignIn(user) {
-          if (!user || !redirectSettled) return;
+          if (!user || !redirectSettled || redirectTimer) return;
           showUserStatus(user);
-          window.location.replace(postLoginPath());
+          var target = postLoginPath();
+          redirectTimer = setTimeout(function () { window.location.replace(target); }, 250);
         }
         function markRedirectSettled() {
           redirectSettled = true;
@@ -339,11 +355,13 @@
         }
         function shouldUseRedirect(err) {
           var code = err && err.code;
-          return code === 'auth/popup-blocked' || code === 'operation-not-supported-in-this-environment' || code === 'auth/operation-not-supported-in-this-environment' || code === 'auth/web-storage-unsupported';
+          return code === 'auth/popup-blocked' || code === 'auth/operation-not-supported-in-this-environment' || code === 'auth/web-storage-unsupported';
         }
+
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function (err) {
           console.warn('Auth persistence could not be set', err);
         });
+
         auth.getRedirectResult().then(function (result) {
           try { sessionStorage.removeItem('linkedin_redirect_pending'); } catch (error) {}
           markRedirectSettled();
@@ -355,54 +373,60 @@
             showError(err.message || 'Sign-in could not be completed after the provider redirect.');
           }
         });
-        auth.onAuthStateChanged(function(user) {
+
+        auth.onAuthStateChanged(function (user) {
           if (user) finishSignIn(user);
           else if (!redirectTimer) hideUserStatus();
         });
-        async function signInWithProvider(provider) {
+
+        function signInWithProvider(provider) {
           rememberNext();
-          try {
-            const result = await auth.signInWithPopup(provider);
+          if (errEl) errEl.style.display = 'none';
+          return auth.signInWithPopup(provider).then(function (result) {
             redirectSettled = true;
             finishSignIn(result.user);
-          } catch (err) {
+          }).catch(function (err) {
             if (!shouldUseRedirect(err)) {
+              if (err && (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request')) return;
               console.warn('Popup sign-in stopped', err);
-              showError(err.message || 'Authentication failed');
+              showError((err && err.message) || 'Authentication failed');
               return;
             }
-            console.warn('Popup unavailable, falling back to redirect', err);
-            try { await auth.signInWithRedirect(provider); }
-            catch (rerr) { showError(rerr.message || 'Authentication failed'); }
-          }
+            try { sessionStorage.setItem('linkedin_redirect_pending', '1'); } catch (error) {}
+            return auth.signInWithRedirect(provider).catch(function (rerr) {
+              showError((rerr && rerr.message) || 'Authentication failed');
+            });
+          });
         }
-        async function signInWithGoogle() {
-          const provider = new firebase.auth.GoogleAuthProvider();
+
+        function signInWithGoogle() {
+          var provider = new firebase.auth.GoogleAuthProvider();
           provider.setCustomParameters({ prompt: 'select_account' });
-          await signInWithProvider(provider);
+          return signInWithProvider(provider);
         }
-        async function signOut() {
-          try { await auth.signOut(); hideUserStatus(); if (errEl) errEl.style.display = 'none'; }
-          catch (err) { showError('Sign out failed: ' + (err.message || 'Unknown error')); }
+        function signInWithLinkedIn() {
+          var provider = new firebase.auth.OAuthProvider('oidc.linkedin-secure-login');
+          provider.addScope('openid');
+          provider.addScope('profile');
+          provider.addScope('email');
+          return signInWithProvider(provider);
         }
-        async function signInWithLinkedIn() {
-          const provider = new firebase.auth.OAuthProvider("oidc.linkedin-secure-login");
-          provider.addScope("openid");
-          provider.addScope("profile");
-          provider.addScope("email");
-          try { sessionStorage.setItem('linkedin_redirect_pending', '1'); } catch (error) {}
-          await signInWithProvider(provider);
+        function signOut() {
+          auth.signOut().then(function () {
+            hideUserStatus();
+            if (errEl) errEl.style.display = 'none';
+          }).catch(function (err) {
+            showError('Sign out failed: ' + ((err && err.message) || 'Unknown error'));
+          });
         }
+
         window.startLinkedInSignIn = function (event) {
           if (event) event.preventDefault();
-          if (!window.firebase || !firebase.auth) { showError("Firebase Auth has not loaded yet. Reload the page and try again."); return; }
           signInWithLinkedIn();
         };
-        var linkedinBtn = document.getElementById("linkedinBtn");
-        if (googleBtn) googleBtn.addEventListener('click', function(e) { e.preventDefault(); if (errEl) errEl.style.display='none'; signInWithGoogle(); });
-        if (linkedinBtn) linkedinBtn.addEventListener('click', function(e) { e.preventDefault(); if (errEl) errEl.style.display='none'; signInWithLinkedIn(); });
-        if (auth.currentUser) window.location.replace(postLoginPath());
-        if (signOutBtn) signOutBtn.addEventListener('click', function(e) { e.preventDefault(); signOut(); });
+        if (googleBtn) googleBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithGoogle(); });
+        if (linkedinBtn) linkedinBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithLinkedIn(); });
+        if (signOutBtn) signOutBtn.addEventListener('click', function (event) { event.preventDefault(); signOut(); });
       });
     })();
   </script>

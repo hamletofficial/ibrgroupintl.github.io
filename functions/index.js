@@ -9,7 +9,11 @@ const {onSchedule} = require("firebase-functions/v2/scheduler");
 const postmarkOutboundToken = defineSecret("POSTMARK_OUTBOUND_TOKEN");
 
 function getPressDb() {
-  if (!admin.apps.length) admin.initializeApp();
+  try {
+    admin.app();
+  } catch (err) {
+    admin.initializeApp();
+  }
   return getFirestore(admin.app(), "chung-lee");
 }
 

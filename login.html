@@ -324,21 +324,21 @@
         function redirectToPortal() {
           if (redirectTimer) return;
           var target = postLoginPath();
-          redirectTimer = setTimeout(function () { window.location.replace(target); }, 500);
+          redirectTimer = setTimeout(function () { window.location.replace(target); }, 300);
         }
-        auth.onAuthStateChanged(function(user) {
-          if (user) { showUserStatus(user); redirectToPortal(); }
-          else {
-            hideUserStatus();
-            if (redirectTimer) { clearTimeout(redirectTimer); redirectTimer = null; }
-          }
-        });
-        auth.getRedirectResult().then((result) => {
+        auth.getRedirectResult().then(function (result) {
           if (result && result.user) {
             showUserStatus(result.user);
             window.location.replace(postLoginPath());
           }
-        }).catch(err => { console.error('Redirect result error', err); showError(err.message || 'Sign-in could not be completed after the provider redirect.'); });
+        }).catch(function (err) {
+          console.error('Redirect result error', err);
+          showError(err.message || 'Sign-in could not be completed after the provider redirect.');
+        });
+        auth.onAuthStateChanged(function(user) {
+          if (user) { showUserStatus(user); redirectToPortal(); }
+          else if (!redirectTimer) hideUserStatus();
+        });
         async function signInWithGoogle() {
           rememberNext();
           const provider = new firebase.auth.GoogleAuthProvider();
@@ -385,6 +385,7 @@
         var linkedinBtn = document.getElementById("linkedinBtn");
         if (googleBtn) googleBtn.addEventListener('click', function(e) { e.preventDefault(); if (errEl) errEl.style.display='none'; signInWithGoogle(); });
         if (linkedinBtn) linkedinBtn.addEventListener('click', function(e) { e.preventDefault(); if (errEl) errEl.style.display='none'; signInWithLinkedIn(); });
+        if (auth.currentUser) window.location.replace(postLoginPath());
         if (signOutBtn) signOutBtn.addEventListener('click', function(e) { e.preventDefault(); signOut(); });
       });
     })();

@@ -52,12 +52,12 @@
     .loading { opacity:.7; }
     @media (max-width:700px) {
       body { background:linear-gradient(180deg,#07111f 0 205px,#f5f8fc 205px 100%); }
-      .archive-main { width:min(100% - 20px,1100px); padding:0 0 48px; }\n      .archive-hero { padding:18px 0 0; margin-bottom:18px; }\n      .archive-toolbar { grid-template-columns:1fr; gap:14px; margin-bottom:18px; padding:14px 0; }\n      .archive-count { margin:0; }\n      .archive-controls { width:100%; justify-content:stretch; gap:12px; }\n      .archive-search { width:100%; order:-1; }\n      .archive-actions { width:100%; gap:12px; }\n      .archive-footer { margin-left:0; padding:20px 16px 28px; }
-      .archive-controls { align-items:stretch; }\n      .archive-actions a,.archive-actions button { flex:1; text-align:center; min-height:46px; }
-      .brief-card-head { padding:17px; flex-direction:column; }
+      .archive-main { width:100%; max-width:none; padding:0 16px 40px; }\n      .archive-hero { padding:18px 0 0; margin-bottom:18px; }\n       .archive-toolbar { grid-template-columns:1fr; gap:12px; margin-bottom:16px; padding:12px 0; }\n      .archive-count { margin:0; }\n      .archive-controls { width:100%; justify-content:stretch; gap:12px; }\n      .archive-search { width:100%; order:-1; }\n       .archive-actions { width:100%; gap:8px; }\n      .archive-footer { margin-left:0; padding:20px 16px 28px; }
+      .archive-controls { align-items:stretch; }\n       .archive-actions a,.archive-actions button { flex:1 1 calc(50% - 4px); text-align:center; min-height:44px; padding:9px 10px; }
+       .brief-card-head { padding:16px; flex-direction:column; gap:12px; }
       .brief-ref { text-align:left; }
       .field-grid { grid-template-columns:1fr; }
-      .field,.field.full { grid-column:auto; border-right:0; padding:15px 17px; }
+       .field,.field.full { grid-column:auto; border-right:0; padding:14px 16px; }
     }
     .archive-sidebar { position:fixed; inset:0 auto 0 0; width:245px; z-index:1000; display:flex; flex-direction:column; padding:28px 18px 20px; background:#07111f; border-right:1px solid rgba(255,255,255,.09); box-shadow:8px 0 30px rgba(2,6,23,.16); }
     .archive-sidebar-brand { padding:0 10px 26px; }
@@ -89,10 +89,10 @@
     @media (max-width:700px) {
       .archive-auth-header { margin-left:0; min-height:64px; padding:10px 16px; }
       .archive-auth-menu { gap:8px; max-width:100%; }
-      .archive-user-profile { max-width:calc(100vw - 150px); padding:5px 8px; }
-      .archive-user-profile span { max-width:92px; font-size:.82rem; }
+       .archive-user-profile { max-width:calc(100vw - 132px); padding:5px 8px; }
+       .archive-user-profile span { max-width:120px; font-size:.82rem; }
       .archive-signout { min-height:38px; padding:7px 10px; font-size:.82rem; }
-      .archive-mobile-nav { position:relative; z-index:1000; display:flex; align-items:center; justify-content:space-between; min-height:64px; padding:10px 16px; background:#07111f; }\n    }\n    @media print {
+       .archive-mobile-nav { position:relative; z-index:1000; display:flex; align-items:center; justify-content:space-between; min-height:56px; padding:8px 16px; background:#07111f; }\n    }\n    @media print {
       .archive-sidebar,.archive-mobile-nav,.archive-mobile-menu,.archive-actions,.archive-search,.archive-status,.archive-signout { display:none!important; }
       body { background:#fff!important; }
       .archive-main { margin:0; width:100%; max-width:none; padding:0; }

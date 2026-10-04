@@ -16,12 +16,14 @@
     .archive-hero { color:#fff; margin-bottom:24px; }
     .archive-hero h1 { margin:0 0 8px; font-size:clamp(1.8rem,4vw,2.5rem); letter-spacing:-.03em; }
     .archive-hero p { margin:0; color:#c6d5e5; max-width:700px; line-height:1.6; }
-    .archive-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
-    .archive-toolbar { border-top:1px solid rgba(219,227,238,.75); padding-top:22px; }
+    .archive-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px; flex-wrap:wrap; border-top:1px solid rgba(219,227,238,.75); padding-top:22px; }
     .archive-count { font-weight:700; color:#e6eef7; }
+    .archive-controls { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
     .archive-actions { display:flex; gap:10px; flex-wrap:wrap; }
     .archive-actions a,.archive-actions button { appearance:none; border:1px solid #cbd8e6; background:#fff; color:var(--ink); border-radius:10px; padding:10px 15px; font:inherit; font-weight:700; text-decoration:none; cursor:pointer; }
     .archive-actions button:hover,.archive-actions a:hover { background:#f2f7fb; }
+    .archive-search { width:240px; min-height:42px; padding:10px 13px; border:1px solid #cbd8e6; border-radius:10px; background:#fff; color:var(--ink); font:inherit; outline:none; }
+    .archive-search:focus { border-color:#0a66c2; box-shadow:0 0 0 3px rgba(10,102,194,.14); }
     .archive-status { padding:16px 18px; border:1px solid var(--line); border-radius:14px; background:#fff; color:var(--muted); margin-bottom:18px; }
     .archive-status.error { border-color:#f0b8b8; color:#9b1c1c; background:#fff8f8; }
     .brief-list { display:grid; gap:18px; }
@@ -37,11 +39,14 @@
     .field-label { display:block; margin-bottom:6px; color:#657b91; font-size:.74rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
     .field-value { margin:0; color:#173b5d; line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; }
     .empty { text-align:center; padding:44px 22px; background:#fff; border:1px solid var(--line); border-radius:18px; color:var(--muted); }
+    .brief-card.search-hidden { display:none; }
     .loading { opacity:.7; }
     @media (max-width:700px) {
       body { background:linear-gradient(180deg,#07111f 0 145px,#f5f8fc 145px 100%); }
       .archive-main { width:min(100% - 20px,1100px); padding:30px 0 48px; }
       .archive-toolbar { align-items:stretch; }
+      .archive-controls { width:100%; }
+      .archive-search { width:100%; order:-1; }
       .archive-actions { width:100%; }
       .archive-actions a,.archive-actions button { flex:1; text-align:center; min-height:46px; }
       .brief-card-head { padding:17px; flex-direction:column; }
@@ -49,22 +54,12 @@
       .field-grid { grid-template-columns:1fr; }
       .field,.field.full { grid-column:auto; border-right:0; padding:15px 17px; }
     }
-    .archive-sidebar {
-      position:fixed; inset:0 auto 0 0; width:245px; z-index:1000;
-      display:flex; flex-direction:column; padding:28px 18px 20px;
-      background:#07111f; border-right:1px solid rgba(255,255,255,.09);
-      box-shadow:8px 0 30px rgba(2,6,23,.16);
-    }
+    .archive-sidebar { position:fixed; inset:0 auto 0 0; width:245px; z-index:1000; display:flex; flex-direction:column; padding:28px 18px 20px; background:#07111f; border-right:1px solid rgba(255,255,255,.09); box-shadow:8px 0 30px rgba(2,6,23,.16); }
     .archive-sidebar-brand { padding:0 10px 26px; }
     .archive-sidebar-brand a { color:#fff; text-decoration:none; font-weight:800; line-height:1.25; letter-spacing:-.02em; }
     .archive-nav { display:grid; gap:5px; }
-    .archive-nav a, .archive-sidebar-footer a {
-      display:block; padding:11px 12px; border-radius:9px; color:#c9d7e6;
-      text-decoration:none; font-size:.9rem; font-weight:650; transition:background .15s ease,color .15s ease;
-    }
-    .archive-nav a:hover, .archive-nav a:focus-visible, .archive-sidebar-footer a:hover, .archive-sidebar-footer a:focus-visible {
-      background:rgba(255,255,255,.09); color:#fff; outline:none;
-    }
+    .archive-nav a, .archive-sidebar-footer a { display:block; padding:11px 12px; border-radius:9px; color:#c9d7e6; text-decoration:none; font-size:.9rem; font-weight:650; transition:background .15s ease,color .15s ease; }
+    .archive-nav a:hover, .archive-nav a:focus-visible, .archive-sidebar-footer a:hover, .archive-sidebar-footer a:focus-visible { background:rgba(255,255,255,.09); color:#fff; outline:none; }
     .archive-nav a[href="/archive.html"] { background:rgba(255,255,255,.12); color:#fff; }
     .archive-sidebar-footer { margin-top:auto; padding-top:18px; border-top:1px solid rgba(255,255,255,.09); }
     .archive-sidebar-footer a { background:#fff; color:#092a4b; text-align:center; }
@@ -74,36 +69,30 @@
     .archive-hero { padding-top:8px; }
     @media (max-width:700px) {
       .archive-sidebar { display:none; }
-      .archive-mobile-nav {
-        position:relative; z-index:1000; display:flex; align-items:center; justify-content:space-between;
-        min-height:64px; padding:10px 16px; background:#07111f; border-bottom:1px solid rgba(255,255,255,.09);
-      }
+      .archive-mobile-nav { position:relative; z-index:1000; display:flex; align-items:center; justify-content:space-between; min-height:64px; padding:10px 16px; background:#07111f; border-bottom:1px solid rgba(255,255,255,.09); }
       .archive-mobile-brand { color:#fff; text-decoration:none; font-size:.95rem; font-weight:800; line-height:1.2; max-width:78%; }
-      .archive-menu-toggle {
-        width:44px; height:44px; border:1px solid rgba(255,255,255,.18); border-radius:10px;
-        background:rgba(255,255,255,.07); color:#fff; font-size:1.35rem; cursor:pointer;
-      }
-      .archive-mobile-menu {
-        position:relative; z-index:999; display:none; padding:8px 12px 14px;
-        background:#07111f; border-bottom:1px solid rgba(255,255,255,.09);
-      }
+      .archive-menu-toggle { width:44px; height:44px; border:1px solid rgba(255,255,255,.18); border-radius:10px; background:rgba(255,255,255,.07); color:#fff; font-size:1.35rem; cursor:pointer; }
+      .archive-mobile-menu { position:relative; z-index:999; display:none; padding:8px 12px 14px; background:#07111f; border-bottom:1px solid rgba(255,255,255,.09); }
       .archive-mobile-menu.open { display:grid; gap:4px; }
-      .archive-mobile-menu a {
-        display:block; padding:11px 12px; color:#c9d7e6; text-decoration:none;
-        border-radius:8px; font-size:.9rem; font-weight:650;
-      }
+      .archive-mobile-menu a { display:block; padding:11px 12px; color:#c9d7e6; text-decoration:none; border-radius:8px; font-size:.9rem; font-weight:650; }
       .archive-mobile-menu a:hover, .archive-mobile-menu a:focus-visible { background:rgba(255,255,255,.09); color:#fff; }
       .archive-mobile-menu .mobile-submit { margin-top:5px; background:#fff; color:#092a4b; text-align:center; }
       .archive-main { margin-left:0; width:min(100% - 20px,1100px); padding-left:0; padding-right:0; }
+    }
+    @media print {
+      .archive-sidebar,.archive-mobile-nav,.archive-mobile-menu,.archive-actions,.archive-search,.archive-status { display:none!important; }
+      body { background:#fff!important; }
+      .archive-main { margin:0; width:100%; max-width:none; padding:0; }
+      .archive-hero { color:#000; }
+      .archive-hero p { color:#333; }
+      .brief-card { box-shadow:none; break-inside:avoid; }
     }
     @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; } }
   </style>
 </head>
 <body>
   <aside class="archive-sidebar" aria-label="Member navigation">
-    <div class="archive-sidebar-brand">
-      <a href="/">Impact in Business Recruitment</a>
-    </div>
+    <div class="archive-sidebar-brand"><a href="/">Impact in Business Recruitment</a></div>
     <nav class="archive-nav">
       <a href="/editprofile.html">Edit Profile</a>
       <a href="/members.html">Members</a>
@@ -114,9 +103,7 @@
       <a href="/media-relations.html">Media Relations</a>
       <a href="/invoice.html">Invoice</a>
     </nav>
-    <div class="archive-sidebar-footer">
-      <a href="/requests.html">Submit Media Brief</a>
-    </div>
+    <div class="archive-sidebar-footer"><a href="/requests.html">Submit Media Brief</a></div>
   </aside>
 
   <header class="archive-mobile-nav">
@@ -124,36 +111,31 @@
     <button type="button" class="archive-menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open navigation menu">☰</button>
   </header>
   <nav class="archive-mobile-menu" id="mobileMenu" aria-label="Mobile member navigation">
-    <a href="/editprofile.html">Edit Profile</a>
-    <a href="/members.html">Members</a>
-    <a href="/settings.html">Settings</a>
-    <a href="/directory.html">Directory</a>
-    <a href="/contact.html">Contact</a>
-    <a href="/insights.html">Insights</a>
-    <a href="/media-relations.html">Media Relations</a>
-    <a href="/invoice.html">Invoice</a>
-    <a class="mobile-submit" href="/requests.html">Submit Media Brief</a>
+    <a href="/editprofile.html">Edit Profile</a><a href="/members.html">Members</a><a href="/settings.html">Settings</a><a href="/directory.html">Directory</a><a href="/contact.html">Contact</a><a href="/insights.html">Insights</a><a href="/media-relations.html">Media Relations</a><a href="/invoice.html">Invoice</a><a class="mobile-submit" href="/requests.html">Submit Media Brief</a>
   </nav>
 
-	<main class="archive-main" role="main">
-		<section class="archive-hero" aria-labelledby="archive-title">
-			<h1 id="archive-title">Brief Archive</h1>
-			<p>Submitted briefs, recalled from the secure communications archive for the signed-in account.</p>
-		</section>
+  <main class="archive-main" role="main">
+    <section class="archive-hero" aria-labelledby="archive-title">
+      <h1 id="archive-title">Brief Archive</h1>
+      <p>Submitted briefs, recalled from the secure communications archive for the signed-in account.</p>
+    </section>
 
-		<div class="archive-toolbar">
-			<span class="archive-count" id="archiveCount">Loading archive…</span>
-			<br>
-				<div class="archive-actions">
-					<button type="button" id="refreshBtn">Refresh</button>
-					<a href="/requests.html">New Brief</a>
-				</div>
-			</div>
-		</br>
+    <div class="archive-toolbar">
+      <span class="archive-count" id="archiveCount">Loading archive…</span>
+      <div class="archive-controls">
+        <input class="archive-search" id="archiveSearch" type="search" placeholder="Search archive…" aria-label="Search all displayed archive text">
+        <div class="archive-actions">
+          <a href="/invoice.html">Pay Invoice</a>
+          <button type="button" id="refreshBtn">Refresh</button>
+          <a href="/requests.html">New Brief</a>
+          <button type="button" id="printBtn">Print</button>
+        </div>
+      </div>
+    </div>
 
-		<div class="archive-status loading" id="archiveStatus" role="status">Checking your sign-in…</div>
-		<section class="brief-list" id="briefList" aria-live="polite"></section>
-	</main>
+    <div class="archive-status loading" id="archiveStatus" role="status">Checking your sign-in…</div>
+    <section class="brief-list" id="briefList" aria-live="polite"></section>
+  </main>
 
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
@@ -166,28 +148,20 @@
       var statusEl = document.getElementById("archiveStatus");
       var countEl = document.getElementById("archiveCount");
       var refreshBtn = document.getElementById("refreshBtn");
+      var searchInput = document.getElementById("archiveSearch");
 
       function escapeHtml(value) {
-        return String(value == null ? "" : value)
-          .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-          .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+        return String(value == null ? "" : value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
       }
-
       function formatDate(value) {
         if (!value) return "Date unavailable";
         var date = new Date(value);
-        return isNaN(date.getTime()) ? "Date unavailable" : date.toLocaleString("en-GB", {
-          day:"2-digit", month:"long", year:"numeric", hour:"2-digit", minute:"2-digit"
-        });
+        return isNaN(date.getTime()) ? "Date unavailable" : date.toLocaleString("en-GB",{day:"2-digit",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"});
       }
-
-      function field(label, value, full) {
+      function field(label,value,full) {
         var display = value === null || value === undefined || value === "" ? "Not provided" : value;
-        return '<div class="field' + (full ? ' full' : '') + '">' +
-          '<span class="field-label">' + escapeHtml(label) + '</span>' +
-          '<p class="field-value">' + escapeHtml(display) + '</p></div>';
+        return '<div class="field' + (full ? ' full' : '') + '"><span class="field-label">' + escapeHtml(label) + '</span><p class="field-value">' + escapeHtml(display) + '</p></div>';
       }
-
       function renderBriefs(briefs) {
         if (!briefs.length) {
           countEl.textContent = "0 briefs";
@@ -197,83 +171,71 @@
         countEl.textContent = briefs.length + (briefs.length === 1 ? " brief" : " briefs");
         archiveList.innerHTML = briefs.map(function (brief) {
           return '<article class="brief-card">' +
-            '<header class="brief-card-head">' +
-              '<div><h2>' + escapeHtml(brief.headline || "Untitled brief") + '</h2>' +
-              '<p class="brief-meta">' + escapeHtml(brief.announcementType || "Media brief") + ' · Submitted ' + escapeHtml(formatDate(brief.createdAt)) + '</p></div>' +
-              '<div class="brief-ref">Reference<br>' + escapeHtml(brief.id || "Unavailable") + '</div>' +
-            '</header>' +
+            '<header class="brief-card-head"><div><h2>' + escapeHtml(brief.headline || "Untitled brief") + '</h2><p class="brief-meta">' + escapeHtml(brief.announcementType || "Media brief") + ' · Submitted ' + escapeHtml(formatDate(brief.createdAt)) + '</p></div><div class="brief-ref">Reference<br>' + escapeHtml(brief.id || "Unavailable") + '</div></header>' +
             '<div class="field-grid">' +
-              field("Company Name",brief.companyName) +
-              field("Press Officer",brief.pressOfficer) +
-              field("Officer Email",brief.officerEmail) +
-              field("Destination Email",brief.destinationEmail) +
-              field("Phone Number",brief.phoneNumber) +
-              field("Press Release URL",brief.pressReleaseUrl) +
-              field("Headline",brief.headline) +
-              field("Announcement Type",brief.announcementType) +
-              field("Embargo Date",brief.embargoDate) +
-              field("Summary",brief.summary,true) +
-              field("Notes",brief.notes,true) +
+              field("Company Name",brief.companyName) + field("Press Officer",brief.pressOfficer) + field("Officer Email",brief.officerEmail) + field("Destination Email",brief.destinationEmail) + field("Phone Number",brief.phoneNumber) + field("Press Release URL",brief.pressReleaseUrl) + field("Headline",brief.headline) + field("Announcement Type",brief.announcementType) + field("Embargo Date",brief.embargoDate) + field("Summary",brief.summary,true) + field("Notes",brief.notes,true) +
             '</div></article>';
         }).join("");
+        applySearch();
       }
-
-      function showStatus(message, error) {
+      function showStatus(message,error) {
         statusEl.textContent = message;
-        statusEl.classList.toggle("error", !!error);
-        statusEl.classList.toggle("loading", false);
+        statusEl.classList.toggle("error",!!error);
+        statusEl.classList.toggle("loading",false);
       }
-
+      function applySearch() {
+        var query = (searchInput.value || "").trim().toLowerCase();
+        var cards = archiveList.querySelectorAll(".brief-card");
+        var visible = 0;
+        cards.forEach(function(card) {
+          var match = !query || card.textContent.toLowerCase().indexOf(query) !== -1;
+          card.classList.toggle("search-hidden",!match);
+          if (match) visible++;
+        });
+        if (cards.length && query) {
+          countEl.textContent = visible + " of " + cards.length + (cards.length === 1 ? " brief" : " briefs");
+        } else if (cards.length) {
+          countEl.textContent = cards.length + (cards.length === 1 ? " brief" : " briefs");
+        }
+      }
       async function loadArchive() {
         var user = auth && auth.currentUser;
         if (!user) return;
         refreshBtn.disabled = true;
-        showStatus("Loading your submitted briefs…", false);
+        showStatus("Loading your submitted briefs…",false);
         try {
           var callable = firebase.app().functions("us-central1").httpsCallable("getPressCommunications");
           var result = await callable({});
           var briefs = result.data && Array.isArray(result.data.briefs) ? result.data.briefs : [];
           renderBriefs(briefs);
-          showStatus("Archive loaded for " + (user.email || user.displayName || "your account") + ".", false);
+          showStatus("Archive loaded for " + (user.email || user.displayName || "your account") + ".",false);
         } catch (error) {
-          console.error("Brief archive failed:", error);
+          console.error("Brief archive failed:",error);
           countEl.textContent = "Archive unavailable";
           archiveList.innerHTML = "";
-          showStatus(error && error.message ? error.message : "The archive could not be loaded. Please try again.", true);
+          showStatus(error && error.message ? error.message : "The archive could not be loaded. Please try again.",true);
         } finally {
           refreshBtn.disabled = false;
         }
       }
-
       function init() {
         try {
           if (!window.firebase || !window.firebaseConfig) throw new Error("Firebase could not be initialized.");
           if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
           auth = firebase.auth();
-          auth.onAuthStateChanged(function (user) {
-            if (user) {
-              loadArchive();
-            } else {
-              window.location.href = "/login.html?next=%2Farchive.html";
-            }
+          auth.onAuthStateChanged(function(user) {
+            if (user) loadArchive();
+            else window.location.href = "/login.html?next=%2Farchive.html";
           });
-        } catch (error) {
-          showStatus(error.message || "Unable to initialize authentication.", true);
-        }
+        } catch (error) { showStatus(error.message || "Unable to initialize authentication.",true); }
       }
-
-      refreshBtn.addEventListener("click", loadArchive);
-      var menuToggle = document.getElementById("menuToggle");
-      var mobileMenu = document.getElementById("mobileMenu");
-      menuToggle.addEventListener("click", function () {
-        var open = mobileMenu.classList.toggle("open");
-        menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
-        menuToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
-      });
-      mobileMenu.querySelectorAll("a").forEach(function (link) {
-        link.addEventListener("click", function () { mobileMenu.classList.remove("open"); menuToggle.setAttribute("aria-expanded","false"); });
-      });
-      window.addEventListener("load", init);
+      refreshBtn.addEventListener("click",loadArchive);
+      searchInput.addEventListener("input",applySearch);
+      document.getElementById("printBtn").addEventListener("click",function(){ window.print(); });
+      var menuToggle = document.getElementById("menuToggle"), mobileMenu = document.getElementById("mobileMenu");
+      menuToggle.addEventListener("click",function(){ var open=mobileMenu.classList.toggle("open"); menuToggle.setAttribute("aria-expanded",open?"true":"false"); menuToggle.setAttribute("aria-label",open?"Close navigation menu":"Open navigation menu"); });
+      mobileMenu.querySelectorAll("a").forEach(function(link){ link.addEventListener("click",function(){ mobileMenu.classList.remove("open"); menuToggle.setAttribute("aria-expanded","false"); }); });
+      window.addEventListener("load",init);
     })();
   </script>
 </body>

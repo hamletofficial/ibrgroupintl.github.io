@@ -320,33 +320,178 @@
         margin-bottom:8px;
       }
     }
-    .archive-sidebar { position:fixed; inset:0 auto 0 0; width:245px; z-index:1000; display:flex; flex-direction:column; padding:28px 18px 20px; background:#07111f; border-right:1px solid rgba(255,255,255,.09); box-shadow:8px 0 30px rgba(2,6,23,.16); }
-    .archive-sidebar-brand { padding:0 10px 26px; }
-    .archive-sidebar-brand a { color:#fff; text-decoration:none; font-weight:800; line-height:1.25; letter-spacing:-.02em; }
-    .archive-nav { display:grid; gap:5px; }
-    .archive-nav a, .archive-sidebar-footer a { display:block; padding:11px 12px; border-radius:9px; color:#c9d7e6; text-decoration:none; font-size:.9rem; font-weight:650; transition:background .15s ease,color .15s ease; }
-    .archive-nav a:hover, .archive-nav a:focus-visible, .archive-sidebar-footer a:hover, .archive-sidebar-footer a:focus-visible { background:rgba(255,255,255,.09); color:#fff; outline:none; }
-    .archive-nav a[href="/archive.html"] { background:rgba(255,255,255,.12); color:#fff; }
-    .archive-sidebar-footer { margin-top:auto; padding-top:18px; border-top:1px solid rgba(255,255,255,.09); }
-    .archive-sidebar-footer a { background:#fff; color:#092a4b; text-align:center; }
-    .archive-sidebar-footer a:hover { background:#eef6ff; color:#092a4b; }
-    .archive-mobile-nav, .archive-mobile-menu { display:none; }
-    .archive-main { margin-left:245px; width:auto; max-width:1100px; padding:0 32px 72px; }
-    .archive-hero { padding:24px 0 0; margin:0 0 24px; }
-    .archive-hero h1 { margin:0 0 10px; }
-    .archive-hero p { margin:0; }
-    .archive-toolbar { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:24px; margin:0 0 24px; padding:16px 0; }
-    .archive-count { margin:0; }
-    .archive-controls { display:flex; align-items:center; justify-content:flex-end; gap:12px; flex-wrap:wrap; }
-    .archive-actions { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-    .archive-auth-header { position:relative; z-index:1001; margin-left:245px; min-height:72px; display:flex; align-items:center; justify-content:flex-end; padding:12px 32px; background:#07111f; }
-    .archive-auth-menu { display:flex; align-items:center; justify-content:flex-end; gap:12px; }
-    .archive-user-profile { display:none; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.08); color:rgba(255,255,255,.95); max-width:240px; }
-    .archive-user-profile img { width:26px; height:26px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,.24); flex:0 0 auto; }
-    .archive-user-profile span { font-size:.9rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .archive-signout { appearance:none; min-height:40px; border:1px solid rgba(255,255,255,.24); border-radius:8px; padding:8px 14px; background:transparent; color:#fff; font:inherit; font-weight:650; cursor:pointer; }
+    .archive-topbar {
+      position:relative;
+      z-index:1001;
+      width:100%;
+      min-height:72px;
+      background:#07111f;
+      color:#fff;
+    }
+    .archive-topbar-inner {
+      max-width:1200px;
+      min-height:72px;
+      margin:0 auto;
+      padding:12px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+    .archive-brand {
+      color:#fff;
+      text-decoration:none;
+      font-size:1rem;
+      font-weight:800;
+      letter-spacing:-.02em;
+    }
+    .archive-user-area {
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      min-width:0;
+    }
+    .archive-user-profile {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.08);
+      color:rgba(255,255,255,.95);
+      max-width:240px;
+    }
+    .archive-user-profile img {
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      object-fit:cover;
+      border:1px solid rgba(255,255,255,.24);
+      flex:0 0 auto;
+    }
+    .archive-user-profile span {
+      font-size:.9rem;
+      font-weight:600;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .archive-signout {
+      appearance:none;
+      min-height:40px;
+      border:1px solid rgba(255,255,255,.24);
+      border-radius:8px;
+      padding:8px 14px;
+      background:transparent;
+      color:#fff;
+      font:inherit;
+      font-weight:650;
+      cursor:pointer;
+    }
     .archive-signout:hover { background:rgba(255,255,255,.09); }
-    .archive-signout:focus-visible { outline:3px solid rgba(255,255,255,.42); outline-offset:2px; }
+    .archive-signout:focus-visible {
+      outline:3px solid rgba(255,255,255,.42);
+      outline-offset:2px;
+    }
+    .archive-menu-toggle {
+      appearance:none;
+      width:42px;
+      height:40px;
+      border:1px solid rgba(255,255,255,.24);
+      border-radius:9px;
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      font:inherit;
+      font-size:1.2rem;
+      line-height:1;
+      cursor:pointer;
+    }
+    .archive-menu-toggle:hover,
+    .archive-menu-toggle:focus-visible { background:rgba(255,255,255,.14); outline:none; }
+    .archive-top-nav {
+      display:none;
+      position:relative;
+      z-index:1000;
+      width:100%;
+      background:#fff;
+      border-bottom:1px solid #dbe3ee;
+      box-shadow:0 8px 22px rgba(2,6,23,.08);
+    }
+    .archive-top-nav.open { display:block; }
+    .archive-top-nav-inner {
+      max-width:1200px;
+      margin:0 auto;
+      padding:10px 24px 12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:5px;
+    }
+    .archive-top-nav a {
+      display:block;
+      padding:10px 12px;
+      border-radius:8px;
+      color:#092a4b;
+      text-decoration:none;
+      font-size:.9rem;
+      font-weight:650;
+    }
+    .archive-top-nav a:hover,
+    .archive-top-nav a:focus-visible {
+      background:#092a4b;
+      color:#fff;
+      outline:none;
+    }
+    .archive-main {
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:28px 24px 72px;
+    }
+    .archive-footer {
+      margin:0;
+      padding:22px 24px 28px;
+      text-align:center;
+      color:#60748a;
+    }
+    @media (max-width:700px) {
+      .archive-topbar,
+      .archive-topbar-inner { min-height:60px; }
+      .archive-topbar-inner { padding:8px 14px; gap:10px; }
+      .archive-brand { font-size:.92rem; }
+      .archive-user-area { flex:1; }
+      .archive-user-profile {
+        min-width:0;
+        max-width:none;
+        flex:1;
+        padding:5px 8px;
+      }
+      .archive-user-profile span { min-width:0; font-size:.82rem; }
+      .archive-signout {
+        flex:0 0 auto;
+        min-height:38px;
+        padding:7px 10px;
+        font-size:.82rem;
+      }
+      .archive-menu-toggle {
+        flex:0 0 42px;
+        width:42px;
+        height:40px;
+      }
+      .archive-top-nav-inner {
+        display:grid;
+        grid-template-columns:1fr;
+        gap:3px;
+        padding:8px 14px 12px;
+      }
+      .archive-top-nav a {
+        padding:11px 10px;
+        font-size:.9rem;
+      }
+      .archive-main { padding:20px 14px 36px; }
+      .archive-footer { padding:18px 14px 26px; }
+    }
     @media print {
       .archive-sidebar,.archive-mobile-nav,.archive-mobile-menu,.archive-actions,.archive-search,.archive-status,.archive-signout { display:none!important; }
       body { background:#fff!important; }
@@ -359,38 +504,32 @@
   </style>
 </head>
 <body>
-  <aside class="archive-sidebar" aria-label="Member navigation">
-    <div class="archive-sidebar-brand"><a href="/">Impact in Business Recruitment</a></div>
-    <nav class="archive-nav">
-      <a href="https://www.ibrecruitment.com">Home</a>
-      <a href="/editprofile.html">Edit Profile</a>
-      <a href="/members.html">Members Area</a>
-      <a href="/insights.html">Insights Archive</a>
-      <a href="/requests.html">Media Relations</a>
-      <a href="/settings.html">Account Settings</a>
-      <a href="https://www.ibrecruitment.com/contact" target="_blank" rel="noopener noreferrer">Contact Sales</a>
-      <a href="/directory.html">Member Directory</a>
-      <a href="/invoice.html">Payments</a>
-    </nav>
-    <div class="archive-sidebar-footer"><a href="/requests.html">Submit Media Brief</a></div>
-  </aside>
-
-  <header class="archive-auth-header" role="banner">
-    <div class="archive-auth-menu">
-      <div class="archive-user-profile auth-profile-chip" data-auth-profile aria-label="Signed-in user">
-        <img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo">
-        <span class="auth-profile-name" data-auth-name></span>
+  <header class="archive-topbar" role="banner">
+    <div class="archive-topbar-inner">
+      <a class="archive-brand" href="/">Premium</a>
+      <div class="archive-user-area">
+        <div class="archive-user-profile auth-profile-chip" data-auth-profile aria-label="Signed-in user">
+          <img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo">
+          <span class="auth-profile-name" data-auth-name></span>
+        </div>
+        <button type="button" class="archive-signout" id="signOutBtn">Sign Out</button>
+        <button type="button" class="archive-menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="topNavMenu" aria-label="Open navigation menu">☰</button>
       </div>
-      <button type="button" class="archive-signout" id="signOutBtn">Sign Out</button>
     </div>
   </header>
 
-  <header class="archive-mobile-nav">
-    <a class="archive-mobile-brand" href="/">Impact in Business Recruitment</a>
-    <button type="button" class="archive-menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open navigation menu">☰</button>
-  </header>
-  <nav class="archive-mobile-menu" id="mobileMenu" aria-label="Mobile member navigation">
-    <a href="https://www.ibrecruitment.com">Home</a><a href="/editprofile.html">Edit Profile</a><a href="/members.html">Members Area</a><a href="/insights.html">Insights Archive</a><a href="/requests.html">Media Relations</a><a href="/settings.html">Account Settings</a><a href="https://www.ibrecruitment.com/contact" target="_blank" rel="noopener noreferrer">Contact Sales</a><a href="/directory.html">Member Directory</a><a href="/invoice.html">Payments</a><a class="mobile-submit" href="/requests.html">Submit Media Brief</a>
+  <nav id="topNavMenu" class="archive-top-nav" aria-label="Members navigation">
+    <div class="archive-top-nav-inner">
+      <a href="https://www.ibrecruitment.com">🏠 Home</a>
+      <a href="/editprofile.html">👤 Edit Profile</a>
+      <a href="/members.html">🧑‍🤝‍🧑 Members Area</a>
+      <a href="/insights.html">💡 Insights Archive</a>
+      <a href="/requests.html">📋 Media Relations</a>
+      <a href="/settings.html">⚙️ Account Settings</a>
+      <a href="https://www.ibrecruitment.com/contact" target="_blank" rel="noopener noreferrer">✉️ Contact Sales</a>
+      <a href="/directory.html">📇 Member Directory</a>
+      <a href="/invoice.html">💳 Payments</a>
+    </div>
   </nav>
 
   <main class="archive-main" role="main">
@@ -577,9 +716,19 @@
           showStatus(error && error.message ? error.message : "Unable to sign out. Please try again.",true);
         }
       });
-      var menuToggle = document.getElementById("menuToggle"), mobileMenu = document.getElementById("mobileMenu");
-      menuToggle.addEventListener("click",function(){ var open=mobileMenu.classList.toggle("open"); menuToggle.setAttribute("aria-expanded",open?"true":"false"); menuToggle.setAttribute("aria-label",open?"Close navigation menu":"Open navigation menu"); });
-      mobileMenu.querySelectorAll("a").forEach(function(link){ link.addEventListener("click",function(){ mobileMenu.classList.remove("open"); menuToggle.setAttribute("aria-expanded","false"); }); });
+      var menuToggle = document.getElementById("menuToggle"), topNavMenu = document.getElementById("topNavMenu");
+      menuToggle.addEventListener("click",function(){
+        var open = topNavMenu.classList.toggle("open");
+        menuToggle.setAttribute("aria-expanded",open?"true":"false");
+        menuToggle.setAttribute("aria-label",open?"Close navigation menu":"Open navigation menu");
+      });
+      topNavMenu.querySelectorAll("a").forEach(function(link){
+        link.addEventListener("click",function(){
+          topNavMenu.classList.remove("open");
+          menuToggle.setAttribute("aria-expanded","false");
+          menuToggle.setAttribute("aria-label","Open navigation menu");
+        });
+      });
       window.addEventListener("load",init);
     })();
   </script>

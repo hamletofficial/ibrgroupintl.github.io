@@ -71,8 +71,12 @@
     .archive-mobile-nav, .archive-mobile-menu { display:none; }
     .archive-main { margin-left:245px; width:auto; max-width:1100px; padding-left:32px; padding-right:32px; }
     .archive-hero { padding-top:8px; }
+    .archive-signout { position:fixed; top:18px; right:24px; z-index:1100; appearance:none; border:1px solid rgba(255,255,255,.22); border-radius:10px; padding:9px 14px; background:rgba(255,255,255,.09); color:#fff; font:inherit; font-weight:750; cursor:pointer; backdrop-filter:blur(10px); box-shadow:0 6px 18px rgba(2,6,23,.18); }
+    .archive-signout:hover { background:rgba(255,255,255,.16); }
+    .archive-signout:focus-visible { outline:3px solid rgba(255,255,255,.42); outline-offset:2px; }
     @media (max-width:700px) {
       .archive-sidebar { display:none; }
+      .archive-signout { top:10px; right:70px; padding:8px 11px; font-size:.82rem; }
       .archive-mobile-nav { position:relative; z-index:1000; display:flex; align-items:center; justify-content:space-between; min-height:64px; padding:10px 16px; background:#07111f; border-bottom:1px solid rgba(255,255,255,.09); }
       .archive-mobile-brand { color:#fff; text-decoration:none; font-size:.95rem; font-weight:800; line-height:1.2; max-width:78%; }
       .archive-menu-toggle { width:44px; height:44px; border:1px solid rgba(255,255,255,.18); border-radius:10px; background:rgba(255,255,255,.07); color:#fff; font-size:1.35rem; cursor:pointer; }
@@ -84,7 +88,7 @@
       .archive-main { margin-left:0; width:min(100% - 20px,1100px); padding-left:0; padding-right:0; }
     }
     @media print {
-      .archive-sidebar,.archive-mobile-nav,.archive-mobile-menu,.archive-actions,.archive-search,.archive-status { display:none!important; }
+      .archive-sidebar,.archive-mobile-nav,.archive-mobile-menu,.archive-actions,.archive-search,.archive-status,.archive-signout { display:none!important; }
       body { background:#fff!important; }
       .archive-main { margin:0; width:100%; max-width:none; padding:0; }
       .archive-hero { color:#000; }
@@ -109,6 +113,8 @@
     </nav>
     <div class="archive-sidebar-footer"><a href="/requests.html">Submit Media Brief</a></div>
   </aside>
+
+  <button type="button" class="archive-signout" id="signOutBtn">Sign Out</button>
 
   <header class="archive-mobile-nav">
     <a class="archive-mobile-brand" href="/">Impact in Business Recruitment</a>
@@ -156,6 +162,7 @@
       var refreshBtn = document.getElementById("refreshBtn");
       var deleteBtn = document.getElementById("deleteBtn");
       var searchInput = document.getElementById("archiveSearch");
+      var signOutBtn = document.getElementById("signOutBtn");
 
       function escapeHtml(value) {
         return String(value == null ? "" : value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
@@ -275,6 +282,20 @@
       deleteBtn.addEventListener("click",deleteSelected);
       searchInput.addEventListener("input",applySearch);
       document.getElementById("printBtn").addEventListener("click",function(){ window.print(); });
+      signOutBtn.addEventListener("click",async function(){
+        signOutBtn.disabled = true;
+        signOutBtn.textContent = "Signing Out…";
+        try {
+          if (!auth) throw new Error("Authentication is not ready. Please try again.");
+          await auth.signOut();
+          window.location.href = "/login.html";
+        } catch (error) {
+          console.error("Sign out failed:",error);
+          signOutBtn.disabled = false;
+          signOutBtn.textContent = "Sign Out";
+          showStatus(error && error.message ? error.message : "Unable to sign out. Please try again.",true);
+        }
+      });
       var menuToggle = document.getElementById("menuToggle"), mobileMenu = document.getElementById("mobileMenu");
       menuToggle.addEventListener("click",function(){ var open=mobileMenu.classList.toggle("open"); menuToggle.setAttribute("aria-expanded",open?"true":"false"); menuToggle.setAttribute("aria-label",open?"Close navigation menu":"Open navigation menu"); });
       mobileMenu.querySelectorAll("a").forEach(function(link){ link.addEventListener("click",function(){ mobileMenu.classList.remove("open"); menuToggle.setAttribute("aria-expanded","false"); }); });

@@ -48,18 +48,91 @@
       .field-grid { grid-template-columns:1fr; }
       .field,.field.full { grid-column:auto; border-right:0; padding:15px 17px; }
     }
+    .archive-sidebar {
+      position:fixed; inset:0 auto 0 0; width:245px; z-index:1000;
+      display:flex; flex-direction:column; padding:28px 18px 20px;
+      background:#07111f; border-right:1px solid rgba(255,255,255,.09);
+      box-shadow:8px 0 30px rgba(2,6,23,.16);
+    }
+    .archive-sidebar-brand { padding:0 10px 26px; }
+    .archive-sidebar-brand a { color:#fff; text-decoration:none; font-weight:800; line-height:1.25; letter-spacing:-.02em; }
+    .archive-nav { display:grid; gap:5px; }
+    .archive-nav a, .archive-sidebar-footer a {
+      display:block; padding:11px 12px; border-radius:9px; color:#c9d7e6;
+      text-decoration:none; font-size:.9rem; font-weight:650; transition:background .15s ease,color .15s ease;
+    }
+    .archive-nav a:hover, .archive-nav a:focus-visible, .archive-sidebar-footer a:hover, .archive-sidebar-footer a:focus-visible {
+      background:rgba(255,255,255,.09); color:#fff; outline:none;
+    }
+    .archive-nav a[href="/archive.html"] { background:rgba(255,255,255,.12); color:#fff; }
+    .archive-sidebar-footer { margin-top:auto; padding-top:18px; border-top:1px solid rgba(255,255,255,.09); }
+    .archive-sidebar-footer a { background:#fff; color:#092a4b; text-align:center; }
+    .archive-sidebar-footer a:hover { background:#eef6ff; color:#092a4b; }
+    .archive-mobile-nav, .archive-mobile-menu { display:none; }
+    .archive-main { margin-left:245px; width:auto; max-width:1100px; padding-left:32px; padding-right:32px; }
+    .archive-hero { padding-top:8px; }
+    @media (max-width:700px) {
+      .archive-sidebar { display:none; }
+      .archive-mobile-nav {
+        position:relative; z-index:1000; display:flex; align-items:center; justify-content:space-between;
+        min-height:64px; padding:10px 16px; background:#07111f; border-bottom:1px solid rgba(255,255,255,.09);
+      }
+      .archive-mobile-brand { color:#fff; text-decoration:none; font-size:.95rem; font-weight:800; line-height:1.2; max-width:78%; }
+      .archive-menu-toggle {
+        width:44px; height:44px; border:1px solid rgba(255,255,255,.18); border-radius:10px;
+        background:rgba(255,255,255,.07); color:#fff; font-size:1.35rem; cursor:pointer;
+      }
+      .archive-mobile-menu {
+        position:relative; z-index:999; display:none; padding:8px 12px 14px;
+        background:#07111f; border-bottom:1px solid rgba(255,255,255,.09);
+      }
+      .archive-mobile-menu.open { display:grid; gap:4px; }
+      .archive-mobile-menu a {
+        display:block; padding:11px 12px; color:#c9d7e6; text-decoration:none;
+        border-radius:8px; font-size:.9rem; font-weight:650;
+      }
+      .archive-mobile-menu a:hover, .archive-mobile-menu a:focus-visible { background:rgba(255,255,255,.09); color:#fff; }
+      .archive-mobile-menu .mobile-submit { margin-top:5px; background:#fff; color:#092a4b; text-align:center; }
+      .archive-main { margin-left:0; width:min(100% - 20px,1100px); padding-left:0; padding-right:0; }
+    }
     @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; } }
   </style>
 </head>
 <body>
-  <header class="legal-topbar" role="banner">
-    <div class="legal-topbar-inner">
-      <a class="legal-brand" href="/">Impact in Business Recruitment</a>
-      <div class="legal-actions">
-        <a class="legal-signin" href="/requests.html">Submit Media Brief</a>
-      </div>
+  <aside class="archive-sidebar" aria-label="Member navigation">
+    <div class="archive-sidebar-brand">
+      <a href="/">Impact in Business Recruitment</a>
     </div>
+    <nav class="archive-nav">
+      <a href="/editprofile.html">Edit Profile</a>
+      <a href="/members.html">Members</a>
+      <a href="/settings.html">Settings</a>
+      <a href="/directory.html">Directory</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/insights.html">Insights</a>
+      <a href="/media-relations.html">Media Relations</a>
+      <a href="/invoice.html">Invoice</a>
+    </nav>
+    <div class="archive-sidebar-footer">
+      <a href="/requests.html">Submit Media Brief</a>
+    </div>
+  </aside>
+
+  <header class="archive-mobile-nav">
+    <a class="archive-mobile-brand" href="/">Impact in Business Recruitment</a>
+    <button type="button" class="archive-menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open navigation menu">☰</button>
   </header>
+  <nav class="archive-mobile-menu" id="mobileMenu" aria-label="Mobile member navigation">
+    <a href="/editprofile.html">Edit Profile</a>
+    <a href="/members.html">Members</a>
+    <a href="/settings.html">Settings</a>
+    <a href="/directory.html">Directory</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/insights.html">Insights</a>
+    <a href="/media-relations.html">Media Relations</a>
+    <a href="/invoice.html">Invoice</a>
+    <a class="mobile-submit" href="/requests.html">Submit Media Brief</a>
+  </nav>
 
   <main class="archive-main" role="main">
     <section class="archive-hero" aria-labelledby="archive-title">
@@ -187,7 +260,17 @@
       }
 
       refreshBtn.addEventListener("click", loadArchive);
-      init();
+      var menuToggle = document.getElementById("menuToggle");
+      var mobileMenu = document.getElementById("mobileMenu");
+      menuToggle.addEventListener("click", function () {
+        var open = mobileMenu.classList.toggle("open");
+        menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+        menuToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+      });
+      mobileMenu.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () { mobileMenu.classList.remove("open"); menuToggle.setAttribute("aria-expanded","false"); });
+      });
+      window.addEventListener("load", init);
     })();
   </script>
 </body>

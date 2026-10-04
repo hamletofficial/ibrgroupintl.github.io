@@ -482,7 +482,6 @@
 
         function signInWithFacebook() {
           var provider = new firebase.auth.FacebookAuthProvider();
-          provider.addScope('email');
           provider.setCustomParameters({ display: 'popup' });
           return signInWithProvider(provider);
         }

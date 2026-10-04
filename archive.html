@@ -24,6 +24,11 @@
     .archive-actions button:hover,.archive-actions a:hover { background:#f2f7fb; }
     .archive-search { width:240px; min-height:42px; padding:10px 13px; border:1px solid #cbd8e6; border-radius:10px; background:#fff; color:var(--ink); font:inherit; outline:none; }
     .archive-search:focus { border-color:#0a66c2; box-shadow:0 0 0 3px rgba(10,102,194,.14); }
+    .archive-footer { margin-left:245px; padding:22px 32px 28px; text-align:center; color:#60748a; }
+    .archive-footer-links { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px; }
+    .archive-footer a { color:#536b80; text-decoration:none; }
+    .archive-footer a:hover { color:#0a66c2; text-decoration:underline; }
+    .archive-footer p { margin:0; }
     .archive-status { padding:16px 18px; border:1px solid var(--line); border-radius:14px; background:#fff; color:var(--muted); margin-bottom:18px; }
     .archive-status.error { border-color:#f0b8b8; color:#9b1c1c; background:#fff8f8; }
     .brief-list { display:grid; gap:18px; }
@@ -47,7 +52,7 @@
     .loading { opacity:.7; }
     @media (max-width:700px) {
       body { background:linear-gradient(180deg,#07111f 0 205px,#f5f8fc 205px 100%); }
-      .archive-main { width:min(100% - 20px,1100px); padding:0 0 48px; }
+      .archive-main { width:min(100% - 20px,1100px); padding:0 0 48px; }\n      .archive-footer { margin-left:0; padding:20px 16px 28px; }
       .archive-toolbar { align-items:stretch; }
       .archive-controls { width:100%; }
       .archive-search { width:100%; order:-1; }

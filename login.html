@@ -95,6 +95,26 @@
       width: 100%;
       max-width: 100%;
     }
+
+    /* Keep the copyright footer visually integrated with this page's dark theme. */
+    body.login-page .resource-footer {
+      margin-top: auto;
+      padding: 18px 0 calc(18px + env(safe-area-inset-bottom, 0px));
+      background: transparent !important;
+      border-top: 1px solid rgba(148,163,184,0.16);
+      color: rgba(226,232,240,0.78);
+      box-shadow: none !important;
+    }
+
+    body.login-page .resource-footer a,
+    body.login-page .resource-footer span,
+    body.login-page .resource-footer p {
+      color: rgba(226,232,240,0.72) !important;
+    }
+
+    body.login-page .resource-footer a:hover {
+      color: #7dd3fc !important;
+    }
     .login-page .container {
       padding-left: clamp(0.75rem, 4vw, 1.5rem);
       padding-right: clamp(0.75rem, 4vw, 1.5rem);

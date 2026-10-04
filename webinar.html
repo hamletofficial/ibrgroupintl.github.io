@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07111f">
+  <meta name="robots" content="noindex, follow">
+  <title>Webinar Events — Impact in Business Recruitment</title>
+  <link rel="stylesheet" href="/mobile-compat.css">
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:#0d1b30;
+      --panel-2:#10233d;
+      --text:#f4f8ff;
+      --muted:#c6d5e8;
+      --line:#294463;
+      --brand:#2f7bff;
+      --brand-2:#00b7ff;
+      --accent:#24d3a5;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--bg)}
+    body{
+      font-family:'Open Sans',Arial,sans-serif;
+      color:var(--text);
+      line-height:1.55;
+      background:
+        radial-gradient(1000px 600px at 85% -10%,rgba(47,123,255,.28),transparent 60%),
+        radial-gradient(850px 520px at -10% 25%,rgba(0,183,255,.14),transparent 60%),
+        var(--bg);
+    }
+    .page{
+      width:min(1180px,calc(100% - 32px));
+      margin:0 auto;
+      padding:42px 0 54px;
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:28px;
+    }
+    .brand{
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
+      letter-spacing:.01em;
+    }
+    .back{
+      color:#dceaff;
+      text-decoration:none;
+      border:1px solid rgba(198,213,232,.28);
+      background:rgba(255,255,255,.05);
+      border-radius:10px;
+      padding:8px 12px;
+      font-weight:700;
+    }
+    .back:hover{background:rgba(255,255,255,.09)}
+    .intro{text-align:center;margin:0 auto 24px;max-width:850px}
+    .eyebrow{
+      display:inline-block;
+      padding:6px 11px;
+      border-radius:999px;
+      border:1px solid rgba(36,211,165,.35);
+      background:rgba(36,211,165,.09);
+      color:#a9ffe8;
+      font-size:.78rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    h1{
+      margin:14px 0 8px;
+      font-size:clamp(2rem,5vw,3.25rem);
+      line-height:1.08;
+    }
+    .subtitle{margin:0;color:var(--muted);font-size:1.02rem}
+    .meeting-card{
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:linear-gradient(145deg,rgba(16,35,61,.96),rgba(9,22,39,.98));
+      box-shadow:0 24px 60px rgba(0,0,0,.28);
+      overflow:hidden;
+    }
+    .meeting-header{
+      padding:18px 20px;
+      border-bottom:1px solid rgba(198,213,232,.13);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .meeting-label{font-weight:800}
+    .meeting-id{
+      color:#bfeaff;
+      font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+      font-size:.9rem;
+    }
+    .join-panel{
+      padding:28px 22px;
+      display:grid;
+      place-items:center;
+      min-height:330px;
+      text-align:center;
+    }
+    .join-box{width:min(440px,100%)}
+    .join-box h2{margin:0 0 8px;font-size:1.35rem}
+    .join-box p{margin:0 0 18px;color:var(--muted)}
+    .name-input{
+      width:100%;
+      min-height:48px;
+      border:1px solid #3a5575;
+      border-radius:10px;
+      background:#071525;
+      color:#fff;
+      padding:12px 14px;
+      font:inherit;
+      margin-bottom:12px;
+    }
+    .name-input:focus{outline:3px solid rgba(0,183,255,.22);border-color:#00b7ff}
+    .join-btn{
+      width:100%;
+      min-height:48px;
+      border:0;
+      border-radius:10px;
+      color:#fff;
+      font:inherit;
+      font-weight:800;
+      cursor:pointer;
+      background:linear-gradient(135deg,var(--brand),var(--brand-2));
+      box-shadow:0 10px 24px rgba(47,123,255,.25);
+    }
+    .join-btn:disabled{opacity:.6;cursor:wait}
+    .status{margin:12px 0 0;color:#a9ffe8;font-size:.9rem;min-height:1.4em}
+    #zmmtg-root{
+      width:100%;
+      min-height:720px;
+      background:#000;
+    }
+    .notice{
+      margin:24px auto 0;
+      max-width:1000px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(13,27,48,.9);
+      padding:22px 24px;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .notice h2{margin:0 0 10px;color:#fff;font-size:1.1rem}
+    .notice p{margin:0}
+    .footer{
+      text-align:center;
+      color:#8fa5bf;
+      font-size:.82rem;
+      margin-top:22px;
+    }
+    @media(max-width:700px){
+      .page{width:min(100% - 20px,1180px);padding:20px 0 34px}
+      .topbar{margin-bottom:22px}
+      .brand{font-size:.92rem}
+      .back{font-size:.84rem}
+      .meeting-header{padding:15px}
+      .join-panel{padding:24px 16px;min-height:300px}
+      #zmmtg-root{min-height:560px}
+      .notice{padding:18px}
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-functions-compat.js"></script>
+  <script src="/firebase-config.js"></script>
+  <script src="https://source.zoom.us/6.2.0/lib/vendor/react.min.js"></script>
+  <script src="https://source.zoom.us/6.2.0/lib/vendor/react-dom.min.js"></script>
+  <script src="https://source.zoom.us/6.2.0/lib/vendor/redux.min.js"></script>
+  <script src="https://source.zoom.us/6.2.0/lib/vendor/redux-thunk.min.js"></script>
+  <script src="https://source.zoom.us/6.2.0/lib/vendor/lodash.min.js"></script>
+  <script src="https://source.zoom.us/zoom-meeting-6.2.0.min.js"></script>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="brand" href="/">Impact in Business Recruitment</a>
+      <a class="back" href="/">Return to website</a>
+    </div>
+
+    <section class="intro" aria-labelledby="pageTitle">
+      <span class="eyebrow">Live conference &amp; webinar platform</span>
+      <h1 id="pageTitle">Webinar Events</h1>
+      <p class="subtitle">Join the live Zoom session directly from this page.</p>
+    </section>
+
+    <section class="meeting-card" aria-label="Embedded Zoom webinar">
+      <div class="meeting-header">
+        <span class="meeting-label">Live Zoom session</span>
+        <span class="meeting-id">PMI 607 074 3149</span>
+      </div>
+
+      <div class="join-panel" id="joinPanel">
+        <div class="join-box">
+          <h2>Ready to join?</h2>
+          <p>Enter the name you would like displayed to other participants, then join the session.</p>
+          <label for="displayName" class="sr-only">Display name</label>
+          <input class="name-input" id="displayName" type="text" maxlength="80" autocomplete="name" placeholder="Your display name">
+          <button class="join-btn" id="joinBtn" type="button">Join Webinar</button>
+          <p class="status" id="joinStatus" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div id="zmmtg-root" hidden></div>
+    </section>
+
+    <section class="notice" aria-labelledby="noticeTitle">
+      <h2 id="noticeTitle">About this webinar stream</h2>
+      <p>This page provides access to live conference calls and webinar events hosted through Zoom. The video and audio displayed here are streamed directly from the associated Zoom session and may include presentations, discussions, questions, participant contributions and other material shared during the event. By joining the session, participants should be aware that the event may be recorded by the host. Where appropriate, a recording may subsequently be made available upon request for viewing or reference. Availability of a recording is not guaranteed and may depend on the nature of the event, participant permissions, technical considerations, confidentiality requirements and applicable privacy obligations. Participants should therefore avoid sharing confidential, sensitive or personal information unless they are comfortable with that information potentially forming part of a recording. The host may moderate participation, mute participants, manage access and control recording availability. The embedded Zoom experience is provided as a convenience so that visitors can participate without leaving this website. Zoom's own terms, privacy practices, security controls and technical requirements continue to apply to the underlying meeting service. By joining, participants acknowledge these conditions and should use the service responsibly.</p>
+    </section>
+
+    <p class="footer">Webinar access is subject to the host's Zoom meeting settings and availability.</p>
+  </main>
+
+  <script>
+    (function(){
+      "use strict";
+
+      var meetingNumber = "6070743149";
+      var joinBtn = document.getElementById("joinBtn");
+      var displayName = document.getElementById("displayName");
+      var joinStatus = document.getElementById("joinStatus");
+      var joinPanel = document.getElementById("joinPanel");
+      var zoomRoot = document.getElementById("zmmtg-root");
+
+      function setStatus(message, isError) {
+        joinStatus.textContent = message || "";
+        joinStatus.style.color = isError ? "#ffb4b4" : "#a9ffe8";
+      }
+
+      function fail(message) {
+        joinBtn.disabled = false;
+        setStatus(message, true);
+      }
+
+      function joinMeeting() {
+        var name = displayName.value.trim();
+        if (!name) {
+          displayName.focus();
+          setStatus("Please enter a display name.");
+          return;
+        }
+
+        joinBtn.disabled = true;
+        setStatus("Connecting to Zoom…");
+
+        try {
+          if (!window.firebaseConfig) throw new Error("Firebase configuration is unavailable.");
+          if (!window.firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
+
+          var getSignature = firebase.app().functions("us-central1").httpsCallable("getZoomMeetingSignature");
+
+          getSignature({meetingNumber: meetingNumber})
+            .then(function(result) {
+              var data = result.data || {};
+              if (!data.signature || data.meetingNumber !== meetingNumber) {
+                throw new Error("The Zoom session could not be authorised.");
+              }
+
+              ZoomMtg.setZoomJSLib("https://source.zoom.us/6.2.0/lib", "/av");
+              ZoomMtg.preLoadWasm();
+              ZoomMtg.prepareWebSDK();
+
+              ZoomMtg.init({
+                leaveUrl: window.location.href,
+                success: function() {
+                  ZoomMtg.join({
+                    signature: data.signature,
+                    meetingNumber: data.meetingNumber,
+                    passWord: "",
+                    userName: name,
+                    success: function() {
+                      joinPanel.hidden = true;
+                      zoomRoot.hidden = false;
+                      setStatus("");
+                    },
+                    error: function(error) {
+                      console.error("Zoom join failed:", error);
+                      fail("Zoom could not join the session. Please check the meeting is open and try again.");
+                    }
+                  });
+                },
+                error: function(error) {
+                  console.error("Zoom initialisation failed:", error);
+                  fail("The Zoom meeting could not be initialised in this browser.");
+                }
+              });
+            })
+            .catch(function(error) {
+              console.error("Webinar authorisation failed:", error);
+              fail(error && error.message ? error.message : "The webinar could not be authorised.");
+            });
+        } catch (error) {
+          console.error("Webinar setup failed:", error);
+          fail(error && error.message ? error.message : "The webinar could not be started.");
+        }
+      }
+
+      joinBtn.addEventListener("click", joinMeeting);
+      displayName.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") joinMeeting();
+      });
+    }());
+  </script>
+</body>
+</html>

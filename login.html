@@ -811,6 +811,10 @@
           if (event) event.preventDefault();
           signInWithLinkedIn();
         };
+        var requestedProvider = new URLSearchParams(window.location.search).get('provider');
+        if (requestedProvider === 'google' && googleBtn) googleBtn.click();
+        else if (requestedProvider === 'facebook' && facebookBtn) facebookBtn.click();
+        else if (requestedProvider === 'linkedin' && linkedinBtn) linkedinBtn.click();
         if (facebookBtn) facebookBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithFacebook(); });
         if (googleBtn) googleBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithGoogle(); });
         if (linkedinBtn) linkedinBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithLinkedIn(); });

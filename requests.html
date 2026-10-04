@@ -20,6 +20,18 @@
     * { box-sizing: border-box; }
     body { margin: 0; font-family: 'Open Sans', Arial, sans-serif; color: #0f172a; background: linear-gradient(180deg, #f5f9ff 0%, #ffffff 100%); }
     .page-wrapper { background: #fff; max-width: 1920px; min-height: 100vh; margin: 0 auto; box-shadow: 0 0 20px rgba(0, 0, 0, .1) }
+    .social-login-options { margin: 1.25rem auto 1.5rem; max-width: 420px; }
+    .social-login-label { margin: 0 0 .75rem; color: #49627a; font-size: .9rem; font-weight: 700; }
+    .social-login-buttons { display: grid; gap: .65rem; }
+    .btn-social { width: 100%; justify-content: center; text-decoration: none; min-height: 46px; }
+    .btn-google { background: #fff; color: #092a4b; border: 1px solid #cbd8e6; }
+    .btn-facebook { background: #1877f2; color: #fff; border: 1px solid #1877f2; }
+    .btn-linkedin { background: #0a66c2; color: #fff; border: 1px solid #0a66c2; }
+    .btn-google:hover, .btn-google:focus-visible { background: #f5f9fd; }
+    .btn-facebook:hover, .btn-facebook:focus-visible { background: #166fe5; }
+    .btn-linkedin:hover, .btn-linkedin:focus-visible { background: #004182; }
+    .archive-link-wrap { margin: 0 auto 1rem; text-align: center; }
+    .archive-link-wrap .btn { min-width: 220px; }
     .auth-shell { max-width: 760px; margin: 2rem auto; padding: 2rem; border-radius: 16px; border: 1px solid #dbe3ee; background: linear-gradient(145deg, #fff 0%, #f6fbff 100%); text-align: center; box-shadow: 0 8px 24px rgba(2, 6, 23, .08) }
     .requests-shell { display: none; max-width: 900px; margin: 2rem auto 3rem; padding: 0 1rem }
     body.is-authenticated .requests-shell { display: block; }
@@ -112,8 +124,16 @@
     <section class="auth-shell" id="loginSection" aria-labelledby="loginTitle" hidden>
       <h1 id="loginTitle">Sign in to brief the communications team</h1>
       <p class="muted">Strategic announcements stay with signed-in members. Sign in, then send the narrative, timing, and spokesperson details.</p>
+      <div class="social-login-options" aria-label="Social sign-in options">
+        <p class="social-login-label">Choose a sign-in method</p>
+        <div class="social-login-buttons">
+          <a class="btn btn-social btn-google" href="/login.html?next=%2Frequests.html&provider=google">Continue with Google</a>
+          <a class="btn btn-social btn-facebook" href="/login.html?next=%2Frequests.html&provider=facebook">Continue with Facebook</a>
+          <a class="btn btn-social btn-linkedin" href="/login.html?next=%2Frequests.html&provider=linkedin">Continue with LinkedIn</a>
+        </div>
+      </div>
       <ol class="signin-steps" aria-label="What happens after sign-in">
-        <li><span class="step-no" aria-hidden="true">1</span><strong>Sign in</strong><span>Use social login through the secure portal.</span></li>
+        <li><span class="step-no" aria-hidden="true">1</span><strong>Sign in</strong><span>Use Google, Facebook or LinkedIn through the secure portal.</span></li>
         <li><span class="step-no" aria-hidden="true">2</span><strong>Shape the brief</strong><span>Capture the headline, audience, embargo, and the message to carry.</span></li>
         <li><span class="step-no" aria-hidden="true">3</span><strong>Desk review</strong><span>The brief is saved and sent for communications follow-up.</span></li>
       </ol>
@@ -137,6 +157,7 @@
         <section class="panel" aria-labelledby="requestTitle">
           <h2 id="requestTitle">Communications brief</h2>
           <p class="muted">Complete the sections below so the desk can place the announcement. <span class="required" aria-hidden="true">*</span> Required field</p>
+          <div class="archive-link-wrap"><a class="btn btn-outline" href="/archive.html">View Brief Archive</a></div>
           <form id="pressForm" autocomplete="on">
             <fieldset class="form-section">
               <legend>Organisation</legend>

@@ -167,6 +167,33 @@ exports.submitPressCommunications = onCall({
   return {ok: true, saved: true, notified: true, submissionId: ref.id};
 });
 
+exports.getPressCommunications = onCall({
+  region: "us-central1",
+  invoker: "public",
+  cors: true,
+}, async function(request) {
+  if (!request.auth) throw new HttpsError("unauthenticated", "Sign in before viewing your archive.");
+  try {
+    const snapshot = await getPressDb().collection("pressCommunications")
+      .where("requesterUid", "==", request.auth.uid)
+      .get();
+    const briefs = snapshot.docs.map(function(doc) {
+      const data = doc.data() || {};
+      return Object.assign({}, data, {
+        id: doc.id,
+        createdAt: data.createdAt && data.createdAt.toMillis ? data.createdAt.toMillis() : null,
+        notifiedAt: data.notifiedAt && data.notifiedAt.toMillis ? data.notifiedAt.toMillis() : null
+      });
+    }).sort(function(a, b) {
+      return (b.createdAt || 0) - (a.createdAt || 0);
+    });
+    return {ok: true, briefs: briefs};
+  } catch (err) {
+    console.error("Unable to retrieve press communications archive:", err);
+    throw new HttpsError("internal", "The archive could not be loaded.");
+  }
+});
+
 exports.sendPressCommunicationEmail = onDocumentCreated({
   document: "pressCommunications/{submissionId}",
   database: "chung-lee",

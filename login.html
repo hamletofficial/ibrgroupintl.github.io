@@ -96,7 +96,7 @@
       max-width: 100%;
     }
 
-    /* Keep the copyright footer visually integrated with this page's dark theme. */
+    /* Login-page footer contains only the legal links and cookie controls. */
     body.login-page .resource-footer {
       margin-top: auto;
       padding: 18px 0 calc(18px + env(safe-area-inset-bottom, 0px));
@@ -107,8 +107,7 @@
     }
 
     body.login-page .resource-footer a,
-    body.login-page .resource-footer span,
-    body.login-page .resource-footer p {
+    body.login-page .resource-footer span {
       color: rgba(226,232,240,0.72) !important;
     }
 
@@ -141,9 +140,9 @@
       width: 100%;
       box-sizing: border-box;
       border-radius: 12px;
-      border: 1px solid #d4e2da;
-      background: #fff;
-      box-shadow: 0 10px 26px rgba(25, 66, 53, .08);
+      border: 1px solid rgba(125,211,252,0.24);
+      background: rgba(7,17,31,0.88);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
       padding: 12px;
       display: flex;
       align-items: center;
@@ -152,14 +151,18 @@
       flex-wrap: wrap;
       text-align: center;
       flex: 0 0 auto;
+      color: rgba(226,232,240,0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
     .login-page .cookie-bar > div:first-child {
       flex: 0 1 auto;
       width: 100%;
       max-width: 36rem;
-      color: var(--muted);
+      color: rgba(226,232,240,0.78);
       text-align: center;
     }
+    .login-page .cookie-bar a { color: #7dd3fc !important; text-decoration: none; }
     .login-page .cookie-actions {
       display: inline-flex;
       gap: 8px;
@@ -168,15 +171,14 @@
       align-items: center;
       width: auto;
     }
-    .login-page .cookie-bar a { color: #146b59 !important; }
     .login-page .btn-small {
       border-radius: 8px;
       padding: 8px 12px;
       font-size: .9rem;
       font-weight: 700;
-      border: 1px solid #d2dfd7;
-      color: var(--text);
-      background: #f8faf8;
+      border: 1px solid rgba(148,163,184,0.32);
+      color: rgba(226,232,240,0.9);
+      background: rgba(15,31,51,0.92);
       cursor: pointer;
       min-height: 44px;
     }
@@ -676,9 +678,6 @@
         <a href="/privacy.html" style="color:var(--muted);text-decoration:none;font-size:0.9rem;">Privacy Policy</a>
         <span style="color:var(--muted)">|</span>
         <a href="/cookies.html" style="color:var(--muted);text-decoration:none;font-size:0.9rem;">Cookie Policy</a>
-      </div>
-      <div>
-        <p style="margin:0;color:var(--muted)">&copy; 2026 Impact in Business Recruitment Group Limited. All rights reserved.</p>
       </div>
     </div>
   </footer>

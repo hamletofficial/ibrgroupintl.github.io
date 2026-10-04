@@ -1,5 +1,4 @@
 const https = require("https");
-const crypto = require("crypto");
 const admin = require("firebase-admin");
 const {getFirestore} = require("firebase-admin/firestore");
 const {defineSecret} = require("firebase-functions/params");
@@ -9,8 +8,6 @@ const {onSchedule} = require("firebase-functions/v2/scheduler");
 
 const postmarkOutboundToken = defineSecret("POSTMARK_OUTBOUND_TOKEN");
 const linkedInClientSecret = defineSecret("LINKEDIN_CLIENT_SECRET");
-const zoomMeetingSdkKey = defineSecret("ZOOM_MEETING_SDK_KEY");
-const zoomMeetingSdkSecret = defineSecret("ZOOM_MEETING_SDK_SECRET");
 
 function getPressDb() {
   try {
@@ -104,62 +101,6 @@ function sendPostmark(submission) {
     req.end();
   });
 }
-
-function base64Url(value) {
-  return Buffer.from(value).toString("base64")
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
-}
-
-function createZoomMeetingSdkJwt(meetingNumber) {
-  const now = Math.floor(Date.now() / 1000);
-  const exp = now + 60 * 60;
-  const header = base64Url(JSON.stringify({alg: "HS256", typ: "JWT"}));
-  const payload = base64Url(JSON.stringify({
-    appKey: zoomMeetingSdkKey.value(),
-    mn: meetingNumber,
-    role: 0,
-    iat: now,
-    exp: exp,
-    tokenExp: exp,
-  }));
-  const signingInput = header + "." + payload;
-  const signature = crypto
-    .createHmac("sha256", zoomMeetingSdkSecret.value())
-    .update(signingInput)
-    .digest("base64")
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
-  return signingInput + "." + signature;
-}
-
-exports.getZoomMeetingSignature = onCall({
-  region: "us-central1",
-  invoker: "public",
-  cors: true,
-  secrets: [zoomMeetingSdkKey, zoomMeetingSdkSecret],
-}, async function(request) {
-  const meetingNumber = "6070743149";
-  try {
-    const key = zoomMeetingSdkKey.value();
-    const secret = zoomMeetingSdkSecret.value();
-    if (!key || !secret) {
-      throw new HttpsError("failed-precondition", "Zoom Meeting SDK credentials are not configured.");
-    }
-    return {
-      ok: true,
-      meetingNumber: meetingNumber,
-      password: "",
-      signature: createZoomMeetingSdkJwt(meetingNumber),
-    };
-  } catch (err) {
-    if (err instanceof HttpsError) throw err;
-    console.error("Unable to create Zoom Meeting SDK signature:", err);
-    throw new HttpsError("internal", "The webinar could not be authorised.");
-  }
-});
 
 exports.submitPressCommunications = onCall({
   region: "us-central1",

@@ -62,26 +62,11 @@
       position:relative;
       overflow-x:clip;
       color:var(--text);
-      background:
-        radial-gradient(900px 520px at 50% -120px, rgba(2,132,199,0.22), transparent 62%),
-        radial-gradient(700px 500px at 100% 70%, rgba(11,42,111,0.20), transparent 65%),
-        linear-gradient(145deg, var(--login-bg-deep) 0%, var(--login-bg-mid) 55%, #06101c 100%);
-      background-attachment:fixed;
+      background: #07111f;
+      background-attachment: scroll;
     }
 
-    body.login-page::before {
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:0;
-      background:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size:48px 48px;
-      mask-image:linear-gradient(to bottom, rgba(0,0,0,0.55), transparent 75%);
-      -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,0.55), transparent 75%);
-    }
+    body.login-page::before { display:none; }
 
     body.login-page > * {
       position:relative;

@@ -208,7 +208,63 @@
       }
     }
     /* Mobile optimisation: keep the login card, controls and legal links comfortable on narrow screens. */
+    /* Mobile viewport/overflow correction. Keep the page within the device viewport. */
     @media (width <= 600px) {
+      html {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+      body.login-page {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        min-height: 100dvh;
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+      .login-page .resource-nav,
+      .login-page .resource-footer,
+      .login-page .login-main,
+      .login-page .card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+      }
+      .login-page .login-main {
+        flex: 0 1 auto;
+        min-height: calc(100dvh - 56px);
+        height: auto;
+        overflow: visible;
+        align-items: center;
+        padding: 16px 12px 20px;
+      }
+      .login-page .card {
+        margin: 0;
+        overflow: hidden;
+      }
+      .login-page .resource-footer {
+        margin-top: 0;
+        flex-shrink: 0;
+      }
+      .login-page .container,
+      .login-page .container-nav {
+        min-width: 0;
+        max-width: 100%;
+      }
+      .login-page img,
+      .login-page svg {
+        max-width: 100%;
+      }
+      .login-page .meta-links {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+    }
+
+
       body.login-page {
         min-height: 100svh;
         min-height: 100dvh;

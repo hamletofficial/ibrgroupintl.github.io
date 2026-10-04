@@ -30,8 +30,9 @@
     .btn-google:hover, .btn-google:focus-visible { background: #f5f9fd; }
     .btn-facebook:hover, .btn-facebook:focus-visible { background: #166fe5; }
     .btn-linkedin:hover, .btn-linkedin:focus-visible { background: #004182; }
-    .archive-link-wrap { margin: 0 auto 1rem; text-align: center; }
+    .archive-link-wrap { margin: 0; text-align: left; }
     .archive-link-wrap .btn { min-width: 220px; }
+    .form-footer .archive-link-wrap { display: inline-flex; align-items: center; }
     .auth-shell { max-width: 760px; margin: 2rem auto; padding: 2rem; border-radius: 16px; border: 1px solid #dbe3ee; background: linear-gradient(145deg, #fff 0%, #f6fbff 100%); text-align: center; box-shadow: 0 8px 24px rgba(2, 6, 23, .08) }
     .requests-shell { display: none; max-width: 900px; margin: 2rem auto 3rem; padding: 0 1rem }
     body.is-authenticated .requests-shell { display: block; }
@@ -75,7 +76,7 @@
     .requests-page input, .requests-page select, .requests-page textarea { width: 100%; height: 46px; margin: 0; padding: .7rem .8rem; border: 1px solid #dbe3ee; border-radius: 8px; background: #fff; color: #0f172a; font: inherit; }
     .requests-page textarea { height: 128px; min-height: 128px; resize: vertical; }
     .requests-page input:focus, .requests-page select:focus, .requests-page textarea:focus { outline: 3px solid rgba(2, 132, 199, .25); border-color: #0284c7; }
-    .form-footer { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 1rem; margin-top: 1.35rem; }
+    .form-footer { display: grid; grid-template-columns: auto auto minmax(0, 1fr); align-items: center; gap: 1rem; margin-top: 1.35rem; }
     .status-note { margin: 0; }
     .status-note.success { color: #047857; }
     .status-note.error { color: #b91c1c; }
@@ -157,7 +158,6 @@
         <section class="panel" aria-labelledby="requestTitle">
           <h2 id="requestTitle">Communications brief</h2>
           <p class="muted">Complete the sections below so the desk can place the announcement. <span class="required" aria-hidden="true">*</span> Required field</p>
-          <div class="archive-link-wrap"><a class="btn btn-outline" href="/archive.html">View Brief Archive</a></div>
           <form id="pressForm" autocomplete="on">
             <fieldset class="form-section">
               <legend>Organisation</legend>
@@ -182,7 +182,7 @@
                 <div class="field full textarea"><label for="notes">Notes</label><textarea id="notes" name="notes" maxlength="3000" placeholder="Audience, spokesperson availability, or holding lines."></textarea><p class="field-hint"></p></div>
               </div>
             </fieldset>
-            <div class="form-footer"><button class="btn btn-primary" id="submitButton" type="submit">Send brief</button><p class="status-note" id="formStatus" role="status" aria-live="polite"></p></div>
+            <div class="form-footer"><button class="btn btn-primary" id="submitButton" type="submit">Send brief</button><div class="archive-link-wrap"><a class="btn btn-outline" href="/archive.html">View Brief Archive</a></div><p class="status-note" id="formStatus" role="status" aria-live="polite"></p></div>
             <p class="privacy-note">Your account email is included so the communications desk can follow up. If a notification cannot be sent after the brief is saved, the form will tell you not to submit it again.</p>
           </form>
         </section>

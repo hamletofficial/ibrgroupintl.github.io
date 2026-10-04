@@ -40,6 +40,10 @@
     .field-value { margin:0; color:#173b5d; line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; }
     .empty { text-align:center; padding:44px 22px; background:#fff; border:1px solid var(--line); border-radius:18px; color:var(--muted); }
     .brief-card.search-hidden { display:none; }
+    .brief-select { display:flex; align-items:center; gap:8px; margin-top:10px; color:#526a82; font-size:.82rem; font-weight:700; }
+    .brief-select input { width:18px; height:18px; margin:0; accent-color:#0a66c2; cursor:pointer; }
+    #deleteBtn:disabled { opacity:.55; cursor:not-allowed; }
+    #deleteBtn:not(:disabled) { border-color:#e0a6a6; color:#8f1d1d; }
     .loading { opacity:.7; }
     @media (max-width:700px) {
       body { background:linear-gradient(180deg,#07111f 0 145px,#f5f8fc 145px 100%); }
@@ -125,6 +129,7 @@
       <div class="archive-controls">
         <input class="archive-search" id="archiveSearch" type="search" placeholder="Search archive…" aria-label="Search all displayed archive text">
         <div class="archive-actions">
+          <button type="button" id="deleteBtn" disabled>Delete Selected</button>
           <a href="mailto:support@ibrecruitment.com">Follow Up Enquiry</a>
           <a href="/invoice.html">Pay Invoice</a>
           <button type="button" id="refreshBtn">Refresh</button>
@@ -149,6 +154,7 @@
       var statusEl = document.getElementById("archiveStatus");
       var countEl = document.getElementById("archiveCount");
       var refreshBtn = document.getElementById("refreshBtn");
+      var deleteBtn = document.getElementById("deleteBtn");
       var searchInput = document.getElementById("archiveSearch");
 
       function escapeHtml(value) {
@@ -163,6 +169,10 @@
         var display = value === null || value === undefined || value === "" ? "Not provided" : value;
         return '<div class="field' + (full ? ' full' : '') + '"><span class="field-label">' + escapeHtml(label) + '</span><p class="field-value">' + escapeHtml(display) + '</p></div>';
       }
+      function updateDeleteState() {
+        var selected = archiveList.querySelectorAll(".brief-checkbox:checked");
+        deleteBtn.disabled = selected.length === 0;
+      }
       function renderBriefs(briefs) {
         if (!briefs.length) {
           countEl.textContent = "0 briefs";
@@ -171,12 +181,14 @@
         }
         countEl.textContent = briefs.length + (briefs.length === 1 ? " brief" : " briefs");
         archiveList.innerHTML = briefs.map(function (brief) {
-          return '<article class="brief-card">' +
-            '<header class="brief-card-head"><div><h2>' + escapeHtml(brief.headline || "Untitled brief") + '</h2><p class="brief-meta">' + escapeHtml(brief.announcementType || "Media brief") + ' · Submitted ' + escapeHtml(formatDate(brief.createdAt)) + '</p></div><div class="brief-ref">Reference<br>' + escapeHtml(brief.id || "Unavailable") + '</div></header>' +
+          return '<article class="brief-card" data-brief-id="' + escapeHtml(brief.id || '') + '">' +
+            '<header class="brief-card-head"><div><h2>' + escapeHtml(brief.headline || "Untitled brief") + '</h2><label class="brief-select"><input type="checkbox" class="brief-checkbox" value="' + escapeHtml(brief.id || '') + '"> Select brief</label><p class="brief-meta">' + escapeHtml(brief.announcementType || "Media brief") + ' · Submitted ' + escapeHtml(formatDate(brief.createdAt)) + '</p></div><div class="brief-ref">Reference<br>' + escapeHtml(brief.id || "Unavailable") + '</div></header>' +
             '<div class="field-grid">' +
               field("Company Name",brief.companyName) + field("Press Officer",brief.pressOfficer) + field("Officer Email",brief.officerEmail) + field("Destination Email",brief.destinationEmail) + field("Phone Number",brief.phoneNumber) + field("Press Release URL",brief.pressReleaseUrl) + field("Headline",brief.headline) + field("Announcement Type",brief.announcementType) + field("Embargo Date",brief.embargoDate) + field("Summary",brief.summary,true) + field("Notes",brief.notes,true) +
             '</div></article>';
         }).join("");
+        archiveList.querySelectorAll(".brief-checkbox").forEach(function(box){ box.addEventListener("change",updateDeleteState); });
+        updateDeleteState();
         applySearch();
       }
       function showStatus(message,error) {
@@ -197,6 +209,35 @@
           countEl.textContent = visible + " of " + cards.length + (cards.length === 1 ? " brief" : " briefs");
         } else if (cards.length) {
           countEl.textContent = cards.length + (cards.length === 1 ? " brief" : " briefs");
+        }
+      }
+      async function deleteSelected() {
+        var selected = Array.from(archiveList.querySelectorAll(".brief-checkbox:checked")).map(function(box){ return box.value; }).filter(Boolean);
+        if (!selected.length) return;
+        if (!window.confirm(selected.length === 1 ? "Delete the selected brief permanently?" : "Delete the selected " + selected.length + " briefs permanently?")) return;
+        deleteBtn.disabled = true;
+        refreshBtn.disabled = true;
+        showStatus("Deleting selected brief(s)…",false);
+        try {
+          var callable = firebase.app().functions("us-central1").httpsCallable("deletePressCommunications");
+          var result = await callable({ids:selected});
+          var deleted = result.data && result.data.deleted ? result.data.deleted : selected.length;
+          selected.forEach(function(id){
+            var card = Array.from(archiveList.querySelectorAll(".brief-card")).find(function(item){ return item.getAttribute("data-brief-id") === id; });
+            if (card) card.remove();
+          });
+          updateDeleteState();
+          applySearch();
+          var remaining = archiveList.querySelectorAll(".brief-card").length;
+          countEl.textContent = remaining + (remaining === 1 ? " brief" : " briefs");
+          showStatus(deleted + (deleted === 1 ? " brief was" : " briefs were") + " permanently deleted.",false);
+          if (!remaining) archiveList.innerHTML = '<div class="empty"><strong>No briefs submitted yet.</strong><br>Your completed media briefs will appear here after submission.</div>';
+        } catch (error) {
+          console.error("Brief deletion failed:",error);
+          showStatus(error && error.message ? error.message : "The selected brief(s) could not be deleted.",true);
+          updateDeleteState();
+        } finally {
+          refreshBtn.disabled = false;
         }
       }
       async function loadArchive() {
@@ -231,6 +272,7 @@
         } catch (error) { showStatus(error.message || "Unable to initialize authentication.",true); }
       }
       refreshBtn.addEventListener("click",loadArchive);
+      deleteBtn.addEventListener("click",deleteSelected);
       searchInput.addEventListener("input",applySearch);
       document.getElementById("printBtn").addEventListener("click",function(){ window.print(); });
       var menuToggle = document.getElementById("menuToggle"), mobileMenu = document.getElementById("mobileMenu");

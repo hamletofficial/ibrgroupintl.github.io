@@ -71,22 +71,21 @@
     .archive-mobile-nav, .archive-mobile-menu { display:none; }
     .archive-main { margin-left:245px; width:auto; max-width:1100px; padding-left:32px; padding-right:32px; }
     .archive-hero { padding-top:8px; }
-    .archive-user-profile { position:fixed; top:17px; right:126px; z-index:1100; display:none; align-items:center; gap:9px; max-width:260px; padding:5px 10px 5px 6px; border:1px solid rgba(255,255,255,.18); border-radius:999px; background:rgba(255,255,255,.09); color:#fff; backdrop-filter:blur(10px); box-shadow:0 6px 18px rgba(2,6,23,.18); }\n    .archive-user-profile img { width:34px; height:34px; flex:0 0 34px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,.35); }\n    .archive-user-profile span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.86rem; font-weight:700; }\n    .archive-signout { position:fixed; top:18px; right:24px; z-index:1100; appearance:none; border:1px solid rgba(255,255,255,.22); border-radius:10px; padding:9px 14px; background:rgba(255,255,255,.09); color:#fff; font:inherit; font-weight:750; cursor:pointer; backdrop-filter:blur(10px); box-shadow:0 6px 18px rgba(2,6,23,.18); }
-    .archive-signout:hover { background:rgba(255,255,255,.16); }
+    .archive-auth-header { position:relative; z-index:1001; margin-left:245px; min-height:72px; display:flex; align-items:center; justify-content:flex-end; padding:12px 32px; background:#07111f; border-bottom:1px solid rgba(255,255,255,.09); }
+    .archive-auth-menu { display:flex; align-items:center; justify-content:flex-end; gap:12px; }
+    .archive-user-profile { display:none; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.08); color:rgba(255,255,255,.95); max-width:240px; }
+    .archive-user-profile img { width:26px; height:26px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,.24); flex:0 0 auto; }
+    .archive-user-profile span { font-size:.9rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .archive-signout { appearance:none; min-height:40px; border:1px solid rgba(255,255,255,.24); border-radius:8px; padding:8px 14px; background:transparent; color:#fff; font:inherit; font-weight:650; cursor:pointer; }
+    .archive-signout:hover { background:rgba(255,255,255,.09); }
     .archive-signout:focus-visible { outline:3px solid rgba(255,255,255,.42); outline-offset:2px; }
     @media (max-width:700px) {
-      .archive-sidebar { display:none; }
-      .archive-user-profile { top:10px; right:116px; max-width:calc(100vw - 190px); padding:4px 8px 4px 4px; gap:6px; }\n      .archive-user-profile img { width:30px; height:30px; flex-basis:30px; }\n      .archive-user-profile span { max-width:90px; font-size:.78rem; }\n      .archive-signout { top:10px; right:10px; padding:8px 11px; font-size:.82rem; }
+      .archive-auth-header { margin-left:0; min-height:64px; padding:10px 16px; }
+      .archive-auth-menu { gap:8px; max-width:100%; }
+      .archive-user-profile { max-width:calc(100vw - 150px); padding:5px 8px; }
+      .archive-user-profile span { max-width:92px; font-size:.82rem; }
+      .archive-signout { min-height:38px; padding:7px 10px; font-size:.82rem; }
       .archive-mobile-nav { position:relative; z-index:1000; display:flex; align-items:center; justify-content:space-between; min-height:64px; padding:10px 16px; background:#07111f; border-bottom:1px solid rgba(255,255,255,.09); }
-      .archive-mobile-brand { color:#fff; text-decoration:none; font-size:.95rem; font-weight:800; line-height:1.2; max-width:78%; }
-      .archive-menu-toggle { width:44px; height:44px; border:1px solid rgba(255,255,255,.18); border-radius:10px; background:rgba(255,255,255,.07); color:#fff; font-size:1.35rem; cursor:pointer; }
-      .archive-mobile-menu { position:relative; z-index:999; display:none; padding:8px 12px 14px; background:#07111f; border-bottom:1px solid rgba(255,255,255,.09); }
-      .archive-mobile-menu.open { display:grid; gap:4px; }
-      .archive-mobile-menu a { display:block; padding:11px 12px; color:#c9d7e6; text-decoration:none; border-radius:8px; font-size:.9rem; font-weight:650; }
-      .archive-mobile-menu a:hover, .archive-mobile-menu a:focus-visible { background:rgba(255,255,255,.09); color:#fff; }
-      .archive-mobile-menu .mobile-submit { margin-top:5px; background:#fff; color:#092a4b; text-align:center; }
-      .archive-main { margin-left:0; width:min(100% - 20px,1100px); padding-left:0; padding-right:0; }
-    }
     @media print {
       .archive-sidebar,.archive-mobile-nav,.archive-mobile-menu,.archive-actions,.archive-search,.archive-status,.archive-signout { display:none!important; }
       body { background:#fff!important; }
@@ -115,7 +114,15 @@
     <div class="archive-sidebar-footer"><a href="/requests.html">Submit Media Brief</a></div>
   </aside>
 
-  <div class="archive-user-profile auth-profile-chip" data-auth-profile aria-label="Signed-in user">\n    <img data-auth-photo src="/160.jpg" alt="Profile photo">\n    <span data-auth-name></span>\n  </div>\n  <button type="button" class="archive-signout" id="signOutBtn">Sign Out</button>
+  <header class="archive-auth-header" role="banner">
+    <div class="archive-auth-menu">
+      <div class="archive-user-profile auth-profile-chip" data-auth-profile aria-label="Signed-in user">
+        <img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo">
+        <span class="auth-profile-name" data-auth-name></span>
+      </div>
+      <button type="button" class="archive-signout" id="signOutBtn">Sign Out</button>
+    </div>
+  </header>
 
   <header class="archive-mobile-nav">
     <a class="archive-mobile-brand" href="/">Impact in Business Recruitment</a>
@@ -153,7 +160,8 @@
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-functions-compat.js"></script>
-  <script defer src="/firebase-config.js"></script>\n  <script defer src="/header-profile.js"></script>
+  <script defer src="/firebase-config.js"></script>
+  <script defer src="/header-profile.js"></script>
   <script>
     (function () {
       "use strict";

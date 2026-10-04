@@ -43,12 +43,36 @@
       overflow-x: clip;
     }
     body.login-page,
-    body.login-page *,
+    body.login-page *, 
     body.login-page *::before,
     body.login-page *::after {
       box-sizing: border-box;
     }
-    body{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;margin:0;background:radial-gradient(1200px 600px at 50% -150px, rgba(2,132,199,0.14), transparent 55%),var(--rc-bg, var(--site-bg));position:relative;color:var(--text)}
+
+    /* Login-page-only dark theme. Does not modify the shared site styles. */
+    body.login-page {
+      --login-bg-deep: #07111f;
+      --login-bg-mid: #0b1d33;
+      --login-bg-accent: #123a5c;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      min-height:100dvh;
+      margin:0;
+      position:relative;
+      overflow-x:clip;
+      color:var(--text);
+      background: #07111f;
+      background-attachment: scroll;
+    }
+
+    body.login-page::before { display:none; }
+
+    body.login-page > * {
+      position:relative;
+      z-index:1;
+    }
+
     .login-page .resource-nav,
     .login-page .resource-footer,
     .login-page .container,
@@ -56,14 +80,33 @@
       width: 100%;
       max-width: 100%;
     }
+
+    /* Login-page footer contains only the legal links and cookie controls. */
+    body.login-page .resource-footer {
+      margin-top: auto;
+      padding: 18px 0 calc(18px + env(safe-area-inset-bottom, 0px));
+      background: transparent !important;
+      border-top: 1px solid rgba(148,163,184,0.16);
+      color: rgba(226,232,240,0.78);
+      box-shadow: none !important;
+    }
+
+    body.login-page .resource-footer a,
+    body.login-page .resource-footer span {
+      color: rgba(226,232,240,0.72) !important;
+    }
+
+    body.login-page .resource-footer a:hover {
+      color: #7dd3fc !important;
+    }
     .login-page .container {
       padding-left: clamp(0.75rem, 4vw, 1.5rem);
       padding-right: clamp(0.75rem, 4vw, 1.5rem);
     }
     .login-main{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;padding:clamp(20px,5vh,40px) 16px;width:100%;max-width:100%;overflow-x:clip}
-    .card{box-sizing:border-box;width:100%;max-width:min(420px,100%);background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));border-radius:14px;padding:30px;box-shadow:0 24px 48px rgba(2,6,23,0.18);border:1px solid rgba(148,163,184,0.3);overflow:hidden}
+    .card{box-sizing:border-box;width:100%;max-width:min(320px,100%);background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));border-radius:14px;padding:30px;box-shadow:0 24px 48px rgba(2,6,23,0.18);border:1px solid rgba(148,163,184,0.3);overflow:hidden}
     h1{font-size:1.35rem;margin:0 0 8px;color:var(--text);letter-spacing:0.01em}
-    .login-security-chip{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;margin:0 auto 14px;width:fit-content;max-width:100%;border-radius:999px;background:rgba(2,132,199,0.09);color:#0f3d63;border:1px solid rgba(2,132,199,0.22);font-size:0.82rem;font-weight:700}
+    .login-security-chip{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 9px;margin:0 auto 14px;width:fit-content;max-width:100%;border-radius:999px;background:rgba(2,132,199,0.09);color:#0f3d63;border:1px solid rgba(2,132,199,0.14);font-size:0.78rem;font-weight:700}
     .login-lock-icon{font-size:0.92rem;line-height:1}
     #signin-title { text-align: center; }
     .lead { text-align: center; }
@@ -82,9 +125,9 @@
       width: 100%;
       box-sizing: border-box;
       border-radius: 12px;
-      border: 1px solid #d4e2da;
-      background: #fff;
-      box-shadow: 0 10px 26px rgba(25, 66, 53, .08);
+      border: 1px solid rgba(125,211,252,0.24);
+      background: rgba(7,17,31,0.88);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
       padding: 12px;
       display: flex;
       align-items: center;
@@ -93,14 +136,18 @@
       flex-wrap: wrap;
       text-align: center;
       flex: 0 0 auto;
+      color: rgba(226,232,240,0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
     .login-page .cookie-bar > div:first-child {
       flex: 0 1 auto;
       width: 100%;
       max-width: 36rem;
-      color: var(--muted);
+      color: rgba(226,232,240,0.78);
       text-align: center;
     }
+    .login-page .cookie-bar a { color: #7dd3fc !important; text-decoration: none; }
     .login-page .cookie-actions {
       display: inline-flex;
       gap: 8px;
@@ -109,15 +156,14 @@
       align-items: center;
       width: auto;
     }
-    .login-page .cookie-bar a { color: #146b59 !important; }
     .login-page .btn-small {
       border-radius: 8px;
       padding: 8px 12px;
       font-size: .9rem;
       font-weight: 700;
-      border: 1px solid #d2dfd7;
-      color: var(--text);
-      background: #f8faf8;
+      border: 1px solid rgba(148,163,184,0.32);
+      color: rgba(226,232,240,0.9);
+      background: rgba(15,31,51,0.92);
       cursor: pointer;
       min-height: 44px;
     }
@@ -161,11 +207,200 @@
         min-width: 0;
       }
     }
+    /* Mobile optimisation: keep the login card, controls and legal links comfortable on narrow screens. */
+    /* Mobile viewport/overflow correction. Keep the page within the device viewport. */
+    @media (width <= 600px) {
+      html {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      body.login-page {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        height: 100dvh;
+        min-height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+        overscroll-behavior: none;
+        touch-action: pan-y;
+      }
+      body.login-page .resource-nav {
+        display: none !important;
+      }
+      .login-page .resource-nav,
+      .login-page .resource-footer,
+      .login-page .login-main,
+      .login-page .card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+      }
+      .login-page .login-main {
+        flex: 1 1 auto;
+        min-height: 0;
+        height: auto;
+        overflow: hidden;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 10px;
+      }
+      .login-page .card {
+        margin: 0;
+        overflow: hidden;
+      }
+      .login-page .resource-footer {
+        margin-top: 0;
+        flex: 0 0 auto;
+        padding-top: 8px;
+        padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+      }
+      .login-page .container,
+      .login-page .container-nav {
+        min-width: 0;
+        max-width: 100%;
+      }
+      .login-page img,
+      .login-page svg {
+        max-width: 100%;
+      }
+      .login-page .meta-links {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+    }
+
+
+      body.login-page {
+        min-height: 100svh;
+        min-height: 100dvh;
+      }
+      .login-page .resource-nav {
+        min-height: 56px;
+      }
+      .login-page .container.container-nav {
+        min-height: 56px;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .login-main {
+        align-items: flex-start;
+        padding: max(16px, env(safe-area-inset-top, 0px)) 12px 20px;
+      }
+      .card {
+        max-width: 100%;
+        padding: 22px 16px;
+        border-radius: 12px;
+        box-shadow: 0 16px 32px rgba(2,6,23,0.18);
+      }
+      .login-security-chip {
+        width: fit-content;
+        max-width: 100%;
+        margin-bottom: 12px;
+        font-size: .78rem;
+        padding: 8px 10px;
+      }
+      h1 {
+        font-size: 1.2rem;
+        line-height: 1.25;
+      }
+      p.lead {
+        font-size: .92rem;
+        line-height: 1.5;
+        margin-bottom: 16px;
+      }
+      .actions {
+        gap: 9px;
+      }
+      .facebook-btn,
+      .google-btn,
+      .linkedin-btn,
+      .actions .btn {
+        width: 100%;
+        min-height: 50px;
+      }
+      .trust-points {
+        margin-top: 16px;
+      }
+      .trust-points li {
+        font-size: .82rem;
+        line-height: 1.35;
+        align-items: flex-start;
+      }
+      .note {
+        font-size: .78rem;
+        line-height: 1.45;
+      }
+      .login-page .resource-footer {
+        padding: 14px 12px calc(14px + env(safe-area-inset-bottom, 0px));
+      }
+      .login-page .resource-footer .container {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .meta-links {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        line-height: 1.35;
+        text-align: center;
+      }
+      .meta-links a {
+        font-size: .8rem;
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+      }
+    }
+
+    @media (width <= 380px) {
+      .login-main {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      .card {
+        padding: 18px 13px;
+      }
+      .login-security-chip {
+        font-size: .74rem;
+      }
+      .facebook-btn,
+      .google-btn,
+      .linkedin-btn,
+      .actions .btn {
+        min-height: 48px;
+        font-size: .9rem;
+      }
+      .trust-points li {
+        font-size: .78rem;
+      }
+    }
+
     .meta-links{display:flex;flex-direction:row;gap:12px;justify-content:center;align-items:center}
-    .trust-points{margin:14px 0 2px;padding:0;list-style:none;display:grid;gap:7px}
-    .trust-points li{font-size:0.86rem;color:#0f3d63;display:flex;align-items:center;gap:8px}
+    .trust-points{margin:14px auto 2px;padding:0;list-style:none;display:grid;gap:7px;text-align:center;justify-items:center}
+    .trust-points li{font-size:0.86rem;color:#0f3d63;display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;width:100%}
     .trust-points li::before{content:'\2022';color:#0284c7;font-weight:700}
     .contact-code{font-family: Arial, Helvetica, sans-serif;}
+    @media (min-width: 601px) {
+      .login-page .card .actions {
+        width: 280px;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .login-page .card .facebook-btn,
+      .login-page .card .google-btn,
+      .login-page .card .linkedin-btn,
+      .login-page .card .portal-return-btn {
+        width: 280px;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
     .facebook-btn {
       display: inline-flex;
       align-items: center;
@@ -318,6 +553,16 @@
     <div class="meta-links" style="margin-top:12px"></div>
     </div>
   </main>
+  <footer class="resource-footer" role="contentinfo">
+    <div class="container">
+      <div class="meta-links" aria-label="Legal information">
+        <a href="/terms-of-service.html">Terms of Service</a>
+        <a href="/privacy-policy.html">Privacy Policy</a>
+        <a href="/cookie-policy.html">Cookie Policy</a>
+      </div>
+    </div>
+  </footer>
+
   <script>
     (function () {
       if (window._loginInitialized) return;
@@ -573,55 +818,6 @@
       });
     })();
   </script>
-  <footer class="resource-footer" role="contentinfo">
-    <div class="container" style="text-align:center">
-      <div id="cookieConsentBar" class="cookie-bar">
-        <div>
-          This website uses cookies to improve your experience.
-          <a href="/cookies.html">Cookies</a>
-          <span aria-hidden="true">|</span>
-          <a href="/privacy.html">Privacy</a>
-        </div>
-        <div class="cookie-actions">
-          <button id="cookieDeclineBtn" class="btn-small" type="button">Decline</button>
-          <button id="cookieAcceptBtn" class="btn-small accept" type="button">Accept</button>
-        </div>
-      </div>
-      <script>
-        (function () {
-          var cookieName = 'ibr_cookie_consent_v1';
-          function setCookie(name, value, days) {
-            var expires = new Date();
-            expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-            document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/;SameSite=Lax';
-          }
-          function getCookie(name) {
-            var prefix = name + '=';
-            var cookie = document.cookie.split(';').map(function (part) { return part.trim(); }).find(function (part) { return part.indexOf(prefix) === 0; });
-            if (!cookie) return null;
-            try { return decodeURIComponent(cookie.slice(prefix.length)); }
-            catch (error) { return cookie.slice(prefix.length); }
-          }
-          var bar = document.getElementById('cookieConsentBar');
-          if (!bar || getCookie(cookieName)) { if (bar) bar.style.display = 'none'; return; }
-          var accept = document.getElementById('cookieAcceptBtn');
-          var decline = document.getElementById('cookieDeclineBtn');
-          function saveConsent(value) { setCookie(cookieName, value, 365); bar.style.display = 'none'; }
-          if (accept) accept.addEventListener('click', function () { saveConsent('accepted'); });
-          if (decline) decline.addEventListener('click', function () { saveConsent('declined'); });
-        })();
-      </script>
-      <div style="margin:12px 0;display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;">
-        <a href="/terms.html" style="color:var(--muted);text-decoration:none;font-size:0.9rem;">Terms of Service</a>
-        <span style="color:var(--muted)">|</span>
-        <a href="/privacy.html" style="color:var(--muted);text-decoration:none;font-size:0.9rem;">Privacy Policy</a>
-        <span style="color:var(--muted)">|</span>
-        <a href="/cookies.html" style="color:var(--muted);text-decoration:none;font-size:0.9rem;">Cookie Policy</a>
-      </div>
-      <div>
-        <p style="margin:0;color:var(--muted)">&copy; 2026 Impact in Business Recruitment Group Limited. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+
 </body>
 </html>

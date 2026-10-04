@@ -104,7 +104,7 @@
       padding-right: clamp(0.75rem, 4vw, 1.5rem);
     }
     .login-main{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;padding:clamp(20px,5vh,40px) 16px;width:100%;max-width:100%;overflow-x:clip}
-    .card{box-sizing:border-box;width:100%;max-width:min(360px,100%);background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));border-radius:14px;padding:30px;box-shadow:0 24px 48px rgba(2,6,23,0.18);border:1px solid rgba(148,163,184,0.3);overflow:hidden}
+    .card{box-sizing:border-box;width:100%;max-width:min(320px,100%);background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));border-radius:14px;padding:30px;box-shadow:0 24px 48px rgba(2,6,23,0.18);border:1px solid rgba(148,163,184,0.3);overflow:hidden}
     h1{font-size:1.35rem;margin:0 0 8px;color:var(--text);letter-spacing:0.01em}
     .login-security-chip{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;margin:0 auto 14px;width:fit-content;max-width:100%;border-radius:999px;background:rgba(2,132,199,0.09);color:#0f3d63;border:1px solid rgba(2,132,199,0.22);font-size:0.82rem;font-weight:700}
     .login-lock-icon{font-size:0.92rem;line-height:1}
@@ -384,6 +384,23 @@
     .trust-points li{font-size:0.86rem;color:#0f3d63;display:flex;align-items:center;gap:8px}
     .trust-points li::before{content:'\2022';color:#0284c7;font-weight:700}
     .contact-code{font-family: Arial, Helvetica, sans-serif;}
+    @media (min-width: 601px) {
+      .login-page .card .actions {
+        width: 280px;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .login-page .card .facebook-btn,
+      .login-page .card .google-btn,
+      .login-page .card .linkedin-btn,
+      .login-page .card .portal-return-btn {
+        width: 280px;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
     .facebook-btn {
       display: inline-flex;
       align-items: center;

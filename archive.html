@@ -134,23 +134,25 @@
     <a class="mobile-submit" href="/requests.html">Submit Media Brief</a>
   </nav>
 
-  <main class="archive-main" role="main">
-    <section class="archive-hero" aria-labelledby="archive-title">
-      <h1 id="archive-title">Brief Archive</h1>
-      <p>Submitted briefs, recalled from the secure communications archive for the signed-in account.</p>
-    </section>
+	<main class="archive-main" role="main">
+		<section class="archive-hero" aria-labelledby="archive-title">
+			<h1 id="archive-title">Brief Archive</h1>
+			<p>Submitted briefs, recalled from the secure communications archive for the signed-in account.</p>
+		</section>
 
-    <div class="archive-toolbar">
-      <span class="archive-count" id="archiveCount">Loading archive…</span>
-      <div class="archive-actions">
-        <button type="button" id="refreshBtn">Refresh</button>
-        <a href="/requests.html">New Brief</a>
-      </div>
-    </div>
+		<div class="archive-toolbar">
+			<span class="archive-count" id="archiveCount">Loading archive…</span>
+			<br>
+				<div class="archive-actions">
+					<button type="button" id="refreshBtn">Refresh</button>
+					<a href="/requests.html">New Brief</a>
+				</div>
+			</div>
+		</br>
 
-    <div class="archive-status loading" id="archiveStatus" role="status">Checking your sign-in…</div>
-    <section class="brief-list" id="briefList" aria-live="polite"></section>
-  </main>
+		<div class="archive-status loading" id="archiveStatus" role="status">Checking your sign-in…</div>
+		<section class="brief-list" id="briefList" aria-live="polite"></section>
+	</main>
 
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>

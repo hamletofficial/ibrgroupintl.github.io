@@ -106,7 +106,7 @@
     .login-main{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;padding:clamp(20px,5vh,40px) 16px;width:100%;max-width:100%;overflow-x:clip}
     .card{box-sizing:border-box;width:100%;max-width:min(320px,100%);background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));border-radius:14px;padding:30px;box-shadow:0 24px 48px rgba(2,6,23,0.18);border:1px solid rgba(148,163,184,0.3);overflow:hidden}
     h1{font-size:1.35rem;margin:0 0 8px;color:var(--text);letter-spacing:0.01em}
-    .login-security-chip{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;margin:0 auto 14px;width:fit-content;max-width:100%;border-radius:999px;background:rgba(2,132,199,0.09);color:#0f3d63;border:1px solid rgba(2,132,199,0.22);font-size:0.82rem;font-weight:700}
+    .login-security-chip{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 9px;margin:0 auto 14px;width:fit-content;max-width:100%;border-radius:999px;background:rgba(2,132,199,0.09);color:#0f3d63;border:1px solid rgba(2,132,199,0.14);font-size:0.78rem;font-weight:700}
     .login-lock-icon{font-size:0.92rem;line-height:1}
     #signin-title { text-align: center; }
     .lead { text-align: center; }
@@ -297,7 +297,7 @@
         box-shadow: 0 16px 32px rgba(2,6,23,0.18);
       }
       .login-security-chip {
-        width: 100%;
+        width: fit-content;
         max-width: 100%;
         margin-bottom: 12px;
         font-size: .78rem;
@@ -380,8 +380,8 @@
     }
 
     .meta-links{display:flex;flex-direction:row;gap:12px;justify-content:center;align-items:center}
-    .trust-points{margin:14px 0 2px;padding:0;list-style:none;display:grid;gap:7px}
-    .trust-points li{font-size:0.86rem;color:#0f3d63;display:flex;align-items:center;gap:8px}
+    .trust-points{margin:14px auto 2px;padding:0;list-style:none;display:grid;gap:7px;text-align:center;justify-items:center}
+    .trust-points li{font-size:0.86rem;color:#0f3d63;display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;width:100%}
     .trust-points li::before{content:'\2022';color:#0284c7;font-weight:700}
     .contact-code{font-family: Arial, Helvetica, sans-serif;}
     @media (min-width: 601px) {

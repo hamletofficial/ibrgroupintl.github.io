@@ -320,6 +320,7 @@
         margin-bottom:8px;
       }
     }
+    /* Desktop navigation mirrors the Premium members pages: compact header, left navigation, structured content to the right. */
     .archive-topbar {
       position:relative;
       z-index:1001;
@@ -328,6 +329,11 @@
       background:#07111f;
       color:#fff;
     }
+    .archive-topbar-inner { max-width:1920px; }
+    .archive-hero h2,
+    .archive-hero h3 { color:#fff; }
+    .brief-card-head h2,
+    .brief-card-head h3 { color:var(--ink); }
     .archive-topbar-inner {
       max-width:1200px;
       min-height:72px;
@@ -411,51 +417,69 @@
     .archive-menu-toggle:hover,
     .archive-menu-toggle:focus-visible { background:rgba(255,255,255,.14); outline:none; }
     .archive-top-nav {
-      display:none;
-      position:relative;
-      z-index:1000;
-      width:100%;
+      display:block;
+      position:fixed;
+      top:88px;
+      left:24px;
+      width:220px;
       background:#fff;
-      border-bottom:1px solid #dbe3ee;
-      box-shadow:0 8px 22px rgba(2,6,23,.08);
+      border:1px solid #dbe3ee;
+      border-radius:12px;
+      box-shadow:0 10px 24px rgba(2,6,23,.12);
+      padding:10px 0;
+      z-index:950;
     }
-    .archive-top-nav.open { display:block; }
     .archive-top-nav-inner {
-      max-width:1200px;
-      margin:0 auto;
-      padding:10px 24px 12px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:5px;
+      display:block;
+      padding:0;
     }
     .archive-top-nav a {
       display:block;
-      padding:10px 12px;
+      padding:11px 14px;
+      margin:2px 8px;
       border-radius:8px;
       color:#092a4b;
       text-decoration:none;
-      font-size:.9rem;
+      font-size:.95rem;
       font-weight:650;
     }
     .archive-top-nav a:hover,
     .archive-top-nav a:focus-visible {
       background:#092a4b;
       color:#fff;
+      transform:translateX(3px);
       outline:none;
     }
     .archive-main {
-      width:100%;
+      width:calc(100% - 260px);
       max-width:1200px;
-      margin:0 auto;
+      margin:0 0 0 260px;
       padding:28px 24px 72px;
     }
     .archive-footer {
-      margin:0;
+      margin-left:260px;
       padding:22px 24px 28px;
       text-align:center;
       color:#60748a;
     }
+    .archive-menu-toggle { display:none; }
     @media (max-width:700px) {
+      .archive-top-nav {
+        position:static;
+        width:100%;
+        max-width:900px;
+        margin:12px auto;
+        border-radius:12px;
+        box-shadow:0 10px 24px rgba(2,6,23,.12);
+      }
+      .archive-top-nav-inner {
+        display:grid;
+        grid-template-columns:1fr;
+        gap:3px;
+        padding:8px 0 10px;
+      }
+      .archive-top-nav a { margin:2px 8px; padding:11px 14px; }
+      .archive-menu-toggle { display:block; }
       .archive-topbar,
       .archive-topbar-inner { min-height:60px; }
       .archive-topbar-inner { padding:8px 14px; gap:10px; }
@@ -486,6 +510,7 @@
         padding:8px 14px 12px;
       }
       .archive-top-nav a {
+        margin:0;
         padding:11px 10px;
         font-size:.9rem;
       }

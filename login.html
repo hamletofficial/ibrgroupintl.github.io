@@ -379,6 +379,41 @@
     <div class="meta-links" style="margin-top:12px"></div>
     </div>
   </main>
+  <footer class="resource-footer" role="contentinfo">
+    <div class="container">
+      <div class="cookie-bar" id="cookieConsentBar" role="dialog" aria-label="Cookie consent">
+        <div>
+          This site uses cookies to improve functionality and user experience.
+          <a href="/cookie-policy.html">Cookie Policy</a>
+        </div>
+        <div class="cookie-actions">
+          <button type="button" class="btn-small" id="cookieDecline">Decline</button>
+          <button type="button" class="btn-small accept" id="cookieAccept">Accept</button>
+        </div>
+      </div>
+      <div class="meta-links" aria-label="Legal information">
+        <a href="/terms-of-service.html">Terms of Service</a>
+        <a href="/privacy-policy.html">Privacy Policy</a>
+        <a href="/cookie-policy.html">Cookie Policy</a>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var key = 'ibr_cookie_consent_v1';
+        var bar = document.getElementById('cookieConsentBar');
+        var accept = document.getElementById('cookieAccept');
+        var decline = document.getElementById('cookieDecline');
+        function setConsent(value) {
+          document.cookie = key + '=' + value + '; path=/; max-age=' + (60 * 60 * 24 * 365) + '; SameSite=Lax';
+          if (bar) bar.style.display = 'none';
+          document.documentElement.classList.add('has-cookie-consent');
+        }
+        if (accept) accept.addEventListener('click', function () { setConsent('accepted'); });
+        if (decline) decline.addEventListener('click', function () { setConsent('declined'); });
+      })();
+    </script>
+  </footer>
+
   <script>
     (function () {
       if (window._loginInitialized) return;

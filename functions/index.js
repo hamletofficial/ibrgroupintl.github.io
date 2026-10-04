@@ -194,6 +194,54 @@ exports.getPressCommunications = onCall({
   }
 });
 
+exports.deletePressCommunications = onCall({
+  region: "us-central1",
+  invoker: "public",
+  cors: true,
+}, async function(request) {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "Sign in before deleting a brief.");
+  }
+
+  const ids = request.data && Array.isArray(request.data.ids) ? request.data.ids : [];
+  const uniqueIds = Array.from(new Set(ids.filter(function(id) {
+    return typeof id === "string" && id.trim().length > 0 && id.length <= 200;
+  })));
+
+  if (!uniqueIds.length) {
+    throw new HttpsError("invalid-argument", "Select at least one brief to delete.");
+  }
+  if (uniqueIds.length > 20) {
+    throw new HttpsError("invalid-argument", "You can delete a maximum of 20 briefs at once.");
+  }
+
+  const db = getPressDb();
+  let deleted = 0;
+
+  try {
+    for (const id of uniqueIds) {
+      const ref = db.collection("pressCommunications").doc(id);
+      const snapshot = await ref.get();
+
+      if (!snapshot.exists) continue;
+
+      const data = snapshot.data() || {};
+      if (data.requesterUid !== request.auth.uid) {
+        throw new HttpsError("permission-denied", "You can only delete briefs belonging to your account.");
+      }
+
+      await ref.delete();
+      deleted++;
+    }
+
+    return {ok: true, deleted: deleted};
+  } catch (err) {
+    if (err instanceof HttpsError) throw err;
+    console.error("Unable to delete press communication archive records:", err);
+    throw new HttpsError("internal", "The selected brief(s) could not be deleted.");
+  }
+});
+
 exports.sendPressCommunicationEmail = onDocumentCreated({
   document: "pressCommunications/{submissionId}",
   database: "chung-lee",

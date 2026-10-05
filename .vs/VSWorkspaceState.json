@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\.firebase",
+    "\\.github",
+    "\\app",
+    "\\blanca",
+    "\\dataconnect",
+    "\\extensions"
   ],
   "PreviewInSolutionExplorer": false
 }

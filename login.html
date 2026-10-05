@@ -34,6 +34,7 @@
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-functions-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
+  <script type="module" src="/totp-mfa.js"></script>
   <script defer src="/header-profile.js"></script>
   <script defer src="/mobile-compat.js"></script>
   <style>
@@ -769,46 +770,52 @@
           redirectSettled = true;
           if (auth.currentUser) finishSignIn(auth.currentUser);
         }
-        function completeTotpMfa(error) {
+        async function completeTotpMfa(error) {
           if (!error || error.code !== 'auth/multi-factor-auth-required' || !error.resolver) return false;
           mfaResolver = error.resolver;
-          var totpHint = (mfaResolver.hints || []).find(function (hint) {
-            return hint.factorId === firebase.auth.TotpMultiFactorGenerator.FACTOR_ID;
-          });
-          if (!totpHint || !firebase.auth.TotpMultiFactorGenerator) {
-            showError('Two-factor authentication is required, but no supported TOTP authenticator was found.');
-            return true;
+          try {
+            const totp = await window.ibrTotp.ready;
+            var totpHint = (mfaResolver.hints || []).find(function (hint) {
+              return hint.factorId === totp.TotpMultiFactorGenerator.FACTOR_ID;
+            });
+            if (!totpHint) {
+              showError('Two-factor authentication is required, but no supported TOTP authenticator was found.');
+              return true;
+            }
+            if (mfaModal) mfaModal.hidden = false;
+            if (mfaLoginError) mfaLoginError.textContent = '';
+            if (mfaLoginCode) { mfaLoginCode.value = ''; mfaLoginCode.focus(); }
+          } catch (moduleError) {
+            console.error('Unable to load modular TOTP support:', moduleError);
+            showError('Two-factor authentication is required, but the TOTP security module could not be loaded. Please refresh and try again.');
           }
-          if (mfaModal) mfaModal.hidden = false;
-          if (mfaLoginError) mfaLoginError.textContent = '';
-          if (mfaLoginCode) { mfaLoginCode.value = ''; mfaLoginCode.focus(); }
           return true;
         }
-        function verifyTotpMfa() {
+        async function verifyTotpMfa() {
           if (!mfaResolver || !mfaLoginCode) return;
-          var code = (mfaLoginCode.value || '').replace(/\D/g, '');
-          if (!/^\d{6}$/.test(code)) {
+          var code = (mfaLoginCode.value || '').replace(/\\D/g, '');
+          if (!/^\\d{6}$/.test(code)) {
             if (mfaLoginError) mfaLoginError.textContent = 'Enter the six-digit code from your authenticator app.';
             return;
           }
           mfaLoginBtn.disabled = true;
           try {
+            const totp = await window.ibrTotp.ready;
             var hint = (mfaResolver.hints || []).find(function (item) {
-              return item.factorId === firebase.auth.TotpMultiFactorGenerator.FACTOR_ID;
+              return item.factorId === totp.TotpMultiFactorGenerator.FACTOR_ID;
             });
-            var assertion = firebase.auth.TotpMultiFactorGenerator.assertionForSignIn(hint.uid, code);
-            mfaResolver.resolveSignIn(assertion).then(function (result) {
-              mfaResolver = null;
-              if (mfaModal) mfaModal.hidden = true;
-              redirectSettled = true;
-              finishSignIn(result.user);
-            }).catch(function (err) {
-              if (mfaLoginError) mfaLoginError.textContent = (err && err.code === 'auth/invalid-verification-code')
-                ? 'That code is incorrect or has expired. Try the current code from your authenticator app.'
-                : ((err && err.message) || 'The authenticator code could not be verified.');
-            }).finally(function () { mfaLoginBtn.disabled = false; });
+            if (!hint) throw new Error('No TOTP authenticator was found for this account.');
+            var assertion = totp.TotpMultiFactorGenerator.assertionForSignIn(hint.uid, code);
+            var result = await mfaResolver.resolveSignIn(assertion);
+            mfaResolver = null;
+            if (mfaModal) mfaModal.hidden = true;
+            redirectSettled = true;
+            finishSignIn(result.user);
           } catch (err) {
-            if (mfaLoginError) mfaLoginError.textContent = (err && err.message) || 'The authenticator code could not be verified.';
+            if (mfaLoginError) mfaLoginError.textContent = (err && err.code === 'auth/invalid-verification-code')
+              ? 'That code is incorrect or has expired. Try the current code from your authenticator app.'
+              : ((err && err.message) || 'The authenticator code could not be verified.');
+          } finally {
             mfaLoginBtn.disabled = false;
           }
         }

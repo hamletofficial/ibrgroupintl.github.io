@@ -124,31 +124,34 @@
       margin: 0 auto 12px;
       max-width: 100%;
       width: 100%;
-      box-sizing: border-box;
       border-radius: 12px;
-      border: 1px solid rgba(125,211,252,0.24);
-      background: rgba(7,17,31,0.88);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
+      border: 1px solid #d4e2da;
+      background: #fff;
+      box-shadow: 0 10px 26px rgba(25, 66, 53, .08);
       padding: 12px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       gap: 10px;
       flex-wrap: wrap;
       text-align: center;
       flex: 0 0 auto;
-      color: rgba(226,232,240,0.82);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      color: #17342e;
     }
     .login-page .cookie-bar > div:first-child {
       flex: 0 1 auto;
       width: 100%;
       max-width: 36rem;
-      color: rgba(226,232,240,0.78);
+      color: #53645f;
       text-align: center;
     }
-    .login-page .cookie-bar a { color: #7dd3fc !important; text-decoration: none; }
+    .login-page .cookie-bar a {
+      color: #146b59 !important;
+      text-decoration: none;
+    }
+    .login-page .cookie-bar a:hover {
+      text-decoration: underline;
+    }
     .login-page .cookie-actions {
       display: inline-flex;
       gap: 8px;
@@ -162,16 +165,16 @@
       padding: 8px 12px;
       font-size: .9rem;
       font-weight: 700;
-      border: 1px solid rgba(148,163,184,0.32);
-      color: rgba(226,232,240,0.9);
-      background: rgba(15,31,51,0.92);
+      border: 1px solid #d2dfd7;
+      color: #17342e;
+      background: #f8faf8;
       cursor: pointer;
       min-height: 44px;
     }
     .login-page .btn-small.accept {
       border: none;
       color: #fff;
-      background: linear-gradient(135deg, #0284c7, #0b2a6f);
+      background: linear-gradient(135deg, #146b59, #43a18a);
     }
     @media (max-width: 720px) {
       .login-page footer .container {

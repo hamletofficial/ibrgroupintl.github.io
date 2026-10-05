@@ -502,9 +502,10 @@
     .sign-out-btn { background: #ea4335; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 500; width: 100%; transition: background 0.3s; }
     .sign-out-btn:hover { background: #d33426; }
     @media (width <= 600px) {
-      .login-page .card {
-        width: min(320px, 100%);
-        max-width: 320px;
+      .login-page .login-main > .card {
+        flex: 0 0 320px;
+        width: 320px !important;
+        max-width: 320px !important;
       }
     }
     @media (max-width:480px){

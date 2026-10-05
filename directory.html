@@ -220,7 +220,8 @@
             }
 
             const loginAge = lastLoginDate ? Date.now() - lastLoginDate.getTime() : Infinity;
-            const isOnlineNow = loginAge >= 0 && loginAge <= 60 * 60 * 1000;
+            const isIncognito = data.incognito === true;
+            const isOnlineNow = !isIncognito && loginAge >= 0 && loginAge <= 60 * 60 * 1000;
             const onlineMarkup = isOnlineNow
               ? '<div class="online-status" aria-label="Online Now"><span class="online-status-dot" aria-hidden="true"></span>Online Now</div>'
               : '';

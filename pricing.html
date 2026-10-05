@@ -146,6 +146,12 @@
       font-size:1.15rem;
       white-space:nowrap;
     }
+    .pricing-table td.price small{
+      color:var(--muted);
+      font-size:.72rem;
+      font-weight:600;
+      margin-left:5px;
+    }
     .pricing-table tr:last-child td{border-bottom:0}
     .pricing-footer{
       border-top:1px solid var(--line);
@@ -206,15 +212,15 @@
           <tbody>
             <tr>
               <td>Subscription 01</td>
-              <td class="price">£5.99</td>
+              <td class="price">£5.99 <small>p/m</small></td>
             </tr>
             <tr>
               <td>Subscription 02</td>
-              <td class="price">£35.99</td>
+              <td class="price">£35.99 <small>p/a</small></td>
             </tr>
             <tr>
               <td>Subscription 03</td>
-              <td class="price">£80.00</td>
+              <td class="price">£80.00 <small>one-off donation</small></td>
             </tr>
           </tbody>
         </table>

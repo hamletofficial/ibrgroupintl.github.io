@@ -579,6 +579,18 @@
   </main>
   <footer class="resource-footer" role="contentinfo">
     <div class="container">
+      <div id="cookieConsentBar" class="cookie-bar" role="region" aria-label="Cookie consent">
+        <div>
+          This website uses cookies to improve your experience.
+          <a href="/cookies.html">Cookie Policy</a>
+          <span aria-hidden="true">|</span>
+          <a href="/privacy.html">Privacy Policy</a>
+        </div>
+        <div class="cookie-actions">
+          <button id="cookieDeclineBtn" class="btn-small" type="button">Decline</button>
+          <button id="cookieAcceptBtn" class="btn-small accept" type="button">Accept</button>
+        </div>
+      </div>
       <div class="meta-links" aria-label="Legal information">
         <a href="/terms.html">Terms of Service</a>
         <a href="/privacy.html">Privacy Policy</a>
@@ -586,6 +598,40 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    (function () {
+      var cookieName = 'ibr_cookie_consent_v1';
+      function getCookie(name) {
+        var prefix = name + '=';
+        var item = document.cookie.split(';').map(function (part) { return part.trim(); }).find(function (part) {
+          return part.indexOf(prefix) === 0;
+        });
+        return item ? decodeURIComponent(item.slice(prefix.length)) : null;
+      }
+      function setCookie(name, value, days) {
+        var expires = new Date();
+        expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+        document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/;SameSite=Lax';
+      }
+      var bar = document.getElementById('cookieConsentBar');
+      if (!bar) return;
+      if (getCookie(cookieName)) {
+        bar.style.display = 'none';
+        return;
+      }
+      var acceptBtn = document.getElementById('cookieAcceptBtn');
+      var declineBtn = document.getElementById('cookieDeclineBtn');
+      if (acceptBtn) acceptBtn.addEventListener('click', function () {
+        setCookie(cookieName, 'accepted', 365);
+        bar.style.display = 'none';
+      });
+      if (declineBtn) declineBtn.addEventListener('click', function () {
+        setCookie(cookieName, 'declined', 365);
+        bar.style.display = 'none';
+      });
+    })();
+  </script>
 
   <script>
     (function () {

@@ -20,7 +20,7 @@
   <main class="legal-main" role="main">
     <h1>Cookies Policy</h1>
     <p class="lead">Effective date: April 2026</p>
-    <p class="lead">Last Updated: <span id="cookiesLastUpdated">Loading…</span></p>
+    <p class="lead">Last Updated: 5 October 2026</p>
     <section>
       <h2>What are cookies?</h2>
       <p>Cookies are small text files placed on your device to store information about your visit. They help websites remember preferences and provide a better browsing experience.</p>
@@ -61,21 +61,6 @@
     <p style="margin:0">&copy; 2026 Impact in Business Recruitment Group Limited. All rights reserved.</p>
   </footer>
 
-  <script>
-    (function () {
-      var el = document.getElementById("cookiesLastUpdated");
-      fetch("https://api.github.com/repos/ibrgroupintl/ibrgroupintl.github.io/commits?path=cookies.html&per_page=1")
-        .then(function (response) { return response.json(); })
-        .then(function (commits) {
-          if (commits && commits[0] && commits[0].commit && commits[0].commit.committer) {
-            var date = new Date(commits[0].commit.committer.date);
-            el.textContent = date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-          } else {
-            el.textContent = "Unavailable";
-          }
-        })
-        .catch(function () { el.textContent = "Unavailable"; });
-    }());
-  </script>
+  
 </body>
 </html>

@@ -50,6 +50,15 @@
     }
 
     /* Login-page-only dark theme. Does not modify the shared site styles. */
+    .mfa-modal[hidden]{display:none!important}
+    .mfa-modal{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(7,17,31,.72)}
+    .mfa-modal-card{width:min(420px,100%);padding:1.5rem;border-radius:16px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.28);text-align:left}
+    .mfa-modal-card h2{margin:0 0 .5rem;color:#092a4b}
+    .mfa-modal-card p{color:#475569;line-height:1.5}
+    .mfa-modal-card label{display:block;margin:.9rem 0 .35rem;font-weight:600;color:#0f2f4f}
+    #mfaLoginCode{width:100%;padding:.8rem;border:1px solid #cbd5e1;border-radius:8px;font:inherit;letter-spacing:.3em;text-align:center}
+    .mfa-login-error{min-height:1.3rem;margin:.65rem 0;color:#b91c1c;font-size:.9rem}
+    .mfa-modal-card .btn{width:100%}
     body.login-page {
       --login-bg-deep: #07111f;
       --login-bg-mid: #0b1d33;
@@ -577,6 +586,16 @@
       <button id="xBtn" class="x-btn" type="button"><span class="google-btn-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817-5.963 6.817H1.684l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg></span><span class="google-btn-text">Sign in with X</span></button>
       <a class="btn btn-outline portal-return-btn" href="/index.html">Back to Home</a>
     </div>
+    <div id="mfaModal" class="mfa-modal" hidden role="dialog" aria-modal="true" aria-labelledby="mfaModalTitle">
+      <div class="mfa-modal-card">
+        <h2 id="mfaModalTitle">Two-factor authentication</h2>
+        <p>Enter the six-digit code from your authenticator app to complete sign-in.</p>
+        <label for="mfaLoginCode">Authenticator code</label>
+        <input id="mfaLoginCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="000000">
+        <div id="mfaLoginError" class="mfa-login-error" role="alert"></div>
+        <button id="mfaLoginBtn" class="btn btn-primary" type="button">Verify &amp; Continue</button>
+      </div>
+    </div>
     <p class="note">No password is stored in this portal.</p>
     <div class="meta-links" style="margin-top:12px"></div>
     </div>
@@ -675,6 +694,11 @@
         var userAvatar = document.getElementById('userAvatar');
         var userName = document.getElementById('userName');
         var userEmail = document.getElementById('userEmail');
+        var mfaResolver = null;
+        var mfaModal = document.getElementById('mfaModal');
+        var mfaLoginCode = document.getElementById('mfaLoginCode');
+        var mfaLoginBtn = document.getElementById('mfaLoginBtn');
+        var mfaLoginError = document.getElementById('mfaLoginError');
         var redirectSettled = false;
         var redirectTimer = null;
 
@@ -745,6 +769,54 @@
           redirectSettled = true;
           if (auth.currentUser) finishSignIn(auth.currentUser);
         }
+        function completeTotpMfa(error) {
+          if (!error || error.code !== 'auth/multi-factor-auth-required' || !error.resolver) return false;
+          mfaResolver = error.resolver;
+          var totpHint = (mfaResolver.hints || []).find(function (hint) {
+            return hint.factorId === firebase.auth.TotpMultiFactorGenerator.FACTOR_ID;
+          });
+          if (!totpHint || !firebase.auth.TotpMultiFactorGenerator) {
+            showError('Two-factor authentication is required, but no supported TOTP authenticator was found.');
+            return true;
+          }
+          if (mfaModal) mfaModal.hidden = false;
+          if (mfaLoginError) mfaLoginError.textContent = '';
+          if (mfaLoginCode) { mfaLoginCode.value = ''; mfaLoginCode.focus(); }
+          return true;
+        }
+        function verifyTotpMfa() {
+          if (!mfaResolver || !mfaLoginCode) return;
+          var code = (mfaLoginCode.value || '').replace(/\D/g, '');
+          if (!/^\d{6}$/.test(code)) {
+            if (mfaLoginError) mfaLoginError.textContent = 'Enter the six-digit code from your authenticator app.';
+            return;
+          }
+          mfaLoginBtn.disabled = true;
+          try {
+            var hint = (mfaResolver.hints || []).find(function (item) {
+              return item.factorId === firebase.auth.TotpMultiFactorGenerator.FACTOR_ID;
+            });
+            var assertion = firebase.auth.TotpMultiFactorGenerator.assertionForSignIn(hint.uid, code);
+            mfaResolver.resolveSignIn(assertion).then(function (result) {
+              mfaResolver = null;
+              if (mfaModal) mfaModal.hidden = true;
+              redirectSettled = true;
+              finishSignIn(result.user);
+            }).catch(function (err) {
+              if (mfaLoginError) mfaLoginError.textContent = (err && err.code === 'auth/invalid-verification-code')
+                ? 'That code is incorrect or has expired. Try the current code from your authenticator app.'
+                : ((err && err.message) || 'The authenticator code could not be verified.');
+            }).finally(function () { mfaLoginBtn.disabled = false; });
+          } catch (err) {
+            if (mfaLoginError) mfaLoginError.textContent = (err && err.message) || 'The authenticator code could not be verified.';
+            mfaLoginBtn.disabled = false;
+          }
+        }
+        mfaLoginBtn.addEventListener('click', verifyTotpMfa);
+        if (mfaLoginCode) mfaLoginCode.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter') verifyTotpMfa();
+        });
+
         function shouldUseRedirect(err) {
           var code = err && err.code;
           return code === 'auth/popup-blocked' || code === 'auth/operation-not-supported-in-this-environment' || code === 'auth/web-storage-unsupported';
@@ -791,6 +863,10 @@
             redirectSettled = true;
             finishSignIn(result.user);
           }).catch(function (err) {
+            if (err && err.code === 'auth/multi-factor-auth-required') {
+              completeTotpMfa(err);
+              return;
+            }
             if (!shouldUseRedirect(err)) {
               if (err && (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request')) return;
               console.warn('Popup sign-in stopped', err);
@@ -852,6 +928,10 @@
             redirectSettled = true;
             finishSignIn(result.user);
           }).catch(function (err) {
+            if (err && err.code === 'auth/multi-factor-auth-required') {
+              completeTotpMfa(err);
+              return;
+            }
             console.error('LinkedIn code exchange failed', err);
             var code = err && err.code ? err.code + ': ' : '';
             var detail = (err && (err.details || err.message)) || 'LinkedIn sign-in failed.';
@@ -871,6 +951,10 @@
             finishSignIn(result.user);
           }).catch(function (err) {
             if (err && (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request')) return;
+            if (err && err.code === 'auth/multi-factor-auth-required') {
+              completeTotpMfa(err);
+              return;
+            }
             if (!shouldUseRedirect(err)) {
               console.warn('X sign-in stopped', err);
               showError((err && err.message) || 'X authentication failed');

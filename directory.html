@@ -157,8 +157,18 @@
   <script defer src="/page-transition.js"></script>
   <script>
     window.addEventListener('load', function () {
-      if (!window.firebase || !window.firebaseConfig) return;
-      try { firebase.initializeApp(window.firebaseConfig); } catch (e) {}
+      if (!window.firebase || !window.firebaseConfig) {
+        document.getElementById('directoryStatus').textContent = 'Unable to initialise the directory.';
+        console.error('Firebase SDK/config unavailable.');
+        return;
+      }
+      try {
+        if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
+      } catch (e) {
+        console.error('Firebase initialisation failed:', e);
+        document.getElementById('directoryStatus').textContent = 'Unable to initialise the directory.';
+        return;
+      }
       const auth = firebase.auth();
       const db = firebase.firestore();
       const DEFAULT_PUBLIC_IMAGE = '/100.png';
@@ -224,7 +234,12 @@
             directoryGrid.appendChild(card);
           });
         } catch (err) {
-          directoryStatus.textContent = 'Failed to load directory.';
+          console.error('Member directory Firestore query failed:', err);
+          if (err && err.code === 'permission-denied') {
+            directoryStatus.textContent = 'Your session is not authorised to view the member directory. Please sign out and sign in again.';
+          } else {
+            directoryStatus.textContent = 'Failed to load directory. Please try again shortly.';
+          }
         }
       }
       auth.onAuthStateChanged(async (user) => {

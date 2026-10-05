@@ -118,7 +118,13 @@
   <script>
     window.addEventListener('load', function () {
       if (!window.firebase || !window.firebaseConfig) return;
-      try { firebase.initializeApp(window.firebaseConfig); } catch (e) {}
+      try {
+        if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
+      } catch (e) {
+        console.error('Firebase initialisation failed:', e);
+        document.getElementById('insightsStatus').textContent = 'Unable to initialise the insights archive.';
+        return;
+      }
       const auth = firebase.auth();
       const db = firebase.firestore();
       const loginSection = document.getElementById('loginSection');
@@ -249,9 +255,14 @@
             });
             renderInsights(insights);
           })
-          .catch(() => {
+          .catch((err) => {
+            console.error('Insights Firestore query failed:', err);
             insightsList.innerHTML = '';
-            insightsStatus.textContent = 'Failed to load insights.';
+            if (err && err.code === 'permission-denied') {
+              insightsStatus.textContent = 'Your session is not authorised to view the insights archive. Please sign out and sign in again.';
+            } else {
+              insightsStatus.textContent = 'Failed to load insights. Please try again shortly.';
+            }
           });
       }
       auth.onAuthStateChanged(function (user) {

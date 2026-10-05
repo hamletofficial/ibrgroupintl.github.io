@@ -16,7 +16,9 @@ window.ibrTotp.ready = new Promise((resolve, reject) => {
   function init() {
     try {
       if (!window.firebaseConfig) throw new Error('Firebase configuration is unavailable.');
-      const app = initializeApp(window.firebaseConfig, 'ibr-totp-modular');
+      // Use the default app name so this modular Auth instance shares the
+      // existing persisted Firebase Auth session used by the compat code.
+      const app = initializeApp(window.firebaseConfig);
       const auth = getAuth(app);
       resolve({
         app, auth, multiFactor, TotpMultiFactorGenerator,

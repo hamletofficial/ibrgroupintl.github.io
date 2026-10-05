@@ -9,5 +9,53 @@ service cloud.firestore {
         && request.resource.data.isPublic == true;
       allow delete: if request.auth != null && request.auth.uid == userId;
     }
+
+    match /callbackRequests/{requestId} {
+      allow create: if
+        request.resource.data.keys().hasAll([
+          'name',
+          'jobTitle',
+          'organisation',
+          'sector',
+          'email',
+          'phone',
+          'country',
+          'callbackTime',
+          'message',
+          'consent',
+          'submittedAt',
+          'source'
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 2
+        && request.resource.data.name.size() <= 150
+        && request.resource.data.jobTitle is string
+        && request.resource.data.jobTitle.size() >= 2
+        && request.resource.data.jobTitle.size() <= 150
+        && request.resource.data.organisation is string
+        && request.resource.data.organisation.size() >= 2
+        && request.resource.data.organisation.size() <= 200
+        && request.resource.data.sector is string
+        && request.resource.data.sector.size() >= 2
+        && request.resource.data.sector.size() <= 150
+        && request.resource.data.email is string
+        && request.resource.data.email.size() >= 5
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.phone is string
+        && request.resource.data.phone.size() >= 5
+        && request.resource.data.phone.size() <= 50
+        && request.resource.data.country is string
+        && request.resource.data.country.size() >= 2
+        && request.resource.data.country.size() <= 100
+        && request.resource.data.callbackTime is string
+        && request.resource.data.callbackTime.size() <= 100
+        && request.resource.data.message is string
+        && request.resource.data.message.size() <= 5000
+        && request.resource.data.consent == true
+        && request.resource.data.source == 'callback.html'
+        && request.resource.data.submittedAt == request.time;
+
+      allow read, update, delete: if false;
+    }
   }
 }

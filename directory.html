@@ -27,6 +27,8 @@
     .profile-card img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 2.5px solid #0284c7; background: #f8fafc; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(2,132,199,0.08); }
     .profile-card .name { font-weight: 700; color: #0284c7; font-size: 1.18rem; margin-bottom: 0.25rem; text-align: center; text-decoration: none; letter-spacing: -0.5px; }
     .profile-card .bio { color: #475569; font-size: 1.01rem; margin-bottom: 0.7rem; text-align: center; min-height: 2.5em; max-width: 90%; line-height: 1.5; }
+    .online-status { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 0.7rem; color: #16a34a; font-size: 0.9rem; font-weight: 700; }
+    .online-status-dot { width: 9px; height: 9px; border-radius: 50%; background: #22c55e; display: inline-block; box-shadow: 0 0 0 2px rgba(34,197,94,.12); }
     .directory-status { color: var(--muted); text-align: center; margin: 1.5rem 0; font-size: 1.08rem; }
     .sidebar-menu-shell {
       display: none;
@@ -179,7 +181,7 @@
         document.body.classList.remove('auth-pending');
         document.body.classList.add('has-sidebar');
         try {
-          const snap = await db.collection('publicProfiles').where('isPublic', '==', true).get();
+          const snap = await db.collection('publicProfiles').get();
           if (snap.empty) {
             directoryStatus.textContent = 'No member profiles found.';
             directoryGrid.innerHTML = '';
@@ -189,15 +191,36 @@
           directoryGrid.innerHTML = '';
           snap.forEach(doc => {
             const data = doc.data() || {};
+            if (data.publicProfile !== true) return;
+
             const img = data.imageDataUrl || DEFAULT_PUBLIC_IMAGE;
             const name = (data.firstName || '') + ' ' + (data.lastName || '');
             let bio = data.bio || '';
             bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
             const card = document.createElement('div');
             card.className = 'profile-card';
+
+            const lastLoginValue = data.lastLogin || data['Last Login'];
+            let lastLoginDate = null;
+            if (lastLoginValue && typeof lastLoginValue.toDate === 'function') {
+              lastLoginDate = lastLoginValue.toDate();
+            } else if (lastLoginValue instanceof Date) {
+              lastLoginDate = lastLoginValue;
+            } else if (lastLoginValue) {
+              const parsed = new Date(lastLoginValue);
+              if (!isNaN(parsed.getTime())) lastLoginDate = parsed;
+            }
+
+            const loginAge = lastLoginDate ? Date.now() - lastLoginDate.getTime() : Infinity;
+            const isOnlineNow = loginAge >= 0 && loginAge <= 60 * 60 * 1000;
+            const onlineMarkup = isOnlineNow
+              ? '<div class="online-status" aria-label="Online Now"><span class="online-status-dot" aria-hidden="true"></span>Online Now</div>'
+              : '';
+
             card.innerHTML = `
               <img src="${img}" alt="${name} profile photo">
               <div class="name">${name}</div>
+              ${onlineMarkup}
               <div class="bio">${bio}</div>
             `;
             directoryGrid.appendChild(card);

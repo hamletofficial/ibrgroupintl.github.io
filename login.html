@@ -501,6 +501,12 @@
     .user-email { font-size: 0.85rem; color: var(--muted); margin: 0; overflow-wrap: anywhere; }
     .sign-out-btn { background: #ea4335; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 500; width: 100%; transition: background 0.3s; }
     .sign-out-btn:hover { background: #d33426; }
+    @media (width <= 600px) {
+      .login-page .card {
+        width: min(320px, 100%);
+        max-width: 320px;
+      }
+    }
     @media (max-width:480px){
       .login-main{padding:20px 12px}
       .card{padding:20px}

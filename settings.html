@@ -279,13 +279,12 @@
             mfaMessage.textContent = 'Please verify your email address before enabling 2FA.';
             return;
           }
-          if (!window.ibrTotp || !window.ibrTotp.ready) {
-            mfaMessage.textContent = 'The TOTP security module is still loading. Please refresh the page and try again.';
-            return;
-          }
-          const totp = await window.ibrTotp.ready;
+          // The modular Auth bridge is loaded with the page. Do not await its
+          // promise before opening the OAuth window: doing so can consume the
+          // browser user-gesture and cause the popup to be blocked.
+          const totp = window.ibrTotp && window.ibrTotp.api;
           if (!totp || !totp.TotpMultiFactorGenerator) {
-            mfaMessage.textContent = 'TOTP is not available in the loaded Firebase Authentication module. Please refresh the page and try again.';
+            mfaMessage.textContent = 'The TOTP security module is still loading. Please refresh the page and try again.';
             return;
           }
           const modularUser = totp.auth.currentUser;
@@ -300,15 +299,34 @@
           else if (providerId === 'facebook.com') provider = new totp.FacebookAuthProvider();
           else if (providerId === 'twitter.com') provider = new totp.TwitterAuthProvider();
           else if (providerId === 'oidc.linkedin-secure-login') provider = new totp.OAuthProvider('oidc.linkedin-secure-login');
-          if (provider) {
-            try {
-              await totp.reauthenticateWithPopup(modularUser, provider);
-            } catch (reauthError) {
-              console.error('TOTP reauthentication failed:', reauthError);
-              mfaMessage.textContent = 'For your security, please complete the sign-in verification window before enabling 2FA.';
-              return;
-            }
+          if (!provider) {
+            mfaMessage.textContent = 'Your sign-in provider does not support automatic reauthentication here. Please sign out and sign back in, then try again.';
+            return;
           }
+
+          let reauthPromise;
+          try {
+            // This call must happen directly from the Set Up 2FA click handler
+            // so the browser permits the OAuth popup.
+            reauthPromise = totp.reauthenticateWithPopup(modularUser, provider);
+          } catch (reauthStartError) {
+            console.error('TOTP reauthentication could not start:', reauthStartError);
+            mfaMessage.textContent = 'Your browser blocked the sign-in verification window. Please allow pop-ups for this site and try again.';
+            return;
+          }
+
+          try {
+            await reauthPromise;
+          } catch (reauthError) {
+            console.error('TOTP reauthentication failed:', reauthError);
+            if (reauthError && (reauthError.code === 'auth/popup-blocked' || reauthError.code === 'auth/cancelled-popup-request')) {
+              mfaMessage.textContent = 'Your browser blocked or closed the sign-in verification window. Please allow pop-ups for this site and try again.';
+            } else {
+              mfaMessage.textContent = 'For your security, please complete the sign-in verification window before enabling 2FA.';
+            }
+            return;
+          }
+
           const session = await totp.multiFactor(modularUser).getSession();
           pendingTotpSecret = await totp.TotpMultiFactorGenerator.generateSecret(session);
           const uri = pendingTotpSecret.generateQrCodeUrl(modularUser.email || 'IBR member', 'Impact in Business Recruitment');

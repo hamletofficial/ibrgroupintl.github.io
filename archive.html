@@ -91,6 +91,7 @@
       .archive-search{width:100%;max-width:none;min-height:46px;font-size:.92rem}
       .archive-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
       .archive-actions a,.archive-actions button{width:100%;min-width:0;min-height:44px;padding:9px 7px;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;line-height:1.2;font-size:.82rem;border-radius:9px}
+      .archive-actions #printBtn{position:relative;z-index:2;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       .archive-status{margin-bottom:14px;padding:13px 14px;border-radius:12px;font-size:.88rem;line-height:1.45}
       .brief-list{gap:14px}
       .brief-card{border-radius:14px;box-shadow:0 5px 18px rgba(2,6,23,.06)}
@@ -318,7 +319,7 @@
       refreshBtn.addEventListener("click",loadArchive);
       deleteBtn.addEventListener("click",deleteSelected);
       searchInput.addEventListener("input",applySearch);
-      document.getElementById("printBtn").addEventListener("click",function(){ window.print(); });
+      document.getElementById("printBtn").addEventListener("click",function(event){ event.preventDefault(); event.stopPropagation(); window.setTimeout(function(){ window.print(); },0); });
       signOutBtn.addEventListener("click",async function(){
         signOutBtn.disabled = true;
         signOutBtn.textContent = "Signing Out…";

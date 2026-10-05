@@ -395,6 +395,7 @@
       .login-page .card .facebook-btn,
       .login-page .card .google-btn,
       .login-page .card .linkedin-btn,
+      .login-page .card .x-btn,
       .login-page .card .portal-return-btn {
         width: 280px;
         max-width: 100%;
@@ -448,6 +449,24 @@
     .google-btn:active { background: #f1f5f9; }
     .google-btn-icon { display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; flex-shrink: 0; }
     .google-btn-text { padding-right: 0; flex: 1; text-align: center; }
+    .x-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 12px;
+      min-height: 48px;
+      border-radius: 8px;
+      border: 1px solid #000;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    }
     .linkedin-btn {
       display: inline-flex;
       align-items: center;
@@ -468,6 +487,9 @@
     }
     .linkedin-btn:hover { background: #004182; border-color: #004182; }
     .linkedin-btn:active { background: #00315f; }
+    .x-btn { background: #000; color: #fff; border: 1px solid #000; }
+    .x-btn:hover { background: #1f1f1f; border-color: #1f1f1f; }
+    .x-btn:active { background: #333; }
     .linkedin-btn { pointer-events: auto; position: relative; z-index: 2; }
     .actions { display: flex; flex-direction: column; gap: 10px; }
     .user-status { display: none; padding: 16px; background: rgba(66, 133, 244, 0.1); border-radius: 8px; border: 1px solid rgba(66, 133, 244, 0.3); }
@@ -484,7 +506,7 @@
       .card{padding:20px}
       h1{font-size:1.05rem}
       .btn{padding:10px;border-radius:10px}
-      .actions > .btn,.actions > .google-btn,.actions > .linkedin-btn,.portal-return-btn{width:100%;max-width:100%;min-width:0}
+      .actions > .btn,.actions > .google-btn,.actions > .linkedin-btn,.actions > .x-btn,.portal-return-btn{width:100%;max-width:100%;min-width:0}
       .actions{gap:10px}
       .note{font-size:0.82rem}
       .login-security-chip{font-size:0.76rem;padding:7px 10px}
@@ -543,6 +565,7 @@
         </span>
         <span class="google-btn-text">Sign in with LinkedIn</span>
       </button>
+      <button id="xBtn" class="x-btn" type="button"><span class="google-btn-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817-5.963 6.817H1.684l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg></span><span class="google-btn-text">Sign in with X</span></button>
       <a class="btn btn-outline portal-return-btn" href="/index.html">Back to Home</a>
     </div>
     <p class="note">This site uses Firebase Authentication for Facebook, Google and LinkedIn. No password is stored in this portal.</p>
@@ -585,6 +608,7 @@
         var facebookBtn = document.getElementById('facebookBtn');
         var googleBtn = document.getElementById('googleBtn');
         var linkedinBtn = document.getElementById('linkedinBtn');
+        var xBtn = document.getElementById('xBtn');
         var signOutBtn = document.getElementById('signOutBtn');
         var errEl = document.getElementById('error');
         var userStatus = document.getElementById('userStatus');
@@ -778,6 +802,26 @@
             showError(code + detail);
           });
         }
+        function signInWithX() {
+          rememberNext();
+          if (errEl) errEl.style.display = 'none';
+          var provider = new firebase.auth.TwitterAuthProvider();
+          provider.setCustomParameters({ lang: 'en' });
+          return auth.signInWithPopup(provider).then(function (result) {
+            redirectSettled = true;
+            finishSignIn(result.user);
+          }).catch(function (err) {
+            if (err && (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request')) return;
+            if (!shouldUseRedirect(err)) {
+              console.warn('X sign-in stopped', err);
+              showError((err && err.message) || 'X authentication failed');
+              return;
+            }
+            return auth.signInWithRedirect(provider).catch(function (rerr) {
+              showError((rerr && rerr.message) || 'X authentication failed');
+            });
+          });
+        }
         function signInWithLinkedIn() {
           var clientId = window.linkedinClientId;
           if (!clientId) {
@@ -811,9 +855,11 @@
         if (requestedProvider === 'google' && googleBtn) googleBtn.click();
         else if (requestedProvider === 'facebook' && facebookBtn) facebookBtn.click();
         else if (requestedProvider === 'linkedin' && linkedinBtn) linkedinBtn.click();
+        else if (requestedProvider === 'x' && xBtn) xBtn.click();
         if (facebookBtn) facebookBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithFacebook(); });
         if (googleBtn) googleBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithGoogle(); });
         if (linkedinBtn) linkedinBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithLinkedIn(); });
+        if (xBtn) xBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithX(); });
         if (signOutBtn) signOutBtn.addEventListener('click', function (event) { event.preventDefault(); signOut(); });
       });
     })();

@@ -20,11 +20,13 @@ window.ibrTotp.ready = new Promise((resolve, reject) => {
       // existing persisted Firebase Auth session used by the compat code.
       const app = initializeApp(window.firebaseConfig);
       const auth = getAuth(app);
-      resolve({
+      const api = {
         app, auth, multiFactor, TotpMultiFactorGenerator,
         GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider,
         OAuthProvider, reauthenticateWithPopup
-      });
+      };
+      window.ibrTotp.api = api;
+      resolve(api);
     } catch (error) {
       reject(error);
     }

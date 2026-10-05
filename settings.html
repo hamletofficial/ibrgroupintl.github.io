@@ -163,6 +163,7 @@
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <script type="module" src="/totp-mfa.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <script defer src="/header-profile.js"></script>
@@ -248,20 +249,25 @@
           console.error('Unable to load profile email from Firestore:', error);
         }
       }
-      function getEnrolledMfa(user) {
-        return user && user.multiFactor && Array.isArray(user.multiFactor.enrolledFactors)
-          ? user.multiFactor.enrolledFactors
-          : [];
-      }
-      function updateMfaUi(user) {
-        const factors = getEnrolledMfa(user);
-        const hasTotp = factors.some(function (factor) { return factor.factorId === 'totp'; });
-        if (mfaStatus) mfaStatus.textContent = hasTotp
-          ? 'Authenticator-app 2FA is enabled on this account.'
-          : '2FA is not enabled. Add an authenticator app as your second factor.';
-        if (mfaSetupBtn) {
-          mfaSetupBtn.disabled = false;
-          mfaSetupBtn.textContent = hasTotp ? 'Manage 2FA' : 'Set Up 2FA';
+      async function updateMfaUi(user) {
+        try {
+          const totp = await window.ibrTotp.ready;
+          const modularUser = totp.auth.currentUser;
+          const factors = modularUser && totp.multiFactor(modularUser).enrolledFactors
+            ? totp.multiFactor(modularUser).enrolledFactors
+            : [];
+          const hasTotp = factors.some(function (factor) { return factor.factorId === 'totp'; });
+          if (mfaStatus) mfaStatus.textContent = hasTotp
+            ? 'Authenticator-app 2FA is enabled on this account.'
+            : '2FA is not enabled. Add an authenticator app as your second factor.';
+          if (mfaSetupBtn) {
+            mfaSetupBtn.disabled = false;
+            mfaSetupBtn.textContent = hasTotp ? 'Manage 2FA' : 'Set Up 2FA';
+          }
+        } catch (error) {
+          console.error('Unable to read TOTP enrollment state:', error);
+          if (mfaStatus) mfaStatus.textContent = 'Unable to read 2FA status. Please refresh the page.';
+          if (mfaSetupBtn) mfaSetupBtn.disabled = true;
         }
       }
       async function beginTotpEnrollment() {
@@ -273,28 +279,39 @@
             mfaMessage.textContent = 'Please verify your email address before enabling 2FA.';
             return;
           }
-          if (!firebase.auth.TotpMultiFactorGenerator) {
-            mfaMessage.textContent = 'TOTP is not available in the loaded Firebase Authentication SDK. Please refresh the page and try again.';
+          if (!window.ibrTotp || !window.ibrTotp.ready) {
+            mfaMessage.textContent = 'The TOTP security module is still loading. Please refresh the page and try again.';
             return;
           }
-          // Firebase requires a recent authentication before adding a second factor.
-          const providerId = user.providerData && user.providerData[0] ? user.providerData[0].providerId : '';
+          const totp = await window.ibrTotp.ready;
+          if (!totp || !totp.TotpMultiFactorGenerator) {
+            mfaMessage.textContent = 'TOTP is not available in the loaded Firebase Authentication module. Please refresh the page and try again.';
+            return;
+          }
+          const modularUser = totp.auth.currentUser;
+          if (!modularUser) {
+            mfaMessage.textContent = 'Your authentication session is still loading. Please refresh and try again.';
+            return;
+          }
+          // Firebase requires recent authentication before adding a second factor.
+          const providerId = modularUser.providerData && modularUser.providerData[0] ? modularUser.providerData[0].providerId : '';
           let provider = null;
-          if (providerId === 'google.com') provider = new firebase.auth.GoogleAuthProvider();
-          else if (providerId === 'facebook.com') provider = new firebase.auth.FacebookAuthProvider();
-          else if (providerId === 'twitter.com') provider = new firebase.auth.TwitterAuthProvider();
-          else if (providerId === 'oidc.linkedin-secure-login') provider = new firebase.auth.OAuthProvider('oidc.linkedin-secure-login');
+          if (providerId === 'google.com') provider = new totp.GoogleAuthProvider();
+          else if (providerId === 'facebook.com') provider = new totp.FacebookAuthProvider();
+          else if (providerId === 'twitter.com') provider = new totp.TwitterAuthProvider();
+          else if (providerId === 'oidc.linkedin-secure-login') provider = new totp.OAuthProvider('oidc.linkedin-secure-login');
           if (provider) {
-            try { await user.reauthenticateWithPopup(provider); }
-            catch (reauthError) {
+            try {
+              await totp.reauthenticateWithPopup(modularUser, provider);
+            } catch (reauthError) {
               console.error('TOTP reauthentication failed:', reauthError);
               mfaMessage.textContent = 'For your security, please complete the sign-in verification window before enabling 2FA.';
               return;
             }
           }
-          const session = await user.multiFactor.getSession();
-          pendingTotpSecret = await firebase.auth.TotpMultiFactorGenerator.generateSecret(session);
-          const uri = pendingTotpSecret.generateQrCodeUrl(user.email || 'IBR member', 'Impact in Business Recruitment');
+          const session = await totp.multiFactor(modularUser).getSession();
+          pendingTotpSecret = await totp.TotpMultiFactorGenerator.generateSecret(session);
+          const uri = pendingTotpSecret.generateQrCodeUrl(modularUser.email || 'IBR member', 'Impact in Business Recruitment');
           mfaSecret.value = pendingTotpSecret.secretKey || '';
           if (window.QRCode && QRCode.toCanvas) {
             await QRCode.toCanvas(mfaQr, uri, { width: 220, margin: 1 });
@@ -319,14 +336,16 @@
         }
         mfaVerifyBtn.disabled = true;
         try {
-          const assertion = firebase.auth.TotpMultiFactorGenerator.assertionForEnrollment(pendingTotpSecret, code);
-          await user.multiFactor.enroll(assertion, 'Authenticator app');
+          const totp = await window.ibrTotp.ready;
+          const modularUser = totp.auth.currentUser;
+          const assertion = totp.TotpMultiFactorGenerator.assertionForEnrollment(pendingTotpSecret, code);
+          await totp.multiFactor(modularUser).enroll(assertion, 'Authenticator app');
           pendingTotpSecret = null;
           mfaPanel.hidden = true;
           mfaSecret.value = '';
           mfaCode.value = '';
           mfaMessage.textContent = 'Two-factor authentication is now enabled.';
-          updateMfaUi(user);
+          updateMfaUi(modularUser);
         } catch (error) {
           console.error('Unable to verify TOTP enrollment:', error);
           mfaMessage.textContent = error && error.message

@@ -181,7 +181,7 @@
         document.body.classList.remove('auth-pending');
         document.body.classList.add('has-sidebar');
         try {
-          const snap = await db.collection('publicProfiles').get();
+          const snap = await db.collection('publicProfiles').where('isPublic', '==', true).get();
           if (snap.empty) {
             directoryStatus.textContent = 'No member profiles found.';
             directoryGrid.innerHTML = '';
@@ -191,8 +191,6 @@
           directoryGrid.innerHTML = '';
           snap.forEach(doc => {
             const data = doc.data() || {};
-            if (data.publicProfile !== true) return;
-
             const img = data.imageDataUrl || DEFAULT_PUBLIC_IMAGE;
             const name = (data.firstName || '') + ' ' + (data.lastName || '');
             let bio = data.bio || '';

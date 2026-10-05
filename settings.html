@@ -154,6 +154,17 @@
         settingsUserEmail.textContent = user.email || 'Not available';
         settingsUserId.textContent = user.uid || '-';
         settingsLastLogin.textContent = user.metadata && user.metadata.lastSignInTime ? new Date(user.metadata.lastSignInTime).toLocaleString() : '-';
+
+        try {
+          if (user.metadata && user.metadata.lastSignInTime) {
+            await firebase.firestore().collection('publicProfiles').doc(user.uid).set({
+              lastLogin: firebase.firestore.Timestamp.fromDate(new Date(user.metadata.lastSignInTime))
+            }, { merge: true });
+          }
+        } catch (loginWriteError) {
+          console.error('Unable to update public profile last login:', loginWriteError);
+        }
+
         try {
           const profileSnapshot = await firebase.firestore().collection('publicProfiles').doc(user.uid).get();
           const profileEmail = profileSnapshot.exists ? profileSnapshot.get('email') : '';

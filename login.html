@@ -105,7 +105,7 @@
       padding-right: clamp(0.75rem, 4vw, 1.5rem);
     }
     .login-main{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;padding:clamp(20px,5vh,40px) 16px;width:100%;max-width:100%;overflow-x:clip}
-    .card{box-sizing:border-box;width:100%;max-width:min(320px,100%);background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));border-radius:14px;padding:30px;box-shadow:0 24px 48px rgba(2,6,23,0.18);border:1px solid rgba(148,163,184,0.3);overflow:hidden}
+    .card{box-sizing:border-box;width:100%;max-width:380px;background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));border-radius:14px;padding:30px;box-shadow:0 24px 48px rgba(2,6,23,0.18);border:1px solid rgba(148,163,184,0.3);overflow:hidden}
     h1{font-size:1.35rem;margin:0 0 8px;color:var(--text);letter-spacing:0.01em}
     .login-security-chip{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 9px;margin:0 auto 14px;width:fit-content;max-width:100%;border-radius:999px;background:rgba(2,132,199,0.09);color:#0f3d63;border:1px solid rgba(2,132,199,0.14);font-size:0.78rem;font-weight:700}
     .login-lock-icon{font-size:0.92rem;line-height:1}
@@ -122,8 +122,8 @@
     .login-page .container{display:flex;flex-direction:column;align-items:center;justify-content:center}
     .login-page .cookie-bar {
       margin: 0 auto 12px;
-      max-width: 100%;
-      width: 100%;
+      max-width: 760px;
+      width: min(100%, 760px);
       border-radius: 12px;
       border: 1px solid #d4e2da;
       background: #fff;
@@ -189,8 +189,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        max-width: 100%;
+        width: min(100%, 760px);
+        max-width: 760px;
         flex: 0 0 auto;
       }
       .login-page #cookieConsentBar > div:first-child {
@@ -239,8 +239,8 @@
       .login-page .resource-footer,
       .login-page .login-main,
       .login-page .card {
-        width: 100%;
-        max-width: 100%;
+        width: min(100%, 760px);
+        max-width: 760px;
         min-width: 0;
       }
       .login-page .login-main {
@@ -506,9 +506,9 @@
     .sign-out-btn:hover { background: #d33426; }
     @media (width <= 600px) {
       .login-page .login-main > .card {
-        flex: 0 0 320px;
-        width: 320px !important;
-        max-width: 320px !important;
+        flex: 0 1 380px;
+        width: min(100%, 380px) !important;
+        max-width: 380px !important;
       }
     }
     @media (max-width:480px){

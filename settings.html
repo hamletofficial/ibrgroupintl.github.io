@@ -160,8 +160,8 @@
       </div>
     </footer>
   </div>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
@@ -274,8 +274,23 @@
             return;
           }
           if (!firebase.auth.TotpMultiFactorGenerator) {
-            mfaMessage.textContent = 'Your current Firebase web SDK does not expose TOTP enrollment. The account settings page needs the current modular Firebase Authentication SDK for this step.';
+            mfaMessage.textContent = 'TOTP is not available in the loaded Firebase Authentication SDK. Please refresh the page and try again.';
             return;
+          }
+          // Firebase requires a recent authentication before adding a second factor.
+          const providerId = user.providerData && user.providerData[0] ? user.providerData[0].providerId : '';
+          let provider = null;
+          if (providerId === 'google.com') provider = new firebase.auth.GoogleAuthProvider();
+          else if (providerId === 'facebook.com') provider = new firebase.auth.FacebookAuthProvider();
+          else if (providerId === 'twitter.com') provider = new firebase.auth.TwitterAuthProvider();
+          else if (providerId === 'oidc.linkedin-secure-login') provider = new firebase.auth.OAuthProvider('oidc.linkedin-secure-login');
+          if (provider) {
+            try { await user.reauthenticateWithPopup(provider); }
+            catch (reauthError) {
+              console.error('TOTP reauthentication failed:', reauthError);
+              mfaMessage.textContent = 'For your security, please complete the sign-in verification window before enabling 2FA.';
+              return;
+            }
           }
           const session = await user.multiFactor.getSession();
           pendingTotpSecret = await firebase.auth.TotpMultiFactorGenerator.generateSecret(session);

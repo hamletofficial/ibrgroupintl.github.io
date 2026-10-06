@@ -22,7 +22,7 @@ window.ibrTotp.ready = new Promise((resolve, reject) => {
       const app = initializeApp(window.firebaseConfig);
       const auth = getAuth(app);
       const api = {
-        app, auth, multiFactor, TotpMultiFactorGenerator,
+        app, auth, multiFactor, TotpMultiFactorGenerator, QRCode,
         GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider,
         OAuthProvider, reauthenticateWithPopup
       };

@@ -9,4 +9,4 @@ window.firebaseConfig = {
   // other fields (messagingSenderId, measurementId) may be added if available
 };
 // Public LinkedIn app client ID. The client secret stays in LINKEDIN_CLIENT_SECRET.
-window.linkedinClientId = "78e83w1spj610a";
+// LinkedIn is handled by the Firebase OIDC provider configuration; no client ID is exposed here.

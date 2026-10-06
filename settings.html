@@ -344,8 +344,10 @@
           pendingTotpSecret = await totp.TotpMultiFactorGenerator.generateSecret(session);
           const uri = pendingTotpSecret.generateQrCodeUrl(modularUser.email || 'IBR member', 'Impact in Business Recruitment');
           mfaSecret.value = pendingTotpSecret.secretKey || '';
-          if (window.QRCode && QRCode.toCanvas) {
-            await QRCode.toCanvas(mfaQr, uri, { width: 220, margin: 1 });
+          if (window.QRCode && typeof window.QRCode.toCanvas === 'function') {
+            await window.QRCode.toCanvas(mfaQr, uri, { width: 220, margin: 1 });
+          } else {
+            throw new Error('The QR-code generator has not loaded. Please refresh the page and try again.');
           }
           mfaPanel.hidden = false;
           mfaCode.value = '';

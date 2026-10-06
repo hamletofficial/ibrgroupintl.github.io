@@ -292,46 +292,55 @@
             mfaMessage.textContent = 'Your authentication session is still loading. Please refresh and try again.';
             return;
           }
-          // Firebase requires recent authentication before adding a second factor.
-          const providerId = modularUser.providerData && modularUser.providerData[0] ? modularUser.providerData[0].providerId : '';
-          let provider = null;
-          if (providerId === 'google.com') {
-            provider = new totp.GoogleAuthProvider();
-            provider.setCustomParameters({ prompt: 'login' });
-          } else if (providerId === 'facebook.com') {
-            provider = new totp.FacebookAuthProvider();
-            provider.setCustomParameters({ auth_type: 'reauthorize' });
-          } else if (providerId === 'twitter.com') {
-            provider = new totp.TwitterAuthProvider();
-          } else if (providerId === 'oidc.linkedin-secure-login') {
-            provider = new totp.OAuthProvider('oidc.linkedin-secure-login');
-            provider.setCustomParameters({ prompt: 'login' });
-          }
-          if (!provider) {
-            mfaMessage.textContent = 'Your sign-in provider does not support automatic reauthentication here. Please sign out and sign back in, then try again.';
-            return;
-          }
+          // A freshly completed sign-in is already recent enough for MFA enrollment.
+          // Only invoke provider reauthentication if Firebase explicitly says that
+          // the existing session is too old. This avoids forcing an unnecessary
+          // OAuth popup and prevents provider-specific reauthentication failures.
+          async function reauthenticateIfRequired(error) {
+            const code = error && error.code ? error.code : '';
+            if (code !== 'auth/requires-recent-login') throw error;
 
-          try {
-            // Reauthenticate immediately from the button click so Firebase
-            // can open the provider verification window as a user gesture.
-            await totp.reauthenticateWithPopup(modularUser, provider);
-          } catch (reauthError) {
-            console.error('TOTP reauthentication failed:', reauthError);
-            const code = reauthError && reauthError.code ? reauthError.code : '';
-            if (code === 'auth/popup-blocked') {
-              mfaMessage.textContent = 'Your browser blocked the sign-in verification window. Please allow pop-ups for this site and try again.';
-            } else if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
-              mfaMessage.textContent = 'The sign-in verification window was closed before verification was completed. Please complete the verification window to enable 2FA.';
-            } else if (code === 'auth/user-cancelled' || code === 'auth/cancelled-popup-request') {
-              mfaMessage.textContent = 'The sign-in verification was cancelled. Please complete the verification window to enable 2FA.';
-            } else {
-              mfaMessage.textContent = 'Firebase could not complete the required recent sign-in. Please sign out, sign back in, and then try Set Up 2FA again.';
+            const providerId = modularUser.providerData && modularUser.providerData[0]
+              ? modularUser.providerData[0].providerId
+              : '';
+            let provider = null;
+            if (providerId === 'google.com') {
+              provider = new totp.GoogleAuthProvider();
+              provider.setCustomParameters({ prompt: 'login' });
+            } else if (providerId === 'facebook.com') {
+              provider = new totp.FacebookAuthProvider();
+              provider.setCustomParameters({ auth_type: 'reauthorize' });
+            } else if (providerId === 'twitter.com') {
+              provider = new totp.TwitterAuthProvider();
+            } else if (providerId === 'oidc.linkedin-secure-login') {
+              provider = new totp.OAuthProvider('oidc.linkedin-secure-login');
+              provider.setCustomParameters({ prompt: 'login' });
             }
-            return;
+            if (!provider) {
+              throw new Error('Your sign-in provider requires a fresh sign-in before 2FA can be enabled.');
+            }
+            try {
+              await totp.reauthenticateWithPopup(modularUser, provider);
+            } catch (reauthError) {
+              console.error('TOTP reauthentication failed:', reauthError);
+              const reauthCode = reauthError && reauthError.code ? reauthError.code : '';
+              if (reauthCode === 'auth/popup-blocked') {
+                throw new Error('Your browser blocked the sign-in verification window. Please allow pop-ups for this site and try again.');
+              }
+              if (reauthCode === 'auth/popup-closed-by-user' || reauthCode === 'auth/cancelled-popup-request' || reauthCode === 'auth/user-cancelled') {
+                throw new Error('The sign-in verification window was closed before verification was completed.');
+              }
+              throw new Error('Firebase could not complete the required recent sign-in. Please sign out, sign back in, and try again.');
+            }
           }
 
-          const session = await totp.multiFactor(modularUser).getSession();
+          let session;
+          try {
+            session = await totp.multiFactor(modularUser).getSession();
+          } catch (sessionError) {
+            await reauthenticateIfRequired(sessionError);
+            session = await totp.multiFactor(modularUser).getSession();
+          }
           pendingTotpSecret = await totp.TotpMultiFactorGenerator.generateSecret(session);
           const uri = pendingTotpSecret.generateQrCodeUrl(modularUser.email || 'IBR member', 'Impact in Business Recruitment');
           mfaSecret.value = pendingTotpSecret.secretKey || '';

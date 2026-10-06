@@ -812,7 +812,7 @@
           userStatus.classList.add('active');
           signInActions.style.display = 'none';
           if (userAvatar) {
-            userAvatar.src = user.photoURL || '/160.jpg';
+            userAvatar.src = '/160.jpg';
             userAvatar.alt = user.displayName || 'User';
           }
           if (userName) userName.textContent = user.displayName || 'User';

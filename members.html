@@ -18,6 +18,26 @@
     .page-wrapper { background: #fff; max-width: 1920px; min-height: 100vh; margin: 0 auto; box-shadow: 0 0 20px rgba(0, 0, 0, .1) }
     .auth-shell { max-width: 760px; margin: 2rem auto; padding: 2rem; border-radius: 16px; border: 1px solid #dbe3ee; background: linear-gradient(145deg, #fff 0%, #f6fbff 100%); text-align: center; box-shadow: 0 8px 24px rgba(2, 6, 23, .08) }
     .members-shell { display: none; max-width: 900px; margin: 2rem auto 3rem; padding: 0 1rem }
+    .members-welcome { margin-bottom: 1rem; }
+    .welcome-lead { font-size: 1.02rem; color: #173b5d; }
+    .security-note { display: flex; gap: .85rem; align-items: flex-start; margin-top: 1.15rem; padding: 1rem 1.1rem; border: 1px solid #cfe3f1; border-radius: 12px; background: #f5fbff; color: #173b5d; text-align: left; }
+    .security-icon { flex: 0 0 auto; font-size: 1.15rem; line-height: 1.35; }
+    .security-note strong { color: #092a4b; }
+    .security-note p { margin: .3rem 0 0; color: var(--muted); line-height: 1.5; }
+    .member-guides { display: grid; gap: 1rem; }
+    .member-guide-card { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; padding: 1.35rem; background: #fff; border: 1px solid #dbe3ee; border-radius: 12px; box-shadow: 0 6px 20px rgba(2, 6, 23, .06); text-align: left; }
+    .guide-number { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 999px; background: #f5f9ff; color: #0284c7; font-weight: 800; }
+    .member-guide-card h2 { margin: .1rem 0 .45rem; color: #092a4b; font-size: 1.08rem; }
+    .member-guide-card p { margin: 0 0 .8rem; color: var(--muted); line-height: 1.5; }
+    .member-guide-card a { color: #0284c7; font-weight: 700; }
+    .member-guide-card ol { margin: .75rem 0 1rem 1.2rem; padding: 0; color: var(--muted); line-height: 1.55; }
+    .member-guide-card li { margin-bottom: .35rem; padding-left: .2rem; }
+    .guide-action { margin-top: .2rem; text-decoration: none; }
+    @media (max-width: 600px) {
+      .member-guide-card { grid-template-columns: 1fr; gap: .7rem; padding: 1.1rem; }
+      .guide-number { width: 2.2rem; height: 2.2rem; }
+      .security-note { padding: .9rem; }
+    }
     .sidebar-menu-shell { display: none; position: fixed; top: 88px; left: 24px; width: 220px; background: #ffffff; border: 1px solid #dbe3ee; border-radius: 12px; box-shadow: 0 10px 24px rgba(2, 6, 23, 0.12); padding: 10px 0; z-index: 950; }
     .sidebar-menu-link { display: block; padding: 11px 14px; margin: 2px 8px; border-radius: 8px; color: #092a4b; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease; }
     .sidebar-menu-link:hover, .sidebar-menu-link:focus { background: #092a4b; color: #ffffff; transform: translateX(3px); }
@@ -92,19 +112,61 @@
       <a class="btn btn-primary" href="/login.html">Go to Sign In</a>
     </section>
     <main id="membersShell" class="members-shell" role="main">
-      <section class="panel">
+      <section class="panel members-welcome">
         <div class="panel-head">
           <h1 style="margin:0;color:#092a4b;font-size:1.3rem">Welcome to the Members Area</h1>
         </div>
         <div class="panel-body">
-          <p>Hello, <span id="memberName">Member</span>! and welcome to the Members Area.</p>
-          <p class="muted">Step 1: Log in to the Premium dashboard.</p>
-          <p class="muted">Step 2: Edit, complete and enable <a href="/editprofile.html">Your Profile</a> to receive e-mails from Premium.</p>
-		  <p class="muted">Step 3: Stay updated with the latest news and insights from the recruitment industry through our <a href="/insights.html">Insights Archive</a>.</p>
-		  <p class="muted">Step 4: Manage your account settings and preferences through the <a href="/settings.html">Account Settings</a> page.</p>
-		  <p class="muted">Step 5: If you have any questions or need assistance, contact our support team through the <a href="/contact.html">Contact</a> page.</p>
-		  </p>
+          <p class="welcome-lead">Hello, <span id="memberName">Member</span> — welcome to your secure members area.</p>
+          <p class="muted">Your account is authenticated through Firebase, so only a signed-in member can access this area and the member services linked from it. The members area is secure and safe to use for managing your account and communications briefs.</p>
+          <div class="security-note" role="note">
+            <span class="security-icon" aria-hidden="true">🔒</span>
+            <div>
+              <strong>Security without the extra hurdle</strong>
+              <p>Two-factor authentication (2FA) is an optional additional layer of protection. You do <strong>not</strong> need to upgrade to 2FA to use the Members Area, send a brief, or manage your submissions.</p>
+            </div>
+          </div>
         </div>
+      </section>
+
+      <section class="member-guides" aria-label="Members Area guide">
+        <article class="member-guide-card">
+          <div class="guide-number" aria-hidden="true">1</div>
+          <div>
+            <h2>Send a brief to Communications</h2>
+            <p>Use <a href="/requests.html">Media Relations / Requests</a> to send a concise brief to our communications team.</p>
+            <ol>
+              <li>Open <a href="/requests.html">requests.html</a> from the button below or the Members navigation.</li>
+              <li>Enter the organisation and press-officer contact details.</li>
+              <li>Add the headline, announcement type, press-release link, summary, and any useful notes such as audience, spokesperson availability or holding lines.</li>
+              <li>Review the information and select <strong>Send Brief</strong>. Your submission is saved for the communications desk to review and follow up.</li>
+            </ol>
+            <a class="btn btn-primary guide-action" href="/requests.html">Send a Communications Brief</a>
+          </div>
+        </article>
+
+        <article class="member-guide-card">
+          <div class="guide-number" aria-hidden="true">2</div>
+          <div>
+            <h2>Manage your submissions</h2>
+            <p>Use the <a href="/archive.html">Brief Archive</a> to manage briefs submitted from your authenticated account.</p>
+            <ol>
+              <li>Open <a href="/archive.html">archive.html</a> to view your submitted briefs.</li>
+              <li>Use <strong>Search archive</strong> to find a particular submission.</li>
+              <li>Select one or more briefs if you need to delete them, then choose <strong>Delete Selected</strong>.</li>
+              <li>Use <strong>Refresh</strong> to reload your archive, <strong>Create New</strong> to start another brief, or <strong>Print</strong> when you need a record.</li>
+            </ol>
+            <a class="btn btn-outline guide-action" href="/archive.html">Manage My Submissions</a>
+          </div>
+        </article>
+
+        <article class="member-guide-card">
+          <div class="guide-number" aria-hidden="true">3</div>
+          <div>
+            <h2>Keep your member account up to date</h2>
+            <p class="muted">Complete your <a href="/editprofile.html">profile</a> if you want to receive communications from Premium, explore the <a href="/insights.html">Insights Archive</a>, and use <a href="/settings.html">Account Settings</a> to manage your preferences.</p>
+          </div>
+        </article>
       </section>
     </main>
     <footer class="resource-footer" role="contentinfo">

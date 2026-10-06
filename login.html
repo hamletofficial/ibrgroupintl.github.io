@@ -501,8 +501,41 @@
       box-shadow: 0 1px 2px rgba(10, 102, 194, 0.25);
     }
     .linkedin-btn:hover { background: #004182; border-color: #004182; }
-    .apple-btn-icon { display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; flex-shrink: 0; line-height: 0; }
+    .apple-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 0 12px;
+      min-height: 48px;
+      border-radius: 8px;
+      border: 1px solid #000;
+      background: #fff;
+      color: #000;
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+    }
+    .apple-btn:hover { background: #f8fafc; border-color: #000; }
+    .apple-btn:active { background: #f1f5f9; }
+    .apple-btn-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      line-height: 0;
+    }
     .apple-btn-icon svg { display: block; }
+    .apple-btn .google-btn-text { flex: none; padding: 0; text-align: center; }
     .linkedin-btn:active { background: #00315f; }
     .x-btn { background: #000; color: #fff; border: 1px solid #000; }
     .x-btn:hover { background: #1f1f1f; border-color: #1f1f1f; }

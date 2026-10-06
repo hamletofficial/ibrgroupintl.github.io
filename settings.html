@@ -360,9 +360,9 @@
       }
       async function verifyTotpEnrollment() {
         const user = auth.currentUser;
-        const code = (mfaCode.value || '').replace(/\\D/g, '');
+        const code = (mfaCode.value || '').replace(/\D/g, '');
         if (!user || !pendingTotpSecret) return;
-        if (!/^\\d{6}$/.test(code)) {
+        if (!/^\d{6}$/.test(code)) {
           mfaMessage.textContent = 'Enter the six-digit code shown in your authenticator app.';
           return;
         }

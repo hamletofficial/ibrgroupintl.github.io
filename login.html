@@ -539,6 +539,49 @@
     .x-btn { background: #000; color: #fff; border: 1px solid #000; }
     .x-btn:hover { background: #1f1f1f; border-color: #1f1f1f; }
     .x-btn:active { background: #333; }
+    /* Unified provider-button alignment: preserve each icon, but give every provider the same icon slot and text axis. */
+    .facebook-btn,
+    .google-btn,
+    .linkedin-btn,
+    .x-btn,
+    .apple-btn {
+      position: relative;
+    }
+    .facebook-btn-icon,
+    .google-btn-icon,
+    .apple-btn-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      line-height: 0;
+    }
+    .facebook-btn-icon svg,
+    .google-btn-icon svg,
+    .apple-btn-icon svg {
+      display: block;
+    }
+    .facebook-btn-text,
+    .google-btn-text {
+      position: absolute;
+      left: 42px;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: block;
+      height: 18px;
+      margin: 0;
+      padding: 0;
+      line-height: 18px;
+      text-align: left;
+      white-space: nowrap;
+    }
     .linkedin-btn { pointer-events: auto; position: relative; z-index: 2; }
     .actions { display: flex; flex-direction: column; gap: 10px; }
     .user-status { display: none; padding: 16px; background: rgba(66, 133, 244, 0.1); border-radius: 8px; border: 1px solid rgba(66, 133, 244, 0.3); }

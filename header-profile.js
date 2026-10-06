@@ -33,7 +33,7 @@
       }
 
       var displayName = user.displayName || user.email || 'Member';
-      var photoUrl = user.photoURL || linkedInPhoto() || '/100.png';
+      var photoUrl = '/160.jpg';
 
       if (nameEl) {
         nameEl.textContent = displayName;

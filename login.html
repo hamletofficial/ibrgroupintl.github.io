@@ -410,6 +410,7 @@
       .login-page .card .google-btn,
       .login-page .card .linkedin-btn,
       .login-page .card .x-btn,
+      .login-page .card .apple-btn,
       .login-page .card .portal-return-btn {
         width: 280px;
         max-width: 100%;
@@ -527,7 +528,7 @@
       .card{padding:20px}
       h1{font-size:1.05rem}
       .btn{padding:10px;border-radius:10px}
-      .actions > .btn,.actions > .google-btn,.actions > .linkedin-btn,.actions > .x-btn,.portal-return-btn{width:100%;max-width:100%;min-width:0}
+      .actions > .btn,.actions > .google-btn,.actions > .linkedin-btn,.actions > .x-btn,.actions > .apple-btn,.portal-return-btn{width:100%;max-width:100%;min-width:0}
       .actions{gap:10px}
       .note{font-size:0.82rem}
     }
@@ -548,7 +549,7 @@
   <main class="login-main">
     <div class="card" role="main" aria-labelledby="signin-title">
     <h1 id="signin-title">Secure Login</h1>
-    <p class="lead">Sign in with Facebook, Google, LinkedIn or X.</p>
+    <p class="lead">Sign in with Facebook, Google, LinkedIn, X or Apple.</p>
     <div id="error" role="alert"></div>
     <div id="userStatus" class="user-status">
       <div class="user-info">
@@ -585,6 +586,12 @@
         <span class="google-btn-text">Sign in with LinkedIn</span>
       </button>
       <button id="xBtn" class="x-btn" type="button"><span class="google-btn-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817-5.963 6.817H1.684l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg></span><span class="google-btn-text">Sign in with X</span></button>
+      <button id="appleBtn" class="apple-btn" type="button">
+        <span class="apple-btn-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><path d="M17.05 20.28c-.98.95-2.05.9-3.08.43-1.09-.48-2.09-.5-3.24 0-1.44.63-2.2.45-3.06-.43C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.1.81 1.21-.25 2.37-.93 3.66-.84 1.55.13 2.72.74 3.5 1.81-3.2 1.92-2.44 6.13.49 7.31-.59 1.55-1.35 3.06-2.75 3.88zM12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        </span>
+        <span class="google-btn-text">Sign in with Apple</span>
+      </button>
       <a class="btn btn-outline portal-return-btn" href="/index.html">Back to Home</a>
     </div>
     <div id="mfaModal" class="mfa-modal" hidden role="dialog" aria-modal="true" aria-labelledby="mfaModalTitle">
@@ -688,6 +695,7 @@
         var googleBtn = document.getElementById('googleBtn');
         var linkedinBtn = document.getElementById('linkedinBtn');
         var xBtn = document.getElementById('xBtn');
+        var appleBtn = document.getElementById('appleBtn');
         var signOutBtn = document.getElementById('signOutBtn');
         var errEl = document.getElementById('error');
         var userStatus = document.getElementById('userStatus');
@@ -959,6 +967,12 @@
             showError(code + detail);
           });
         }
+        function signInWithApple() {
+          var provider = new firebase.auth.OAuthProvider('apple.com');
+          provider.addScope('email');
+          provider.addScope('name');
+          return signInWithProvider(provider);
+        }
         function signInWithX() {
           rememberNext();
           if (errEl) errEl.style.display = 'none';
@@ -1017,10 +1031,12 @@
         else if (requestedProvider === 'facebook' && facebookBtn) facebookBtn.click();
         else if (requestedProvider === 'linkedin' && linkedinBtn) linkedinBtn.click();
         else if (requestedProvider === 'x' && xBtn) xBtn.click();
+        else if (requestedProvider === 'apple' && appleBtn) appleBtn.click();
         if (facebookBtn) facebookBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithFacebook(); });
         if (googleBtn) googleBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithGoogle(); });
         if (linkedinBtn) linkedinBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithLinkedIn(); });
         if (xBtn) xBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithX(); });
+        if (appleBtn) appleBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithApple(); });
         if (signOutBtn) signOutBtn.addEventListener('click', function (event) { event.preventDefault(); signOut(); });
       });
     })();

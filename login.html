@@ -710,14 +710,18 @@
         function postLoginPath() {
           try {
             var stored = sessionStorage.getItem('post_login_next') || '';
-            var next = new URLSearchParams(window.location.search).get('next') || stored;
+            var requested = new URLSearchParams(window.location.search).get('next');
+            var next = requested || stored;
             var safe = safeNext(next);
             if (safe) return safe;
           } catch (error) {}
           return '/members.html';
         }
         function rememberNext() {
-          try { sessionStorage.setItem('post_login_next', postLoginPath()); } catch (error) {}
+          try {
+            var requested = new URLSearchParams(window.location.search).get('next');
+            sessionStorage.setItem('post_login_next', safeNext(requested) || '/members.html');
+          } catch (error) {}
         }
         function showUserStatus(user) {
           if (!userStatus || !signInActions) return;

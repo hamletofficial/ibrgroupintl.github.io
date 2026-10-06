@@ -57,6 +57,59 @@
 	.copyright { margin:0; color:var(--payment-muted); text-align:center; font-size:.9rem; }
 	:where(a,button):focus-visible { outline:3px solid rgba(20,107,89,.55); outline-offset:3px; }
 	@media(max-width:640px) { .payment-header-row { align-items:flex-start; flex-direction:column; padding:12px 0; gap:10px; } .payment-nav { width:100%; } .payment-nav a,.payment-button { flex:1; } .cookie-bar { align-items:stretch; } .cookie-actions button { flex:1; } }
+  
+    /* Shared members navigation — aligned with editprofile.html */
+    .sidebar-menu-shell {
+      display: none;
+      position: fixed;
+      top: 88px;
+      left: 24px;
+      width: 220px;
+      background: #ffffff;
+      border: 1px solid #dbe3ee;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(2, 6, 23, 0.12);
+      padding: 10px 0;
+      z-index: 950;
+    }
+
+    .sidebar-menu-link {
+      display: block;
+      padding: 11px 14px;
+      margin: 2px 8px;
+      border-radius: 8px;
+      color: #092a4b;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .sidebar-menu-link:hover,
+    .sidebar-menu-link:focus {
+      background: #092a4b;
+      color: #ffffff;
+      transform: translateX(3px);
+    }
+
+    body.has-sidebar main,
+    body.has-sidebar .payment-footer {
+      margin-left: 260px;
+    }
+
+    @media (max-width: 980px) {
+      .sidebar-menu-shell {
+        position: static;
+        width: 100%;
+        max-width: 900px;
+        margin: 12px auto;
+      }
+
+      body.has-sidebar main,
+      body.has-sidebar .payment-footer {
+        margin-left: 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -74,6 +127,31 @@
 	  </nav>
 	</div>
   </header>
+
+
+  <nav id="topNavMenu" class="sidebar-menu-shell" aria-label="Members navigation">
+    <a class="sidebar-menu-link" href="https://www.ibrecruitment.com"><span class="sidebar-menu-icon" aria-hidden="true">🏠</span> Home</a>
+    <a class="sidebar-menu-link" href="/editprofile.html"><span class="sidebar-menu-icon" aria-hidden="true">👤</span> Edit Profile</a>
+    <a class="sidebar-menu-link" href="/members.html"><span class="sidebar-menu-icon" aria-hidden="true">🧑‍🤝‍🧑</span> Members Area</a>
+    <a class="sidebar-menu-link" href="/insights.html"><span class="sidebar-menu-icon" aria-hidden="true">💡</span> Insights Archive</a>
+    <a class="sidebar-menu-link" href="/requests.html"><span class="sidebar-menu-icon" aria-hidden="true">📋</span> Media Relations</a>
+    <a class="sidebar-menu-link" href="/settings.html"><span class="sidebar-menu-icon" aria-hidden="true">⚙️</span> Account Settings</a>
+    <a class="sidebar-menu-link" href="/contact.html"><span class="sidebar-menu-icon" aria-hidden="true">✉️</span> Contact</a>
+    <a class="sidebar-menu-link" href="/directory.html"><span class="sidebar-menu-icon" aria-hidden="true">📇</span> Member Directory</a>
+    <a class="sidebar-menu-link" href="/invoice.html"><span class="sidebar-menu-icon" aria-hidden="true">💳</span> Payments</a>
+  </nav>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      function updateSidebarVisibility() {
+        var sidebar = document.getElementById('topNavMenu');
+        if (!sidebar) return;
+        sidebar.style.display = document.body.classList.contains('has-sidebar') ? 'block' : 'none';
+      }
+      updateSidebarVisibility();
+      var observer = new MutationObserver(updateSidebarVisibility);
+      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+  </script>
 
   <main>
 	<div class="payment-container">
@@ -127,6 +205,17 @@
 
 	window.addEventListener('DOMContentLoaded', function () {
 	  var signOutBtn = document.getElementById('signOutBtn');
+
+	  if (window.firebase && window.firebaseConfig) {
+		try {
+		  if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
+		  firebase.auth().onAuthStateChanged(function (user) {
+			document.body.classList.toggle('has-sidebar', !!user);
+		  });
+		} catch (error) {
+		  console.error('Unable to initialise members navigation:', error);
+		}
+	  }
 	  if (!signOutBtn) return;
 	  signOutBtn.addEventListener('click', async function () {
 		signOutBtn.disabled = true;

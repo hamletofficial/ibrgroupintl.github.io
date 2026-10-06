@@ -41,6 +41,9 @@
       .guide-number { width: 2.2rem; height: 2.2rem; }
       .security-note { padding: .9rem; }
     }
+    .verify-corner-btn { position: fixed; left: 22px; bottom: 22px; z-index: 1000; display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 44px; padding: .7rem 1rem; border: 1px solid #0284c7; border-radius: 10px; background: #0284c7; color: #fff !important; text-decoration: none; font-weight: 700; font-size: .9rem; box-shadow: 0 8px 20px rgba(2, 132, 199, .22); transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease; }
+    .verify-corner-btn:hover, .verify-corner-btn:focus-visible { background: #0369a1; border-color: #0369a1; color: #fff !important; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(2, 132, 199, .28); }
+    @media (max-width: 600px) { .verify-corner-btn { left: 14px; bottom: 14px; min-height: 42px; padding: .65rem .85rem; font-size: .84rem; } }
     .sidebar-menu-shell { display: none; position: fixed; top: 88px; left: 24px; width: 220px; background: #ffffff; border: 1px solid #dbe3ee; border-radius: 12px; box-shadow: 0 10px 24px rgba(2, 6, 23, 0.12); padding: 10px 0; z-index: 950; }
     .sidebar-menu-link { display: block; padding: 11px 14px; margin: 2px 8px; border-radius: 8px; color: #092a4b; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease; }
     .sidebar-menu-link:hover, .sidebar-menu-link:focus { background: #092a4b; color: #ffffff; transform: translateX(3px); }
@@ -171,6 +174,7 @@
           </div>
         </article>
       </section>
+      <a class="verify-corner-btn" href="/verify.html" aria-label="Verify your identity">🔐 Verify Identity</a>
     </main>
     <footer class="resource-footer" role="contentinfo">
       <div class="container" style="text-align:center">

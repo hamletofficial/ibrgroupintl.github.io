@@ -162,8 +162,7 @@
   </div>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
-  <script type="module" src="/totp-mfa.js"></script>
+    <script type="module" src="/totp-mfa.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <script defer src="/header-profile.js"></script>
@@ -344,8 +343,8 @@
           pendingTotpSecret = await totp.TotpMultiFactorGenerator.generateSecret(session);
           const uri = pendingTotpSecret.generateQrCodeUrl(modularUser.email || 'IBR member', 'Impact in Business Recruitment');
           mfaSecret.value = pendingTotpSecret.secretKey || '';
-          if (window.QRCode && typeof window.QRCode.toCanvas === 'function') {
-            await window.QRCode.toCanvas(mfaQr, uri, { width: 220, margin: 1 });
+          if (totp.QRCode && typeof totp.QRCode.toCanvas === 'function') {
+            await totp.QRCode.toCanvas(mfaQr, uri, { width: 220, margin: 1 });
           } else {
             throw new Error('The QR-code generator has not loaded. Please refresh the page and try again.');
           }

@@ -804,8 +804,8 @@
         }
         async function verifyTotpMfa() {
           if (!mfaResolver || !mfaLoginCode) return;
-          var code = (mfaLoginCode.value || '').replace(/\\D/g, '');
-          if (!/^\\d{6}$/.test(code)) {
+          var code = (mfaLoginCode.value || '').replace(/\D/g, '');
+          if (!/^\d{6}$/.test(code)) {
             if (mfaLoginError) mfaLoginError.textContent = 'Enter the six-digit code from your authenticator app.';
             return;
           }

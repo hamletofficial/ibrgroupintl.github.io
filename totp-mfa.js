@@ -4,6 +4,7 @@ import {
   getAuth,
   multiFactor,
   TotpMultiFactorGenerator,
+  getMultiFactorResolver,
   GoogleAuthProvider,
   FacebookAuthProvider,
   TwitterAuthProvider,
@@ -19,10 +20,12 @@ window.ibrTotp.ready = new Promise((resolve, reject) => {
       if (!window.firebaseConfig) throw new Error('Firebase configuration is unavailable.');
       // Use the default app name so this modular Auth instance shares the
       // existing persisted Firebase Auth session used by the compat code.
-      const app = initializeApp(window.firebaseConfig);
+      const app = window.firebase && window.firebase.apps && window.firebase.apps.length
+        ? getAuth().app
+        : initializeApp(window.firebaseConfig);
       const auth = getAuth(app);
       const api = {
-        app, auth, multiFactor, TotpMultiFactorGenerator, QRCode,
+        app, auth, multiFactor, TotpMultiFactorGenerator, getMultiFactorResolver, QRCode,
         GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider,
         OAuthProvider, reauthenticateWithPopup
       };

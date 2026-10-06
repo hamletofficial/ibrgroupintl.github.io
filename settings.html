@@ -250,10 +250,11 @@
       }
       async function updateMfaUi(user) {
         try {
-          const totp = await window.ibrTotp.ready;
-          const modularUser = totp.auth.currentUser;
-          const factors = modularUser && totp.multiFactor(modularUser).enrolledFactors
-            ? totp.multiFactor(modularUser).enrolledFactors
+          // Read the enrollment state from the authenticated compat user first.
+          // This avoids making the status display depend on the separate modular
+          // TOTP bridge being ready at exactly the same time as the page load.
+          const factors = user && user.multiFactor && Array.isArray(user.multiFactor.enrolledFactors)
+            ? user.multiFactor.enrolledFactors
             : [];
           const hasTotp = factors.some(function (factor) { return factor.factorId === 'totp'; });
           if (mfaStatus) mfaStatus.textContent = hasTotp

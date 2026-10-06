@@ -775,8 +775,15 @@
           if (auth.currentUser) finishSignIn(auth.currentUser);
         }
         async function completeTotpMfa(error) {
-          if (!error || error.code !== 'auth/multi-factor-auth-required' || !error.resolver) return false;
-          mfaResolver = error.resolver;
+          if (!error || error.code !== 'auth/multi-factor-auth-required') return false;
+          try {
+            const totp = await window.ibrTotp.ready;
+            mfaResolver = error.resolver || totp.getMultiFactorResolver(totp.auth, error);
+          } catch (resolverError) {
+            console.error('Unable to create the MFA resolver:', resolverError);
+            showError('Two-factor authentication could not be started. Please refresh the page and try again.');
+            return true;
+          }
           try {
             const totp = await window.ibrTotp.ready;
             var totpHint = (mfaResolver.hints || []).find(function (hint) {
@@ -797,8 +804,8 @@
         }
         async function verifyTotpMfa() {
           if (!mfaResolver || !mfaLoginCode) return;
-          var code = (mfaLoginCode.value || '').replace(/\\D/g, '');
-          if (!/^\\d{6}$/.test(code)) {
+          var code = (mfaLoginCode.value || '').replace(/\D/g, '');
+          if (!/^\d{6}$/.test(code)) {
             if (mfaLoginError) mfaLoginError.textContent = 'Enter the six-digit code from your authenticator app.';
             return;
           }

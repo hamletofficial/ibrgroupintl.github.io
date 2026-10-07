@@ -3,5 +3,6 @@ Disallow: /settings.html
 Disallow: /accounts.html
 Disallow: /profile.html
 Disallow: /checkout.html
+Disallow: /app/public/*.html
 
 Sitemap: https://premium.ibrecruitment.com/sitemap.xml

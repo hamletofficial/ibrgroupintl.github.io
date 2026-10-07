@@ -110,8 +110,22 @@
       font-weight: 600;
     }
 
-    body.login-page .resource-footer a:hover {
-      color: #0284c7 !important;
+    /* Footer content below the horizontal rule: white text with Shea green links. */
+    body.login-page .resource-footer,
+    body.login-page .resource-footer a,
+    body.login-page .resource-footer span,
+    body.login-page .resource-footer p,
+    body.login-page .resource-footer li {
+      color: #fff !important;
+    }
+    body.login-page .resource-footer a {
+      color: #4f8f3a !important;
+      text-decoration: none;
+    }
+    body.login-page .resource-footer a:hover,
+    body.login-page .resource-footer a:focus {
+      color: #6aa84f !important;
+      text-decoration: underline;
     }
     .login-page .container {
       padding-left: clamp(0.75rem, 4vw, 1.5rem);

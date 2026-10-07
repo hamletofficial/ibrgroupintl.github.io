@@ -584,6 +584,25 @@
     .x-btn { background: #000; color: #fff; border: 1px solid #000; }
     .x-btn:hover { background: #1f1f1f; border-color: #1f1f1f; }
     .x-btn:active { background: #333; }
+    /* Minimal, consistent hover feedback for every sign-in button. */
+    .facebook-btn,
+    .google-btn,
+    .linkedin-btn,
+    .x-btn,
+    .apple-btn,
+    .portal-return-btn {
+      transition: filter 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    }
+    .facebook-btn:hover,
+    .google-btn:hover,
+    .linkedin-btn:hover,
+    .x-btn:hover,
+    .apple-btn:hover,
+    .portal-return-btn:hover {
+      filter: brightness(0.96);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+
     /* Unified provider-button alignment: preserve each icon, but give every provider the same icon slot and text axis. */
     .facebook-btn,
     .google-btn,

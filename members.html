@@ -17,14 +17,14 @@
     body { margin: 0; font-family: 'Open Sans', Arial, sans-serif; color: #0f172a; background: linear-gradient(180deg, #f5f9ff 0%, #ffffff 100%); }
     .page-wrapper { background: #fff; max-width: 1920px; min-height: 100vh; margin: 0 auto; box-shadow: 0 0 20px rgba(0, 0, 0, .1) }
     .auth-shell { max-width: 760px; margin: 2rem auto; padding: 2rem; border-radius: 16px; border: 1px solid #dbe3ee; background: linear-gradient(145deg, #fff 0%, #f6fbff 100%); text-align: center; box-shadow: 0 8px 24px rgba(2, 6, 23, .08) }
-    .members-shell { display: none; max-width: 1180px; margin: 2rem auto 3rem; padding: 0 1rem }
+    .members-shell { display: none; max-width: 900px; margin: 2rem auto 3rem; padding: 0 1rem }
     .members-welcome { margin-bottom: 1rem; }
     .welcome-lead { font-size: 1.02rem; color: #173b5d; }
     .security-note { display: flex; gap: .85rem; align-items: flex-start; margin-top: 1.15rem; padding: 1rem 1.1rem; border: 1px solid #cfe3f1; border-radius: 12px; background: #f5fbff; color: #173b5d; text-align: left; }
     .security-icon { flex: 0 0 auto; font-size: 1.15rem; line-height: 1.35; }
     .security-note strong { color: #092a4b; }
     .security-note p { margin: .3rem 0 0; color: var(--muted); line-height: 1.5; }
-    .member-content-layout { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 1.5rem; align-items: start; }\n    .member-guides { display: grid; gap: 1rem; }
+    .member-guides { display: grid; gap: 1rem; }
     .member-guide-card { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; padding: 1.35rem; background: #fff; border: 1px solid #dbe3ee; border-radius: 12px; box-shadow: 0 6px 20px rgba(2, 6, 23, .06); text-align: left; }\n    .member-directory-card { border: 2px solid #16a34a; }
     .guide-number { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 999px; background: #f5f9ff; color: #0284c7; font-weight: 800; }
     .member-guide-card h2 { margin: .1rem 0 .45rem; color: #092a4b; font-size: 1.08rem; }
@@ -37,12 +37,11 @@
     .guide-action.btn-outline { color: #0284c7 !important; background: #fff !important; border-color: #0284c7 !important; }
     .guide-action:hover, .guide-action:focus-visible { opacity: 1 !important; }
     @media (max-width: 600px) {
-      .members-shell { max-width: none; padding-left: .55rem; padding-right: .55rem; }
       .member-guide-card { grid-template-columns: 1fr; gap: .7rem; padding: 1.1rem; }
       .guide-number { width: 2.2rem; height: 2.2rem; }
       .security-note { padding: .9rem; }
     }
-    .member-commercial-links { margin: 0; padding: 1.25rem; border-top: 1px solid #dbe3ee; border: 1px solid #dbe3ee; border-radius: 12px; background: #fff; box-shadow: 0 6px 20px rgba(2, 6, 23, .06); }
+    .member-commercial-links { margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #dbe3ee; }
     .member-commercial-links h3 { margin: 0 0 .8rem; color: #000; font-size: .95rem; font-weight: 700; }
     .member-commercial-links ul { margin: 0; padding: 0; list-style: none; }
     .member-commercial-links li { margin: 0; }
@@ -141,7 +140,7 @@
         </div>
       </section>
 
-      <div class="member-content-layout">\n      <section class="member-guides" aria-label="Members Area guide">
+      <section class="member-guides" aria-label="Members Area guide">
         <article class="member-guide-card">
           <div class="guide-number" aria-hidden="true">1</div>
           <div>

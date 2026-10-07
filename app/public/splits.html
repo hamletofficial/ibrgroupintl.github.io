@@ -48,15 +48,15 @@
       <div class="container container-nav topbar">
         <div class="logo"><span class="site-title" style="color:lightgrey">Premium</span></div>
         <div class="topbar-actions">
-          <div class="profile" id="profileChip" hidden><img id="profilePhoto" src="/100.png" alt="Profile photo"><span id="profileName"></span></div>
-          <button class="btn btn-outline" id="signOutBtn" type="button" hidden>Sign Out</button>
+          <div class="profile" id="profileChip" hidden><img id="profilePhoto" src="/160.jpg" alt="Profile photo"><span id="profileName"></span></div>
+          <button class="btn btn-outline" id="authActionBtn" type="button">Sign In</button>
         </div>
       </div>
     </header>
 
     <section class="auth-shell" id="redirectPanel" aria-live="polite">
       <h1>Member sign-in required</h1>
-      <p id="redirectMessage">This commercial real estate resource suite is available only within your authenticated Members Area session. Redirecting you to secure sign-in…</p>
+      <p id="redirectMessage">This commercial real estate resource suite is available within your authenticated Members Area session. Sign in to access your broker workspace.</p>
       <a class="btn btn-primary" href="/login.html?next=%2Fapp%2Fpublic%2Fsplits.html">Continue to Sign In</a>
     </section>
 
@@ -110,19 +110,18 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function(){
-      const redirectPanel=document.getElementById('redirectPanel'), resourceShell=document.getElementById('resourceShell'), propertyFormPanel=document.getElementById('propertyFormPanel'), propertyForm=document.getElementById('propertyForm'), resourceList=document.getElementById('resourceList'), formStatus=document.getElementById('formStatus'), saveBtn=document.getElementById('savePropertyBtn'), signOutBtn=document.getElementById('signOutBtn'), profileChip=document.getElementById('profileChip'), profileName=document.getElementById('profileName'), profilePhoto=document.getElementById('profilePhoto');
+      const redirectPanel=document.getElementById('redirectPanel'), resourceShell=document.getElementById('resourceShell'), propertyFormPanel=document.getElementById('propertyFormPanel'), propertyForm=document.getElementById('propertyForm'), resourceList=document.getElementById('resourceList'), formStatus=document.getElementById('formStatus'), saveBtn=document.getElementById('savePropertyBtn'), authActionBtn=document.getElementById('authActionBtn'), profileChip=document.getElementById('profileChip'), profileName=document.getElementById('profileName'), profilePhoto=document.getElementById('profilePhoto');
       let auth=null, db=null, currentUser=null;
 
       function setFormStatus(message,type){formStatus.textContent=message||'';formStatus.className='status'+(type?' '+type:'');}
       function esc(value){return String(value??'').replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]})}
       function showUnauthenticated(){
-        document.body.classList.remove('auth-pending'); document.body.classList.add('auth-signed-out');
-        redirectPanel.hidden=false; resourceShell.style.display='none';
-        setTimeout(function(){ window.location.href='/login.html?next=%2Fapp%2Fpublic%2Fsplits.html'; },1800);
+        currentUser=null; document.body.classList.remove('auth-pending','is-authenticated'); document.body.classList.add('auth-signed-out');
+        redirectPanel.hidden=false; resourceShell.style.display='none'; authActionBtn.hidden=false; authActionBtn.textContent='Sign In'; authActionBtn.onclick=function(){window.location.href='/login.html?next=%2Fapp%2Fpublic%2Fsplits.html';}; profileChip.hidden=true;
       }
       function showAuthenticated(user){
-        currentUser=user; document.body.classList.remove('auth-pending'); document.body.classList.add('is-authenticated');
-        redirectPanel.hidden=true; resourceShell.style.display='block'; signOutBtn.hidden=false; profileChip.hidden=false;
+        currentUser=user; document.body.classList.remove('auth-pending','auth-signed-out'); document.body.classList.add('is-authenticated');
+        redirectPanel.hidden=true; resourceShell.style.display='block'; authActionBtn.hidden=false; authActionBtn.textContent='Sign Out'; authActionBtn.onclick=async function(){authActionBtn.disabled=true;try{await auth.signOut();}finally{authActionBtn.disabled=false;}}; profileChip.hidden=false;
         profileName.textContent=user.displayName||user.email||'Member'; profilePhoto.src='/160.jpg';
         loadResources();
       }
@@ -148,10 +147,8 @@
         }
       }
       document.getElementById('newPropertyBtn').addEventListener('click',function(){propertyFormPanel.hidden=false;propertyFormPanel.scrollIntoView({behavior:'smooth',block:'start'});});
-      document.getElementById('exploreBtn').addEventListener('click',function(){document.getElementById('resourcesPanel').scrollIntoView({behavior:'smooth'});});
       document.getElementById('myResourcesBtn').addEventListener('click',function(){document.getElementById('resourcesPanel').scrollIntoView({behavior:'smooth'});});
       document.getElementById('cancelFormBtn').addEventListener('click',function(){propertyForm.reset();propertyFormPanel.hidden=true;setFormStatus('');});
-      signOutBtn.addEventListener('click',async function(){signOutBtn.disabled=true;try{await auth.signOut();}finally{signOutBtn.disabled=false;}});
       propertyForm.addEventListener('submit',async function(e){
         e.preventDefault(); if(!currentUser||!propertyForm.reportValidity())return;
         saveBtn.disabled=true; setFormStatus('Saving property resource…');
@@ -164,7 +161,7 @@
           if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);
           auth=firebase.auth(); db=firebase.firestore();
           auth.onAuthStateChanged(function(user){ if(user)showAuthenticated(user); else showUnauthenticated(); });
-        }catch(error){console.error(error);document.getElementById('redirectMessage').textContent='We could not verify your Firebase session. Please continue to secure sign-in.';setTimeout(function(){window.location.href='/login.html?next=%2Fapp%2Fpublic%2Fsplits.html';},1200);}
+        }catch(error){console.error(error);document.getElementById('redirectMessage').textContent='We could not verify your Firebase session. Please continue to secure sign-in.';}
       }
       init();
     });

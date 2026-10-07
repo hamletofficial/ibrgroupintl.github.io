@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0B2A6F">
+<title>My Property Resources — Impact in Business Recruitment</title>
+<link rel="stylesheet" href="/resource-centre.css">
+<link rel="stylesheet" href="/index.css">
+<link rel="stylesheet" href="/mobile-compat.css">
+<style>
+:root{--navy:#0B2A6F;--blue:#0284c7;--ink:#092a4b;--muted:#475569;--line:#dbe3ee;--green:#15803d;--red:#b91c1c}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background:linear-gradient(180deg,#f5f9ff 0%,#fff 100%)}
+.page-wrapper{background:#fff;max-width:1920px;min-height:100vh;margin:0 auto;box-shadow:0 0 20px rgba(0,0,0,.1);display:flex;flex-direction:column}
+.resource-shell{display:none;max-width:1180px;width:100%;margin:2rem auto 4rem;padding:0 1rem;flex:1}
+.auth-shell{max-width:760px;margin:3rem auto;padding:2rem;border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,#fff,#f6fbff);text-align:center;box-shadow:0 8px 24px rgba(2,6,23,.08)}
+.auth-shell h1{margin:0 0 .6rem;color:var(--ink)}.auth-shell p{color:var(--muted);line-height:1.55}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem}.topbar-actions{display:flex;align-items:center;gap:.6rem}.profile{display:flex;align-items:center;gap:.65rem;color:#fff}.profile img{width:38px;height:38px;border-radius:50%;object-fit:cover}
+.hero{padding:1.7rem;border-radius:16px;background:linear-gradient(135deg,#0B2A6F 0%,#123d8f 100%);color:#fff;box-shadow:0 10px 26px rgba(11,42,111,.18)}
+.hero h1{margin:0 0 .55rem;font-size:1.65rem}.hero p{margin:0;max-width:850px;line-height:1.55;color:#e7eefc}
+.hero-pills{display:flex;flex-wrap:wrap;gap:.55rem;margin:1rem 0 0;padding:0;list-style:none}.hero-pills li{padding:.4rem .7rem;border:1px solid rgba(255,255,255,.3);border-radius:999px;font-size:.8rem;font-weight:700}
+.panel{border:1px solid var(--line);border-radius:14px;background:#fff;padding:1.4rem;box-shadow:0 6px 20px rgba(2,6,23,.06);margin-top:1rem}
+.panel h2{margin:0 0 .35rem;color:var(--ink);font-size:1.2rem}.panel-intro{margin:0 0 1rem;color:var(--muted)}
+.notice{padding:.9rem 1rem;border-left:4px solid var(--blue);background:#f3f9fd;color:#28506c;border-radius:8px;margin-bottom:1rem;font-size:.88rem;line-height:1.5}
+.resource-list{display:grid;gap:.8rem}.property-card{border:1px solid var(--line);border-radius:12px;padding:1rem;background:#fbfdff}
+.property-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}.property-card h3{margin:0;color:var(--ink);font-size:1rem}
+.badge{display:inline-flex;padding:.3rem .55rem;border-radius:999px;background:#e8f5ec;color:var(--green);font-size:.75rem;font-weight:800}
+.property-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;margin:.8rem 0;color:var(--muted);font-size:.84rem}
+.property-meta strong{display:block;color:#173b5d;font-size:.78rem;margin-bottom:.15rem}.property-description{color:#475569;font-size:.88rem;line-height:1.5;white-space:pre-wrap}
+.card-actions{display:flex;justify-content:flex-end;gap:.6rem;flex-wrap:wrap;margin-top:1rem;padding-top:.85rem;border-top:1px solid #edf1f6}
+.delete-btn{cursor:pointer;border:1px solid #fecaca;border-radius:8px;background:#fff;color:var(--red);font:inherit;font-weight:700;padding:.58rem .85rem}.delete-btn:hover{background:#fff1f2}
+.empty{padding:1rem;border:1px dashed #cbd5e1;border-radius:10px;color:var(--muted)}
+.status{margin:.8rem 0 0;color:var(--muted)}.status.success{color:var(--green)}.status.error{color:var(--red)}
+.resource-footer{border-top:1px solid var(--line);padding:22px 1rem 30px;text-align:center;color:var(--muted);font-size:.82rem}.resource-footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-bottom:8px}.resource-footer a{color:var(--muted);text-decoration:none}.resource-footer a:hover{color:var(--blue);text-decoration:underline}
+@media(max-width:800px){.topbar{align-items:flex-start;flex-direction:column}.topbar-actions{width:100%;flex-wrap:wrap}.property-meta{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.resource-shell{padding:0 .65rem}.hero,.panel{padding:1.1rem}.property-meta{grid-template-columns:1fr}.property-head{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+<header class="resource-nav" role="banner">
+<div class="container container-nav topbar">
+<div class="logo"><span class="site-title" style="color:lightgrey">Premium</span></div>
+<div class="topbar-actions">
+<div class="profile" id="profileChip" hidden><img id="profilePhoto" src="/160.jpg" alt="Profile photo"><span id="profileName"></span></div>
+<a class="btn btn-outline" href="/app/public/splits.html">Back to Resources</a>
+<a class="btn btn-outline" href="/app/public/live.html">Live Listings</a>
+<button class="btn btn-outline" id="authActionBtn" type="button">Sign In</button>
+</div>
+</div>
+</header>
+
+<section class="auth-shell" id="authPanel" hidden>
+<h1>Member sign-in required</h1>
+<p>Your property resources are securely associated with your authenticated member account. Sign in to review and remove resources you no longer want retained.</p>
+<a class="btn btn-primary" href="/login.html?next=%2Fapp%2Fpublic%2Fresources.html">Continue to Sign In</a>
+</section>
+
+<main class="resource-shell" id="resourceShell">
+<section class="hero">
+<h1>My Property Resources</h1>
+<p>Review commercial property resources created from your member account and remove an entry if it was submitted in error or is no longer required. Removing a resource deletes the Firestore record, so it will also disappear from the shared Live Listings feed.</p>
+<ul class="hero-pills"><li>Owner-managed</li><li>Firestore controlled</li><li>Removes from Live Listings</li></ul>
+</section>
+
+<section class="panel">
+<h2>Resource Management</h2>
+<p class="panel-intro">Only resources owned by your authenticated account are displayed here.</p>
+<div class="notice"><strong>Important:</strong> Deletion is permanent. Once a property resource is removed, it will no longer be available through <strong>Live Listings</strong> or your property workspace. Use this page to correct accidental or erroneous submissions.</div>
+<div class="resource-list" id="resourceList"><div class="empty">Loading your property resources…</div></div>
+<p class="status" id="resourceStatus" role="status" aria-live="polite"></p>
+</section>
+</main>
+
+<footer class="resource-footer" role="contentinfo">
+<div class="resource-footer-links"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/cookies.html">Cookies</a></div>
+<div style="margin-bottom:4px">v.03 (Beta)</div>
+<div>&copy; 2026 Impact in Business Recruitment Group Limited. All rights reserved.</div>
+</footer>
+</div>
+
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script defer src="/firebase-config.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+const authPanel=document.getElementById('authPanel'),resourceShell=document.getElementById('resourceShell'),resourceList=document.getElementById('resourceList'),resourceStatus=document.getElementById('resourceStatus'),authActionBtn=document.getElementById('authActionBtn'),profileChip=document.getElementById('profileChip'),profileName=document.getElementById('profileName'),profilePhoto=document.getElementById('profilePhoto');
+let auth=null,db=null,currentUser=null;
+function esc(v){return String(v??'').replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]})}
+function showOut(){currentUser=null;authPanel.hidden=false;resourceShell.style.display='none';authActionBtn.textContent='Sign In';authActionBtn.onclick=function(){location.href='/login.html?next=%2Fapp%2Fpublic%2Fresources.html'};profileChip.hidden=true}
+function showIn(u){currentUser=u;authPanel.hidden=true;resourceShell.style.display='block';authActionBtn.textContent='Sign Out';authActionBtn.onclick=async function(){authActionBtn.disabled=true;try{await auth.signOut()}finally{authActionBtn.disabled=false}};profileChip.hidden=false;profileName.textContent=u.displayName||u.email||'Member';profilePhoto.src='/160.jpg';loadResources()}
+function renderResources(s){
+if(s.empty){resourceList.innerHTML='<div class="empty">You have no commercial property resources to manage.</div>';return}
+resourceList.innerHTML='';
+s.forEach(function(d){
+const p=d.data(),card=document.createElement('article');card.className='property-card';
+card.innerHTML='<div class="property-head"><h3>'+esc(p.propertyName||'Commercial Property')+'</h3><span class="badge">'+esc(p.status||'Active')+'</span></div>'+
+'<div class="property-meta"><div><strong>Type</strong>'+esc(p.propertyType||'—')+'</div><div><strong>Location</strong>'+esc(p.address||'—')+(p.postcode?' · '+esc(p.postcode):'')+'</div><div><strong>Availability</strong>'+esc(p.availability||'—')+'</div><div><strong>Size</strong>'+esc(p.size||'—')+'</div></div>'+
+'<div class="property-description">'+esc(p.description||'No description provided.')+'</div>'+
+(p.askingRent?'<div class="property-description" style="margin-top:.65rem"><strong>Asking rent / lease terms:</strong> '+esc(p.askingRent)+'</div>':'')+
+'<div class="card-actions"><a class="btn btn-outline" href="/app/public/live.html">View Live Listings</a><button class="delete-btn" type="button" data-id="'+esc(d.id)+'">Delete Resource</button></div>';
+resourceList.appendChild(card);
+});
+resourceList.querySelectorAll('.delete-btn').forEach(function(btn){btn.addEventListener('click',function(){deleteResource(btn.dataset.id,btn)})});
+}
+async function loadResources(){
+resourceStatus.textContent='Loading…';resourceStatus.className='status';
+try{
+const s=await db.collection('commercialProperties').where('ownerUid','==',currentUser.uid).get();
+const docs=Array.from(s.docs).sort(function(a,b){const at=a.data().createdAt?.toMillis?.()||0,bt=b.data().createdAt?.toMillis?.()||0;return bt-at});
+renderResources({empty:docs.length===0,forEach:function(fn){docs.forEach(fn)}});
+resourceStatus.textContent=docs.length?docs.length+' resource'+(docs.length===1?'':'s')+' available.':'';
+}catch(e){console.error(e);resourceList.innerHTML='<div class="empty">Your property resources could not be loaded. Please refresh and try again.</div>';resourceStatus.textContent='There was a problem reading your property resources.';resourceStatus.className='status error'}
+}
+async function deleteResource(id,button){
+if(!currentUser)return;
+const card=button.closest('.property-card'),name=card?.querySelector('h3')?.textContent||'this property resource';
+if(!window.confirm('Delete "'+name+'"? This action is permanent and will remove the resource from Firestore and the Live Listings feed.'))return;
+button.disabled=true;resourceStatus.textContent='Deleting resource…';resourceStatus.className='status';
+try{
+const ref=db.collection('commercialProperties').doc(id);
+const snap=await ref.get();
+if(!snap.exists)throw new Error('Resource no longer exists');
+if(snap.data().ownerUid!==currentUser.uid)throw new Error('You are not authorised to delete this resource');
+await ref.delete();
+resourceStatus.textContent='Resource deleted successfully. It has been removed from Firestore and will no longer appear in Live Listings.';resourceStatus.className='status success';
+await loadResources();
+}catch(e){console.error(e);button.disabled=false;resourceStatus.textContent='The resource could not be deleted. Please refresh and try again.';resourceStatus.className='status error'}
+}
+try{if(!window.firebase||!window.firebaseConfig)throw Error('Firebase configuration unavailable');if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);auth=firebase.auth();db=firebase.firestore();auth.onAuthStateChanged(function(u){u?showIn(u):showOut()})}catch(e){console.error(e);showOut()}
+});
+</script>
+</body>
+</html>

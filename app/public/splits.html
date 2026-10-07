@@ -74,7 +74,7 @@
       <section class="dashboard" aria-label="Broker dashboard">
         <article class="dash-card"><div class="dash-icon">🔎</div><h2>Explore Advertised Properties</h2><p>Review commercial opportunities already held in your broker workspace and identify properties that may warrant further engagement.</p><a class="btn btn-outline" href="/app/public/live.html">Explore Properties</a></article>
         <article class="dash-card"><div class="dash-icon">🏢</div><h2>Advertise a New Property</h2><p>Create a structured record for a newly listed commercial property that needs to be leased.</p><button class="btn btn-primary" type="button" id="newPropertyBtn">Advertise New Property</button></article>
-        <article class="dash-card"><div class="dash-icon">📁</div><h2>My Property Resources</h2><p>See the commercial property resources attached to your authenticated Firebase profile and retained for your brokerage workflow.</p><button class="btn btn-outline" type="button" id="myResourcesBtn">View My Resources</button></article>
+        <article class="dash-card"><div class="dash-icon">📁</div><h2>My Property Resources</h2><p>Review and manage the commercial property resources attached to your authenticated Firebase profile, including removing entries submitted in error.</p><a class="btn btn-outline" href="/app/public/resources.html">Manage My Resources</a></article>
       </section>
 
       <section class="panel" id="propertyFormPanel" hidden>
@@ -147,7 +147,7 @@
         }
       }
       document.getElementById('newPropertyBtn').addEventListener('click',function(){propertyFormPanel.hidden=false;propertyFormPanel.scrollIntoView({behavior:'smooth',block:'start'});});
-      document.getElementById('myResourcesBtn').addEventListener('click',function(){document.getElementById('resourcesPanel').scrollIntoView({behavior:'smooth'});});
+      
       document.getElementById('cancelFormBtn').addEventListener('click',function(){propertyForm.reset();propertyFormPanel.hidden=true;setFormStatus('');});
       propertyForm.addEventListener('submit',async function(e){
         e.preventDefault(); if(!currentUser||!propertyForm.reportValidity())return;

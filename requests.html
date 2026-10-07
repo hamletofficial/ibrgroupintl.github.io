@@ -87,6 +87,12 @@
     .status-note.success { color: #047857; }
     .status-note.error { color: #b91c1c; }
     .privacy-note { margin: .9rem 0 0; }
+    .requests-footer { margin: 0 auto; padding: 1rem 1rem 1.5rem; max-width: 900px; text-align: center; color: var(--muted); font-size: .85rem; }
+    .requests-footer .footer-version { margin-bottom: .35rem; }
+    .requests-footer .footer-links { display: flex; justify-content: center; gap: .65rem; flex-wrap: wrap; margin-bottom: .35rem; }
+    .requests-footer a { color: #475569; text-decoration: none; }
+    .requests-footer a:hover, .requests-footer a:focus-visible { text-decoration: underline; }
+    .requests-footer .copyright { margin: 0; }
     @media (max-width: 700px) { .form-grid, .form-footer { grid-template-columns: 1fr; } .field.full { grid-column: auto; } }
   </style>
 </head>
@@ -188,6 +194,17 @@
         </section>
       </div>
     </main>
+    <footer class="requests-footer" role="contentinfo">
+      <div class="footer-version">v1.03</div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="/terms.html">Terms</a>
+        <span aria-hidden="true">|</span>
+        <a href="/cookies.html">Cookies</a>
+        <span aria-hidden="true">|</span>
+        <a href="/privacy.html">Privacy</a>
+      </nav>
+      <p class="copyright">&copy; 2026 Impact in Business Recruitment Group Limited. All rights reserved.</p>
+    </footer>
   </div>
   <script defer src="/header-profile.js"></script>
   <script defer src="/page-transition.js"></script>

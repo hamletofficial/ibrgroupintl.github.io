@@ -15,6 +15,18 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    match /commercialProperties/{propertyId} {
+      allow create: if request.auth != null
+        && request.resource.data.ownerUid == request.auth.uid;
+      allow read: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid;
+      allow update: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid
+        && request.resource.data.ownerUid == request.auth.uid;
+      allow delete: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid;
+    }
+
     match /callbackRequests/{requestId} {
       allow create: if
         request.resource.data.keys().hasAll([

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0B2A6F">
+<title>Live Commercial Property Listings — Impact in Business Recruitment</title>
+<link rel="stylesheet" href="/resource-centre.css"><link rel="stylesheet" href="/index.css"><link rel="stylesheet" href="/mobile-compat.css">
+<style>
+:root{--navy:#0B2A6F;--blue:#0284c7;--ink:#092a4b;--muted:#475569;--line:#dbe3ee;--green:#15803d}
+*{box-sizing:border-box}body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background:linear-gradient(180deg,#f5f9ff 0%,#fff 100%)}
+.page-wrapper{background:#fff;max-width:1920px;min-height:100vh;margin:0 auto;box-shadow:0 0 20px rgba(0,0,0,.1);display:flex;flex-direction:column}
+.auth-shell{max-width:760px;margin:3rem auto;padding:2rem;border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,#fff,#f6fbff);text-align:center;box-shadow:0 8px 24px rgba(2,6,23,.08)}
+.auth-shell h1{margin:0 0 .6rem;color:var(--ink)}.auth-shell p{color:var(--muted);line-height:1.55}
+.resource-shell{display:none;max-width:1180px;width:100%;margin:2rem auto 4rem;padding:0 1rem;flex:1}
+.hero{padding:1.7rem;border-radius:16px;background:linear-gradient(135deg,#0B2A6F 0%,#123d8f 100%);color:#fff;box-shadow:0 10px 26px rgba(11,42,111,.18)}
+.hero h1{margin:0 0 .55rem;font-size:1.65rem}.hero p{margin:0;max-width:850px;line-height:1.55;color:#e7eefc}.hero-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+.panel{border:1px solid var(--line);border-radius:14px;background:#fff;padding:1.4rem;box-shadow:0 6px 20px rgba(2,6,23,.06);margin-top:1rem}
+.panel h2{margin:0 0 .35rem;color:var(--ink);font-size:1.2rem}.panel-intro{margin:0 0 1rem;color:var(--muted)}
+.resource-list{display:grid;gap:.8rem}.property-card{border:1px solid var(--line);border-radius:12px;padding:1rem;background:#fbfdff}
+.property-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}.property-card h3{margin:0;color:var(--ink);font-size:1rem}
+.badge{display:inline-flex;padding:.3rem .55rem;border-radius:999px;background:#e8f5ec;color:var(--green);font-size:.75rem;font-weight:800}
+.property-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;margin:.8rem 0;color:var(--muted);font-size:.84rem}
+.property-meta strong{display:block;color:#173b5d;font-size:.78rem;margin-bottom:.15rem}.property-description{color:#475569;font-size:.88rem;line-height:1.5;white-space:pre-wrap}
+.property-link{display:inline-flex;margin-top:.85rem;color:var(--blue);font-weight:700;text-decoration:none}.property-link:hover{text-decoration:underline}
+.empty{padding:1rem;border:1px dashed #cbd5e1;border-radius:10px;color:var(--muted)}.status{margin:.75rem 0 0;color:var(--muted)}.status.error{color:#b91c1c}
+.resource-footer{border-top:1px solid var(--line);padding:22px 1rem 30px;text-align:center;color:var(--muted);font-size:.82rem}.resource-footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+.resource-footer a{color:var(--muted);text-decoration:none}.resource-footer a:hover{color:var(--blue);text-decoration:underline}
+.profile{display:flex;align-items:center;gap:.65rem;color:#fff}.profile img{width:38px;height:38px;border-radius:50%;object-fit:cover}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem}.topbar-actions{display:flex;align-items:center;gap:.6rem}
+@media(max-width:800px){.property-meta{grid-template-columns:1fr 1fr}.topbar{align-items:flex-start;flex-direction:column}.topbar-actions{width:100%}}
+@media(max-width:520px){.resource-shell{padding:0 .65rem}.hero,.panel{padding:1.1rem}.property-meta{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="auth-pending">
+<div class="page-wrapper">
+<header class="resource-nav" role="banner"><div class="container container-nav topbar">
+<div class="logo"><span class="site-title" style="color:lightgrey">Premium</span></div>
+<div class="topbar-actions"><div class="profile" id="profileChip" hidden><img id="profilePhoto" src="/100.png" alt="Profile photo"><span id="profileName"></span></div>
+<a class="btn btn-outline" href="/app/public/splits.html">Back to Resources</a><button class="btn btn-outline" id="signOutBtn" type="button" hidden>Sign Out</button></div>
+</div></header>
+<section class="auth-shell" id="authPanel" aria-live="polite"><h1>Member sign-in required</h1><p>This live commercial property listing service is available to authenticated members. Please sign in to view current listings.</p><a class="btn btn-primary" href="/login.html?next=%2Fapp%2Fpublic%2Flive.html">Continue to Sign In</a></section>
+<main class="resource-shell" id="resourceShell">
+<section class="hero"><h1>Live Commercial Property Listings</h1><p>Explore commercial properties proposed by authenticated members across the broker community. Listings are drawn from the shared commercial property resource and are available to signed-in members.</p><div class="hero-actions"><a class="btn btn-primary" href="/app/public/splits.html">Advertise a New Property</a></div></section>
+<section class="panel"><h2>Current Listings</h2><p class="panel-intro">All active property resources submitted by authenticated members are shown below.</p><div class="resource-list" id="listingList"><div class="empty">Loading live listings…</div></div><p class="status" id="listingStatus" role="status" aria-live="polite"></p></section>
+</main>
+<footer class="resource-footer" role="contentinfo"><div class="resource-footer-links"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/cookies.html">Cookies</a></div><div style="margin-bottom:4px">v.03 (Beta)</div><div>&copy; 2026 Impact in Business Recruitment Group Limited. All rights reserved.</div></footer>
+</div>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script><script defer src="/firebase-config.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+const authPanel=document.getElementById('authPanel'),resourceShell=document.getElementById('resourceShell'),listingList=document.getElementById('listingList'),listingStatus=document.getElementById('listingStatus'),signOutBtn=document.getElementById('signOutBtn'),profileChip=document.getElementById('profileChip'),profileName=document.getElementById('profileName'),profilePhoto=document.getElementById('profilePhoto');let auth=null,db=null;
+function esc(v){return String(v??'').replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]})}
+function renderListings(s){if(s.empty){listingList.innerHTML='<div class="empty">There are currently no commercial property listings available.</div>';return}listingList.innerHTML='';s.forEach(function(d){const p=d.data(),c=document.createElement('article');c.className='property-card';const u=p.propertyUrl&&/^https?:\/\//i.test(p.propertyUrl)?p.propertyUrl:'';c.innerHTML='<div class="property-head"><h3>'+esc(p.propertyName||'Commercial Property')+'</h3><span class="badge">'+esc(p.status||'Active')+'</span></div><div class="property-meta"><div><strong>Type</strong>'+esc(p.propertyType||'—')+'</div><div><strong>Location</strong>'+esc(p.address||'—')+(p.postcode?' · '+esc(p.postcode):'')+'</div><div><strong>Availability</strong>'+esc(p.availability||'—')+'</div><div><strong>Size</strong>'+esc(p.size||'—')+'</div></div><div class="property-description">'+esc(p.description||'No description provided.')+'</div>'+(p.askingRent?'<div class="property-description" style="margin-top:.65rem"><strong>Asking rent / lease terms:</strong> '+esc(p.askingRent)+'</div>':'')+(p.contactName||p.contactEmail?'<div class="property-description" style="margin-top:.65rem"><strong>Broker contact:</strong> '+esc(p.contactName||'')+(p.contactEmail?' · '+esc(p.contactEmail):'')+'</div>':'')+(u?'<a class="property-link" href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">View external listing ↗</a>':'');listingList.appendChild(c)})}
+function showOut(){authPanel.hidden=false;resourceShell.style.display='none';setTimeout(function(){location.href='/login.html?next=%2Fapp%2Fpublic%2Flive.html'},1800)}
+function showIn(u){authPanel.hidden=true;resourceShell.style.display='block';signOutBtn.hidden=false;profileChip.hidden=false;profileName.textContent=u.displayName||u.email||'Member';profilePhoto.src='/160.jpg';loadListings()}
+async function loadListings(){try{const s=await db.collection('commercialProperties').where('status','==','Active').orderBy('createdAt','desc').get();renderListings(s)}catch(e){console.error(e);try{const s=await db.collection('commercialProperties').where('status','==','Active').get();renderListings(s);listingStatus.textContent='Listings loaded without date ordering.'}catch(e2){console.error(e2);listingList.innerHTML='<div class="empty">Live listings could not be loaded. Please refresh and try again.</div>';listingStatus.textContent='There was a problem reading the shared property listings.';listingStatus.className='status error'}}}
+signOutBtn.addEventListener('click',async function(){signOutBtn.disabled=true;try{await auth.signOut()}finally{signOutBtn.disabled=false}});
+try{if(!window.firebase||!window.firebaseConfig)throw Error('Firebase configuration unavailable');if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);auth=firebase.auth();db=firebase.firestore();auth.onAuthStateChanged(function(u){u?showIn(u):showOut()})}catch(e){console.error(e);showOut()}
+});
+</script>
+</body></html>

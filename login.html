@@ -322,7 +322,16 @@
         align-items: flex-start;
         padding: max(16px, env(safe-area-inset-top, 0px)) 12px 20px;
       }
-      .card {
+      /* Keep the provider column directly on the logistics background; no translucent card/panel treatment. */
+    body.login-page .card {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+    }
+
+    .card {
         width: 280px;
         max-width: 280px;
         padding: 0;

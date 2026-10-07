@@ -6,8 +6,11 @@
     '/members.html',
     '/messages.html',
     '/insights.html',
-    '/uploads.html',
+    '/requests.html',
     '/settings.html',
+    '/directory.html',
+    '/invoice.html',
+    '/contact.html',
     '/compose.html',
     '/accounts.html',
     '/profile.html'
@@ -18,14 +21,17 @@
     '/members.html': 'Members Area',
     '/messages.html': 'Messages Inbox',
     '/insights.html': 'Insights Archive',
-    '/uploads.html': 'Resume Uploads',
+    '/requests.html': 'Media Relations',
     '/settings.html': 'Account Settings',
+    '/directory.html': 'Member Directory',
+    '/invoice.html': 'Payments',
+    '/contact.html': 'Contact Sales',
     '/compose.html': 'Compose Message',
     '/accounts.html': 'Accounts Admin',
     '/profile.html': 'Profile Page'
   };
 
-  const PREFETCH_PATHS = ['/messages.html', '/insights.html', '/uploads.html', '/settings.html', '/accounts.html', '/profile.html'];
+  const PREFETCH_PATHS = ['/messages.html', '/insights.html', '/requests.html', '/settings.html', '/directory.html', '/invoice.html', '/contact.html', '/uploads.html', '/accounts.html', '/profile.html'];
   const MIN_LOADER_MS = 240;
   let overlayEl = null;
   let prefetchDone = false;

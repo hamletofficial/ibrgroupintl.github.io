@@ -126,7 +126,7 @@
             <div style="font-weight:700;color:#0f2f4f;">Two-factor authentication</div>
             <div id="mfaStatus" class="status-note" style="margin-top:.25rem;">Checking your security settings…</div>
           </div>
-          <button class="btn btn-outline" id="mfaSetupBtn" type="button" disabled>Set Up 2FA</button>
+          <button class="btn btn-outline" id="mfaSetupBtn" type="button">Set Up 2FA</button>
         </div>
         <div id="mfaPanel" class="mfa-panel" hidden>
           <div id="mfaStep1">
@@ -273,7 +273,7 @@
             ? 'Authenticator-app 2FA is enabled on this account.'
             : '2FA is not enabled. Add an authenticator app as your second factor.';
           if (mfaSetupBtn) {
-            mfaSetupBtn.disabled = !totpApi;
+            mfaSetupBtn.disabled = false;
             mfaSetupBtn.textContent = hasTotp ? 'Manage 2FA' : 'Set Up 2FA';
           }
         } catch (error) {
@@ -294,11 +294,20 @@
           // The modular TOTP bridge is initialized before this button is enabled.
           // Keeping the resolved API reference here avoids a race with the module
           // import and preserves the browser user gesture for any required re-auth popup.
-          const totp = totpApi;
+          let totp = totpApi;
+          if (!totp) {
+            try {
+              totp = await totpReady;
+              totpApi = totp;
+              totpReadyError = null;
+            } catch (moduleError) {
+              console.error('TOTP security module is unavailable:', moduleError);
+              mfaMessage.textContent = 'The 2FA security module could not be loaded. Please refresh the page and try again.';
+              return;
+            }
+          }
           if (!totp || !totp.TotpMultiFactorGenerator) {
-            mfaMessage.textContent = totpReadyError
-              ? 'The TOTP security module could not be initialized. Please reload the page and try again.'
-              : 'The TOTP security module is still initializing. Please wait a moment and try again.';
+            mfaMessage.textContent = 'The 2FA security module is unavailable. Please refresh the page and try again.';
             return;
           }
           const modularUser = totp.auth.currentUser;

@@ -13,7 +13,10 @@
     '/contact.html',
     '/compose.html',
     '/accounts.html',
-    '/profile.html'
+    '/profile.html',
+    '/app/public/live.html',
+    '/app/public/resources.html',
+    '/app/public/splits.html'
   ]);
 
   const PAGE_LABELS = {
@@ -28,10 +31,13 @@
     '/contact.html': 'Contact Sales',
     '/compose.html': 'Compose Message',
     '/accounts.html': 'Accounts Admin',
-    '/profile.html': 'Profile Page'
+    '/profile.html': 'Profile Page',
+    '/app/public/live.html': 'Live Listings',
+    '/app/public/resources.html': 'My Property Resources',
+    '/app/public/splits.html': 'Advertise a New Property'
   };
 
-  const PREFETCH_PATHS = ['/messages.html', '/insights.html', '/requests.html', '/settings.html', '/directory.html', '/invoice.html', '/contact.html', '/uploads.html', '/accounts.html', '/profile.html'];
+  const PREFETCH_PATHS = ['/messages.html', '/insights.html', '/requests.html', '/settings.html', '/directory.html', '/invoice.html', '/contact.html', '/uploads.html', '/accounts.html', '/profile.html', '/app/public/live.html', '/app/public/resources.html', '/app/public/splits.html'];
   const MIN_LOADER_MS = 240;
   let overlayEl = null;
   let prefetchDone = false;

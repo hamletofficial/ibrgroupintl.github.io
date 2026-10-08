@@ -136,38 +136,13 @@
     .note{font-size:0.84rem;color:var(--rc-text-dim, var(--muted));text-align:center;line-height:1.5;margin-top:16px}
     #error{color:#b00020;font-size:0.92rem;display:none;margin:8px 0 12px;padding:10px 12px;background:rgba(176,0,32,0.08);border:1px solid rgba(176,0,32,0.2);border-radius:8px}
     .login-page .container{display:flex;flex-direction:column;align-items:center;justify-content:center}
+    @media (max-width: 720px) {
       .login-page footer .container {
         width: 100%;
         max-width: 100%;
         padding-left: 12px;
         padding-right: 12px;
         box-sizing: border-box;
-      }
-      .login-page #cookieConsentBar,
-      .login-page .cookie-bar {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: min(100%, 760px);
-        max-width: 760px;
-        flex: 0 0 auto;
-      }
-      .login-page #cookieConsentBar > div:first-child {
-        flex: 0 0 auto;
-        width: 100%;
-        margin-bottom: 8px;
-      }
-    }
-    @media (max-width: 420px) {
-      .login-page .cookie-actions {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-      .login-page #cookieConsentBar button,
-      .login-page .cookie-actions .btn-small {
-        width: 100%;
-        min-width: 0;
       }
     }
     /* Mobile optimisation: keep the login card, controls and legal links comfortable on narrow screens. */

@@ -95,7 +95,7 @@ window.addEventListener('load',function(){
  const auth=firebase.auth(),db=firebase.firestore(),status=document.getElementById('mailStatus'),layout=document.getElementById('mailLayout'),loginCard=document.getElementById('loginCard'),list=document.getElementById('conversationList'),body=document.getElementById('threadBody'),title=document.getElementById('threadTitle'),compose=document.getElementById('composeForm'),input=document.getElementById('messageInput'),pinnedStrip=document.getElementById('pinnedStrip'),pinnedList=document.getElementById('pinnedList'),signOut=document.getElementById('signOutBtn'),signIn=document.getElementById('signInLink');
  let me=null,allMessages=[],profiles={},publicMembers=[],sendingMessage=false,activeUid=new URLSearchParams(location.search).get('to')||null;
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const nameOf=p=>((p?.firstName||'')+' '+(p?.lastName||'')).trim()||p?.email||'Member';
+ const nameOf=p=>{const first=(p?.firstName||'').trim(),last=(p?.lastName||'').trim();return last?(first?last+', '+first:last):(first||p?.email||'Member')};
  const convoKey=(a,b)=>[a,b].sort().join('__'); const recipientSelect=document.getElementById('memberRecipient'),startMessageBtn=document.getElementById('startMessageBtn'),messageStarter=document.getElementById('messageStarter');
  const profileImage=p=>p?.imageDataUrl||'/100.png';
  function updateSidebar(){const n=document.getElementById('topNavMenu');n.style.display=document.body.classList.contains('has-sidebar')?'block':'none'} document.addEventListener('DOMContentLoaded',updateSidebar);new MutationObserver(updateSidebar).observe(document.body,{attributes:true,attributeFilter:['class']});

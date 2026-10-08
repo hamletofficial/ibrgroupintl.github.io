@@ -95,6 +95,11 @@
     .requests-footer .copyright { margin: 0; }
     @media (max-width: 700px) { .form-grid, .form-footer { grid-template-columns: 1fr; } .field.full { grid-column: auto; } }
   </style>
+
+    <style>
+      .mail-header-icon { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:9px; text-decoration:none; font-size:1.15rem; transition:background-color .2s ease, transform .2s ease; }
+      .mail-header-icon:hover, .mail-header-icon:focus-visible { background:rgba(255,255,255,.14); transform:translateY(-1px); }
+    </style>
 </head>
 <body class="requests-page auth-pending">
   <div class="page-wrapper">
@@ -108,6 +113,7 @@
             <img class="auth-profile-photo" data-auth-photo id="profilePhoto" src="/100.png" alt="Profile photo">
             <span class="auth-profile-name" data-auth-name id="profileName"></span>
           </div>
+          <a class="mail-header-icon" href="/messages.html" aria-label="Open Mailbox" title="Mailbox">✉️</a>
           <button class="btn btn-outline nav-login" id="authToggleBtn" type="button" disabled aria-label="Checking sign-in status">Checking…</button>
           <a class="btn btn-outline" href="/index">Back to Home</a>
         </div>

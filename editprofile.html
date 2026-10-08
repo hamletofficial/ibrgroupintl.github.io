@@ -331,6 +331,7 @@
           lastName,
           bio,
           email: currentUser.email || '',
+          emailVerified: currentUser.emailVerified === true,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
           isPublic: true
         };

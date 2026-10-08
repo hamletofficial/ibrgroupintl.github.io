@@ -28,6 +28,7 @@
     .profile-card .name { font-weight: 700; color: #0284c7; font-size: 1.18rem; margin-bottom: 0.25rem; text-align: center; text-decoration: none; letter-spacing: -0.5px; display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; }
     .email-verified-tick { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:#2563eb; color:#fff; font-size:11px; font-weight:800; line-height:1; box-shadow:0 1px 3px rgba(37,99,235,.25); }
     .onfido-verified-tag { display:inline-flex; align-items:center; justify-content:center; margin:0 0 .65rem; padding:4px 9px; border-radius:999px; background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; font-size:.76rem; font-weight:800; letter-spacing:.01em; }
+    .onfido-unverified-tag { display:inline-flex; align-items:center; justify-content:center; margin:0 0 .65rem; padding:4px 9px; border-radius:999px; background:transparent; color:#64748b; border:1px solid #94a3b8; font-size:.76rem; font-weight:800; letter-spacing:.01em; }
     .profile-card .bio { color: #475569; font-size: 1.01rem; margin-bottom: 0.7rem; text-align: center; min-height: 2.5em; max-width: 90%; line-height: 1.5; }
     .online-status { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 0.7rem; color: #16a34a; font-size: 0.9rem; font-weight: 700; }
     .message-member-btn{display:inline-flex;align-items:center;justify-content:center;margin-top:auto;width:42px;height:42px;border:1px solid #0284c7;border-radius:10px;background:#fff;color:#0284c7;text-decoration:none;font-size:1.15rem;transition:background-color .2s,color .2s,transform .2s}.message-member-btn:hover,.message-member-btn:focus-visible{background:#0284c7;color:#fff;transform:translateY(-1px)}
@@ -209,9 +210,12 @@
             const name = (data.firstName || '') + ' ' + (data.lastName || '');
             const emailVerified = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.email || '').trim());
             const onfidoVerified = data.onfidoVerified === true;
+            const onfidoUnverified = data.onfidoVerified === false;
             const safeName = name || data.email || 'Member';
             const nameMarkup = `${safeName}${emailVerified ? ' <span class="email-verified-tick" title="Email verified" aria-label="Email verified">✓</span>' : ''}`;
-            const verifiedMarkup = onfidoVerified ? '<div class="onfido-verified-tag" aria-label="Identity verified">Verified</div>' : '';
+            const verifiedMarkup = onfidoVerified
+              ? '<div class="onfido-verified-tag" aria-label="Identity verified">Verified</div>'
+              : (onfidoUnverified ? '<div class="onfido-unverified-tag" aria-label="Identity not verified">Unverified</div>' : '');
             let bio = data.bio || '';
             bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
             const card = document.createElement('div');
@@ -236,8 +240,9 @@
               : '';
 
             card.innerHTML = `
-              <img src="${img}" alt="${name} profile photo">
-              <div class="name">${name}</div>
+              <img src="${img}" alt="${safeName} profile photo">
+              <div class="name">${nameMarkup}</div>
+              ${verifiedMarkup}
               ${onlineMarkup}
               <div class="bio">${bio}</div>
             `;

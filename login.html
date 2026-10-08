@@ -4,16 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Secure Login</title>
-  <script>
-    (function () {
-      var cookiePrefix = 'ibr_cookie_consent_v1=';
-      var hasConsent = document.cookie.split(';').some(function (cookie) {
-        cookie = cookie.trim();
-        return cookie.indexOf(cookiePrefix) === 0 && cookie.length > cookiePrefix.length;
-      });
-      if (hasConsent) document.documentElement.classList.add('has-cookie-consent');
-    })();
-  </script>
   <link rel="stylesheet" href="/index.css">
   <link rel="stylesheet" href="/mobile-compat.css">
   <link rel="stylesheet" href="/login-mobile.css">
@@ -749,18 +739,6 @@
   </main>
   <footer class="resource-footer" role="contentinfo">
     <div class="container">
-      <div id="cookieConsentBar" class="cookie-bar" role="region" aria-label="Cookie consent">
-        <div>
-          This website uses cookies to improve your experience.
-          <a href="/cookies.html">Cookie Policy</a>
-          <span aria-hidden="true">|</span>
-          <a href="/privacy.html">Privacy Policy</a>
-        </div>
-        <div class="cookie-actions">
-          <button id="cookieDeclineBtn" class="btn-small" type="button">Decline</button>
-          <button id="cookieAcceptBtn" class="btn-small accept" type="button">Accept</button>
-        </div>
-      </div>
       <div class="footer-links footer-social">
         <span aria-label="Version" style="font-weight:400;font-size:9pt">v0.3 (Beta)</span>
       </div>
@@ -772,40 +750,6 @@
       <p style="margin:0; text-align:center; color:#4b5563; font-size:9pt">© 2026 Impact in Business Recruitment Group Limited. All rights reserved.</p>
     </div>
   </footer>
-
-  <script>
-    (function () {
-      var cookieName = 'ibr_cookie_consent_v1';
-      function getCookie(name) {
-        var prefix = name + '=';
-        var item = document.cookie.split(';').map(function (part) { return part.trim(); }).find(function (part) {
-          return part.indexOf(prefix) === 0;
-        });
-        return item ? decodeURIComponent(item.slice(prefix.length)) : null;
-      }
-      function setCookie(name, value, days) {
-        var expires = new Date();
-        expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-        document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + expires.toUTCString() + ';path=/;SameSite=Lax';
-      }
-      var bar = document.getElementById('cookieConsentBar');
-      if (!bar) return;
-      if (getCookie(cookieName)) {
-        bar.style.display = 'none';
-        return;
-      }
-      var acceptBtn = document.getElementById('cookieAcceptBtn');
-      var declineBtn = document.getElementById('cookieDeclineBtn');
-      if (acceptBtn) acceptBtn.addEventListener('click', function () {
-        setCookie(cookieName, 'accepted', 365);
-        bar.style.display = 'none';
-      });
-      if (declineBtn) declineBtn.addEventListener('click', function () {
-        setCookie(cookieName, 'declined', 365);
-        bar.style.display = 'none';
-      });
-    })();
-  </script>
 
   <script>
     (function () {

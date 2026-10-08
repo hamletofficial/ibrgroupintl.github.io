@@ -13,6 +13,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    #page-loader{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#fff;transition:opacity .25s ease,visibility .25s ease}
+    #page-loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    .page-loader-spinner{width:34px;height:34px;border:3px solid #e5e7eb;border-top-color:#111827;border-radius:50%;animation:pageLoaderSpin .75s linear infinite}
+    @keyframes pageLoaderSpin{to{transform:rotate(360deg)}}
+  </style>
+  <style>
     :root{--verify-bg:#fff;--verify-line:#d9dee7;--verify-text:#111827;--verify-muted:#4b5563;--verify-brand:#111827;--verify-brand-2:#374151;--verify-success:#15803d}
     html,body{margin:0;min-height:100%;background:#fff!important}
     body.verify-page{min-height:100vh;min-height:100dvh;margin:0;color:var(--verify-text);background:#fff!important;font-family:'DM Sans',Arial,sans-serif}
@@ -44,6 +50,7 @@
   </style>
 </head>
 <body class="verify-page">
+  <div id="page-loader" aria-label="Loading" role="status"><div class="page-loader-spinner"></div></div>
   <main class="verify-shell">
     <header class="verify-header">
       <span class="verify-kicker">Secure identity verification</span>
@@ -63,6 +70,9 @@
       </div>
     </section>
   </main>
+  <script>
+    window.addEventListener("load",function(){setTimeout(function(){const loader=document.getElementById("page-loader");if(loader)loader.classList.add("hidden")},150)});
+  </script>
   <script type="module">
     import { Onfido } from "https://cdn.jsdelivr.net/npm/onfido-sdk-ui@14.85.0/+esm";
     const mount=document.getElementById("onfido-mount"),status=document.getElementById("verify-status"),retry=document.getElementById("retry-verification");let onfidoInstance=null;

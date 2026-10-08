@@ -115,6 +115,10 @@
           <div class="settings-value" id="settingsUserId">-</div>
         </div>
         <div class="settings-row">
+          <div class="settings-label">Date Joined</div>
+          <div class="settings-value" id="settingsDateJoined">-</div>
+        </div>
+        <div class="settings-row">
           <div class="settings-label">Last Login</div>
           <div class="settings-value" id="settingsLastLogin">-</div>
         </div>
@@ -187,6 +191,7 @@
       const settingsUserName = document.getElementById('settingsUserName');
       const settingsUserEmail = document.getElementById('settingsUserEmail');
       const settingsUserId = document.getElementById('settingsUserId');
+      const settingsDateJoined = document.getElementById('settingsDateJoined');
       const settingsLastLogin = document.getElementById('settingsLastLogin');
       const deleteAccountBtn = document.getElementById('deleteAccountBtn');
       const incognitoBtn = document.getElementById('incognitoBtn');
@@ -223,6 +228,9 @@
         settingsUserName.textContent = user.displayName || 'Not set';
         settingsUserEmail.textContent = user.email || 'Not available';
         settingsUserId.textContent = user.uid || '-';
+        settingsDateJoined.textContent = user.metadata && user.metadata.creationTime
+          ? new Date(user.metadata.creationTime).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
+          : 'Not available';
         settingsLastLogin.textContent = user.metadata && user.metadata.lastSignInTime ? new Date(user.metadata.lastSignInTime).toLocaleString() : '-';
         updateMfaUi(user);
 

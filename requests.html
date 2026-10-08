@@ -55,7 +55,7 @@
         backdrop-filter: none !important;
       }
     }
-    .auth-loading, .auth-error { max-width: 760px; margin: 2rem auto; padding: 1.25rem; color: var(--muted); text-align: center; }
+    .auth-loading, .auth-error { max-width: 760px; margin: .65rem auto; padding: .55rem 1rem; color: var(--muted); text-align: center; }\n    .auth-loading { min-height: 1.8rem; font-size: .86rem; }
     .auth-error { border: 1px solid #dbe3ee; border-radius: 16px; background: #fff; }
     .panel { background: #fff; border: 1px solid #dbe3ee; border-radius: 12px; box-shadow: 0 6px 20px rgba(2, 6, 23, .06); padding: 1.5rem; margin-bottom: 1rem; }
     .panel h1, .panel h2, .auth-shell h1, .auth-error h1 { margin: 0 0 .5rem; color: #092a4b; font-size: 1.3rem; font-weight: 700; }
@@ -101,7 +101,7 @@
       .mail-header-icon:hover, .mail-header-icon:focus-visible { background:rgba(255,255,255,.14); transform:translateY(-1px); }
     </style>
 </head>
-<body class="requests-page auth-pending">
+<body class="requests-page">
   <div class="page-wrapper">
     <header class="resource-nav" role="banner">
       <div class="container container-nav">
@@ -140,7 +140,7 @@
       document.addEventListener('DOMContentLoaded', updateSidebarVisibility);
       new MutationObserver(updateSidebarVisibility).observe(document.body, { attributes: true, attributeFilter: ['class'] });
     </script>
-    <p class="auth-loading" id="authLoading" role="status">Checking your sign-in status…</p>
+    <p class="auth-loading" id="authLoading" role="status">Preparing your secure workspace…</p>
     <section class="auth-shell" id="loginSection" aria-labelledby="loginTitle" hidden>
       <h1 id="loginTitle">Sign in to Submit a Media Brief</h1>
       <p class="muted">Strategic announcements stay with signed-in members. Sign in, then send the narrative, timing, and spokesperson details.</p>

@@ -207,7 +207,7 @@
             const data = doc.data() || {};
             const img = data.imageDataUrl || DEFAULT_PUBLIC_IMAGE;
             const name = (data.firstName || '') + ' ' + (data.lastName || '');
-            const emailVerified = data.emailVerified === true;
+            const emailVerified = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.email || '').trim());
             const onfidoVerified = data.onfidoVerified === true;
             const safeName = name || data.email || 'Member';
             const nameMarkup = `${safeName}${emailVerified ? ' <span class="email-verified-tick" title="Email verified" aria-label="Email verified">✓</span>' : ''}`;

@@ -110,6 +110,7 @@
             <span class="auth-profile-name" data-auth-name></span>
           </div>
           <a class="btn btn-outline nav-login" href="/login.html" id="signInLink">Sign In</a>
+          <a href="/messages.html" aria-label="Open Mailbox" title="Mailbox" id="mailboxLink" style="display:none;text-decoration:none;font-size:1.2rem;line-height:1">✉️</a>
           <button class="btn btn-outline" id="signOutBtn" style="display:none">Sign Out</button>
         </div>
       </div>
@@ -190,12 +191,14 @@
       const directoryAuthPrompt = document.getElementById('directoryAuthPrompt');
       const signOutBtn = document.getElementById('signOutBtn');
       const signInLink = document.getElementById('signInLink');
+      const mailboxLink = document.getElementById('mailboxLink');
       function showSignedOut() {
         directoryStatus.textContent = '';
         directoryStatus.style.display = 'none';
         directoryAuthPrompt.style.display = 'block';
         directoryGrid.style.display = 'none';
         signOutBtn.style.display = 'none';
+        if (mailboxLink) mailboxLink.style.display = 'none';
         signInLink.style.display = 'inline-flex';
         document.body.classList.remove('auth-pending','has-sidebar');
       }
@@ -205,6 +208,7 @@
         directoryAuthPrompt.style.display = 'none';
         directoryGrid.style.display = 'grid';
         signOutBtn.style.display = 'inline-flex';
+        if (mailboxLink) mailboxLink.style.display = 'inline-flex';
         signInLink.style.display = 'none';
         document.body.classList.remove('auth-pending');
         document.body.classList.add('has-sidebar');

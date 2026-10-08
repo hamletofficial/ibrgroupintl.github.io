@@ -43,6 +43,11 @@
       body.has-sidebar #protected-content { margin-left:0; }
     }
   </style>
+
+    <style>
+      .mail-header-icon { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:9px; text-decoration:none; font-size:1.15rem; transition:background-color .2s ease, transform .2s ease; }
+      .mail-header-icon:hover, .mail-header-icon:focus-visible { background:rgba(255,255,255,.14); transform:translateY(-1px); }
+    </style>
 </head>
 <body class="auth-pending">
   <div class="page-wrapper">
@@ -56,6 +61,7 @@
             <img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo">
             <span class="auth-profile-name" data-auth-name></span>
           </div>
+          <a class="mail-header-icon" href="/messages.html" aria-label="Open Mailbox" title="Mailbox">✉️</a>
           <a class="btn btn-outline nav-login" href="/login.html" id="signInLink">Sign In</a>
           <button class="btn btn-outline" id="signOutBtn" style="display:none">Sign Out</button>
         </div>

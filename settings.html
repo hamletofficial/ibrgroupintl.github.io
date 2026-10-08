@@ -201,6 +201,11 @@
       const mfaCancelBtn = document.getElementById('mfaCancelBtn');
       const mfaMessage = document.getElementById('mfaMessage');
       let pendingTotpSecret = null;
+      let totpApi = null;
+      let totpReadyError = null;
+      const totpReady = window.ibrTotp && window.ibrTotp.ready
+        ? window.ibrTotp.ready
+        : Promise.reject(new Error('TOTP security module is unavailable.'));
       function showSignedOut() {
         loginSection.style.display = 'block';
         settingsShell.style.display = 'none';
@@ -268,7 +273,7 @@
             ? 'Authenticator-app 2FA is enabled on this account.'
             : '2FA is not enabled. Add an authenticator app as your second factor.';
           if (mfaSetupBtn) {
-            mfaSetupBtn.disabled = false;
+            mfaSetupBtn.disabled = !totpApi;
             mfaSetupBtn.textContent = hasTotp ? 'Manage 2FA' : 'Set Up 2FA';
           }
         } catch (error) {
@@ -286,12 +291,14 @@
             mfaMessage.textContent = 'Please verify your email address before enabling 2FA.';
             return;
           }
-          // The modular Auth bridge is loaded with the page. Do not await its
-          // promise before opening the OAuth window: doing so can consume the
-          // browser user-gesture and cause the popup to be blocked.
-          const totp = window.ibrTotp && window.ibrTotp.api;
+          // The modular TOTP bridge is initialized before this button is enabled.
+          // Keeping the resolved API reference here avoids a race with the module
+          // import and preserves the browser user gesture for any required re-auth popup.
+          const totp = totpApi;
           if (!totp || !totp.TotpMultiFactorGenerator) {
-            mfaMessage.textContent = 'The TOTP security module is still loading. Please refresh the page and try again.';
+            mfaMessage.textContent = totpReadyError
+              ? 'The TOTP security module could not be initialized. Please reload the page and try again.'
+              : 'The TOTP security module is still initializing. Please wait a moment and try again.';
             return;
           }
           const modularUser = totp.auth.currentUser;
@@ -395,6 +402,19 @@
           mfaVerifyBtn.disabled = false;
         }
       }
+      totpReady.then(function (api) {
+        totpApi = api;
+        totpReadyError = null;
+        if (auth.currentUser) updateMfaUi(auth.currentUser);
+      }).catch(function (error) {
+        totpReadyError = error;
+        console.error('Unable to initialize TOTP security module:', error);
+        if (mfaStatus && auth.currentUser) {
+          mfaStatus.textContent = '2FA status is available, but the security management module could not be initialized. Please reload the page.';
+        }
+        if (mfaSetupBtn) mfaSetupBtn.disabled = true;
+      });
+
       mfaSetupBtn.addEventListener('click', beginTotpEnrollment);
       mfaVerifyBtn.addEventListener('click', verifyTotpEnrollment);
       mfaCancelBtn.addEventListener('click', function () {

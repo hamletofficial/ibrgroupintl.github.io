@@ -1,8 +1,4 @@
 User-agent: *
-Disallow: /settings.html
-Disallow: /accounts.html
-Disallow: /profile.html
-Disallow: /checkout.html
-Disallow: /app/public/*.html
+Disallow: /*.html$
 
 Sitemap: https://premium.ibrecruitment.com/sitemap.xml

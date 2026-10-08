@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#0284c7">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex, follow">
+  <title>Mailbox — Impact in Business Recruitment</title>
+  <link rel="stylesheet" href="/resource-centre.css">
+  <link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/mobile-compat.css">
+  <link rel="stylesheet" href="/page-transition.css">
+  <style>
+    :root{--muted:#475569;--blue:#0284c7;--navy:#092a4b}
+    *{box-sizing:border-box} body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background:linear-gradient(180deg,#f5f9ff 0%,#fff 100%)}
+    .page-wrapper{background:#fff;max-width:1920px;min-height:100vh;margin:0 auto;box-shadow:0 0 20px rgba(0,0,0,.1)}
+    .mail-shell{max-width:1100px;margin:2rem auto 3rem;padding:0 1rem}
+    .mail-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+    .mail-title{margin:0;color:var(--navy);font-size:2rem}.mail-layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:1rem}
+    .panel-box{background:#fff;border:1px solid #dbe3ee;border-radius:14px;box-shadow:0 8px 24px rgba(2,6,23,.07);overflow:hidden}
+    .conversation-list{max-height:650px;overflow:auto}.conversation-item{display:flex;gap:.75rem;align-items:center;width:100%;padding:.9rem 1rem;border:0;border-bottom:1px solid #e8eef5;background:#fff;text-align:left;cursor:pointer}
+    .conversation-item:hover,.conversation-item.active{background:#f5f9ff}.conversation-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#f1f5f9;flex:0 0 auto}.conversation-name{font-weight:700;color:var(--navy)}.conversation-preview{font-size:.82rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+    .thread{display:flex;flex-direction:column;min-height:650px}.thread-head{padding:1rem 1.1rem;border-bottom:1px solid #dbe3ee;font-weight:800;color:var(--navy);display:flex;align-items:center;justify-content:space-between;gap:.75rem}.thread-body{padding:1rem;flex:1;overflow:auto;display:flex;flex-direction:column;gap:.65rem;background:#f8fafc}
+    .message{max-width:78%;padding:.75rem .9rem;border-radius:14px;border:1px solid #dbe3ee;background:#fff;box-shadow:0 2px 8px rgba(2,6,23,.04);position:relative}.message.outgoing{align-self:flex-end;background:#eaf6ff;border-color:#b9dff5}.message.incoming{align-self:flex-start}.message.pinned{box-shadow:0 0 0 2px rgba(2,132,199,.16)}.message-meta{font-size:.72rem;color:#64748b;margin-top:.4rem;display:flex;align-items:center;gap:.5rem}.message-body{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}.pin-btn{border:0;background:transparent;cursor:pointer;color:#64748b;padding:.15rem}.pin-btn:hover{color:var(--blue)}
+    .pinned-strip{display:none;padding:.7rem 1rem;background:#fffdf0;border-bottom:1px solid #eadf9b}.pinned-strip strong{color:#7c5d00}.pinned-list{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.4rem}.pinned-chip{font-size:.78rem;background:#fff;border:1px solid #eadf9b;border-radius:999px;padding:.35rem .55rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .compose{display:flex;gap:.65rem;padding:.85rem;border-top:1px solid #dbe3ee;background:#fff}.compose textarea{flex:1;min-height:48px;max-height:150px;resize:vertical;border:1px solid #cbd5e1;border-radius:10px;padding:.7rem;font:inherit}.compose button{align-self:flex-end;min-height:44px}.empty{padding:2rem;text-align:center;color:var(--muted)}.status{color:var(--muted);margin:.5rem 0 1rem}
+    .sidebar-menu-shell{display:none;position:fixed;top:88px;left:24px;width:220px;background:#fff;border:1px solid #dbe3ee;border-radius:12px;box-shadow:0 10px 24px rgba(2,6,23,.12);padding:10px 0;z-index:950}.sidebar-menu-link{display:block;padding:11px 14px;margin:2px 8px;border-radius:8px;color:var(--navy);text-decoration:none;font-size:.95rem;font-weight:600;transition:background-color .2s,color .2s,transform .2s}.sidebar-menu-link:hover,.sidebar-menu-link:focus{background:var(--navy);color:#fff;transform:translateX(3px)}.sidebar-menu-icon{display:inline-block;width:1.25em;min-width:1.25em;text-align:center;margin-right:.65em;font-size:1.15em;vertical-align:middle}
+    @media(max-width:980px){.sidebar-menu-shell{position:static;width:100%;max-width:900px;margin:12px auto}.mail-layout{grid-template-columns:1fr}.conversation-list{max-height:260px}}
+    @media(max-width:600px){.mail-title{font-size:1.55rem}.message{max-width:90%}.thread{min-height:560px}}
+  </style>
+</head>
+<body class="auth-pending">
+<div class="page-wrapper">
+<header class="resource-nav" role="banner"><div class="container container-nav">
+  <div class="logo"><span class="site-title" style="color:lightgrey">Premium</span></div>
+  <div class="user-menu" style="margin-left:auto;display:flex;align-items:center;gap:12px">
+    <div class="auth-profile-chip" data-auth-profile><img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo"><span class="auth-profile-name" data-auth-name></span></div>
+    <a class="btn btn-outline nav-login" href="/login.html?next=%2Fmessages.html" id="signInLink">Sign In</a>
+    <button class="btn btn-outline" id="signOutBtn" style="display:none">Sign Out</button>
+  </div>
+</div></header>
+<nav id="topNavMenu" class="sidebar-menu-shell" aria-label="Members navigation">
+<a class="sidebar-menu-link" href="https://www.ibrecruitment.com">🏠 Home</a>
+<a class="sidebar-menu-link" href="/editprofile.html">👤 Edit Profile</a>
+<a class="sidebar-menu-link" href="/messages.html">✉️ Mailbox</a>
+<a class="sidebar-menu-link" href="/members.html">🧑‍🤝‍🧑 Members Area</a>
+<a class="sidebar-menu-link" href="/insights.html">💡 Insights Archive</a>
+<a class="sidebar-menu-link" href="/requests.html">📋 Media Relations</a>
+<a class="sidebar-menu-link" href="/settings.html">⚙️ Account Settings</a>
+<a class="sidebar-menu-link" href="/contact.html">✉️ Contact Sales</a>
+<a class="sidebar-menu-link" href="/directory.html">📇 Member Directory</a>
+<a class="sidebar-menu-link" href="/invoice.html">💳 Payments</a>
+</nav>
+<main class="mail-shell" id="protectedContent">
+  <div class="mail-header"><div><h1 class="mail-title">Mailbox</h1><div class="status">Direct messaging between authenticated members.</div></div><a class="btn btn-outline" href="/directory.html">Find Members</a></div>
+  <div id="mailStatus" class="status">Loading mailbox…</div>
+  <section class="mail-layout" id="mailLayout" style="display:none">
+    <div class="panel-box"><div id="conversationList" class="conversation-list"></div></div>
+    <div class="panel-box thread">
+      <div class="thread-head"><span id="threadTitle">Select a member</span><a id="threadDirectoryLink" class="btn btn-outline" style="display:none;text-decoration:none">Directory</a></div>
+      <div id="pinnedStrip" class="pinned-strip"><strong>📌 Pinned messages</strong><div id="pinnedList" class="pinned-list"></div></div>
+      <div id="threadBody" class="thread-body"><div class="empty">Choose a conversation or start one from the Members Directory.</div></div>
+      <form id="composeForm" class="compose" style="display:none"><textarea id="messageInput" maxlength="5000" placeholder="Write a direct message…" aria-label="Direct message"></textarea><button class="btn btn-primary" type="submit">Send</button></form>
+    </div>
+  </section>
+</main>
+<footer class="resource-footer" role="contentinfo"><div class="container" style="text-align:center"><div style="margin-bottom:4px;color:var(--muted);font-size:.95rem">v.03 (Beta)</div><p style="margin:0;color:var(--muted)">&copy; 2026 Impact in Business Recruitment Group Limited. All rights reserved.</p></div></footer>
+</div>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script defer src="/firebase-config.js"></script><script defer src="/header-profile.js"></script><script defer src="/mobile-compat.js"></script><script defer src="/page-transition.js"></script>
+<script>
+window.addEventListener('load',function(){
+ if(!window.firebase||!window.firebaseConfig)return;
+ try{if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig)}catch(e){return}
+ const auth=firebase.auth(),db=firebase.firestore(),status=document.getElementById('mailStatus'),layout=document.getElementById('mailLayout'),list=document.getElementById('conversationList'),body=document.getElementById('threadBody'),title=document.getElementById('threadTitle'),compose=document.getElementById('composeForm'),input=document.getElementById('messageInput'),pinnedStrip=document.getElementById('pinnedStrip'),pinnedList=document.getElementById('pinnedList'),signOut=document.getElementById('signOutBtn'),signIn=document.getElementById('signInLink');
+ let me=null,allMessages=[],profiles={},activeUid=new URLSearchParams(location.search).get('to')||null;
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const nameOf=p=>((p?.firstName||'')+' '+(p?.lastName||'')).trim()||p?.email||'Member';
+ const convoKey=(a,b)=>[a,b].sort().join('__');
+ const profileImage=p=>p?.imageDataUrl||'/100.png';
+ function updateSidebar(){const n=document.getElementById('topNavMenu');n.style.display=document.body.classList.contains('has-sidebar')?'block':'none'} document.addEventListener('DOMContentLoaded',updateSidebar);new MutationObserver(updateSidebar).observe(document.body,{attributes:true,attributeFilter:['class']});
+ function showSignedOut(){status.textContent='Sign in to use your mailbox.';layout.style.display='none';signOut.style.display='none';signIn.style.display='inline-flex';document.body.classList.remove('auth-pending','has-sidebar')}
+ function renderConversations(){list.innerHTML='';const map=new Map();allMessages.forEach(m=>{const other=m.senderUid===me.uid?m.recipientUid:m.senderUid;if(other===me.uid)return;const old=map.get(other);if(!old||((m.sentAt?.toMillis?.()||0)>(old.sentAt?.toMillis?.()||0)))map.set(other,m)});if(activeUid&&!map.has(activeUid))map.set(activeUid,{senderUid:me.uid,recipientUid:activeUid,body:''});
+   [...map.entries()].sort((a,b)=>(b[1].sentAt?.toMillis?.()||0)-(a[1].sentAt?.toMillis?.()||0)).forEach(([uid,last])=>{const p=profiles[uid]||{};const el=document.createElement('button');el.className='conversation-item'+(uid===activeUid?' active':'');el.innerHTML='<img class="conversation-avatar" src="'+esc(profileImage(p))+'" alt=""><div><div class="conversation-name">'+esc(nameOf(p))+'</div><div class="conversation-preview">'+esc(last.body||'Start a conversation')+'</div></div>';el.onclick=()=>selectConversation(uid);list.appendChild(el)});
+   if(!list.children.length)list.innerHTML='<div class="empty">No direct messages yet. Open the Directory to message a member.</div>';
+ }
+ function renderThread(){if(!activeUid){title.textContent='Select a member';compose.style.display='none';body.innerHTML='<div class="empty">Choose a conversation or start one from the Members Directory.</div>';pinnedStrip.style.display='none';return}
+   const p=profiles[activeUid]||{};title.textContent=nameOf(p);document.getElementById('threadDirectoryLink').style.display='inline-flex';document.getElementById('threadDirectoryLink').href='/directory.html';compose.style.display='flex';
+   const msgs=allMessages.filter(m=>(m.senderUid===me.uid&&m.recipientUid===activeUid)||(m.senderUid===activeUid&&m.recipientUid===me.uid)).sort((a,b)=>(a.sentAt?.toMillis?.()||0)-(b.sentAt?.toMillis?.()||0));
+   const pins=msgs.filter(m=>Array.isArray(m.pinnedBy)&&m.pinnedBy.includes(me.uid));pinnedStrip.style.display=pins.length?'block':'none';pinnedList.innerHTML=pins.map(m=>'<span class="pinned-chip">📌 '+esc(m.body)+'</span>').join('');
+   body.innerHTML=msgs.length?'':'<div class="empty">No messages yet. Send the first message.</div>';msgs.forEach(m=>{const el=document.createElement('div');el.className='message '+(m.senderUid===me.uid?'outgoing':'incoming')+(pins.includes(m)?' pinned':'');const when=m.sentAt?.toDate?m.sentAt.toDate().toLocaleString():'';const isPinned=Array.isArray(m.pinnedBy)&&m.pinnedBy.includes(me.uid);el.innerHTML='<div class="message-body">'+esc(m.body)+'</div><div class="message-meta"><span>'+esc(when)+'</span><button class="pin-btn" title="'+(isPinned?'Unpin':'Pin')+' message" aria-label="'+(isPinned?'Unpin':'Pin')+' message">📌</button></div>';el.querySelector('.pin-btn').onclick=()=>togglePin(m,isPinned);body.appendChild(el)});body.scrollTop=body.scrollHeight;
+ }
+ async function selectConversation(uid){activeUid=uid;history.replaceState(null,'','/messages.html?to='+encodeURIComponent(uid));renderConversations();renderThread();input.focus()}
+ async function togglePin(m,isPinned){const next=(Array.isArray(m.pinnedBy)?m.pinnedBy:[]).filter(uid=>uid!==me.uid);if(!isPinned)next.push(me.uid);await db.collection('directMessages').doc(m.id).update({pinnedBy:next})}
+ async function loadProfiles(){const ids=[...new Set(allMessages.flatMap(m=>[m.senderUid,m.recipientUid]).filter(Boolean))];if(activeUid)ids.push(activeUid);for(const uid of [...new Set(ids)]){if(uid===me.uid||profiles[uid])continue;const d=await db.collection('publicProfiles').doc(uid).get();profiles[uid]=d.exists?d.data():{email:'Member'}}}
+ async function loadMailbox(){status.textContent='Loading mailbox…';const snap=await db.collection('directMessages').where('participants','array-contains',me.uid).get();allMessages=snap.docs.map(d=>({id:d.id,...d.data()}));await loadProfiles();await loadProfiles();renderConversations();renderThread();status.textContent=allMessages.length?'':'Your mailbox is ready. No direct messages yet.';layout.style.display='grid'}
+ compose.addEventListener('submit',async e=>{e.preventDefault();const bodyText=input.value.trim();if(!bodyText||!activeUid||activeUid===me.uid)return;const meProfile=profiles[me.uid]||{};const other=profiles[activeUid]||{};const ref=db.collection('directMessages').doc();await ref.set({senderUid:me.uid,recipientUid:activeUid,senderName:nameOf(meProfile)||me.displayName||me.email||'Member',recipientName:nameOf(other),participants:[me.uid,activeUid],body:bodyText,sentAt:firebase.firestore.FieldValue.serverTimestamp(),pinnedBy:[],readBy:[me.uid]});input.value='';const snap=await db.collection('directMessages').where('participants','array-contains',me.uid).get();allMessages=snap.docs.map(d=>({id:d.id,...d.data()}));renderConversations();renderThread()});
+ auth.onAuthStateChanged(async user=>{if(!user){showSignedOut();return}me=user;signOut.style.display='inline-flex';signIn.style.display='none';document.body.classList.remove('auth-pending');document.body.classList.add('has-sidebar');try{await loadMailbox()}catch(e){console.error(e);status.textContent=e.code==='permission-denied'?'Your session is not authorised to use the mailbox. Please sign out and sign in again.':'Failed to load mailbox. Please try again shortly.'}});
+ signOut.onclick=()=>auth.signOut();
+});
+</script>
+</body></html>

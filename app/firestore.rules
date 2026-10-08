@@ -14,7 +14,10 @@ service cloud.firestore {
           'email',
           'updatedAt',
           'isPublic',
-          'imageDataUrl'
+          'imageDataUrl',
+          'emailVerified',
+          'onfidoVerified',
+          'onfidoVerifiedAt'
         ]) &&
         request.resource.data.uid == request.auth.uid &&
         request.resource.data.firstName is string &&
@@ -22,7 +25,10 @@ service cloud.firestore {
         request.resource.data.bio is string &&
         request.resource.data.email is string &&
         request.resource.data.updatedAt is timestamp &&
-        request.resource.data.isPublic == true;
+        request.resource.data.isPublic == true &&
+        (!('emailVerified' in request.resource.data) || request.resource.data.emailVerified is bool) &&
+        (!('onfidoVerified' in request.resource.data) || request.resource.data.onfidoVerified is bool) &&
+        (!('onfidoVerifiedAt' in request.resource.data) || request.resource.data.onfidoVerifiedAt is timestamp);
       allow delete: if false;
     }
 

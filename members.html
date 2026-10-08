@@ -53,7 +53,7 @@
     @media (max-width: 600px) { .verify-corner-btn { left: 14px; bottom: 14px; min-height: 42px; padding: .65rem .85rem; font-size: .84rem; } }
     .sidebar-menu-shell { display: none; position: fixed; top: 88px; left: 24px; width: 220px; background: #ffffff; border: 1px solid #dbe3ee; border-radius: 12px; box-shadow: 0 10px 24px rgba(2, 6, 23, 0.12); padding: 10px 0; z-index: 950; }
     .sidebar-menu-link { display: block; padding: 11px 14px; margin: 2px 8px; border-radius: 8px; color: #092a4b; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease; }
-    .sidebar-menu-link:hover, .sidebar-menu-link:focus { background: #092a4b; color: #ffffff; transform: translateX(3px); }
+    .sidebar-menu-link:hover, .sidebar-menu-link:focus { background: #092a4b; color: #ffffff; transform: translateX(3px); }\n    .mail-header-icon { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:9px; text-decoration:none; font-size:1.15rem; transition:background-color .2s ease, transform .2s ease; }\n    .mail-header-icon:hover, .mail-header-icon:focus-visible { background:rgba(255,255,255,.14); transform:translateY(-1px); }
     body.has-sidebar #protected-content { margin-left: 260px; }
     @media (max-width: 980px) { .sidebar-menu-shell { position: static; width: 100%; max-width: 900px; margin: 12px auto; } body.has-sidebar #protected-content { margin-left: 0; } }
     @media (max-width: 900px) {
@@ -88,7 +88,7 @@
         <div class="user-menu" style="margin-left:auto;display:flex;align-items:center;gap:12px">
           <div class="auth-profile-chip" data-auth-profile>
             <img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo">
-            <span class="auth-profile-name" data-auth-name></span>
+            <span class="auth-profile-name" data-auth-name></span><a class="mail-header-icon" href="/messages.html" aria-label="Open Mailbox" title="Mailbox">✉️</a>
           </div>
           <a class="btn btn-outline nav-login" href="/login.html?next=%2Fmembers.html" id="signInLink">Sign In</a>
           <button class="btn btn-outline" id="signOutBtn" style="display:none">Sign Out</button>
@@ -97,7 +97,7 @@
     </header>
     <nav id="topNavMenu" class="sidebar-menu-shell" aria-label="Members navigation">
       <a class="sidebar-menu-link" href="https://www.ibrecruitment.com"><span class="sidebar-menu-icon" aria-hidden="true">🏠</span> Home</a>
-      <a class="sidebar-menu-link" href="/editprofile.html"><span class="sidebar-menu-icon" aria-hidden="true">👤</span> Edit Profile</a>
+      <a class="sidebar-menu-link" href="/editprofile.html"><span class="sidebar-menu-icon" aria-hidden="true">👤</span> Edit Profile</a>\n      <a class="sidebar-menu-link" href="/messages.html"><span class="sidebar-menu-icon" aria-hidden="true">✉️</span> Mailbox</a>
       <a class="sidebar-menu-link" href="/members.html"><span class="sidebar-menu-icon" aria-hidden="true">🧑‍🤝‍🧑</span> Members Area</a>
       <a class="sidebar-menu-link" href="/insights.html"><span class="sidebar-menu-icon" aria-hidden="true">💡</span> Insights Archive</a>
       <a class="sidebar-menu-link" href="/requests.html"><span class="sidebar-menu-icon" aria-hidden="true">📋</span> Media Relations</a>

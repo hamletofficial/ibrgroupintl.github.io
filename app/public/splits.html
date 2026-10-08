@@ -40,7 +40,9 @@
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem}.profile{display:flex;align-items:center;gap:.65rem;color:#fff}.profile img{width:38px;height:38px;border-radius:50%;object-fit:cover}.topbar-actions{display:flex;align-items:center;gap:.6rem}
     @media(max-width:800px){.dashboard{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.property-meta{grid-template-columns:1fr 1fr}.topbar{align-items:flex-start;flex-direction:column}.topbar-actions{width:100%}}
     @media(max-width:520px){.resource-shell{padding:0 .65rem}.hero,.panel{padding:1.1rem}.property-meta{grid-template-columns:1fr}}
-  </style>
+  /* Dark transparent header override */
+.resource-nav{background:rgba(45,45,45,.82)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+</style>
 </head>
 <body class="auth-pending">
   <div class="page-wrapper">

@@ -17,7 +17,7 @@
 	  if (hasConsent) document.documentElement.classList.add('has-cookie-consent');
 	})();
   </script>
-  <link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/resource-centre.css">\n  <link rel="stylesheet" href="/index.css">
   <link rel="stylesheet" href="/mobile-compat.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
@@ -118,21 +118,23 @@
 	</style>
 </head>
 <body>
-  <header class="payment-header" role="banner">
-	<div class="payment-container payment-header-row">
-	  <a class="payment-brand" href="/index.html" aria-label="Impact in Business Recruitment home">
-		<img src="/160.jpg" alt="Impact logo">
-		<span>Impact in Business Recruitment</span>
-	  </a>
-	  <nav class="payment-nav" aria-label="Primary navigation">
-		<a href="/index.html">Home</a>
-		<a href="/about.html">About IB</a>
-		<a href="/invoice.html" aria-current="page">Invoice</a>
-		<a href="/messages.html" aria-label="Open Messages" title="Messages">Messages</a>
-		<button class="payment-button" id="signOutBtn" type="button">Sign in</button>
-	  </nav>
-	</div>
-  </header>
+  <div class="page-wrapper">
+    <header class="resource-nav" role="banner">
+      <div class="container container-nav">
+        <div class="logo" style="display:flex;align-items:center;gap:12px">
+          <span class="site-title" style="color:lightgrey">Premium</span>
+        </div>
+        <div class="user-menu" style="margin-left:auto;display:flex;align-items:center;gap:12px">
+          <div class="auth-profile-chip" data-auth-profile>
+            <img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo">
+            <span class="auth-profile-name" data-auth-name></span>
+          </div>
+          <a class="mail-header-icon" href="/messages.html" aria-label="Open Mailbox" title="Mailbox">✉️</a>
+          <a class="btn btn-outline nav-login" href="/login.html?next=%2Finvoice.html" id="signInLink">Sign In</a>
+          <button class="btn btn-outline" id="signOutBtn" type="button" style="display:none">Sign Out</button>
+        </div>
+      </div>
+    </header>
 
 
   <nav id="topNavMenu" class="sidebar-menu-shell" aria-label="Members navigation">
@@ -219,6 +221,8 @@
 	  if (!signOutBtn) return;
 
 	  if (!window.firebase || !window.firebaseConfig) {
+        var signInLink = document.getElementById('signInLink');
+        if (signInLink) signInLink.style.display = 'inline-flex';
 		signOutBtn.textContent = 'Sign in';
 		signOutBtn.addEventListener('click', function () {
 		  window.location.assign('/login.html');
@@ -265,6 +269,8 @@
 			  }
 			};
 		  } else {
+            var signInLink = document.getElementById('signInLink');
+            if (signInLink) signInLink.style.display = 'inline-flex';
 			signOutBtn.textContent = 'Sign in';
 			signOutBtn.disabled = false;
 			signOutBtn.onclick = function () {
@@ -289,5 +295,5 @@
 	  }
 	});
   </script>
-</body>
+  </div>\n</body>
 </html>

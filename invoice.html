@@ -156,7 +156,15 @@
     .copyright { color:#0f172a!important; }
     @media(max-width:900px) { .resource-nav { background:#071D4A!important; border-bottom:1px solid #071D4A!important; } }
 
-    /* Keep the vertical breathing room above and below the payment card balanced. */
+    /* Force the entire strip above and including the footer to pure white. */
+    html, body, .page-wrapper, main, main > .payment-container, .payment-footer,
+    .payment-footer .payment-container, .cookie-bar {
+      background: #ffffff !important;
+    }
+    .page-wrapper { box-shadow: none !important; }
+    main { border: 0 !important; }
+    
+        /* Keep the vertical breathing room above and below the payment card balanced. */
     main { padding:clamp(28px,5vw,56px) 0!important; background:#ffffff!important; }
     @media(max-width:640px) {
       main { padding:24px 0!important; }

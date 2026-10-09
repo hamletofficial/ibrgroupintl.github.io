@@ -42,7 +42,7 @@ service cloud.firestore {
           ||
           (
             request.auth.uid == resource.data.senderUid
-            && resource.data.anonymised != true
+            && (!('anonymised' in resource.data) || resource.data.anonymised != true)
             && request.resource.data.diff(resource.data).affectedKeys().hasAll(['body','anonymised','anonymisedAt'])
             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['body','anonymised','anonymisedAt'])
             && request.resource.data.body == '[Message anonymised]'

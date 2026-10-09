@@ -51,8 +51,9 @@ service cloud.firestore {
           )
         );
 
+      // Either authenticated participant may delete a message when removing their conversation.
       allow delete: if request.auth != null
-        && request.auth.uid == resource.data.senderUid;
+        && request.auth.uid in resource.data.participants;
     }
 
     match /insightsFeed/{insightId} {

@@ -167,6 +167,7 @@
           <button type="button" id="refreshBtn">Refresh</button>
           <a href="/requests">Create New</a>
           <button type="button" id="printBtn">Print</button>
+          <button type="button" id="shareBtn" disabled>Share via E-mail</button>
         </div>
       </div>
     </div>
@@ -200,6 +201,7 @@
       var countEl = document.getElementById("archiveCount");
       var refreshBtn = document.getElementById("refreshBtn");
       var deleteBtn = document.getElementById("deleteBtn");
+      var shareBtn = document.getElementById("shareBtn");
       var searchInput = document.getElementById("archiveSearch");
       var signOutBtn = document.getElementById("signOutBtn");
 
@@ -218,6 +220,7 @@
       function updateDeleteState() {
         var selected = archiveList.querySelectorAll(".brief-checkbox:checked");
         deleteBtn.disabled = selected.length === 0;
+        shareBtn.disabled = selected.length !== 1;
       }
       function renderBriefs(briefs) {
         if (!briefs.length) {
@@ -321,6 +324,20 @@
       deleteBtn.addEventListener("click",deleteSelected);
       searchInput.addEventListener("input",applySearch);
       document.getElementById("printBtn").addEventListener("click",function(event){ event.preventDefault(); event.stopPropagation(); window.setTimeout(function(){ window.print(); },0); });
+      shareBtn.addEventListener("click",function(){
+        var selected = archiveList.querySelectorAll(".brief-checkbox:checked");
+        if (selected.length !== 1) {
+          showStatus("Select exactly one brief to share by e-mail.",true);
+          updateDeleteState();
+          return;
+        }
+        var card = selected[0].closest(".brief-card");
+        if (!card) return;
+        var subject = "Communications Brief: Impact in Business Recruitment";
+        var body = card.innerText.replace(/^\s*Select brief\s*/m,"").trim();
+        var mailto = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+        window.location.href = mailto;
+      });
       signOutBtn.addEventListener("click",async function(){
         signOutBtn.disabled = true;
         signOutBtn.textContent = "Signing Out…";

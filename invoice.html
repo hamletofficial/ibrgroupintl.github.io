@@ -47,13 +47,13 @@
 	.payment-intro { margin:0; color:var(--payment-muted); }
 	.stripe-box { margin-top:26px; padding:clamp(14px,3vw,24px); border:1px solid var(--payment-line); border-radius:16px; background:#fff; }
 	.payment-note { margin:18px 0 0; color:var(--payment-muted); font-size:.92rem; }
-	.payment-footer { padding:20px 0 28px; border-top:1px solid var(--payment-line); }
-	.cookie-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; padding:12px 14px; border:1px solid var(--payment-line); border-radius:12px; background:#fff; color:var(--payment-muted); }
+	.payment-footer { width:100vw; margin-left:calc(50% - 50vw); padding:20px 0 28px; border-top:0; background:#ffffff!important; color:#0f172a; }
+	.payment-footer .payment-container { width:min(1120px,calc(100% - 2rem)); margin-inline:auto; }
+	.cookie-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; padding:12px 14px; border:0; border-radius:0; background:#ffffff!important; color:#0f172a; }
 	.has-cookie-consent #cookieConsentBar { display:none!important; }
-	.cookie-bar a,.footer-links a { color:var(--payment-green); }
+	.cookie-bar a,.footer-links a { color:#0f172a!important; }
 	.cookie-actions { display:flex; gap:8px; }
-	.cookie-actions button { min-height:40px; padding:8px 12px; border:1px solid #d2dfd7; border-radius:9px; color:var(--payment-ink); background:#f8faf8; font:700 .9rem var(--payment-font); cursor:pointer; }
-	.cookie-actions button:last-child { color:#fff; border-color:transparent; background:var(--payment-green); }
+	.cookie-actions button,.cookie-actions button:last-child { min-height:40px; padding:8px 12px; border:0; border-radius:9px; color:#0f172a; background:#ffffff!important; font:700 .9rem var(--payment-font); cursor:pointer; }
 	.footer-links { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
 	.footer-links a { text-decoration:none; }
 	.copyright { margin:0; color:var(--payment-muted); text-align:center; font-size:.9rem; }
@@ -148,11 +148,12 @@
     .payment-kicker { color:#092a4b; background:#eaf4ff; border-color:#cfe3f1; }
     .payment-button { color:#fff!important; background:#0284c7!important; border-color:#0284c7!important; border-radius:8px; }
     .stripe-box { border-color:#dbe3ee; border-radius:12px; }
-    .payment-footer { border-top:1px solid #dbe3ee; background:#fff!important; }
-    .cookie-bar { border-color:#dbe3ee; color:#475569; }
-    .cookie-bar a,.footer-links a { color:#0284c7; }
-    .cookie-actions button:last-child { background:#0284c7; }
-    .copyright { color:#475569; }
+    .payment-footer { width:100vw!important; margin-left:calc(50% - 50vw)!important; border-top:0!important; background:#ffffff!important; color:#0f172a!important; }
+    .payment-footer .payment-container { margin-inline:auto!important; }
+    .cookie-bar { border:0!important; border-radius:0!important; background:#ffffff!important; color:#0f172a!important; }
+    .cookie-bar a,.footer-links a { color:#0f172a!important; }
+    .cookie-actions button,.cookie-actions button:last-child { border:0!important; background:#ffffff!important; color:#0f172a!important; }
+    .copyright { color:#0f172a!important; }
     @media(max-width:900px) { .resource-nav { background:#071D4A!important; border-bottom:1px solid #071D4A!important; } }
 
     /* Keep the vertical breathing room above and below the payment card balanced. */

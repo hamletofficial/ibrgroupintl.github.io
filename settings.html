@@ -124,6 +124,19 @@
           <div class="settings-value" id="settingsLastLogin">-</div>
         </div>
       </section>
+      <section class="settings-card" aria-labelledby="profilePhotoHeading">
+        <h2 id="profilePhotoHeading" style="margin-top:0">Profile Photo</h2>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.8rem">
+          <img id="settingsProfilePhotoPreview" src="/100.png" alt="Current profile photo" style="width:88px;height:88px;border-radius:50%;object-fit:cover;border:2px solid #e2e8f0">
+          <div style="flex:1;min-width:220px">
+            <label for="settingsProfilePhotoInput" style="display:block;font-weight:600;color:#092a4b;margin-bottom:.4rem">Adjust profile photo</label>
+            <input id="settingsProfilePhotoInput" type="file" accept="image/*" style="max-width:100%;display:block;margin-bottom:.5rem">
+            <p style="font-size:.85rem;color:#64748b;margin:.35rem 0">Choose an image up to 500 KB. The preview updates before you save.</p>
+          </div>
+        </div>
+        <button id="settingsSaveProfilePhoto" class="btn btn-primary" type="button" disabled>Save Profile Photo</button>
+        <span id="settingsPhotoStatus" class="status-note" role="status" aria-live="polite" style="display:block;margin-top:.45rem"></span>
+      </section>
       <section class="settings-card" aria-labelledby="securitySettingsHeading">
         <h2 id="securitySettingsHeading" style="margin-top:0">Security</h2>
         <div class="security-mfa-row">
@@ -197,6 +210,70 @@
       const settingsUserId = document.getElementById('settingsUserId');
       const settingsDateJoined = document.getElementById('settingsDateJoined');
       const settingsLastLogin = document.getElementById('settingsLastLogin');
+      const settingsPhotoInput = document.getElementById('settingsProfilePhotoInput');
+      const settingsPhotoPreview = document.getElementById('settingsProfilePhotoPreview');
+      const settingsSavePhoto = document.getElementById('settingsSaveProfilePhoto');
+      const settingsPhotoStatus = document.getElementById('settingsPhotoStatus');
+      let pendingSettingsPhotoDataUrl = '';
+      function setSettingsPhotoStatus(message, isError) {
+        settingsPhotoStatus.textContent = message;
+        settingsPhotoStatus.style.color = isError ? '#b91c1c' : '#166534';
+      }
+      settingsPhotoInput.addEventListener('change', function () {
+        const file = settingsPhotoInput.files && settingsPhotoInput.files[0];
+        pendingSettingsPhotoDataUrl = '';
+        settingsSavePhoto.disabled = true;
+        if (!file) { setSettingsPhotoStatus('', false); return; }
+        if (!file.type || !file.type.startsWith('image/')) {
+          settingsPhotoInput.value = '';
+          setSettingsPhotoStatus('Please choose an image file.', true);
+          return;
+        }
+        if (file.size > 500 * 1024) {
+          settingsPhotoInput.value = '';
+          setSettingsPhotoStatus('Image exceeds the 500 KB upload limit. Choose a smaller image.', true);
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function () {
+          if (typeof reader.result !== 'string' || !reader.result.startsWith('data:image/')) {
+            setSettingsPhotoStatus('This image could not be previewed. Please try another file.', true);
+            return;
+          }
+          pendingSettingsPhotoDataUrl = reader.result;
+          settingsPhotoPreview.src = pendingSettingsPhotoDataUrl;
+          settingsSavePhoto.disabled = false;
+          setSettingsPhotoStatus('Preview ready. Select Save Profile Photo to apply it.', false);
+        };
+        reader.onerror = function () { setSettingsPhotoStatus('Unable to read this image. Please try again.', true); };
+        reader.readAsDataURL(file);
+      });
+      settingsSavePhoto.addEventListener('click', async function () {
+        const user = auth.currentUser;
+        if (!pendingSettingsPhotoDataUrl || !user) return;
+        if (pendingSettingsPhotoDataUrl.length > 700000) {
+          setSettingsPhotoStatus('This image is too large after processing. Please choose an image under 500 KB.', true);
+          return;
+        }
+        settingsSavePhoto.disabled = true;
+        settingsPhotoInput.disabled = true;
+        setSettingsPhotoStatus('Saving profile photo…', false);
+        try {
+          await firebase.firestore().collection('publicProfiles').doc(user.uid).update({ imageDataUrl: pendingSettingsPhotoDataUrl });
+          document.querySelectorAll('[data-auth-photo]').forEach(function (img) { img.src = pendingSettingsPhotoDataUrl; });
+          setSettingsPhotoStatus('Profile photo saved.', false);
+          pendingSettingsPhotoDataUrl = '';
+          settingsPhotoInput.value = '';
+        } catch (error) {
+          console.error('Profile photo save failed', error);
+          setSettingsPhotoStatus(error && error.code === 'permission-denied'
+            ? 'Permission denied. Your profile photo was not saved.'
+            : 'Unable to save the photo. Please try again.', true);
+          settingsSavePhoto.disabled = false;
+        } finally {
+          settingsPhotoInput.disabled = false;
+        }
+      });
       const deleteAccountBtn = document.getElementById('deleteAccountBtn');
       const incognitoBtn = document.getElementById('incognitoBtn');
       const incognitoStatus = document.getElementById('incognitoStatus');
@@ -261,6 +338,9 @@
 
         try {
           const profileSnapshot = await firebase.firestore().collection('publicProfiles').doc(user.uid).get();
+          const savedPhoto = profileSnapshot.exists ? profileSnapshot.get('imageDataUrl') : '';
+          settingsPhotoPreview.src = typeof savedPhoto === 'string' && savedPhoto ? savedPhoto : '/100.png';
+          settingsPhotoPreview.onerror = function () { settingsPhotoPreview.onerror = null; settingsPhotoPreview.src = '/100.png'; };
           const incognito = profileSnapshot.exists && profileSnapshot.get('incognito') === true;
           if (incognitoBtn) {
             incognitoBtn.setAttribute('aria-pressed', String(incognito));

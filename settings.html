@@ -232,7 +232,7 @@
           ? new Date(user.metadata.creationTime).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
           : 'Not available';
         settingsLastLogin.textContent = user.metadata && user.metadata.lastSignInTime
-          ? new Date(user.metadata.lastSignInTime).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
+          ? new Date(user.metadata.lastSignInTime).toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' })
           : '-';
         updateMfaUi(user);
 

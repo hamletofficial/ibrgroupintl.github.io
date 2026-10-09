@@ -4,13 +4,7 @@
   if (window.__ibrHeaderProfileInitialized) return;
   window.__ibrHeaderProfileInitialized = true;
 
-  function linkedInPhoto() {
-    try {
-      return sessionStorage.getItem('linkedin_photo') || '';
-    } catch (error) {
-      return '';
-    }
-  }
+  var firestoreSdkPromise;
 
   function setFallbackPhoto(photoEl) {
     if (!photoEl) return;
@@ -18,9 +12,30 @@
     photoEl.alt = 'Profile photo';
   }
 
+  function ensureFirestoreCompat() {
+    if (window.firebase && firebase.firestore) return Promise.resolve();
+    if (firestoreSdkPromise) return firestoreSdkPromise;
+    firestoreSdkPromise = new Promise(function (resolve, reject) {
+      var existing = document.querySelector('script[data-ibr-firestore-compat]');
+      if (existing) {
+        existing.addEventListener('load', resolve, { once: true });
+        existing.addEventListener('error', reject, { once: true });
+        if (window.firebase && firebase.firestore) resolve();
+        return;
+      }
+      var script = document.createElement('script');
+      script.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js';
+      script.async = true;
+      script.dataset.ibrFirestoreCompat = 'true';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+    return firestoreSdkPromise;
+  }
+
   function updateProfile(user) {
     var chips = document.querySelectorAll('[data-auth-profile]');
-
     chips.forEach(function (chip) {
       var nameEl = chip.querySelector('[data-auth-name]');
       var photoEl = chip.querySelector('[data-auth-photo]');
@@ -32,26 +47,60 @@
         return;
       }
 
-      var displayName = user.displayName || user.email || 'Member';
-      var photoUrl = '/160.jpg';
-
-      if (nameEl) {
-        nameEl.textContent = displayName;
-      }
-
+      var initialName = user.displayName || user.email || 'Member';
+      if (nameEl) nameEl.textContent = initialName;
       if (photoEl) {
         photoEl.referrerPolicy = 'no-referrer';
-        photoEl.alt = displayName + ' profile photo';
+        photoEl.alt = initialName + ' profile photo';
         photoEl.onerror = function () {
           if (photoEl.src.indexOf('/100.png') === -1) {
             photoEl.onerror = null;
             setFallbackPhoto(photoEl);
           }
         };
-        photoEl.src = photoUrl;
+        photoEl.src = user.photoURL || '/160.jpg';
       }
-
       chip.style.display = 'inline-flex';
+    });
+
+    if (!user || !window.firebase || !firebase.firestore) {
+      if (user) {
+        ensureFirestoreCompat().then(function () {
+          return loadSavedProfile(user);
+        }).catch(function (error) {
+          console.warn('Unable to load the signed-in member profile for the header:', error);
+        });
+      }
+      return;
+    }
+    loadSavedProfile(user);
+  }
+
+  function loadSavedProfile(user) {
+    if (!user || !window.firebase || !firebase.firestore) return Promise.resolve();
+    return firebase.firestore().collection('publicProfiles').doc(user.uid).get().then(function (snapshot) {
+      if (!snapshot.exists) return;
+      var data = snapshot.data() || {};
+      var firstName = String(data.firstName || '').trim();
+      var lastName = String(data.lastName || '').trim();
+      var savedName = (firstName + ' ' + lastName).trim()
+        || String(data.displayName || data.name || '').trim()
+        || user.displayName
+        || user.email
+        || 'Member';
+      var savedPhoto = data.imageDataUrl || data.photoURL || data.photoUrl || data.photoURLData || user.photoURL || '';
+
+      document.querySelectorAll('[data-auth-profile]').forEach(function (chip) {
+        var nameEl = chip.querySelector('[data-auth-name]');
+        var photoEl = chip.querySelector('[data-auth-photo]');
+        if (nameEl) nameEl.textContent = savedName;
+        if (photoEl && savedPhoto) {
+          photoEl.alt = savedName + ' profile photo';
+          photoEl.src = savedPhoto;
+        }
+      });
+    }).catch(function (error) {
+      console.warn('Unable to load the signed-in member profile for the header:', error);
     });
   }
 
@@ -62,11 +111,9 @@
     }
 
     try {
-      if (!firebase.apps.length) {
-        firebase.initializeApp(window.firebaseConfig);
-      }
+      if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
     } catch (error) {
-      // A page-level auth script may already have initialized Firebase.
+      // Another page-level script may already have initialized Firebase.
     }
 
     try {

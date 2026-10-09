@@ -453,7 +453,29 @@
           const currentlyIncognito = incognitoBtn.getAttribute('aria-pressed') === 'true';
           incognitoBtn.disabled = true;
           try {
-            await firebase.firestore().collection('publicProfiles').doc(user.uid).set({
+            const profileRef = firebase.firestore().collection('publicProfiles').doc(user.uid);
+            const profileSnapshot = await profileRef.get();
+
+            // Incognito requires a saved member profile. Do not create a partial
+            // publicProfiles document just to store this privacy preference.
+            const profileData = profileSnapshot.exists ? profileSnapshot.data() : {};
+            const hasSavedProfile = !!profileSnapshot.exists && (
+              profileData.profileSaved === true ||
+              profileData.profileComplete === true ||
+              profileData.publicProfile === true
+            );
+
+            if (!currentlyIncognito && !hasSavedProfile) {
+              if (incognitoStatus) {
+                incognitoStatus.textContent = 'Before you can go Incognito, please visit Edit Profile, create your profile, and click Save. Return to Settings once your profile has been saved.';
+                incognitoStatus.style.color = '#b45309';
+                incognitoStatus.setAttribute('role', 'alert');
+              }
+              incognitoBtn.disabled = false;
+              return;
+            }
+
+            await profileRef.set({
               incognito: !currentlyIncognito
             }, { merge: true });
             incognitoBtn.setAttribute('aria-pressed', String(!currentlyIncognito));
@@ -461,6 +483,8 @@
             incognitoBtn.style.background = !currentlyIncognito ? '#092a4b' : '';
             incognitoBtn.style.color = !currentlyIncognito ? '#ffffff' : '';
             if (incognitoStatus) {
+              incognitoStatus.style.color = '';
+              incognitoStatus.setAttribute('role', 'status');
               incognitoStatus.textContent = !currentlyIncognito
                 ? 'Incognito is on. Other members will not see “Online Now” for you.'
                 : 'Incognito is off. Your “Online Now” status may be shown when you are active.';

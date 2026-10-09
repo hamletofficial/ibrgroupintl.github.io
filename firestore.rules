@@ -56,6 +56,17 @@ service cloud.firestore {
         && request.auth.uid in resource.data.participants;
     }
 
+    // Each authenticated user has a private archive of conversation threads.
+    match /userMessageArchives/{userId}/conversations/{conversationId} {
+      allow read, delete: if request.auth != null
+        && request.auth.uid == userId;
+      allow create, update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.ownerUid == userId
+        && request.resource.data.otherUid == conversationId
+        && request.resource.data.archivedAt == request.time;
+    }
+
     match /insightsFeed/{insightId} {
       allow read: if request.auth != null;
       allow create, update, delete: if false;

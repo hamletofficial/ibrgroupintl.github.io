@@ -333,6 +333,20 @@
       const previousPageButton = document.getElementById('directoryPreviousPage');
       const nextPageButton = document.getElementById('directoryNextPage');
       const lastPageButton = document.getElementById('directoryLastPage');
+      const signedInOnlyControls = [
+        document.querySelector('.directory-search'),
+        document.querySelector('.directory-controls'),
+        document.querySelector('.directory-toolbar'),
+        document.querySelector('.directory-stats'),
+        summary,
+        pagination
+      ];
+      function setSignedInControlsVisible(visible) {
+        signedInOnlyControls.forEach(function (node) {
+          if (node) node.style.display = visible ? '' : 'none';
+        });
+      }
+      setSignedInControlsVisible(false);
       const DEFAULT_PUBLIC_IMAGE = '/100.png';
       let db = null;
       let allMembers = [];
@@ -412,6 +426,7 @@
         return age >= 0 && age <= 60 * 60 * 1000;
       }
       function showSignedOut() {
+        setSignedInControlsVisible(false);
         status.textContent = '';
         status.style.display = 'none';
         authPrompt.style.display = 'block';
@@ -652,6 +667,7 @@
         }
         currentUid = user.uid;
         authPrompt.style.display = 'none';
+        setSignedInControlsVisible(true);
         signOutBtn.style.display = 'inline-flex';
         if (mailboxLink) mailboxLink.style.display = 'inline-flex';
         signInLink.style.display = 'none';

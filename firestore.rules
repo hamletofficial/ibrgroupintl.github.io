@@ -27,7 +27,10 @@ service cloud.firestore {
         && request.resource.data.body.size() <= 5000
         && request.resource.data.sentAt == request.time
         && request.resource.data.pinnedBy is list
-        && request.resource.data.readBy is list;
+        && request.resource.data.readBy is list
+        && (!('attachments' in request.resource.data)
+          || (request.resource.data.attachments is list
+            && request.resource.data.attachments.size() <= 5));
 
       // Participants must be Firebase-authenticated to update conversation metadata.
       // Only the authenticated sender may anonymise their own message.

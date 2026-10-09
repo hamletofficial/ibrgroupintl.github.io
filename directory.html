@@ -95,7 +95,65 @@
         backdrop-filter: none !important;
       }
     }
-  </style>
+  
+    .directory-intro{margin:-1.25rem 0 1.4rem;color:#475569;line-height:1.55}
+    .directory-controls{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:.8rem;padding:1rem;margin:0 0 1rem;border:1px solid #dbe3ee;border-radius:14px;background:#f8fbff}
+    .directory-field{display:flex;flex-direction:column;gap:.35rem;color:#334155;font-size:.84rem;font-weight:700;min-width:0}
+    .directory-field select{width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:.55rem .65rem;background:#fff;color:#0f172a;font:inherit;font-weight:500}
+    .directory-toolbar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin:0 0 1.1rem}
+    .directory-toolbar-actions,.directory-view-actions{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+    .directory-tool-btn{min-height:38px;padding:.5rem .8rem;border:1px solid #cbd5e1;border-radius:8px;color:#123657;background:#fff;font:inherit;font-size:.88rem;font-weight:700;cursor:pointer}
+    .directory-tool-btn:hover,.directory-tool-btn:focus-visible{border-color:#0284c7;color:#0369a1}
+    .directory-tool-btn[aria-pressed="true"]{background:#092a4b;border-color:#092a4b;color:#fff}
+    .directory-tool-btn:disabled{opacity:.55;cursor:wait}
+    .directory-summary{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;margin:.8rem 0 1rem;color:#475569;font-size:.92rem}
+    .directory-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin:0 0 1.25rem}
+    .directory-stat{border:1px solid #dbe3ee;border-radius:12px;background:#fff;padding:.85rem 1rem}
+    .directory-stat strong{display:block;color:#092a4b;font-size:1.35rem;line-height:1.3}
+    .directory-stat span{color:#64748b;font-size:.82rem}
+    .directory-grid{align-items:stretch}
+    .profile-card{min-width:0;padding:1.35rem 1.25rem 1.15rem;min-height:340px;transform:none}
+    .profile-card:hover{transform:translateY(-2px)}
+    .member-person{display:flex;flex-direction:column;align-items:center;width:100%}
+    .profile-card img{flex:0 0 auto}
+    .profile-card .name{overflow-wrap:anywhere}
+    .member-tags{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.4rem;margin:.2rem 0 .65rem}
+    .member-badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:4px 8px;border:1px solid #cbd5e1;color:#475569;background:#f8fafc;font-size:.72rem;line-height:1.25;font-weight:800}
+    .member-badge.identity-verified{color:#166534;background:#f0fdf4;border-color:#bbf7d0}
+    .member-badge.email-listed{color:#1d4ed8;background:#eff6ff;border-color:#bfdbfe}
+    .profile-card .bio{white-space:pre-wrap;overflow-wrap:anywhere}
+    .profile-card .bio a{color:#0369a1;text-decoration:underline;overflow-wrap:anywhere}
+    .profile-card .bio-empty{color:#64748b;font-style:italic}
+    .member-actions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.55rem;width:100%;margin-top:auto;padding-top:.9rem}
+    .member-action{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:40px;padding:.55rem .8rem;border:1px solid #0284c7;border-radius:9px;background:#fff;color:#0369a1;text-decoration:none;text-align:center;font-size:.86rem;font-weight:800}
+    .member-action.primary{background:#0284c7;color:#fff}
+    .member-action:hover,.member-action:focus-visible{background:#0369a1;border-color:#0369a1;color:#fff}
+    .directory-empty{display:none;border:1px dashed #cbd5e1;border-radius:14px;padding:2rem 1.2rem;text-align:center;color:#475569;background:#f8fafc}
+    .directory-empty strong{display:block;color:#092a4b;margin-bottom:.35rem}
+    .directory-grid.list-view{display:flex;flex-direction:column;gap:.8rem}
+    .directory-grid.list-view .profile-card{min-height:0;flex-direction:row;align-items:flex-start;gap:1rem;padding:1rem;text-align:left}
+    .directory-grid.list-view .member-person{flex-direction:row;align-items:flex-start;gap:1rem;width:100%}
+    .directory-grid.list-view .profile-card img{width:72px;height:72px;margin:0}
+    .directory-grid.list-view .member-main{display:flex;flex:1;flex-direction:column;align-items:flex-start;min-width:0}
+    .directory-grid.list-view .profile-card .name{justify-content:flex-start;text-align:left;margin:.1rem 0 .4rem}
+    .directory-grid.list-view .member-tags{justify-content:flex-start;margin:0 0 .4rem}
+    .directory-grid.list-view .online-status{margin-bottom:.4rem}
+    .directory-grid.list-view .profile-card .bio{text-align:left;max-width:100%;min-height:0;margin-bottom:.4rem}
+    .directory-grid.list-view .member-actions{flex:0 0 auto;width:auto;margin-top:0;padding-top:0;align-self:center}
+    .directory-grid.list-view .member-action{white-space:nowrap}
+    .directory-status{font-size:.98rem}
+    @media(max-width:850px){.directory-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:600px){
+      .directory-shell{margin-top:1.25rem}.directory-title{font-size:1.65rem}
+      .directory-header{gap:.9rem;margin-bottom:1rem}.directory-search{max-width:none;flex-basis:100%}
+      .directory-controls{grid-template-columns:1fr 1fr;padding:.8rem;gap:.7rem}
+      .directory-stats{gap:.5rem}.directory-stat{padding:.7rem .65rem}
+      .directory-stat strong{font-size:1.15rem}.directory-stat span{font-size:.74rem}
+      .directory-grid{gap:1rem}.directory-grid.list-view .profile-card{flex-wrap:wrap}
+      .directory-grid.list-view .member-actions{width:100%;justify-content:flex-start;padding-left:0}
+    }
+    @media(max-width:380px){.directory-controls{grid-template-columns:1fr}}
+</style>
 </head>
 <body class="auth-pending">
   <div class="page-wrapper">
@@ -142,19 +200,73 @@
     </script>
     <main class="directory-shell" role="main">
       <div class="directory-header">
-        <h1 class="directory-title">Member Directory</h1>
-        <form class="directory-search" onsubmit="return false;">
-          <input id="directorySearchInput" type="search" placeholder="Search members by name or bio..." aria-label="Search members">
+        <div>
+          <h1 class="directory-title">Member Directory</h1>
+          <p class="directory-intro">Discover members, check identity-verification status, and start a conversation.</p>
+        </div>
+        <form class="directory-search" id="directorySearchForm" role="search">
+          <input id="directorySearchInput" type="search" placeholder="Search names or bios…" aria-label="Search members by name or bio" autocomplete="off">
         </form>
       </div>
-      <div id="directoryStatus" class="directory-status">Loading directory...</div>
+      <section class="directory-controls" aria-label="Directory filters">
+        <label class="directory-field" for="directorySort">Sort members
+          <select id="directorySort">
+            <option value="activity">Recently active</option>
+            <option value="firstName">First name A–Z</option>
+            <option value="lastName">Surname A–Z</option>
+            <option value="lastNameDesc">Surname Z–A</option>
+            <option value="verified">Verified identity first</option>
+          </select>
+        </label>
+        <label class="directory-field" for="directoryPresence">Availability
+          <select id="directoryPresence">
+            <option value="all">All members</option>
+            <option value="online">Online now</option>
+          </select>
+        </label>
+        <label class="directory-field" for="directoryIdentity">Identity check
+          <select id="directoryIdentity">
+            <option value="all">Any status</option>
+            <option value="verified">Verified</option>
+            <option value="unverified">Unverified</option>
+          </select>
+        </label>
+        <label class="directory-field" for="directoryEmail">Email address
+          <select id="directoryEmail">
+            <option value="all">Any status</option>
+            <option value="listed">Address on file</option>
+            <option value="missing">No address on file</option>
+          </select>
+        </label>
+      </section>
+      <div class="directory-toolbar">
+        <div class="directory-toolbar-actions">
+          <button class="directory-tool-btn" type="button" id="clearDirectoryFilters">Clear filters</button>
+          <button class="directory-tool-btn" type="button" id="refreshDirectory">↻ Refresh</button>
+        </div>
+        <div class="directory-view-actions" role="group" aria-label="Directory layout">
+          <button class="directory-tool-btn" type="button" id="gridViewBtn" aria-pressed="true">▦ Grid</button>
+          <button class="directory-tool-btn" type="button" id="listViewBtn" aria-pressed="false">☷ List</button>
+        </div>
+      </div>
+      <section class="directory-stats" aria-label="Directory statistics">
+        <div class="directory-stat"><strong id="totalMembersCount">—</strong><span>Public profiles</span></div>
+        <div class="directory-stat"><strong id="onlineMembersCount">—</strong><span>Online now</span></div>
+        <div class="directory-stat"><strong id="verifiedMembersCount">—</strong><span>Identity verified</span></div>
+      </section>
+      <div id="directorySummary" class="directory-summary" aria-live="polite"></div>
+      <div id="directoryStatus" class="directory-status" role="status" aria-live="polite">Loading directory…</div>
       <div id="directoryAuthPrompt" class="directory-auth-prompt" role="region" aria-label="Sign in required">
         <h2>Sign in to continue</h2>
         <p>You need to be signed in to view the member directory.</p>
         <a class="btn btn-primary" href="/login.html">Sign In</a>
       </div>
       <div id="directoryGrid" class="directory-grid" style="display:none"></div>
-    </main>
+      <div id="directoryEmpty" class="directory-empty" role="status" aria-live="polite">
+        <strong>No members found</strong>
+        Try a different search or remove one or more filters.
+      </div>
+    </main>ain>
     <footer class="resource-footer" role="contentinfo">
       <div class="container" style="text-align:center">
         <div style="margin-bottom:4px;color:var(--muted);font-size:0.95rem;">v.03 (Beta)</div><div style="margin-bottom:4px;color:var(--muted);font-size:0.9rem;"><a href="https://uk.ibrecruitment.com/terms.html">Terms</a> | <a href="https://uk.ibrecruitment.com/cookies.html">Cookies</a> | <a href="https://uk.ibrecruitment.com/privacy.html">Privacy</a></div>
@@ -171,136 +283,327 @@
   <script defer src="/page-transition.js"></script>
   <script>
     window.addEventListener('load', function () {
+      const status = document.getElementById('directoryStatus');
+      const authPrompt = document.getElementById('directoryAuthPrompt');
+      const grid = document.getElementById('directoryGrid');
+      const emptyState = document.getElementById('directoryEmpty');
+      const summary = document.getElementById('directorySummary');
+      const searchInput = document.getElementById('directorySearchInput');
+      const sortSelect = document.getElementById('directorySort');
+      const presenceSelect = document.getElementById('directoryPresence');
+      const identitySelect = document.getElementById('directoryIdentity');
+      const emailSelect = document.getElementById('directoryEmail');
+      const clearButton = document.getElementById('clearDirectoryFilters');
+      const refreshButton = document.getElementById('refreshDirectory');
+      const gridButton = document.getElementById('gridViewBtn');
+      const listButton = document.getElementById('listViewBtn');
+      const signOutBtn = document.getElementById('signOutBtn');
+      const signInLink = document.getElementById('signInLink');
+      const mailboxLink = document.getElementById('mailboxLink');
+      const totalCount = document.getElementById('totalMembersCount');
+      const onlineCount = document.getElementById('onlineMembersCount');
+      const verifiedCount = document.getElementById('verifiedMembersCount');
+      const DEFAULT_PUBLIC_IMAGE = '/100.png';
+      let db = null;
+      let allMembers = [];
+      let currentUid = '';
+      let currentView = 'grid';
+      let loading = false;
+
+      function validEmail(value) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim()); }
+      function nameOf(data) {
+        const first = String(data.firstName || '').trim();
+        const last = String(data.lastName || '').trim();
+        return (first + ' ' + last).trim() || 'Member';
+      }
+      function dateOf(value) {
+        if (!value) return null;
+        if (typeof value.toDate === 'function') {
+          const date = value.toDate();
+          return isNaN(date.getTime()) ? null : date;
+        }
+        if (value instanceof Date) return isNaN(value.getTime()) ? null : value;
+        const date = new Date(value);
+        return isNaN(date.getTime()) ? null : date;
+      }
+      function imageSource(value) {
+        if (typeof value !== 'string' || !value || value.length > 2500000) return DEFAULT_PUBLIC_IMAGE;
+        if (/^data:image\/(?:png|jpeg|jpg|webp|gif);base64,[a-z0-9+/=\s]+$/i.test(value)) return value;
+        if (value.charAt(0) === '/' && value.charAt(1) !== '/' && !value.includes('\\')) return value;
+        return DEFAULT_PUBLIC_IMAGE;
+      }
+      function makeElement(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined && text !== null) node.textContent = String(text);
+        return node;
+      }
+      function appendBio(container, value) {
+        const bio = String(value || '').trim();
+        if (!bio) {
+          container.textContent = 'This member has not added a bio yet.';
+          container.classList.add('bio-empty');
+          return;
+        }
+        const urlPattern = /(https?:\/\/[^\s]+)/gi;
+        let lastIndex = 0;
+        let match;
+        while ((match = urlPattern.exec(bio)) !== null) {
+          container.appendChild(document.createTextNode(bio.slice(lastIndex, match.index)));
+          let rawUrl = match[0];
+          let suffix = '';
+          while (/[),.!?;:]$/.test(rawUrl)) {
+            suffix = rawUrl.slice(-1) + suffix;
+            rawUrl = rawUrl.slice(0, -1);
+          }
+          try {
+            const parsed = new URL(rawUrl);
+            if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+              const link = makeElement('a', '', rawUrl);
+              link.href = parsed.href;
+              link.target = '_blank';
+              link.rel = 'noopener noreferrer';
+              container.appendChild(link);
+            } else container.appendChild(document.createTextNode(rawUrl));
+          } catch (error) {
+            container.appendChild(document.createTextNode(rawUrl));
+          }
+          if (suffix) container.appendChild(document.createTextNode(suffix));
+          lastIndex = match.index + match[0].length;
+        }
+        container.appendChild(document.createTextNode(bio.slice(lastIndex)));
+      }
+      function lastActiveDate(data) { return dateOf(data.lastLogin || data['Last Login']); }
+      function isOnline(data) {
+        const lastLogin = lastActiveDate(data);
+        if (data.incognito === true || !lastLogin) return false;
+        const age = Date.now() - lastLogin.getTime();
+        return age >= 0 && age <= 60 * 60 * 1000;
+      }
+      function showSignedOut() {
+        status.textContent = '';
+        status.style.display = 'none';
+        authPrompt.style.display = 'block';
+        grid.style.display = 'none';
+        emptyState.style.display = 'none';
+        summary.textContent = '';
+        signOutBtn.style.display = 'none';
+        if (mailboxLink) mailboxLink.style.display = 'none';
+        signInLink.style.display = 'inline-flex';
+        document.body.classList.remove('auth-pending', 'has-sidebar');
+      }
+      function buildCard(member) {
+        const data = member.data;
+        const name = nameOf(data);
+        const identityVerified = data.onfidoVerified === true;
+        const emailListed = validEmail(data.email);
+        const online = isOnline(data);
+        const card = makeElement('article', 'profile-card');
+        card.dataset.uid = member.uid;
+        card.dataset.search = (name + ' ' + String(data.bio || '')).toLocaleLowerCase();
+        card.dataset.firstName = String(data.firstName || '').trim().toLocaleLowerCase();
+        card.dataset.lastName = String(data.lastName || '').trim().toLocaleLowerCase();
+        card.dataset.online = String(online);
+        card.dataset.identityVerified = String(identityVerified);
+        card.dataset.emailListed = String(emailListed);
+        const person = makeElement('div', 'member-person');
+        const avatar = makeElement('img');
+        avatar.src = imageSource(data.imageDataUrl);
+        avatar.alt = name + ' profile photo';
+        avatar.loading = 'lazy';
+        avatar.decoding = 'async';
+        avatar.onerror = function () { avatar.onerror = null; avatar.src = DEFAULT_PUBLIC_IMAGE; };
+        person.appendChild(avatar);
+        const main = makeElement('div', 'member-main');
+        const nameRow = makeElement('div', 'name', name);
+        if (emailListed) {
+          const emailTick = makeElement('span', 'email-verified-tick', '✓');
+          emailTick.title = 'Email address on file';
+          emailTick.setAttribute('aria-label', 'Email address on file');
+          nameRow.appendChild(emailTick);
+        }
+        main.appendChild(nameRow);
+        const tags = makeElement('div', 'member-tags');
+        const identity = makeElement('span', 'member-badge' + (identityVerified ? ' identity-verified' : ''),
+          identityVerified ? 'Identity verified' : 'Identity unverified');
+        identity.setAttribute('aria-label', identityVerified ? 'Identity verification completed' : 'Identity not verified');
+        tags.appendChild(identity);
+        if (emailListed) tags.appendChild(makeElement('span', 'member-badge email-listed', 'Email on file'));
+        main.appendChild(tags);
+        if (online) {
+          const onlineTag = makeElement('div', 'online-status');
+          onlineTag.setAttribute('aria-label', 'Online now');
+          onlineTag.appendChild(makeElement('span', 'online-status-dot'));
+          onlineTag.appendChild(document.createTextNode('Online now'));
+          main.appendChild(onlineTag);
+        }
+        const bio = makeElement('div', 'bio');
+        appendBio(bio, data.bio);
+        main.appendChild(bio);
+        person.appendChild(main);
+        card.appendChild(person);
+        const actions = makeElement('div', 'member-actions');
+        const action = makeElement('a', 'member-action primary', member.uid === currentUid ? 'Edit profile' : '✉ Message');
+        action.href = member.uid === currentUid ? '/editprofile.html' : '/messages.html?to=' + encodeURIComponent(member.uid);
+        action.setAttribute('aria-label', member.uid === currentUid ? 'Edit your profile' : 'Send a direct message to ' + name);
+        actions.appendChild(action);
+        card.appendChild(actions);
+        return card;
+      }
+      function updateStatistics() {
+        totalCount.textContent = String(allMembers.length);
+        onlineCount.textContent = String(allMembers.filter(function (m) { return isOnline(m.data); }).length);
+        verifiedCount.textContent = String(allMembers.filter(function (m) { return m.data.onfidoVerified === true; }).length);
+      }
+      function renderDirectory() {
+        const query = String(searchInput.value || '').trim().toLocaleLowerCase();
+        const presence = presenceSelect.value;
+        const identity = identitySelect.value;
+        const email = emailSelect.value;
+        let filtered = allMembers.filter(function (member) {
+          const data = member.data;
+          const searchable = (nameOf(data) + ' ' + String(data.bio || '')).toLocaleLowerCase();
+          if (query && !searchable.includes(query)) return false;
+          if (presence === 'online' && !isOnline(data)) return false;
+          const verified = data.onfidoVerified === true;
+          if (identity === 'verified' && !verified) return false;
+          if (identity === 'unverified' && verified) return false;
+          const hasEmail = validEmail(data.email);
+          if (email === 'listed' && !hasEmail) return false;
+          if (email === 'missing' && hasEmail) return false;
+          return true;
+        });
+        function alpha(a, b, keyA, keyB) {
+          const first = String(a.data[keyA] || '').trim().localeCompare(String(b.data[keyA] || '').trim(), undefined, { sensitivity: 'base' });
+          return first || String(a.data[keyB] || '').trim().localeCompare(String(b.data[keyB] || '').trim(), undefined, { sensitivity: 'base' });
+        }
+        const sort = sortSelect.value;
+        if (sort === 'firstName') filtered.sort(function (a, b) { return alpha(a, b, 'firstName', 'lastName'); });
+        else if (sort === 'lastName') filtered.sort(function (a, b) { return alpha(a, b, 'lastName', 'firstName'); });
+        else if (sort === 'lastNameDesc') filtered.sort(function (a, b) { return -alpha(a, b, 'lastName', 'firstName'); });
+        else if (sort === 'verified') filtered.sort(function (a, b) {
+          return Number(b.data.onfidoVerified === true) - Number(a.data.onfidoVerified === true) ||
+            alpha(a, b, 'lastName', 'firstName');
+        });
+        else filtered.sort(function (a, b) {
+          return (lastActiveDate(b.data) ? lastActiveDate(b.data).getTime() : 0) -
+            (lastActiveDate(a.data) ? lastActiveDate(a.data).getTime() : 0) ||
+            alpha(a, b, 'lastName', 'firstName');
+        });
+        grid.replaceChildren();
+        grid.classList.toggle('list-view', currentView === 'list');
+        filtered.forEach(function (member) { grid.appendChild(buildCard(member)); });
+        grid.style.display = filtered.length ? (currentView === 'list' ? 'flex' : 'grid') : 'none';
+        emptyState.style.display = filtered.length ? 'none' : 'block';
+        summary.textContent = 'Showing ' + filtered.length + ' of ' + allMembers.length + ' public member' +
+          (allMembers.length === 1 ? '' : 's') + (query ? ' · Search: “' + String(searchInput.value).trim() + '”' : '');
+        if (!allMembers.length) {
+          emptyState.querySelector('strong').textContent = 'No public profiles yet';
+          emptyState.lastChild.textContent = ' Members who save their profile in Edit Profile will appear here.';
+        } else {
+          emptyState.querySelector('strong').textContent = 'No members match these filters';
+          emptyState.lastChild.textContent = ' Try a different search or remove one or more filters.';
+        }
+      }
+      function setView(view) {
+        currentView = view;
+        gridButton.setAttribute('aria-pressed', String(view === 'grid'));
+        listButton.setAttribute('aria-pressed', String(view === 'list'));
+        renderDirectory();
+      }
+      async function loadDirectory(user, forceRefresh) {
+        if (loading) return;
+        loading = true;
+        refreshButton.disabled = true;
+        refreshButton.textContent = 'Refreshing…';
+        status.style.display = 'block';
+        status.textContent = forceRefresh ? 'Refreshing directory…' : 'Loading directory…';
+        emptyState.style.display = 'none';
+        grid.style.display = 'none';
+        try {
+          let snapshot;
+          try {
+            snapshot = await db.collection('publicProfiles').where('isPublic', '==', true).get();
+          } catch (firstError) {
+            if (!firstError || firstError.code !== 'permission-denied') throw firstError;
+            await user.getIdToken(true);
+            snapshot = await db.collection('publicProfiles').where('isPublic', '==', true).get();
+          }
+          allMembers = snapshot.docs.map(function (doc) {
+            return { uid: doc.id, data: doc.data() || {} };
+          }).filter(function (member) {
+            return member.data.isPublic === true && !!member.uid;
+          });
+          updateStatistics();
+          status.textContent = '';
+          status.style.display = 'none';
+          renderDirectory();
+        } catch (error) {
+          console.error('Member directory Firestore query failed:', error);
+          status.style.display = 'block';
+          status.textContent = error && error.code === 'permission-denied'
+            ? 'Your session is not authorised to view the member directory. Please sign out and sign in again. If the problem continues, check the Firestore rules for publicProfiles.'
+            : 'Failed to load directory. Check your connection and try again.';
+          grid.style.display = 'none';
+          summary.textContent = '';
+          allMembers = [];
+          updateStatistics();
+        } finally {
+          loading = false;
+          refreshButton.disabled = false;
+          refreshButton.textContent = '↻ Refresh';
+        }
+      }
       if (!window.firebase || !window.firebaseConfig) {
-        document.getElementById('directoryStatus').textContent = 'Unable to initialise the directory.';
-        console.error('Firebase SDK/config unavailable.');
+        status.textContent = 'Unable to initialise the directory. Please refresh the page.';
         return;
       }
       try {
         if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
-      } catch (e) {
-        console.error('Firebase initialisation failed:', e);
-        document.getElementById('directoryStatus').textContent = 'Unable to initialise the directory.';
+      } catch (error) {
+        console.error('Firebase initialisation failed:', error);
+        status.textContent = 'Unable to initialise the directory. Please refresh the page.';
         return;
       }
       const auth = firebase.auth();
-      const db = firebase.firestore();
-      const DEFAULT_PUBLIC_IMAGE = '/100.png';
-      const directoryStatus = document.getElementById('directoryStatus');
-      const directoryGrid = document.getElementById('directoryGrid');
-      const directoryAuthPrompt = document.getElementById('directoryAuthPrompt');
-      const signOutBtn = document.getElementById('signOutBtn');
-      const signInLink = document.getElementById('signInLink');
-      const mailboxLink = document.getElementById('mailboxLink');
-      function showSignedOut() {
-        directoryStatus.textContent = '';
-        directoryStatus.style.display = 'none';
-        directoryAuthPrompt.style.display = 'block';
-        directoryGrid.style.display = 'none';
-        signOutBtn.style.display = 'none';
-        if (mailboxLink) mailboxLink.style.display = 'none';
-        signInLink.style.display = 'inline-flex';
-        document.body.classList.remove('auth-pending','has-sidebar');
-      }
-      async function showSignedIn(user) {
-        directoryStatus.style.display = 'block';
-        directoryStatus.textContent = 'Loading directory...';
-        directoryAuthPrompt.style.display = 'none';
-        directoryGrid.style.display = 'grid';
+      db = firebase.firestore();
+      document.getElementById('directorySearchForm').addEventListener('submit', function (event) { event.preventDefault(); });
+      searchInput.addEventListener('input', renderDirectory);
+      sortSelect.addEventListener('change', renderDirectory);
+      presenceSelect.addEventListener('change', renderDirectory);
+      identitySelect.addEventListener('change', renderDirectory);
+      emailSelect.addEventListener('change', renderDirectory);
+      clearButton.addEventListener('click', function () {
+        searchInput.value = '';
+        sortSelect.value = 'activity';
+        presenceSelect.value = 'all';
+        identitySelect.value = 'all';
+        emailSelect.value = 'all';
+        renderDirectory();
+        searchInput.focus();
+      });
+      refreshButton.addEventListener('click', function () {
+        if (auth.currentUser) loadDirectory(auth.currentUser, true);
+      });
+      gridButton.addEventListener('click', function () { setView('grid'); });
+      listButton.addEventListener('click', function () { setView('list'); });
+      if (signOutBtn) signOutBtn.addEventListener('click', function () { auth.signOut(); });
+      auth.onAuthStateChanged(async function (user) {
+        if (!user) {
+          allMembers = [];
+          updateStatistics();
+          showSignedOut();
+          return;
+        }
+        currentUid = user.uid;
+        authPrompt.style.display = 'none';
         signOutBtn.style.display = 'inline-flex';
         if (mailboxLink) mailboxLink.style.display = 'inline-flex';
         signInLink.style.display = 'none';
         document.body.classList.remove('auth-pending');
         document.body.classList.add('has-sidebar');
-        try {
-          const snap = await db.collection('publicProfiles').where('isPublic', '==', true).get();
-          if (snap.empty) {
-            directoryStatus.textContent = 'No member profiles found.';
-            directoryGrid.innerHTML = '';
-            return;
-          }
-          directoryStatus.textContent = '';
-          directoryGrid.innerHTML = '';
-          snap.forEach(doc => {
-            const data = doc.data() || {};
-            const img = data.imageDataUrl || DEFAULT_PUBLIC_IMAGE;
-            const name = (data.firstName || '') + ' ' + (data.lastName || '');
-            const emailVerified = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.email || '').trim());
-            const onfidoVerified = data.onfidoVerified === true;
-            const onfidoUnverified = data.onfidoVerified !== true;
-            const safeName = name || data.email || 'Member';
-            const nameMarkup = `${safeName}${emailVerified ? ' <span class="email-verified-tick" title="Email verified" aria-label="Email verified">✓</span>' : ''}`;
-            const verifiedMarkup = onfidoVerified
-              ? '<div class="onfido-verified-tag" aria-label="Identity verified">Verified</div>'
-              : (onfidoUnverified ? '<div class="onfido-unverified-tag" aria-label="Identity not verified">Unverified</div>' : '');
-            let bio = data.bio || '';
-            bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
-            const card = document.createElement('div');
-            card.className = 'profile-card';
-
-            const lastLoginValue = data.lastLogin || data['Last Login'];
-            let lastLoginDate = null;
-            if (lastLoginValue && typeof lastLoginValue.toDate === 'function') {
-              lastLoginDate = lastLoginValue.toDate();
-            } else if (lastLoginValue instanceof Date) {
-              lastLoginDate = lastLoginValue;
-            } else if (lastLoginValue) {
-              const parsed = new Date(lastLoginValue);
-              if (!isNaN(parsed.getTime())) lastLoginDate = parsed;
-            }
-
-            const loginAge = lastLoginDate ? Date.now() - lastLoginDate.getTime() : Infinity;
-            const isIncognito = data.incognito === true;
-            const isOnlineNow = !isIncognito && loginAge >= 0 && loginAge <= 60 * 60 * 1000;
-            const onlineMarkup = isOnlineNow
-              ? '<div class="online-status" aria-label="Online Now"><span class="online-status-dot" aria-hidden="true"></span>Online Now</div>'
-              : '';
-
-            card.innerHTML = `
-              <img src="${img}" alt="${safeName} profile photo">
-              <div class="name">${nameMarkup}</div>
-              ${verifiedMarkup}
-              ${onlineMarkup}
-              <div class="bio">${bio}</div>
-            `;
-            directoryGrid.appendChild(card);
-          });
-        } catch (err) {
-          console.error('Member directory Firestore query failed:', err);
-          if (err && err.code === 'permission-denied') {
-            directoryStatus.textContent = 'Your session is not authorised to view the member directory. Please sign out and sign in again.';
-          } else {
-            directoryStatus.textContent = 'Failed to load directory. Please try again shortly.';
-          }
-        }
-      }
-      auth.onAuthStateChanged(async (user) => {
-        if (!user) { showSignedOut(); return; }
-        await showSignedIn(user);
+        await loadDirectory(user, false);
       });
-      if (signOutBtn) signOutBtn.addEventListener('click', () => auth.signOut());
-      function filterDirectoryCards(query) {
-        const q = String(query || '').trim().toLowerCase();
-        const cards = Array.from(directoryGrid.children);
-        let visible = 0;
-        cards.forEach(card => {
-          const name = (card.querySelector('.name')?.textContent || '').toLowerCase();
-          const bio = (card.querySelector('.bio')?.textContent || '').toLowerCase();
-          if (!q || name.includes(q) || bio.includes(q)) {
-            card.style.display = '';
-            visible++;
-          } else {
-            card.style.display = 'none';
-          }
-        });
-        directoryStatus.textContent = visible === 0 ? 'No members match your search.' : '';
-      }
-      const searchInput = document.getElementById('directorySearchInput');
-      if (searchInput) {
-        searchInput.addEventListener('input', function() {
-          filterDirectoryCards(searchInput.value);
-        });
-      }
     });
   </script>
 </body>

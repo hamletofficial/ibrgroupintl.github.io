@@ -459,11 +459,8 @@
             // Incognito requires a saved member profile. Do not create a partial
             // publicProfiles document just to store this privacy preference.
             const profileData = profileSnapshot.exists ? profileSnapshot.data() : {};
-            const hasSavedProfile = !!profileSnapshot.exists && (
-              profileData.profileSaved === true ||
-              profileData.profileComplete === true ||
-              profileData.publicProfile === true
-            );
+            // Edit Profile marks a successfully saved directory profile with isPublic: true.
+            const hasSavedProfile = !!profileSnapshot.exists && profileData.isPublic === true;
 
             if (!currentlyIncognito && !hasSavedProfile) {
               if (incognitoStatus) {

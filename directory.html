@@ -153,6 +153,11 @@
       .directory-grid.list-view .member-actions{width:100%;justify-content:flex-start;padding-left:0}
     }
     @media(max-width:380px){.directory-controls{grid-template-columns:1fr}}
+
+    .directory-pagination{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin:1.2rem 0 2rem;padding:.8rem;border:1px solid #dbe3ee;border-radius:12px;background:#f8fbff;color:#475569;font-size:.88rem}
+    .directory-pagination-group{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap}
+    .directory-pagination select{min-height:36px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:.35rem .5rem;color:#0f172a;font:inherit}
+    .directory-pagination .directory-tool-btn{min-height:36px;padding:.4rem .65rem}
 </style>
 </head>
 <body class="auth-pending">
@@ -266,6 +271,24 @@
         <strong>No members found</strong>
         Try a different search or remove one or more filters.
       </div>
+      <div id="directoryPagination" class="directory-pagination" style="display:none" aria-label="Directory pagination">
+        <div class="directory-pagination-group">
+          <label for="directoryPageSize">Show</label>
+          <select id="directoryPageSize" aria-label="Members per page">
+            <option value="12" selected>12</option>
+            <option value="24">24</option>
+            <option value="48">48</option>
+          </select>
+          <span>per page</span>
+        </div>
+        <div class="directory-pagination-group">
+          <button class="directory-tool-btn" type="button" id="directoryFirstPage">« First</button>
+          <button class="directory-tool-btn" type="button" id="directoryPreviousPage">Previous</button>
+          <span id="directoryPageIndicator" aria-live="polite">Page 1 of 1</span>
+          <button class="directory-tool-btn" type="button" id="directoryNextPage">Next</button>
+          <button class="directory-tool-btn" type="button" id="directoryLastPage">Last »</button>
+        </div>
+      </div>
     </main>ain>
     <footer class="resource-footer" role="contentinfo">
       <div class="container" style="text-align:center">
@@ -303,11 +326,19 @@
       const totalCount = document.getElementById('totalMembersCount');
       const onlineCount = document.getElementById('onlineMembersCount');
       const verifiedCount = document.getElementById('verifiedMembersCount');
+      const pagination = document.getElementById('directoryPagination');
+      const pageSizeSelect = document.getElementById('directoryPageSize');
+      const pageIndicator = document.getElementById('directoryPageIndicator');
+      const firstPageButton = document.getElementById('directoryFirstPage');
+      const previousPageButton = document.getElementById('directoryPreviousPage');
+      const nextPageButton = document.getElementById('directoryNextPage');
+      const lastPageButton = document.getElementById('directoryLastPage');
       const DEFAULT_PUBLIC_IMAGE = '/100.png';
       let db = null;
       let allMembers = [];
       let currentUid = '';
       let currentView = 'grid';
+      let currentPage = 1;
       let loading = false;
 
       function validEmail(value) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim()); }
@@ -490,13 +521,25 @@
             (lastActiveDate(a.data) ? lastActiveDate(a.data).getTime() : 0) ||
             alpha(a, b, 'lastName', 'firstName');
         });
+        const pageSize = Math.max(1, Number(pageSizeSelect.value) || 12);
+        const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
+        currentPage = Math.min(Math.max(1, currentPage), pageCount);
+        const startIndex = (currentPage - 1) * pageSize;
+        const visibleMembers = filtered.slice(startIndex, startIndex + pageSize);
         grid.replaceChildren();
         grid.classList.toggle('list-view', currentView === 'list');
-        filtered.forEach(function (member) { grid.appendChild(buildCard(member)); });
-        grid.style.display = filtered.length ? (currentView === 'list' ? 'flex' : 'grid') : 'none';
+        visibleMembers.forEach(function (member) { grid.appendChild(buildCard(member)); });
+        grid.style.display = visibleMembers.length ? (currentView === 'list' ? 'flex' : 'grid') : 'none';
         emptyState.style.display = filtered.length ? 'none' : 'block';
-        summary.textContent = 'Showing ' + filtered.length + ' of ' + allMembers.length + ' public member' +
-          (allMembers.length === 1 ? '' : 's') + (query ? ' · Search: “' + String(searchInput.value).trim() + '”' : '');
+        pagination.style.display = filtered.length > pageSize ? 'flex' : 'none';
+        pageIndicator.textContent = 'Page ' + currentPage + ' of ' + pageCount;
+        firstPageButton.disabled = previousPageButton.disabled = currentPage <= 1;
+        nextPageButton.disabled = lastPageButton.disabled = currentPage >= pageCount;
+        const rangeStart = filtered.length ? startIndex + 1 : 0;
+        const rangeEnd = Math.min(startIndex + pageSize, filtered.length);
+        summary.textContent = 'Showing ' + rangeStart + '–' + rangeEnd + ' of ' + filtered.length +
+          ' matching member' + (filtered.length === 1 ? '' : 's') + ' (' + allMembers.length + ' public total)' +
+          (query ? ' · Search: “' + String(searchInput.value).trim() + '”' : '');
         if (!allMembers.length) {
           emptyState.querySelector('strong').textContent = 'No public profiles yet';
           emptyState.lastChild.textContent = ' Members who save their profile in Edit Profile will appear here.';
@@ -568,17 +611,29 @@
       const auth = firebase.auth();
       db = firebase.firestore();
       document.getElementById('directorySearchForm').addEventListener('submit', function (event) { event.preventDefault(); });
-      searchInput.addEventListener('input', renderDirectory);
-      sortSelect.addEventListener('change', renderDirectory);
-      presenceSelect.addEventListener('change', renderDirectory);
-      identitySelect.addEventListener('change', renderDirectory);
-      emailSelect.addEventListener('change', renderDirectory);
+      function resetToFirstPageAndRender() { currentPage = 1; renderDirectory(); }
+      searchInput.addEventListener('input', resetToFirstPageAndRender);
+      sortSelect.addEventListener('change', resetToFirstPageAndRender);
+      presenceSelect.addEventListener('change', resetToFirstPageAndRender);
+      identitySelect.addEventListener('change', resetToFirstPageAndRender);
+      emailSelect.addEventListener('change', resetToFirstPageAndRender);
+      pageSizeSelect.addEventListener('change', resetToFirstPageAndRender);
+      firstPageButton.addEventListener('click', function () { currentPage = 1; renderDirectory(); });
+      previousPageButton.addEventListener('click', function () { currentPage = Math.max(1, currentPage - 1); renderDirectory(); });
+      nextPageButton.addEventListener('click', function () { currentPage += 1; renderDirectory(); });
+      lastPageButton.addEventListener('click', function () {
+        const count = Math.max(1, Math.ceil(allMembers.length / (Number(pageSizeSelect.value) || 12)));
+        currentPage = count;
+        renderDirectory();
+      });
       clearButton.addEventListener('click', function () {
         searchInput.value = '';
         sortSelect.value = 'activity';
         presenceSelect.value = 'all';
         identitySelect.value = 'all';
         emailSelect.value = 'all';
+        pageSizeSelect.value = '12';
+        currentPage = 1;
         renderDirectory();
         searchInput.focus();
       });

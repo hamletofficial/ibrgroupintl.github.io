@@ -369,6 +369,7 @@
       const DEFAULT_PUBLIC_IMAGE = '/100.png';
       let db = null;
       let allMembers = [];
+      let pinnedMember = null;
       let currentUid = '';
       let currentView = 'grid';
       let currentPage = 1;
@@ -556,7 +557,12 @@
         const presence = presenceSelect.value;
         const identity = identitySelect.value;
         const email = emailSelect.value;
+        // Keep the authenticated member pinned independently of the active filters and sort order.
+        const ownMember = pinnedMember || allMembers.find(function (member) {
+          return member.uid === currentUid;
+        }) || null;
         let filtered = allMembers.filter(function (member) {
+          if (member.uid === currentUid) return false;
           const data = member.data;
           const searchable = (nameOf(data) + ' ' + String(data.bio || '')).toLocaleLowerCase();
           if (query && !searchable.includes(query)) return false;
@@ -590,7 +596,8 @@
         const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
         currentPage = Math.min(Math.max(1, currentPage), pageCount);
         const startIndex = (currentPage - 1) * pageSize;
-        const visibleMembers = filtered.slice(startIndex, startIndex + pageSize);
+        const pageMembers = filtered.slice(startIndex, startIndex + pageSize);
+        const visibleMembers = ownMember ? [ownMember].concat(pageMembers) : pageMembers;
         grid.replaceChildren();
         grid.classList.toggle('list-view', currentView === 'list');
         visibleMembers.forEach(function (member) { grid.appendChild(buildCard(member)); });
@@ -602,14 +609,21 @@
         nextPageButton.disabled = lastPageButton.disabled = currentPage >= pageCount;
         const rangeStart = filtered.length ? startIndex + 1 : 0;
         const rangeEnd = Math.min(startIndex + pageSize, filtered.length);
-        summary.textContent = 'Showing ' + rangeStart + '–' + rangeEnd + ' of ' + filtered.length +
+        summary.textContent = (ownMember ? 'Your profile is pinned first · ' : '') +
+          'Showing ' + rangeStart + '–' + rangeEnd + ' of ' + filtered.length +
           ' matching member' + (filtered.length === 1 ? '' : 's') + ' (' + allMembers.length + ' public total)' +
           (query ? ' · Search: “' + String(searchInput.value).trim() + '”' : '');
-        if (!allMembers.length) {
+        const otherPublicMembers = allMembers.filter(function (member) {
+          return member.uid !== currentUid;
+        });
+        if (!otherPublicMembers.length && !ownMember) {
           emptyState.querySelector('strong').textContent = 'No public profiles yet';
           emptyState.lastChild.textContent = ' Members who save their profile in Edit Profile will appear here.';
+        } else if (!otherPublicMembers.length) {
+          emptyState.querySelector('strong').textContent = 'No other public profiles yet';
+          emptyState.lastChild.textContent = ' Your profile remains pinned first. Other members will appear here when they save a public profile.';
         } else {
-          emptyState.querySelector('strong').textContent = 'No members match these filters';
+          emptyState.querySelector('strong').textContent = 'No other members match these filters';
           emptyState.lastChild.textContent = ' Try a different search or remove one or more filters.';
         }
       }
@@ -642,6 +656,19 @@
           }).filter(function (member) {
             return member.data.isPublic === true && !!member.uid;
           });
+          // Prefer the public directory entry; if the signed-in member's profile is not public,
+          // try loading their own document so their card can still be pinned for their session.
+          pinnedMember = allMembers.find(function (member) { return member.uid === user.uid; }) || null;
+          if (!pinnedMember && user.uid) {
+            try {
+              const ownProfileSnapshot = await db.collection('publicProfiles').doc(user.uid).get();
+              if (ownProfileSnapshot.exists) {
+                pinnedMember = { uid: ownProfileSnapshot.id, data: ownProfileSnapshot.data() || {} };
+              }
+            } catch (ownProfileError) {
+              // A missing/privately protected own profile must not prevent the public directory loading.
+            }
+          }
           updateStatistics();
           status.textContent = '';
           status.style.display = 'none';
@@ -655,6 +682,7 @@
           grid.style.display = 'none';
           summary.textContent = '';
           allMembers = [];
+          pinnedMember = null;
           updateStatistics();
         } finally {
           loading = false;
@@ -711,6 +739,8 @@
       auth.onAuthStateChanged(async function (user) {
         if (!user) {
           allMembers = [];
+          pinnedMember = null;
+          currentUid = '';
           updateStatistics();
           showSignedOut();
           return;

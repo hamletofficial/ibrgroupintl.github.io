@@ -506,33 +506,6 @@
         presenceTag.appendChild(document.createTextNode(online ? 'Online now' : 'Offline'));
         presenceMethodRow.appendChild(presenceTag);
         const signInMethod = String(data.signInMethod || '').trim();
-        const signInProviders = {
-          'Facebook': { src: 'https://cdn.simpleicons.org/facebook/0866FF', alt: 'Facebook' },
-          'Google': { src: 'https://cdn.simpleicons.org/google/4285F4', alt: 'Google' },
-          'LinkedIn': { src: 'https://cdn.simpleicons.org/linkedin/0A66C2', alt: 'LinkedIn' },
-          'Apple': { src: 'https://cdn.simpleicons.org/apple/000000', alt: 'Apple' },
-          'X': { src: 'https://cdn.simpleicons.org/x/000000', alt: 'X' }
-        };
-        const signInProvider = signInProviders[signInMethod];
-        if (signInProvider) {
-          const signInIcon = makeElement('img', 'signin-method-icon');
-          signInIcon.src = signInProvider.src;
-          signInIcon.alt = signInProvider.alt + ' sign-in';
-          signInIcon.title = 'Joined using ' + signInProvider.alt;
-          signInIcon.width = 19;
-          signInIcon.height = 19;
-          signInIcon.loading = 'lazy';
-          signInIcon.decoding = 'async';
-          signInIcon.onerror = function () {
-            signInIcon.onerror = null;
-            signInIcon.style.display = 'none';
-          };
-          const signInTag = makeElement('span', 'signin-method-tag');
-          signInTag.title = 'Joined using ' + signInProvider.alt;
-          signInTag.setAttribute('aria-label', 'Joined using ' + signInProvider.alt);
-          signInTag.appendChild(signInIcon);
-          presenceMethodRow.appendChild(signInTag);
-        }
         main.appendChild(presenceMethodRow);
         const bio = makeElement('div', 'bio');
         appendBio(bio, data.bio);

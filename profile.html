@@ -43,8 +43,6 @@ try{
 const snap=await db.collection('publicProfiles').doc(uid).get();
 if(!snap.exists){message('Profile not found','This member has not saved a profile or it is no longer available.',false);return}
 const d=snap.data()||{};
-activeProfileUid=uid;
-if(uid===user.uid){photoEditor.style.display='block'}else{photoEditor.style.display='none'}
 if(d.isPublic!==true){message('Profile unavailable',uid===user.uid?'Your profile is not listed publicly. Visit Edit Profile to publish it.':'This member has chosen not to display a public profile.',false);if(uid===user.uid){const a=document.createElement('a');a.className='btn btn-primary';a.href='/editprofile.html';a.textContent='Edit Profile';status.append(a)}return}
 const name=[d.firstName,d.lastName].filter(v=>typeof v==='string'&&v.trim()).map(v=>v.trim()).join(' ')||'IBR Member';
 document.getElementById('name').textContent=name;document.getElementById('subtitle').textContent=uid===user.uid?'Your member profile':'Impact in Business Recruitment member';document.getElementById('bio').textContent=typeof d.bio==='string'&&d.bio.trim()?d.bio.trim():'No biography has been added yet.';

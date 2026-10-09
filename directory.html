@@ -474,7 +474,10 @@
         avatar.onerror = function () { avatar.onerror = null; avatar.src = DEFAULT_PUBLIC_IMAGE; };
         person.appendChild(avatar);
         const main = makeElement('div', 'member-main');
-        const nameRow = makeElement('div', 'name', name);
+        const nameRow = makeElement('a', 'name', name);
+        nameRow.href = '/profile.html?uid=' + encodeURIComponent(member.uid);
+        nameRow.style.textDecoration = 'none';
+        nameRow.setAttribute('aria-label', 'View profile for ' + name);
         if (emailListed) {
           const emailTick = makeElement('span', 'email-verified-tick', '✓');
           emailTick.title = 'Email address on file';

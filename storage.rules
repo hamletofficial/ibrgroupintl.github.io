@@ -1,10 +1,45 @@
 rules_version = '2';
 
-// Craft rules based on data in your Firestore database
-// allow write: if firestore.get(
-//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
 service firebase.storage {
   match /b/{bucket}/o {
+    // Message files are accessible only to authenticated participants in the
+    // corresponding Firestore directMessages record.
+    match /messageAttachments/{messageId}/{fileId}/{fileName} {
+      function messageDoc() {
+        return firestore.get(/databases/(default)/documents/directMessages/$(messageId));
+      }
+      function isParticipant() {
+        return request.auth != null
+          && messageDoc().data.participants is list
+          && request.auth.uid in messageDoc().data.participants;
+      }
+      allow read: if isParticipant();
+      allow create: if request.auth != null
+        && messageDoc().data.senderUid == request.auth.uid
+        && request.resource.size <= 2 * 1024 * 1024
+        && request.resource.contentType in [
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/vnd.ms-word.document.macroEnabled.12',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+          'application/vnd.ms-word.template.macroEnabled.12',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'application/vnd.ms-excel.sheet.macroEnabled.12',
+          'application/vnd.ms-excel.sheet.binary.macroEnabled.12',
+          'application/vnd.ms-excel.template.macroEnabled.12',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
+          'text/csv',
+          'application/csv',
+          'application/rtf',
+          'text/rtf'
+        ]
+        && request.resource.name.matches('.*\\.(pdf|doc|docx|docm|dot|dotx|dotm|xls|xlsx|xlsm|xlsb|xlt|xltx|xltm|csv|rtf)$');
+      allow update: if false;
+      allow delete: if request.auth != null
+        && messageDoc().data.senderUid == request.auth.uid;
+    }
     match /{allPaths=**} {
       allow read, write: if false;
     }

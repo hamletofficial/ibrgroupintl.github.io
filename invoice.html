@@ -25,6 +25,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <style>
 	:root { --payment-bg:#f4f7f2; --payment-ink:#17342e; --payment-muted:#53645f; --payment-green:#146b59; --payment-light:#43a18a; --payment-line:#d4e2da; --payment-font:'DM Sans','Segoe UI',Arial,sans-serif; }
@@ -139,7 +140,8 @@
     body { color:#0f172a; background:#ffffff!important; font-family:'Open Sans',Arial,sans-serif; }
     .page-wrapper { width:100%; max-width:1920px; min-height:100vh; margin:0 auto; background:#fff; box-shadow:0 0 20px rgba(0,0,0,.1); }
     .resource-nav { background:#071D4A!important; border-bottom:1px solid #071D4A!important; }
-    .auth-profile-chip { display:flex; align-items:center; gap:9px; color:#fff; }
+    .auth-profile-chip { display:flex; align-items:center; gap:9px; color:#fff; min-width:0; }
+    .auth-profile-name { color:#fff; font-size:.92rem; font-weight:600; line-height:1.2; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .auth-profile-photo { width:34px; height:34px; object-fit:cover; border-radius:50%; border:1px solid rgba(255,255,255,.35); }
     .mail-header-icon { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:9px; color:#fff; text-decoration:none; font-size:1.15rem; }
     .mail-header-icon:hover,.mail-header-icon:focus-visible { background:rgba(255,255,255,.14); }
@@ -290,11 +292,32 @@
 	  try {
 		if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
 
-		firebase.auth().onAuthStateChanged(function (user) {
+		firebase.auth().onAuthStateChanged(async function (user) {
 		  var isAuthenticated = !!user;
           var signInLink = document.getElementById("signInLink");
           if (signInLink) signInLink.style.display = isAuthenticated ? "none" : "inline-flex";
           signOutBtn.style.display = isAuthenticated ? "inline-flex" : "none";
+          var profileName = document.querySelector('[data-auth-name]');
+          var profilePhoto = document.querySelector('[data-auth-photo]');
+          if (profileName) profileName.textContent = user ? (user.displayName || '') : '';
+          if (profilePhoto && user && user.photoURL) profilePhoto.src = user.photoURL;
+          if (user && window.firebase && firebase.firestore) {
+            try {
+              // Member profile details are stored under the authenticated UID in publicProfiles.
+              var profileSnapshot = await firebase.firestore().collection('publicProfiles').doc(user.uid).get();
+              if (profileSnapshot.exists) {
+                var profileData = profileSnapshot.data() || {};
+                var firstName = String(profileData.firstName || '').trim();
+                var lastName = String(profileData.lastName || '').trim();
+                var savedName = (firstName + ' ' + lastName).trim();
+                if (profileName) profileName.textContent = savedName || String(profileData.displayName || profileData.name || user.displayName || '');
+                var savedPhoto = profileData.imageDataUrl || profileData.photoURL || profileData.photoUrl || '';
+                if (profilePhoto && typeof savedPhoto === 'string' && savedPhoto) profilePhoto.src = savedPhoto;
+              }
+            } catch (profileError) {
+              console.warn('Unable to load the signed-in member profile for the invoice header:', profileError);
+            }
+          }
 		  var paymentContent = document.getElementById('invoicePaymentContent');
 		  var authPrompt = document.getElementById('invoiceAuthPrompt');
 		  var stripeContainer = document.getElementById('stripePricingTableContainer');

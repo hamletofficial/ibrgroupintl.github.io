@@ -35,7 +35,8 @@ service cloud.firestore {
         && request.resource.data.pinnedBy is list
         && request.resource.data.readBy is list;
 
-      allow delete: if false;
+      allow delete: if request.auth != null
+        && resource.data.senderUid == request.auth.uid;
     }
 
     match /insightsFeed/{insightId} {

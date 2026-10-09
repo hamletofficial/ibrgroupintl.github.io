@@ -34,6 +34,9 @@
     .onfido-verified-tag { display:inline-flex; align-items:center; justify-content:center; margin:0 0 .65rem; padding:4px 9px; border-radius:999px; background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; font-size:.76rem; font-weight:800; letter-spacing:.01em; }
     .onfido-unverified-tag { display:inline-flex; align-items:center; justify-content:center; margin:0 0 .65rem; padding:4px 9px; border-radius:999px; background:transparent; color:#64748b; border:1px solid #94a3b8; font-size:.76rem; font-weight:800; letter-spacing:.01em; }
     .profile-card .bio { color: #475569; font-size: 1.01rem; margin-bottom: 0.7rem; text-align: center; min-height: 2.5em; max-width: 90%; line-height: 1.5; }
+    .presence-method-row { display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin:0 0 .7rem; }
+    .presence-method-row .online-status { margin:0; }
+    .signin-method-tag { display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border:1px solid #d1d5db; border-radius:999px; color:#4b5563; background:#f3f4f6; font-size:.78rem; font-weight:700; line-height:1.5; }
     .online-status { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 0.7rem; color: #16a34a; font-size: 0.9rem; font-weight: 700; }
     .message-member-btn{display:inline-flex;align-items:center;justify-content:center;margin-top:auto;width:42px;height:42px;border:1px solid #0284c7;border-radius:10px;background:#fff;color:#0284c7;text-decoration:none;font-size:1.15rem;transition:background-color .2s,color .2s,transform .2s}.message-member-btn:hover,.message-member-btn:focus-visible{background:#0284c7;color:#fff;transform:translateY(-1px)}
     .online-status-dot { width: 9px; height: 9px; border-radius: 50%; background: #22c55e; display: inline-block; box-shadow: 0 0 0 2px rgba(34,197,94,.12); }
@@ -485,11 +488,18 @@
         tags.appendChild(identity);
         if (emailListed) tags.appendChild(makeElement('span', 'member-badge email-listed', 'Email on file'));
         main.appendChild(tags);
+        const presenceMethodRow = makeElement('div', 'presence-method-row');
         const presenceTag = makeElement('div', 'online-status' + (online ? '' : ' offline-status'));
         presenceTag.setAttribute('aria-label', online ? 'Online now' : 'Offline');
         presenceTag.appendChild(makeElement('span', 'online-status-dot'));
         presenceTag.appendChild(document.createTextNode(online ? 'Online now' : 'Offline'));
-        main.appendChild(presenceTag);
+        presenceMethodRow.appendChild(presenceTag);
+        const signInMethod = String(data.signInMethod || '').trim();
+        const signInTag = makeElement('span', 'signin-method-tag', signInMethod ? 'Sign-in: ' + signInMethod : 'Sign-in: Not recorded');
+        signInTag.title = signInMethod ? 'Most recent sign-in method recorded by Firebase' : 'Sign-in method will appear after the user next signs in';
+        signInTag.setAttribute('aria-label', signInTag.textContent);
+        presenceMethodRow.appendChild(signInTag);
+        main.appendChild(presenceMethodRow);
         const bio = makeElement('div', 'bio');
         appendBio(bio, data.bio);
         main.appendChild(bio);

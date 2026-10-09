@@ -236,7 +236,7 @@
             meta += insight.source;
           }
           return `<div class="insight-card">
-            <h2>${insight.title || 'Untitled'}</h2>
+            <h2>🔔 ${insight.title || 'Untitled'}</h2>
             <div class="insight-meta">${meta}</div>
             <div class="insight-tags">${(insight.tags || []).map(tag => `<span class="insight-tag${['ESG','Energy','Real Estate'].includes(tag) ? ' priority' : ''}">${tag}</span>`).join('')}</div>
             <div class="insight-snippet">${insight.snippet || ''}</div>

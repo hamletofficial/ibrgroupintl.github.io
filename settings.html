@@ -233,14 +233,14 @@
         settingsUserEmail.textContent = user.email || 'Not available';
         settingsUserId.textContent = user.uid || '-';
         settingsDateJoined.textContent = user.metadata && user.metadata.creationTime
-          ? new Date(user.metadata.creationTime).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
+          ? new Date(user.metadata.creationTime).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
           : 'Not available';
         settingsLastLogin.textContent = user.metadata && user.metadata.lastSignInTime
-          ? new Date(user.metadata.lastSignInTime).toLocaleString('en-US', {
+          ? new Date(user.metadata.lastSignInTime).toLocaleString('en-GB', {
               timeZone: 'Europe/London',
-              year: 'numeric',
-              month: 'long',
               day: 'numeric',
+              month: 'long',
+              year: 'numeric',
               hour: 'numeric',
               minute: '2-digit',
               hour12: true,

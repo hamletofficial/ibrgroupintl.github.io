@@ -231,7 +231,9 @@
         settingsDateJoined.textContent = user.metadata && user.metadata.creationTime
           ? new Date(user.metadata.creationTime).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
           : 'Not available';
-        settingsLastLogin.textContent = user.metadata && user.metadata.lastSignInTime ? new Date(user.metadata.lastSignInTime).toLocaleString() : '-';
+        settingsLastLogin.textContent = user.metadata && user.metadata.lastSignInTime
+          ? new Date(user.metadata.lastSignInTime).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
+          : '-';
         updateMfaUi(user);
 
         try {

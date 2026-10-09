@@ -115,22 +115,22 @@
   </style>
   <link rel="stylesheet" href="/page-transition.css">
   <style>
-    /* Keep the shared royal-blue header fixed above the member side menu. */
-    .page-wrapper { display:flex; flex-direction:column; padding-top:68px; }
-    .resource-nav { position:fixed!important; top:0; left:0; right:0; width:100%; z-index:1200!important; background:#071D4A!important; border-bottom:1px solid #071D4A!important; }
-    .container-nav { min-height:68px; }
-    #topNavMenu.sidebar-menu-shell { top:80px!important; z-index:950!important; max-height:calc(100vh - 96px); overflow-y:auto; }
+    /* Match editprofile.html header sizing and royal-blue styling while keeping it fixed. */
+    .page-wrapper { display:flex; flex-direction:column; padding-top:74px; }
+    .resource-nav { position:fixed!important; top:0; left:0; right:0; width:100%; z-index:1200!important; padding:1rem 0!important; background:#071D4A!important; border-bottom:1px solid #071D4A!important; backdrop-filter:none!important; }
+    .resource-nav .container-nav { min-height:0; }
+    #topNavMenu.sidebar-menu-shell { top:88px!important; z-index:950!important; max-height:calc(100vh - 104px); overflow-y:auto; }
     main { flex:1 0 auto; display:flex; align-items:center; padding:clamp(24px,4vh,48px) 0; }
     main > .payment-container { width:min(1120px,calc(100% - 2rem)); margin-inline:auto; }
     .payment-card,.auth-prompt-card { width:100%; max-width:900px; margin:0 auto; }
     .payment-footer { flex-shrink:0; }
     @media(max-width:980px) {
+      .page-wrapper { padding-top:62px; }
+      .resource-nav { padding:.65rem 0!important; }
       #topNavMenu.sidebar-menu-shell { top:auto!important; max-height:none; overflow:visible; }
-      .page-wrapper { padding-top:68px; }
     }
     @media(max-width:640px) {
-      .page-wrapper { padding-top:84px; }
-      .resource-nav .container-nav { min-height:84px; }
+      .page-wrapper { padding-top:62px; }
       main { padding:24px 0; }
     }
   </style>

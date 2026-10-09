@@ -113,6 +113,27 @@
     }
   </style>
   <link rel="stylesheet" href="/page-transition.css">
+  <style>
+    :root { --payment-bg:#f5f9ff; --payment-ink:#0f172a; --payment-muted:#475569; --payment-green:#0B2A6F; --payment-light:#0284c7; --payment-line:#dbe3ee; --payment-font:'Open Sans',Arial,sans-serif; }
+    body { color:#0f172a; background:linear-gradient(180deg,#f5f9ff 0%,#fff 100%); font-family:'Open Sans',Arial,sans-serif; }
+    .page-wrapper { width:100%; max-width:1920px; min-height:100vh; margin:0 auto; background:#fff; box-shadow:0 0 20px rgba(0,0,0,.1); }
+    .resource-nav { background:#0B2A6F!important; border-bottom:1px solid #0B2A6F!important; }
+    .auth-profile-chip { display:flex; align-items:center; gap:9px; color:#fff; }
+    .auth-profile-photo { width:34px; height:34px; object-fit:cover; border-radius:50%; border:1px solid rgba(255,255,255,.35); }
+    .mail-header-icon { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:9px; color:#fff; text-decoration:none; font-size:1.15rem; }
+    .mail-header-icon:hover,.mail-header-icon:focus-visible { background:rgba(255,255,255,.14); }
+    main { padding:clamp(28px,5vw,56px) 0; }
+    .payment-card,.auth-prompt-card { max-width:900px; margin:0 auto; padding:clamp(20px,4vw,36px); border:1px solid #dbe3ee; border-radius:16px; background:linear-gradient(145deg,#fff 0%,#f6fbff 100%); box-shadow:0 8px 24px rgba(2,6,23,.08); }
+    .payment-kicker { color:#092a4b; background:#eaf4ff; border-color:#cfe3f1; }
+    .payment-button { color:#fff!important; background:#0284c7!important; border-color:#0284c7!important; border-radius:8px; }
+    .stripe-box { border-color:#dbe3ee; border-radius:12px; }
+    .payment-footer { border-top:1px solid #dbe3ee; background:linear-gradient(180deg,#f5f9ff 0%,#fff 100%); }
+    .cookie-bar { border-color:#dbe3ee; color:#475569; }
+    .cookie-bar a,.footer-links a { color:#0284c7; }
+    .cookie-actions button:last-child { background:#0284c7; }
+    .copyright { color:#475569; }
+    @media(max-width:900px) { .resource-nav { background:#0B2A6F!important; } }
+  </style>
 
 	<style>
 	</style>
@@ -235,6 +256,9 @@
 
 		firebase.auth().onAuthStateChanged(function (user) {
 		  var isAuthenticated = !!user;
+          var signInLink = document.getElementById("signInLink");
+          if (signInLink) signInLink.style.display = isAuthenticated ? "none" : "inline-flex";
+          signOutBtn.style.display = isAuthenticated ? "inline-flex" : "none";
 		  var paymentContent = document.getElementById('invoicePaymentContent');
 		  var authPrompt = document.getElementById('invoiceAuthPrompt');
 		  var stripeContainer = document.getElementById('stripePricingTableContainer');

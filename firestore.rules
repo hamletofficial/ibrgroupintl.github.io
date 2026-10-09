@@ -29,14 +29,30 @@ service cloud.firestore {
         && request.resource.data.pinnedBy is list
         && request.resource.data.readBy is list;
 
+      // Participants must be Firebase-authenticated to update conversation metadata.
+      // Only the authenticated sender may anonymise their own message.
       allow update: if request.auth != null
         && request.auth.uid in resource.data.participants
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['pinnedBy','readBy'])
-        && request.resource.data.pinnedBy is list
-        && request.resource.data.readBy is list;
+        && (
+          (
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['pinnedBy','readBy'])
+            && request.resource.data.pinnedBy is list
+            && request.resource.data.readBy is list
+          )
+          ||
+          (
+            request.auth.uid == resource.data.senderUid
+            && resource.data.anonymised != true
+            && request.resource.data.diff(resource.data).affectedKeys().hasAll(['body','anonymised','anonymisedAt'])
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['body','anonymised','anonymisedAt'])
+            && request.resource.data.body == '[Message anonymised]'
+            && request.resource.data.anonymised == true
+            && request.resource.data.anonymisedAt == request.time
+          )
+        );
 
       allow delete: if request.auth != null
-        && resource.data.senderUid == request.auth.uid;
+        && request.auth.uid == resource.data.senderUid;
     }
 
     match /insightsFeed/{insightId} {

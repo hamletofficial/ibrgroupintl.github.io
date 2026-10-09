@@ -162,15 +162,17 @@
 
   <main>
 	<div class="payment-container">
-	  <section class="payment-card" aria-labelledby="invoiceTitle">
+      <section id="invoiceAuthPrompt" class="auth-prompt-card" role="status" aria-live="polite">
+        <span class="payment-kicker">Sign-in required</span>
+        <h1>Sign in to continue</h1>
+        <p>Please sign in to your Impact in Business Recruitment account to access invoice payments.</p>
+        <a class="payment-button" href="/login.html?returnUrl=%2Finvoice.html">Sign in</a>
+      </section>
+	  <section id="invoicePaymentContent" class="payment-card" aria-labelledby="invoiceTitle" hidden>
 		<span class="payment-kicker">Secure payment</span>
 		<h1 id="invoiceTitle">Make a payment</h1>
 		<p class="payment-intro">Choose an available payment option below to continue to Stripe’s secure checkout website.</p>
-		<div class="stripe-box">
-		  <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-		  <stripe-pricing-table pricing-table-id="prctbl_1ULGElLxqwVT0w6c97liw9MA"
-			publishable-key="pk_live_51UJnnCLxqwVT0w6cNvbEpSJ3iJLo3qYStUzCIZRU9KJz0l99lS0vwwYOOrndQ7pj3raAfSNm5AQiiuwO3Zn3nChY009Dp3CGfG"></stripe-pricing-table>
-		</div>
+		<div class="stripe-box" id="stripePricingTableContainer"></div>
 		<p class="payment-note">No charge amount or currency is hard-coded on this page. Quoted prices are in GBP and link to a Stripe checkout used for taking payments. Card details are entered on Stripe-hosted checkout; this site does not handle or store card numbers.</p>
 	  </section>
 	</div>
@@ -228,9 +230,25 @@
 
 		firebase.auth().onAuthStateChanged(function (user) {
 		  var isAuthenticated = !!user;
+		  var paymentContent = document.getElementById('invoicePaymentContent');
+		  var authPrompt = document.getElementById('invoiceAuthPrompt');
+		  var stripeContainer = document.getElementById('stripePricingTableContainer');
 		  document.body.classList.toggle('has-sidebar', isAuthenticated);
+		  if (paymentContent) paymentContent.hidden = !isAuthenticated;
+		  if (authPrompt) authPrompt.hidden = isAuthenticated;
 
 		  if (isAuthenticated) {
+            if (stripeContainer && !stripeContainer.dataset.loaded) {
+              stripeContainer.dataset.loaded = 'true';
+              var pricingTable = document.createElement('stripe-pricing-table');
+              pricingTable.setAttribute('pricing-table-id', 'prctbl_1ULGElLxqwVT0w6c97liw9MA');
+              pricingTable.setAttribute('publishable-key', 'pk_live_51UJnnCLxqwVT0w6cNvbEpSJ3iJLo3qYStUzCIZRU9KJz0l99lS0vwwYOOrndQ7pj3raAfSNm5AQiiuwO3Zn3nChY009Dp3CGfG');
+              stripeContainer.appendChild(pricingTable);
+              var stripeScript = document.createElement('script');
+              stripeScript.src = 'https://js.stripe.com/v3/pricing-table.js';
+              stripeScript.async = true;
+              document.head.appendChild(stripeScript);
+            }
 			signOutBtn.textContent = 'Sign out';
 			signOutBtn.disabled = false;
 			signOutBtn.onclick = async function () {
@@ -255,6 +273,14 @@
 		});
 	  } catch (error) {
 		console.error('Unable to initialise authentication:', error);
+        var paymentContent = document.getElementById('invoicePaymentContent');
+        var authPrompt = document.getElementById('invoiceAuthPrompt');
+        if (paymentContent) paymentContent.hidden = true;
+        if (authPrompt) {
+          authPrompt.hidden = false;
+          var promptText = authPrompt.querySelector('p');
+          if (promptText) promptText.textContent = 'Authentication could not be verified. Please sign in and try again.';
+        }
 		signOutBtn.textContent = 'Sign in';
 		signOutBtn.onclick = function () {
 		  window.location.assign('/login.html');

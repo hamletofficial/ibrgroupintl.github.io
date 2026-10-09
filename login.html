@@ -22,6 +22,7 @@
   </script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-functions-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <script type="module" src="/totp-mfa.js"></script>
@@ -775,8 +776,40 @@
           var overlay = document.querySelector('.page-transition-overlay');
           if (overlay) overlay.classList.remove('active');
         }
+        function recordSignInMethod(user) {
+          if (!user) return;
+          var method = '';
+          try {
+            method = sessionStorage.getItem('ibr_last_signin_method') || '';
+            if (method) sessionStorage.removeItem('ibr_last_signin_method');
+          } catch (error) {}
+          if (!method) return;
+          var labels = {
+            'google.com': 'Google',
+            'facebook.com': 'Facebook',
+            'twitter.com': 'X',
+            'apple.com': 'Apple',
+            'oidc.linkedin-secure-login': 'LinkedIn',
+            'password': 'Email and password',
+            'phone': 'Phone'
+          };
+          var label = labels[method] || method;
+          try {
+            if (window.firebase && firebase.firestore) {
+              firebase.firestore().collection('publicProfiles').doc(user.uid).set({
+                signInMethod: label,
+                signInMethodUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+              }, { merge: true }).catch(function (error) {
+                console.warn('Could not save sign-in method to public profile:', error);
+              });
+            }
+          } catch (error) {
+            console.warn('Could not save sign-in method to public profile:', error);
+          }
+        }
         function finishSignIn(user) {
           if (!user || !redirectSettled || redirectTimer) return;
+          recordSignInMethod(user);
           showUserStatus(user);
           var target = postLoginPath();
           var wait = beginAuthTransition(target);
@@ -887,6 +920,7 @@
         });
 
         function signInWithProvider(provider) {
+          try { sessionStorage.setItem('ibr_last_signin_method', provider.providerId || ''); } catch (error) {}
           rememberNext();
           if (errEl) errEl.style.display = 'none';
           return auth.signInWithPopup(provider).then(function (result) {
@@ -981,6 +1015,7 @@
           rememberNext();
           if (errEl) errEl.style.display = 'none';
           var provider = new firebase.auth.TwitterAuthProvider();
+          try { sessionStorage.setItem('ibr_last_signin_method', provider.providerId || 'twitter.com'); } catch (error) {}
           provider.setCustomParameters({ lang: 'en' });
           return auth.signInWithPopup(provider).then(function (result) {
             redirectSettled = true;
@@ -1008,6 +1043,7 @@
             return;
           }
           rememberNext();
+          try { sessionStorage.setItem('ibr_last_signin_method', 'oidc.linkedin-secure-login'); } catch (error) {}
           var state = Math.random().toString(36).slice(2) + Date.now().toString(36);
           try { sessionStorage.setItem('linkedin_oauth_state', state); } catch (error) {}
           var url = 'https://www.linkedin.com/oauth/v2/authorization?response_type=code'

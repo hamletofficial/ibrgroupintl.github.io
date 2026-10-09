@@ -101,6 +101,9 @@
     }
   
     .directory-intro{margin:-1.25rem 0 1.4rem;color:#475569;line-height:1.55}
+    /* Keep the intro in normal flow beneath the H1; override legacy negative margin. */
+    .directory-header > div:first-child .directory-title { display:block; margin:0 0 .65rem; line-height:1.2; }
+    .directory-header > div:first-child .directory-intro { display:block; position:static; clear:both; margin:0; line-height:1.55; }
     .directory-controls{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:.8rem;padding:1rem;margin:0 0 1rem;border:1px solid #dbe3ee;border-radius:14px;background:#f8fbff}
     .directory-field{display:flex;flex-direction:column;gap:.35rem;color:#334155;font-size:.84rem;font-weight:700;min-width:0}
     .directory-field select{width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:.55rem .65rem;background:#fff;color:#0f172a;font:inherit;font-weight:500}

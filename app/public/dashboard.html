@@ -61,7 +61,7 @@
     <section class="auth-shell" id="redirectPanel" aria-live="polite">
       <h1>Member sign-in required</h1>
       <p id="redirectMessage">This commercial real estate resource suite is available within your authenticated Members Area session. Sign in to access your broker workspace.</p>
-      <a class="btn btn-primary" href="/login.html?next=%2Fapp%2Fpublic%2Fsplits.html">Continue to Sign In</a>
+      <a class="btn btn-primary" href="/login.html?next=%2Fapp%2Fpublic%2Fdashboard.html">Continue to Sign In</a>
     </section>
 
     <main class="resource-shell" id="resourceShell">
@@ -122,7 +122,7 @@
       function esc(value){return String(value??'').replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]})}
       function showUnauthenticated(){
         currentUser=null; document.body.classList.remove('auth-pending','is-authenticated'); document.body.classList.add('auth-signed-out');
-        redirectPanel.hidden=false; resourceShell.style.display='none'; authActionBtn.hidden=false; authActionBtn.textContent='Sign In'; authActionBtn.onclick=function(){window.location.href='/login.html?next=%2Fapp%2Fpublic%2Fsplits.html';}; profileChip.hidden=true;
+        redirectPanel.hidden=false; resourceShell.style.display='none'; authActionBtn.hidden=false; authActionBtn.textContent='Sign In'; authActionBtn.onclick=function(){window.location.href='/login.html?next=%2Fapp%2Fpublic%2Fdashboard.html';}; profileChip.hidden=true;
       }
       function showAuthenticated(user){
         currentUser=user; document.body.classList.remove('auth-pending','auth-signed-out'); document.body.classList.add('is-authenticated');

@@ -16,7 +16,7 @@
     '/profile.html',
     '/app/public/live.html',
     '/app/public/resources.html',
-    '/app/public/splits.html'
+    '/app/public/dashboard.html'
   ]);
 
   const PAGE_LABELS = {
@@ -34,10 +34,10 @@
     '/profile.html': 'Profile Page',
     '/app/public/live.html': 'Live Listings',
     '/app/public/resources.html': 'My Property Resources',
-    '/app/public/splits.html': 'Advertise a New Property'
+    '/app/public/dashboard.html': 'Advertise a New Property'
   };
 
-  const PREFETCH_PATHS = ['/messages.html', '/insights.html', '/requests.html', '/settings.html', '/directory.html', '/invoice.html', '/contact.html', '/uploads.html', '/accounts.html', '/profile.html', '/app/public/live.html', '/app/public/resources.html', '/app/public/splits.html'];
+  const PREFETCH_PATHS = ['/messages.html', '/insights.html', '/requests.html', '/settings.html', '/directory.html', '/invoice.html', '/contact.html', '/uploads.html', '/accounts.html', '/profile.html', '/app/public/live.html', '/app/public/resources.html', '/app/public/dashboard.html'];
   const MIN_LOADER_MS = 240;
   let overlayEl = null;
   let prefetchDone = false;

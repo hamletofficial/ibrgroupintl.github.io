@@ -160,7 +160,10 @@
         </div>
         <div id="incognitoStatus" class="status-note" role="status" aria-live="polite"></div>
       </section>
-      <div style="margin:1.25rem auto 0;max-width:520px;text-align:right;">
+      <div style="margin:1.25rem auto 0;max-width:520px;text-align:right;font-weight:700;">
+        <div>Danger Zone</div>
+      </div>
+      <div style="margin:.5rem auto 0;max-width:520px;text-align:right;">
         <button class="btn btn-outline" id="deleteAccountBtn" style="border-color:#ef4444;color:#ef4444">Delete Your Account</button>
       </div>
     </main>
@@ -284,7 +287,8 @@
             : '2FA is not enabled. Add an authenticator app as your second factor.';
           if (mfaSetupBtn) {
             mfaSetupBtn.disabled = false;
-            mfaSetupBtn.textContent = hasTotp ? 'Manage 2FA' : 'Set Up 2FA';
+            mfaSetupBtn.textContent = hasTotp ? 'Disable 2FA' : 'Set Up 2FA';
+            mfaSetupBtn.setAttribute('aria-label', hasTotp ? 'Disable two-factor authentication' : 'Set up two-factor authentication');
           }
         } catch (error) {
           console.error('Unable to read TOTP enrollment state:', error);
@@ -434,7 +438,55 @@
         if (mfaSetupBtn) mfaSetupBtn.disabled = true;
       });
 
-      mfaSetupBtn.addEventListener('click', beginTotpEnrollment);
+      mfaSetupBtn.addEventListener('click', async function () {
+        const user = auth.currentUser;
+        if (!user) {
+          mfaMessage.textContent = 'Please sign in to manage two-factor authentication.';
+          return;
+        }
+        const factors = user.multiFactor && Array.isArray(user.multiFactor.enrolledFactors)
+          ? user.multiFactor.enrolledFactors
+          : [];
+        const totpFactor = factors.find(function (factor) { return factor.factorId === 'totp'; });
+        if (!totpFactor) {
+          await beginTotpEnrollment();
+          return;
+        }
+
+        const confirmed = window.confirm('Disable authenticator-app two-factor authentication for your account? This will remove the enrolled authenticator factor.');
+        if (!confirmed) return;
+
+        mfaSetupBtn.disabled = true;
+        mfaMessage.textContent = 'Disabling two-factor authentication…';
+        try {
+          const totp = totpApi || await totpReady;
+          totpApi = totp;
+          const modularUser = totp.auth.currentUser;
+          if (!modularUser) throw new Error('Your authentication session is still loading. Please refresh and try again.');
+          const modularFactors = totp.multiFactor(modularUser).enrolledFactors || [];
+          const enrolledTotp = modularFactors.find(function (factor) { return factor.factorId === 'totp'; });
+          if (!enrolledTotp) {
+            await user.reload();
+          } else {
+            await totp.multiFactor(modularUser).unenroll(enrolledTotp);
+          }
+          await user.reload();
+          mfaMessage.textContent = 'Authenticator-app two-factor authentication has been disabled.';
+          await updateMfaUi(user);
+        } catch (error) {
+          console.error('Unable to disable TOTP enrollment:', error);
+          const code = error && error.code ? error.code : '';
+          if (code === 'auth/requires-recent-login') {
+            mfaMessage.textContent = 'For your security, sign out and sign back in, then return to Settings to disable 2FA.';
+          } else {
+            mfaMessage.textContent = error && error.message
+              ? error.message
+              : 'Unable to disable 2FA. Please try again.';
+          }
+        } finally {
+          mfaSetupBtn.disabled = false;
+        }
+      });
       mfaVerifyBtn.addEventListener('click', verifyTotpEnrollment);
       mfaCancelBtn.addEventListener('click', function () {
         pendingTotpSecret = null;

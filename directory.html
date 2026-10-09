@@ -16,7 +16,11 @@
     * { box-sizing: border-box; }
     body { margin: 0; font-family: 'Open Sans', Arial, sans-serif; color: #0f172a; background: linear-gradient(180deg, #f5f9ff 0%, #ffffff 100%); }
     .page-wrapper { background: #fff; max-width: 1920px; min-height: 100vh; margin: 0 auto; box-shadow: 0 0 20px rgba(0, 0, 0, .1) }
-    .directory-shell { max-width: 1100px; margin: 2rem auto 3rem; padding: 0 1rem; }
+    .directory-shell { max-width: 1100px; margin: 1rem auto 3rem; padding: 0 1rem; }
+    .directory-header { align-items: flex-start; }
+    .directory-header > div:first-child { flex: 1 1 320px; min-width: 0; }
+    .directory-title { display: block; position: relative; line-height: 1.2; margin: 0 0 .65rem; overflow-wrap: anywhere; }
+    .directory-intro { display: block; position: relative; clear: both; margin: 0; line-height: 1.55; }
     .directory-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 2rem; gap: 1.5rem; }
     .directory-title { color: #092a4b; font-size: 2rem; font-weight: 800; margin: 0; letter-spacing: -1px; }
     .directory-search { flex: 1 1 320px; max-width: 340px; display: flex; align-items: center; background: #f8fafc; border-radius: 8px; border: 1px solid #dbe3ee; padding: 0.5rem 1rem; }

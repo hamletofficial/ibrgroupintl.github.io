@@ -42,6 +42,13 @@ service cloud.firestore {
           ||
           (
             request.auth.uid == resource.data.senderUid
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['attachments'])
+            && request.resource.data.attachments is list
+            && request.resource.data.attachments.size() <= 5
+          )
+          ||
+          (
+            request.auth.uid == resource.data.senderUid
             && (!('anonymised' in resource.data) || resource.data.anonymised != true)
             && request.resource.data.diff(resource.data).affectedKeys().hasAll(['body','anonymised','anonymisedAt'])
             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['body','anonymised','anonymisedAt'])

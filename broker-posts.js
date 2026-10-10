@@ -206,7 +206,7 @@
       footer.appendChild(likeButton);
     }
 
-    if (options.showReplies && typeof options.onRepliesToggle === 'function') {
+    if (options.showReplies && data.ownerUid !== options.currentUid && typeof options.onRepliesToggle === 'function') {
       var replyButton = document.createElement('button');
       replyButton.type = 'button';
       replyButton.className = 'post-action-button';

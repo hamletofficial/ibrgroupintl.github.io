@@ -54,11 +54,24 @@ window.addEventListener('load',function(){
    await ref.set({postId:post.id,likedAt:firebase.firestore.FieldValue.serverTimestamp()});
    likedIds.add(post.id);updateAllLikeButtons(post.id,true);if(activeProfileUid===activeUser.uid)renderPrivateLikes();return true
  }
+ async function repostProfilePost(post){
+   if(!activeUser||!post||!post.data||post.data.ownerUid===activeUser.uid)return;
+   const original=post.data;
+   const author=await window.ibrBrokerPosts.getAuthorProfile(original.ownerUid);
+   await db.collection('brokerPosts').add({
+     ownerUid:activeUser.uid,
+     body:typeof original.body==='string'?original.body:'',
+     bodyHtml:typeof original.bodyHtml==='string'?original.bodyHtml:'',
+     attachments:Array.isArray(original.attachments)?original.attachments:[],
+     createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+     repostOf:{postId:post.id,ownerUid:original.ownerUid||'',authorName:author.name||'IBR Member'}
+   });
+ }
  async function deleteProfilePost(post,card){
    if(!window.confirm('Delete this post? Only the person who published it can delete it.'))return;
    const ref=db.collection('brokerPosts').doc(post.id),replies=await ref.collection('replies').get();
    for(let i=0;i<replies.docs.length;i+=400){const batch=db.batch();replies.docs.slice(i,i+400).forEach(function(doc){batch.delete(doc.ref)});await batch.commit()}
-   const attachments=Array.isArray(post.data.attachments)?post.data.attachments:[];
+   const attachments=post.data.repostOf?[]:(Array.isArray(post.data.attachments)?post.data.attachments:[]);
    await Promise.all(attachments.map(async function(file){if(!file||!file.path)return;try{await firebase.storage().ref(file.path).delete()}catch(error){console.warn('Unable to remove a post attachment:',error)}}));
    await ref.delete();if(card&&card.parentNode)card.remove();if(activeProfileUid===activeUser.uid)await renderPrivateLikes();if(activeProfileUid===activeUser.uid)await renderPrivateLikes()
  }
@@ -68,7 +81,7 @@ window.addEventListener('load',function(){
    if(!posts.length){feedMessage(postsContainer,'This member has not posted anything yet.');return}
    posts.forEach(function(post){postsContainer.appendChild(window.ibrBrokerPosts.createPostCard(post,{
      currentUid:activeUser.uid,liked:likedIds.has(post.id),showLike:true,allowDelete:post.data.ownerUid===activeUser.uid,
-     onLike:toggleLike,onDelete:deleteProfilePost
+     onLike:toggleLike,onRepost:repostProfilePost,onDelete:deleteProfilePost
    }))})
  }
  async function renderPrivateLikes(){
@@ -92,7 +105,7 @@ window.addEventListener('load',function(){
      if(!visible.length){feedMessage(likesContainer,'Posts you like will appear privately in this column.');return}
      visible.forEach(function(post){likesContainer.appendChild(window.ibrBrokerPosts.createPostCard(post,{
        currentUid:activeUser.uid,liked:true,showLike:true,allowDelete:post.data.ownerUid===activeUser.uid,
-       onLike:toggleLike,onDelete:deleteProfilePost
+       onLike:toggleLike,onRepost:repostProfilePost,onDelete:deleteProfilePost
      }))});
    }catch(error){if(requestId===privateLikesRequest)feedMessage(likesContainer,'Your private likes could not be loaded. Please refresh the page.')}
  }

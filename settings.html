@@ -194,6 +194,7 @@
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <script defer src="/header-profile.js?v=20261010-3"></script>
+  <script defer src="/profile-service.js?v=20261010-1"></script>
   <script defer src="/mobile-compat.js"></script>
   <script defer src="/page-transition.js"></script>
   <script>
@@ -259,7 +260,11 @@
         settingsPhotoInput.disabled = true;
         setSettingsPhotoStatus('Saving profile photo…', false);
         try {
-          await firebase.firestore().collection('publicProfiles').doc(user.uid).update({ imageDataUrl: pendingSettingsPhotoDataUrl });
+          if (window.ibrProfileService) {
+            await window.ibrProfileService.updateProfile(user.uid, { imageDataUrl: pendingSettingsPhotoDataUrl });
+          } else {
+            await firebase.firestore().collection('publicProfiles').doc(user.uid).update({ imageDataUrl: pendingSettingsPhotoDataUrl });
+          }
           document.querySelectorAll('[data-auth-photo]').forEach(function (img) { img.src = pendingSettingsPhotoDataUrl; });
           setSettingsPhotoStatus('Profile photo saved.', false);
           pendingSettingsPhotoDataUrl = '';

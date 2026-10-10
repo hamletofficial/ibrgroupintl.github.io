@@ -334,6 +334,33 @@ exports.notifyDirectMessageRecipient = onDocumentCreated({
 
   try {
     try { admin.app(); } catch (err) { admin.initializeApp(); }
+
+    // Claim this notification transactionally so duplicate Firestore event
+    // deliveries do not normally send the same email more than once.
+    const db = getFirestore(admin.app());
+    const now = Date.now();
+    const claim = await db.runTransaction(async function(transaction) {
+      const fresh = await transaction.get(snap.ref);
+      if (!fresh.exists) return false;
+      const data = fresh.data() || {};
+      if (data.emailNotificationStatus === "sent") return false;
+      const processingAt = data.emailNotificationProcessingAt &&
+        typeof data.emailNotificationProcessingAt.toMillis === "function" ?
+        data.emailNotificationProcessingAt.toMillis() : 0;
+      if (data.emailNotificationStatus === "processing" &&
+          processingAt > 0 && now - processingAt < 10 * 60 * 1000) return false;
+      transaction.set(snap.ref, {
+        emailNotificationStatus: "processing",
+        emailNotificationProcessingAt: admin.firestore.FieldValue.serverTimestamp(),
+        emailNotificationAttempts: admin.firestore.FieldValue.increment(1),
+      }, {merge: true});
+      return true;
+    });
+    if (!claim) {
+      console.log("Direct-message notification already sent or currently processing:", snap.id);
+      return;
+    }
+
     // Use the email address explicitly stored in the member's Firestore profile.
     // Do not silently substitute Firebase Authentication's email: profile email is
     // the mailbox notification destination requested by the application.
@@ -356,12 +383,14 @@ exports.notifyDirectMessageRecipient = onDocumentCreated({
     await snap.ref.set({
       emailNotificationStatus: "sent",
       emailNotificationSentAt: admin.firestore.FieldValue.serverTimestamp(),
+      emailNotificationError: admin.firestore.FieldValue.delete(),
     }, {merge: true});
   } catch (err) {
     console.error("Unable to send direct-message email notification:", snap.id, err);
     try {
       await snap.ref.set({
         emailNotificationStatus: "failed",
+        emailNotificationFailedAt: admin.firestore.FieldValue.serverTimestamp(),
         emailNotificationError: String(err && err.message || err).slice(0, 500),
       }, {merge: true});
     } catch (updateErr) {

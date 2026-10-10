@@ -266,6 +266,7 @@
         <div class="directory-toolbar-actions">
           <button class="directory-tool-btn" type="button" id="clearDirectoryFilters">Clear filters</button>
           <button class="directory-tool-btn" type="button" id="refreshDirectory">↻ Refresh</button>
+          <button class="directory-tool-btn" type="button" id="reportDirectory" aria-label="Report an issue with the member directory" title="Report an issue with the member directory">⚑ Report</button>
         </div>
         <div class="directory-view-actions" role="group" aria-label="Directory layout">
           <button class="directory-tool-btn" type="button" id="gridViewBtn" aria-pressed="true">▦ Grid</button>
@@ -337,6 +338,7 @@
       const emailSelect = document.getElementById('directoryEmail');
       const clearButton = document.getElementById('clearDirectoryFilters');
       const refreshButton = document.getElementById('refreshDirectory');
+      const reportButton = document.getElementById('reportDirectory');
       const gridButton = document.getElementById('gridViewBtn');
       const listButton = document.getElementById('listViewBtn');
       const signOutBtn = document.getElementById('signOutBtn');
@@ -705,6 +707,11 @@
       });
       refreshButton.addEventListener('click', function () {
         if (auth.currentUser) loadDirectory(auth.currentUser, true);
+      });
+      reportButton.addEventListener('click', function () {
+        const subject = encodeURIComponent('Member Directory Report');
+        const body = encodeURIComponent('Please describe the issue you encountered in the Member Directory below.\n\nPage: ' + window.location.href + '\nBrowser: ' + navigator.userAgent + '\n\nDetails:\n');
+        window.location.href = 'mailto:support@ibrecruitment.com?subject=' + subject + '&body=' + body;
       });
       gridButton.addEventListener('click', function () { setView('grid'); });
       listButton.addEventListener('click', function () { setView('list'); });

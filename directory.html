@@ -320,7 +320,7 @@
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script defer src="/firebase-config.js"></script>
+  <script defer src="/firebase-config.js"></script><script defer src="/profile-service.js?v=20261010-2"></script>
   <script defer src="/header-profile.js?v=20261010-3"></script>
   <script defer src="/mobile-compat.js"></script>
   <script defer src="/page-transition.js"></script>
@@ -617,17 +617,28 @@
         emptyState.style.display = 'none';
         grid.style.display = 'none';
         try {
-          let snapshot;
           try {
-            snapshot = await db.collection('publicProfiles').where('isPublic', '==', true).get();
+            if (window.ibrProfileService) {
+              allMembers = await window.ibrProfileService.listPublicProfiles();
+            } else {
+              const snapshot = await db.collection('publicProfiles').where('isPublic', '==', true).get();
+              allMembers = snapshot.docs.map(function (doc) {
+                return { uid: doc.id, data: doc.data() || {} };
+              });
+            }
           } catch (firstError) {
             if (!firstError || firstError.code !== 'permission-denied') throw firstError;
             await user.getIdToken(true);
-            snapshot = await db.collection('publicProfiles').where('isPublic', '==', true).get();
+            if (window.ibrProfileService) {
+              allMembers = await window.ibrProfileService.listPublicProfiles();
+            } else {
+              const snapshot = await db.collection('publicProfiles').where('isPublic', '==', true).get();
+              allMembers = snapshot.docs.map(function (doc) {
+                return { uid: doc.id, data: doc.data() || {} };
+              });
+            }
           }
-          allMembers = snapshot.docs.map(function (doc) {
-            return { uid: doc.id, data: doc.data() || {} };
-          }).filter(function (member) {
+          allMembers = allMembers.filter(function (member) {
             return member.data.isPublic === true && !!member.uid;
           });
           // Prefer the public directory entry; if the signed-in member's profile is not public,
@@ -635,9 +646,13 @@
           pinnedMember = allMembers.find(function (member) { return member.uid === user.uid; }) || null;
           if (!pinnedMember && user.uid) {
             try {
-              const ownProfileSnapshot = await db.collection('publicProfiles').doc(user.uid).get();
-              if (ownProfileSnapshot.exists) {
-                pinnedMember = { uid: ownProfileSnapshot.id, data: ownProfileSnapshot.data() || {} };
+              const ownProfileResult = window.ibrProfileService
+                ? await window.ibrProfileService.getProfile(user.uid)
+                : await db.collection('publicProfiles').doc(user.uid).get().then(function (snapshot) {
+                    return { exists: snapshot.exists, data: snapshot.exists ? (snapshot.data() || {}) : {} };
+                  });
+              if (ownProfileResult.exists) {
+                pinnedMember = { uid: user.uid, data: ownProfileResult.data || {} };
               }
             } catch (ownProfileError) {
               // A missing/privately protected own profile must not prevent the public directory loading.

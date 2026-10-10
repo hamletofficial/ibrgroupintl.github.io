@@ -338,7 +338,13 @@
 
         try {
           const profileSnapshot = await firebase.firestore().collection('publicProfiles').doc(user.uid).get();
-          const savedPhoto = profileSnapshot.exists ? profileSnapshot.get('imageDataUrl') : '';
+          const profileData = profileSnapshot.exists ? (profileSnapshot.data() || {}) : {};
+          const savedName = [profileData.firstName, profileData.lastName]
+            .filter(value => typeof value === 'string' && value.trim())
+            .map(value => value.trim())
+            .join(' ');
+          settingsUserName.textContent = savedName || user.displayName || 'Not set';
+          const savedPhoto = profileData.imageDataUrl || '';
           settingsPhotoPreview.src = typeof savedPhoto === 'string' && savedPhoto ? savedPhoto : '/100.png';
           settingsPhotoPreview.onerror = function () { settingsPhotoPreview.onerror = null; settingsPhotoPreview.src = '/100.png'; };
           const incognito = profileSnapshot.exists && profileSnapshot.get('incognito') === true;

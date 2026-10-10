@@ -373,7 +373,7 @@
           const savedPhoto = profileData.imageDataUrl || '';
           settingsPhotoPreview.src = typeof savedPhoto === 'string' && savedPhoto ? savedPhoto : '/100.png';
           settingsPhotoPreview.onerror = function () { settingsPhotoPreview.onerror = null; settingsPhotoPreview.src = '/100.png'; };
-          const incognito = profileSnapshot.exists && profileSnapshot.get('incognito') === true;
+          const incognito = profileSnapshot.exists && profileData.incognito === true;
           if (incognitoBtn) {
             incognitoBtn.setAttribute('aria-pressed', String(incognito));
             incognitoBtn.textContent = incognito ? 'Go Visible' : 'Go Incognito';
@@ -385,7 +385,7 @@
               ? 'Incognito is on. Other members will not see “Online Now” for you.'
               : 'Incognito is off. Your “Online Now” status may be shown when you are active.';
           }
-          const profileEmail = profileSnapshot.exists ? profileSnapshot.get('email') : '';
+          const profileEmail = profileSnapshot.exists ? profileData.email : '';
           if (auth.currentUser && auth.currentUser.uid === user.uid) {
             settingsUserEmail.textContent = typeof profileEmail === 'string' && profileEmail.trim()
               ? profileEmail.trim()

@@ -198,8 +198,16 @@
   <script defer src="/mobile-compat.js"></script>
   <script defer src="/page-transition.js"></script>
   <script>
-    window.addEventListener('load', function () {
-      if (!window.firebase || !window.firebaseConfig) return;
+    document.addEventListener('DOMContentLoaded', function () {
+      // Start as soon as the DOM and deferred Firebase scripts are ready; do not
+      // wait for every image, stylesheet, or other resource to finish loading.
+      if (!window.firebase || !window.firebaseConfig) {
+        const loginSection = document.getElementById('loginSection');
+        const message = loginSection && loginSection.querySelector('p');
+        if (message) message.textContent = 'Account settings could not be initialised. Please refresh the page or contact Support if the problem persists.';
+        document.body.classList.remove('auth-pending');
+        return;
+      }
       try { firebase.initializeApp(window.firebaseConfig); } catch (e) {}
       const auth = firebase.auth();
       const loginSection = document.getElementById('loginSection');
@@ -645,7 +653,7 @@
             // publicProfiles document just to store this privacy preference.
             const profileData = profileResult.data || {};
             // Edit Profile marks a successfully saved directory profile with isPublic: true.
-            const hasSavedProfile = !!profileSnapshot.exists && profileData.isPublic === true;
+            const hasSavedProfile = !!profileResult.exists && profileData.isPublic === true;
 
             if (!currentlyIncognito && !hasSavedProfile) {
               if (incognitoStatus) {

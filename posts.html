@@ -83,11 +83,6 @@
 
     <section class="feed-panel" aria-labelledby="feedHeading">
       <div class="feed-heading-row"><h2 id="feedHeading">Latest posts</h2><button type="button" id="refreshFeed" class="feed-refresh">Refresh</button></div>
-      <div class="post-search-wrap" style="margin:0 0 1rem">
-        <label for="postSearch" style="display:block;font-weight:700;color:#334155;margin-bottom:.4rem">Search posts</label>
-        <input id="postSearch" type="search" maxlength="140" autocomplete="off" placeholder="Search post text (up to 140 characters)…" aria-describedby="postSearchCount" style="display:block;width:100%;min-height:44px;padding:.7rem .85rem;border:1px solid #cbd5e1;border-radius:10px;font:inherit;color:#0f172a;background:#fff">
-        <div id="postSearchCount" class="character-count" aria-live="polite">0 / 140 characters</div>
-      </div>
       <div id="postsFeed" class="posts-feed"><div class="empty-feed">Loading the latest posts<span class="loading-dots" aria-hidden="true"><span></span><span></span><span></span></span></div></div>
     </section>
   </main>
@@ -116,9 +111,7 @@ window.addEventListener('load', function () {
   var signedOut = document.getElementById('signedOut');
   var statusBox = document.getElementById('notice');
   var feed = document.getElementById('postsFeed');
-  var searchInput = document.getElementById('postSearch');
-  var searchCount = document.getElementById('postSearchCount');
-  var currentPosts = [];
+
   var form = document.getElementById('postForm');
   var bodyInput = document.getElementById('postBody');
   var count = document.getElementById('postCount');
@@ -152,24 +145,14 @@ window.addEventListener('load', function () {
     feedUnsubscribe = null;
   }
   function renderFeed(snapshot) {
-    currentPosts = window.ibrBrokerPosts.sortNewest(snapshot.docs.map(function (doc) {
+    var posts = window.ibrBrokerPosts.sortNewest(snapshot.docs.map(function (doc) {
       return { id: doc.id, data: doc.data() || {} };
     }));
-    renderVisiblePosts();
-  }
-  function renderVisiblePosts() {
-    var query = searchInput.value.trim().toLocaleLowerCase();
-    var posts = currentPosts.filter(function (post) {
-      var body = typeof post.data.body === 'string' ? post.data.body : '';
-      return !query || body.toLocaleLowerCase().indexOf(query) !== -1;
-    });
     feed.replaceChildren();
     if (!posts.length) {
       var empty = document.createElement('div');
       empty.className = 'empty-feed';
-      empty.textContent = query
-        ? 'No posts match your search. Try a different word or phrase.'
-        : 'No posts yet. Be the first to share a thought with the broker community.';
+      empty.textContent = 'No posts yet. Be the first to share a thought with the broker community.';
       feed.appendChild(empty);
       return;
     }
@@ -384,10 +367,6 @@ window.addEventListener('load', function () {
       throw error;
     }
   }
-  searchInput.addEventListener('input', function () {
-    searchCount.textContent = searchInput.value.length + ' / 140 characters';
-    renderVisiblePosts();
-  });
   bodyInput.addEventListener('input', function () { count.textContent = bodyInput.value.length + ' / 140'; });
   filesInput.addEventListener('change', showSelectedFiles);
   document.getElementById('refreshFeed').addEventListener('click', async function () {

@@ -24,7 +24,6 @@
 <a class="sidebar-menu-link" href="https://www.ibrecruitment.com"><span class="sidebar-menu-icon" aria-hidden="true">🏠</span> Home</a>
 <a class="sidebar-menu-link" href="/profile.html"><span class="sidebar-menu-icon" aria-hidden="true">🙎🏿‍♀️</span> View Profile</a>
 <a class="sidebar-menu-link" href="/editprofile.html"><span class="sidebar-menu-icon" aria-hidden="true">🙎🏿‍♀️</span> Edit Profile</a>
-<a class="sidebar-menu-link" href="/posts.html"><span class="sidebar-menu-icon" aria-hidden="true">🗣️</span> Broker Social Feed</a>
 <a class="sidebar-menu-link" href="/messages.html"><span class="sidebar-menu-icon" aria-hidden="true">✉️</span> Mailbox</a>
 <a class="sidebar-menu-link" href="/members.html"><span class="sidebar-menu-icon" aria-hidden="true">🧑‍🤝‍🧑</span> Members Area</a>
 <a class="sidebar-menu-link" href="/insights.html"><span class="sidebar-menu-icon" aria-hidden="true">💡</span> Insights Archive</a>
@@ -61,7 +60,7 @@ window.addEventListener('load',function(){
    for(let i=0;i<replies.docs.length;i+=400){const batch=db.batch();replies.docs.slice(i,i+400).forEach(function(doc){batch.delete(doc.ref)});await batch.commit()}
    const attachments=Array.isArray(post.data.attachments)?post.data.attachments:[];
    await Promise.all(attachments.map(async function(file){if(!file||!file.path)return;try{await firebase.storage().ref(file.path).delete()}catch(error){console.warn('Unable to remove a post attachment:',error)}}));
-   await ref.delete();if(card&&card.parentNode)card.remove()
+   await ref.delete();if(card&&card.parentNode)card.remove();if(activeProfileUid===activeUser.uid)await renderPrivateLikes()
  }
  function renderProfilePosts(snapshot){
    const posts=window.ibrBrokerPosts.sortNewest(snapshot.docs.map(function(doc){return {id:doc.id,data:doc.data()||{}}}));

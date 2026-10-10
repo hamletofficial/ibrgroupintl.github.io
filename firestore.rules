@@ -207,7 +207,7 @@ service cloud.firestore {
 
       allow create: if request.auth != null
         && request.resource.data.keys().hasAll(['ownerUid', 'body', 'createdAt'])
-        && request.resource.data.keys().hasOnly(['ownerUid', 'body', 'bodyHtml', 'createdAt', 'attachments'])
+        && request.resource.data.keys().hasOnly(['ownerUid', 'body', 'bodyHtml', 'createdAt', 'attachments', 'repostOf'])
         && request.resource.data.ownerUid == request.auth.uid
         && request.resource.data.body is string
         && request.resource.data.body.size() >= 1
@@ -218,7 +218,16 @@ service cloud.firestore {
         && request.resource.data.createdAt == request.time
         && (!('attachments' in request.resource.data)
           || (request.resource.data.attachments is list
-            && request.resource.data.attachments.size() <= 5));
+            && request.resource.data.attachments.size() <= 5))
+        && (!('repostOf' in request.resource.data)
+          || (request.resource.data.repostOf is map
+            && request.resource.data.repostOf.keys().hasOnly(['postId', 'ownerUid', 'authorName'])
+            && request.resource.data.repostOf.postId is string
+            && request.resource.data.repostOf.ownerUid is string
+            && request.resource.data.repostOf.authorName is string
+            && exists(/databases/$(database)/documents/brokerPosts/$(request.resource.data.repostOf.postId))
+            && get(/databases/$(database)/documents/brokerPosts/$(request.resource.data.repostOf.postId)).data.ownerUid == request.resource.data.repostOf.ownerUid
+            && request.resource.data.repostOf.ownerUid != request.auth.uid));
 
       allow update: if false;
       allow delete: if request.auth != null

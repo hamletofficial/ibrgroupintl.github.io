@@ -13,7 +13,7 @@
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
-<script defer src="/member-header.js?v=20261010-2"></script>
+<script defer src="/header-profile.js?v=20261010-3"></script>
 <script defer src="/page-transition.js"></script>
   <style>
     :root{--navy:#071D4A;--blue:#0284c7;--ink:#092a4b;--muted:#475569;--line:#dbe3ee;--green:#15803d}
@@ -52,7 +52,7 @@
       <div class="container container-nav topbar">
         <div class="logo"><span class="site-title" style="color:lightgrey">Premium</span></div>
         <div class="topbar-actions">
-          <div class="profile" id="profileChip" hidden><img id="profilePhoto" src="/160.jpg" alt="Profile photo"><span id="profileName"></span></div>
+          <div class="profile" id="profileChip" data-auth-profile hidden><img id="profilePhoto" data-auth-photo src="/160.jpg" alt="Profile photo"><span id="profileName" data-auth-name></span></div>
           <a class="btn btn-outline" href="/members.html">Back to Members Area</a>
           <button class="btn btn-outline" id="authActionBtn" type="button">Sign In</button>
         </div>
@@ -122,13 +122,13 @@
       function setFormStatus(message,type){formStatus.textContent=message||'';formStatus.className='status'+(type?' '+type:'');}
       function esc(value){return String(value??'').replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]})}
       function showUnauthenticated(){
-        currentUser=null; window.IBRMemberHeader.clear(profileName,profilePhoto); document.body.classList.remove('auth-pending','is-authenticated'); document.body.classList.add('auth-signed-out');
+        currentUser=null;  document.body.classList.remove('auth-pending','is-authenticated'); document.body.classList.add('auth-signed-out');
         redirectPanel.hidden=false; resourceShell.style.display='none'; authActionBtn.hidden=false; authActionBtn.textContent='Sign In'; authActionBtn.onclick=function(){window.location.href='/login.html?next=%2Fapp%2Fpublic%2Fdashboard.html';}; profileChip.hidden=true;
       }
       function showAuthenticated(user){
         currentUser=user; document.body.classList.remove('auth-pending','auth-signed-out'); document.body.classList.add('is-authenticated');
         redirectPanel.hidden=true; resourceShell.style.display='block'; authActionBtn.hidden=false; authActionBtn.textContent='Sign Out'; authActionBtn.onclick=async function(){authActionBtn.disabled=true;try{await auth.signOut();}finally{authActionBtn.disabled=false;}}; profileChip.hidden=false;
-        window.IBRMemberHeader.load({user:user,db:db,nameElement:profileName,photoElement:profilePhoto,isCurrentUser:function(){return !!currentUser&&currentUser.uid===user.uid;}});
+        
         loadResources();
       }
       function renderResources(snapshot){

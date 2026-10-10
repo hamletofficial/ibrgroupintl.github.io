@@ -281,6 +281,82 @@ exports.retryPressCommunicationEmail = onSchedule({
   }
 });
 
+function sendDirectMessageNotification(recipientEmail, recipientName) {
+  const safeName = String(recipientName || "there").replace(/[\r\n]+/g, " ").slice(0, 120);
+  const messageUrl = "https://uk.ibrecruitment.com/messages.html";
+  const text = "Hello " + safeName + ",\n\nYou have received a new direct message on the IBR broker community platform. Sign in to read and reply:\n" + messageUrl + "\n\nFor your privacy, the message content is not included in this email.";
+  const payload = JSON.stringify({
+    From: "admin-messages@ibrecruitment.com",
+    To: recipientEmail,
+    Subject: "You have a new message on IBR",
+    TextBody: text,
+    HtmlBody: "<p>Hello " + escapeHtml(safeName) + ",</p><p>You have received a new direct message on the IBR broker community platform. Sign in to read and reply:</p><p><a href=\"" + messageUrl + "\">Open your IBR inbox</a></p><p>For your privacy, the message content is not included in this email.</p>",
+    MessageStream: "outbound",
+  });
+  return new Promise(function(resolve, reject) {
+    const req = https.request({
+      hostname: "api.postmarkapp.com",
+      path: "/email",
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-Postmark-Server-Token": postmarkOutboundToken.value(),
+        "Content-Length": Buffer.byteLength(payload),
+      },
+    }, function(res) {
+      let responseBody = "";
+      res.on("data", function(chunk) { responseBody += chunk; });
+      res.on("end", function() {
+        if (res.statusCode >= 200 && res.statusCode < 300) resolve(responseBody);
+        else reject(new Error("Postmark " + res.statusCode + ": " + responseBody));
+      });
+    });
+    req.on("error", reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+exports.notifyDirectMessageRecipient = onDocumentCreated({
+  document: "directMessages/{messageId}",
+  region: "us-central1",
+  secrets: [postmarkOutboundToken],
+  timeoutSeconds: 30,
+  memory: "256MiB",
+}, async function(event) {
+  const snap = event.data;
+  if (!snap) return;
+  const message = snap.data() || {};
+  const recipientUid = message.recipientUid;
+  const senderUid = message.senderUid;
+  if (typeof recipientUid !== "string" || !recipientUid || recipientUid === senderUid) return;
+
+  try {
+    try { admin.app(); } catch (err) { admin.initializeApp(); }
+    const recipient = await admin.auth().getUser(recipientUid);
+    if (!recipient.email) {
+      console.warn("Direct-message notification skipped because recipient has no email:", recipientUid);
+      return;
+    }
+    await sendDirectMessageNotification(recipient.email, recipient.displayName || "there");
+    await snap.ref.set({
+      emailNotificationStatus: "sent",
+      emailNotificationSentAt: admin.firestore.FieldValue.serverTimestamp(),
+    }, {merge: true});
+  } catch (err) {
+    console.error("Unable to send direct-message email notification:", snap.id, err);
+    try {
+      await snap.ref.set({
+        emailNotificationStatus: "failed",
+        emailNotificationError: String(err && err.message || err).slice(0, 500),
+      }, {merge: true});
+    } catch (updateErr) {
+      console.error("Unable to record direct-message notification failure:", snap.id, updateErr);
+    }
+  }
+});
+
 exports.exchangeLinkedInAuth = onCall({
   region: "us-central1",
   invoker: "public",

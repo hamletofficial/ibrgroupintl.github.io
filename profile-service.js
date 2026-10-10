@@ -45,6 +45,14 @@
       };
     },
 
+    async listPublicProfiles() {
+      var db = await firestore();
+      var snapshot = await db.collection('publicProfiles').where('isPublic', '==', true).get();
+      return snapshot.docs.map(function (doc) {
+        return { uid: doc.id, data: normalizeProfile(doc.data() || {}) };
+      });
+    },
+
     async saveProfile(uid, fields) {
       var db = await firestore();
       var payload = Object.assign({}, fields || {});

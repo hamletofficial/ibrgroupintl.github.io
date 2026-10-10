@@ -247,6 +247,7 @@
         deleteButton.disabled = true;
         try {
           await options.onDelete(post, article);
+          if (article.isConnected) deleteButton.disabled = false;
         } catch (error) {
           console.error('Unable to delete post:', error);
           deleteButton.disabled = false;

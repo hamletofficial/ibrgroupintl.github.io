@@ -1,0 +1,273 @@
+(function (global) {
+  'use strict';
+  if (global.ibrBrokerPosts) return;
+
+  var authorCache = new Map();
+  var FALLBACK_PHOTO = '/100.png';
+
+  function asDate(value) {
+    if (!value) return null;
+    var date = typeof value.toDate === 'function' ? value.toDate() : new Date(value);
+    return date && !isNaN(date.getTime()) ? date : null;
+  }
+
+  function timeLabel(value) {
+    var date = asDate(value);
+    if (!date) return 'Just posted';
+    try {
+      return new Intl.DateTimeFormat(undefined, {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      }).format(date);
+    } catch (error) {
+      return date.toLocaleString();
+    }
+  }
+
+  function sortNewest(posts) {
+    return (posts || []).slice().sort(function (a, b) {
+      var aDate = asDate(a.data && a.data.createdAt);
+      var bDate = asDate(b.data && b.data.createdAt);
+      return (bDate ? bDate.getTime() : 0) - (aDate ? aDate.getTime() : 0);
+    });
+  }
+
+  function getAuthorProfile(uid) {
+    if (!uid) return Promise.resolve({ name: 'IBR Member', photo: FALLBACK_PHOTO });
+    if (authorCache.has(uid)) return authorCache.get(uid);
+    var promise = (async function () {
+      try {
+        if (!global.ibrProfileService) throw new Error('Profile service unavailable.');
+        var result = await global.ibrProfileService.getProfile(uid);
+        var data = result && result.exists ? (result.data || {}) : {};
+        var name = [data.firstName, data.lastName].filter(function (part) {
+          return typeof part === 'string' && part.trim();
+        }).map(function (part) { return part.trim(); }).join(' ')
+          || (typeof data.displayName === 'string' ? data.displayName.trim() : '')
+          || 'IBR Member';
+        var photo = (typeof data.imageDataUrl === 'string' && data.imageDataUrl.trim())
+          || (typeof data.photoURL === 'string' && data.photoURL.trim())
+          || (typeof data.photoUrl === 'string' && data.photoUrl.trim())
+          || FALLBACK_PHOTO;
+        return { name: name, photo: photo };
+      } catch (error) {
+        return { name: 'IBR Member', photo: FALLBACK_PHOTO };
+      }
+    })();
+    authorCache.set(uid, promise);
+    return promise;
+  }
+
+  function validUrl(value) {
+    if (typeof value !== 'string' || !value.trim()) return '';
+    try {
+      var parsed = new URL(value, global.location.origin);
+      return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? parsed.href : '';
+    } catch (error) {
+      return '';
+    }
+  }
+
+  function renderAttachments(container, attachments) {
+    if (!Array.isArray(attachments)) return;
+    attachments.forEach(function (file) {
+      if (!file || typeof file !== 'object') return;
+      var url = validUrl(file.url);
+      if (!url) return;
+      var name = typeof file.name === 'string' && file.name.trim() ? file.name.trim() : 'Shared attachment';
+      var type = typeof file.contentType === 'string' ? file.contentType.toLowerCase() : '';
+      var isPdf = type === 'application/pdf' || /\.pdf$/i.test(name);
+      var isImage = type.indexOf('image/') === 0 || /\.(apng|avif|bmp|gif|heic|heif|jpe?g|png|svg|tiff?|webp)$/i.test(name);
+      var item = document.createElement('figure');
+      item.className = 'post-attachment' + (isPdf ? ' post-attachment-pdf' : '');
+      if (isPdf) {
+        var title = document.createElement('figcaption');
+        title.className = 'attachment-title';
+        title.textContent = '📄 ' + name;
+        item.appendChild(title);
+        var frame = document.createElement('iframe');
+        frame.className = 'pdf-preview';
+        frame.src = url + '#view=FitH';
+        frame.title = 'PDF preview: ' + name;
+        frame.loading = 'lazy';
+        frame.referrerPolicy = 'no-referrer';
+        item.appendChild(frame);
+        var open = document.createElement('a');
+        open.className = 'attachment-open-link';
+        open.href = url;
+        open.target = '_blank';
+        open.rel = 'noopener noreferrer';
+        open.textContent = 'Open PDF in a new tab';
+        item.appendChild(open);
+      } else if (isImage) {
+        var link = document.createElement('a');
+        link.className = 'image-preview-link';
+        link.href = url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.setAttribute('aria-label', 'Open image: ' + name);
+        var image = document.createElement('img');
+        image.className = 'post-image-preview';
+        image.src = url;
+        image.alt = name;
+        image.loading = 'lazy';
+        image.referrerPolicy = 'no-referrer';
+        link.appendChild(image);
+        item.appendChild(link);
+        var caption = document.createElement('figcaption');
+        caption.className = 'attachment-title';
+        caption.textContent = name;
+        item.appendChild(caption);
+      } else {
+        var fallback = document.createElement('a');
+        fallback.href = url;
+        fallback.target = '_blank';
+        fallback.rel = 'noopener noreferrer';
+        fallback.textContent = '📎 ' + name;
+        item.appendChild(fallback);
+      }
+      container.appendChild(item);
+    });
+  }
+
+  function createPostCard(post, options) {
+    options = options || {};
+    var data = post && post.data ? post.data : {};
+    var article = document.createElement('article');
+    article.className = 'post-card';
+    article.dataset.postId = post.id || '';
+    article.dataset.ownerUid = data.ownerUid || '';
+
+    var header = document.createElement('div');
+    header.className = 'post-author-row';
+    var avatar = document.createElement('img');
+    avatar.className = 'post-author-avatar';
+    avatar.src = FALLBACK_PHOTO;
+    avatar.alt = 'Member profile photo';
+    avatar.loading = 'lazy';
+    avatar.onerror = function () { avatar.onerror = null; avatar.src = FALLBACK_PHOTO; };
+
+    var authorMeta = document.createElement('div');
+    authorMeta.className = 'post-author-meta';
+    var authorLink = document.createElement('a');
+    authorLink.className = 'post-author-name';
+    authorLink.href = '/profile.html?uid=' + encodeURIComponent(data.ownerUid || '');
+    authorLink.textContent = 'Loading member…';
+    var date = document.createElement('time');
+    date.className = 'post-time';
+    date.textContent = timeLabel(data.createdAt);
+    var privateAuthor = document.createElement('span');
+    privateAuthor.className = 'post-private-author';
+    privateAuthor.textContent = data.ownerUid === options.currentUid ? 'You' : '';
+    authorMeta.append(authorLink, date);
+    if (privateAuthor.textContent) authorMeta.appendChild(privateAuthor);
+    header.append(avatar, authorMeta);
+    article.appendChild(header);
+
+    getAuthorProfile(data.ownerUid).then(function (author) {
+      authorLink.textContent = author.name;
+      avatar.alt = author.name + ' profile photo';
+      avatar.src = author.photo || FALLBACK_PHOTO;
+    });
+
+    var body = document.createElement('p');
+    body.className = 'post-body';
+    body.textContent = typeof data.body === 'string' ? data.body : '';
+    article.appendChild(body);
+
+    var attachmentBox = document.createElement('div');
+    attachmentBox.className = 'post-attachments';
+    renderAttachments(attachmentBox, data.attachments);
+    if (attachmentBox.childNodes.length) article.appendChild(attachmentBox);
+
+    var footer = document.createElement('div');
+    footer.className = 'post-actions';
+    if (options.showLike && typeof options.onLike === 'function') {
+      var liked = Boolean(options.liked);
+      var likeButton = document.createElement('button');
+      likeButton.type = 'button';
+      likeButton.className = 'post-action-button post-like-button' + (liked ? ' is-liked' : '');
+      likeButton.textContent = liked ? '💜 Liked' : '💜 Like';
+      likeButton.setAttribute('aria-pressed', liked ? 'true' : 'false');
+      likeButton.addEventListener('click', async function () {
+        if (likeButton.disabled) return;
+        likeButton.disabled = true;
+        try {
+          liked = Boolean(await options.onLike(post, liked));
+          likeButton.classList.toggle('is-liked', liked);
+          likeButton.textContent = liked ? '💜 Liked' : '💜 Like';
+          likeButton.setAttribute('aria-pressed', liked ? 'true' : 'false');
+        } catch (error) {
+          console.error('Unable to update private post like:', error);
+        } finally {
+          likeButton.disabled = false;
+        }
+      });
+      footer.appendChild(likeButton);
+    }
+
+    if (options.showReplies && typeof options.onRepliesToggle === 'function') {
+      var replyButton = document.createElement('button');
+      replyButton.type = 'button';
+      replyButton.className = 'post-action-button';
+      replyButton.textContent = '💬 Reply';
+      var replies = document.createElement('section');
+      replies.className = 'post-replies';
+      replies.hidden = true;
+      replyButton.addEventListener('click', async function () {
+        var opening = replies.hidden;
+        replies.hidden = !opening;
+        replyButton.textContent = opening ? 'Hide replies' : '💬 Reply';
+        if (opening) {
+          replyButton.disabled = true;
+          try {
+            await options.onRepliesToggle(post, replies, replyButton, true);
+          } catch (error) {
+            console.error('Unable to open post replies:', error);
+          } finally {
+            replyButton.disabled = false;
+          }
+        }
+      });
+      footer.appendChild(replyButton);
+      article.append(footer, replies);
+    } else if (options.showReplies) {
+      article.append(footer);
+    } else {
+      article.appendChild(footer);
+    }
+
+    if (options.allowDelete && data.ownerUid === options.currentUid && typeof options.onDelete === 'function') {
+      var deleteButton = document.createElement('button');
+      deleteButton.type = 'button';
+      deleteButton.className = 'post-action-button post-delete-button';
+      deleteButton.textContent = 'Delete post';
+      deleteButton.addEventListener('click', async function () {
+        if (deleteButton.disabled) return;
+        deleteButton.disabled = true;
+        try {
+          await options.onDelete(post, article);
+        } catch (error) {
+          console.error('Unable to delete post:', error);
+          deleteButton.disabled = false;
+        }
+      });
+      footer.appendChild(deleteButton);
+    }
+    return article;
+  }
+
+  async function loadLikedIds(db, uid) {
+    if (!db || !uid) return new Set();
+    var snapshot = await db.collection('userPostLikes').doc(uid).collection('likes').get();
+    return new Set(snapshot.docs.map(function (doc) { return doc.id; }));
+  }
+
+  global.ibrBrokerPosts = Object.freeze({
+    createPostCard: createPostCard,
+    getAuthorProfile: getAuthorProfile,
+    loadLikedIds: loadLikedIds,
+    sortNewest: sortNewest,
+    timeLabel: timeLabel
+  });
+})(window);

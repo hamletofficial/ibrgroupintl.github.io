@@ -298,27 +298,6 @@
           var signInLink = document.getElementById("signInLink");
           if (signInLink) signInLink.style.display = isAuthenticated ? "none" : "inline-flex";
           signOutBtn.style.display = isAuthenticated ? "inline-flex" : "none";
-          var profileName = document.querySelector('[data-auth-name]');
-          var profilePhoto = document.querySelector('[data-auth-photo]');
-          if (profileName) profileName.textContent = user ? (user.displayName || '') : '';
-          if (profilePhoto && user && user.photoURL) profilePhoto.src = user.photoURL;
-          if (user && window.firebase && firebase.firestore) {
-            try {
-              // Member profile details are stored under the authenticated UID in publicProfiles.
-              var profileSnapshot = await firebase.firestore().collection('publicProfiles').doc(user.uid).get();
-              if (profileSnapshot.exists) {
-                var profileData = profileSnapshot.data() || {};
-                var firstName = String(profileData.firstName || '').trim();
-                var lastName = String(profileData.lastName || '').trim();
-                var savedName = (firstName + ' ' + lastName).trim();
-                if (profileName) profileName.textContent = savedName || String(profileData.displayName || profileData.name || user.displayName || '');
-                var savedPhoto = profileData.imageDataUrl || profileData.photoURL || profileData.photoUrl || '';
-                if (profilePhoto && typeof savedPhoto === 'string' && savedPhoto) profilePhoto.src = savedPhoto;
-              }
-            } catch (profileError) {
-              console.warn('Unable to load the signed-in member profile for the invoice header:', profileError);
-            }
-          }
 		  var paymentContent = document.getElementById('invoicePaymentContent');
 		  var authPrompt = document.getElementById('invoiceAuthPrompt');
 		  var stripeContainer = document.getElementById('stripePricingTableContainer');

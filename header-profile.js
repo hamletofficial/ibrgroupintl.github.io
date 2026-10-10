@@ -5,8 +5,26 @@
   window.__ibrHeaderProfileInitialized = true;
 
   var firestoreSdkPromise;
+  var profileServicePromise;
   var profileUnsubscribers = [];
   var activeUid = null;
+
+  function ensureProfileService() {
+    if (window.ibrProfileService) return Promise.resolve();
+    if (profileServicePromise) return profileServicePromise;
+    profileServicePromise = new Promise(function (resolve, reject) {
+      var script = document.createElement('script');
+      script.src = '/profile-service.js?v=20261010-1';
+      script.async = true;
+      script.onload = function () {
+        if (window.ibrProfileService) resolve();
+        else reject(new Error('Profile service did not initialise.'));
+      };
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+    return profileServicePromise;
+  }
 
   function stopProfileListeners() {
     profileUnsubscribers.forEach(function (unsubscribe) {
@@ -76,21 +94,14 @@
 
     if (!user) return;
 
-    ensureFirestoreCompat().then(function () {
-      if (activeUid !== user.uid || !window.firebase || !firebase.firestore) return;
-      var unsubscribe = firebase.firestore().collection('publicProfiles').doc(user.uid).onSnapshot(function (snapshot) {
+    ensureFirestoreCompat().then(ensureProfileService).then(function () {
+      if (activeUid !== user.uid || !window.firebase || !firebase.firestore || !window.ibrProfileService) return;
+      var unsubscribe = window.ibrProfileService.watchProfile(user.uid, function (result) {
         if (activeUid !== user.uid) return;
-        var data = snapshot.exists ? (snapshot.data() || {}) : {};
-        var firstName = String(data.firstName || '').trim();
-        var lastName = String(data.lastName || '').trim();
-        var savedName = (firstName + ' ' + lastName).trim()
-          || String(data.displayName || data.name || '').trim()
-          || user.displayName
-          || user.email
-          || 'Member';
-        var savedPhoto = typeof data.imageDataUrl === 'string' && data.imageDataUrl.trim()
-          ? data.imageDataUrl.trim()
-          : String(data.photoURL || data.photoUrl || data.photoURLData || user.photoURL || '').trim();
+        var data = result && result.data ? result.data : {};
+        var savedName = data.displayName || user.displayName || user.email || 'Member';
+        var savedPhoto = data.imageDataUrl
+          || String(data.photoURL || data.photoUrl || data.photoURLData || user.photoURL || '').trim();
 
         document.querySelectorAll('[data-auth-profile]').forEach(function (chip) {
           var nameEl = chip.querySelector('[data-auth-name]');

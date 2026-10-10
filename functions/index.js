@@ -340,7 +340,7 @@ exports.notifyDirectMessageRecipient = onDocumentCreated({
     const profileSnap = await getFirestore(admin.app()).collection("publicProfiles").doc(recipientUid).get();
     const profile = profileSnap.exists ? (profileSnap.data() || {}) : {};
     const recipientEmail = typeof profile.email === "string" ? profile.email.trim() : "";
-    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(recipientEmail)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipientEmail)) {
       console.warn("Direct-message notification skipped because the recipient has no valid email in publicProfiles:", recipientUid);
       await snap.ref.set({
         emailNotificationStatus: "skipped",

@@ -264,59 +264,61 @@ window.addEventListener('load', function () {
       });
     });
   }
-  async function toggleReplies(post, area) {
+  async function toggleReplies(post, area, button, opening, canReply) {
     if (area.dataset.initialized === 'true') return;
     area.dataset.initialized = 'true';
     var list = document.createElement('div');
     list.className = 'reply-list';
     area.appendChild(list);
-    var form = document.createElement('form');
-    form.className = 'reply-form';
-    var label = document.createElement('label');
-    label.textContent = 'Write a reply (140 characters maximum)';
-    label.style.fontWeight = '700';
-    label.style.color = '#334155';
-    var textarea = document.createElement('textarea');
-    textarea.className = 'reply-textarea';
-    textarea.maxLength = 140;
-    textarea.rows = 2;
-    textarea.required = true;
-    textarea.placeholder = 'Reply to this post…';
-    var row = document.createElement('div');
-    row.className = 'reply-form-row';
-    var counter = document.createElement('span');
-    counter.className = 'character-count';
-    counter.textContent = '0 / 140';
-    textarea.addEventListener('input', function () { counter.textContent = textarea.value.length + ' / 140'; });
-    var send = document.createElement('button');
-    send.type = 'submit';
-    send.className = 'primary-post-button';
-    send.textContent = 'Reply';
-    row.append(counter, send);
-    form.append(label, textarea, row);
-    form.addEventListener('submit', async function (event) {
-      event.preventDefault();
-      var text = textarea.value.trim();
-      if (!text || text.length > 140) { textarea.focus(); return; }
-      send.disabled = true;
-      try {
-        await db.collection('brokerPosts').doc(post.id).collection('replies').add({
-          ownerUid: activeUser.uid,
-          body: text,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        textarea.value = '';
-        counter.textContent = '0 / 140';
-        await renderReplies(post, list);
-        announce('Your reply has been posted.', false);
-      } catch (error) {
-        console.error('Unable to post reply:', error);
-        announce('Your reply could not be posted. Please try again.', true);
-      } finally {
-        send.disabled = false;
-      }
-    });
-    area.appendChild(form);
+    if (canReply) {
+      var form = document.createElement('form');
+      form.className = 'reply-form';
+      var label = document.createElement('label');
+      label.textContent = 'Write a reply (140 characters maximum)';
+      label.style.fontWeight = '700';
+      label.style.color = '#334155';
+      var textarea = document.createElement('textarea');
+      textarea.className = 'reply-textarea';
+      textarea.maxLength = 140;
+      textarea.rows = 2;
+      textarea.required = true;
+      textarea.placeholder = 'Reply to this post…';
+      var row = document.createElement('div');
+      row.className = 'reply-form-row';
+      var counter = document.createElement('span');
+      counter.className = 'character-count';
+      counter.textContent = '0 / 140';
+      textarea.addEventListener('input', function () { counter.textContent = textarea.value.length + ' / 140'; });
+      var send = document.createElement('button');
+      send.type = 'submit';
+      send.className = 'primary-post-button';
+      send.textContent = 'Reply';
+      row.append(counter, send);
+      form.append(label, textarea, row);
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        var text = textarea.value.trim();
+        if (!text || text.length > 140) { textarea.focus(); return; }
+        send.disabled = true;
+        try {
+          await db.collection('brokerPosts').doc(post.id).collection('replies').add({
+            ownerUid: activeUser.uid,
+            body: text,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          textarea.value = '';
+          counter.textContent = '0 / 140';
+          await renderReplies(post, list);
+          announce('Your reply has been posted.', false);
+        } catch (error) {
+          console.error('Unable to post reply:', error);
+          announce('Your reply could not be posted. Please try again.', true);
+        } finally {
+          send.disabled = false;
+        }
+      });
+      area.appendChild(form);
+    }
     await renderReplies(post, list);
   }
   function checkFiles(files) {

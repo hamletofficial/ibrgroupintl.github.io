@@ -24,7 +24,7 @@
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-functions-compat.js"></script>
-  <script defer src="/firebase-config.js"></script>
+  <script defer src="/firebase-config.js"></script><script defer src="/profile-service.js?v=20261010-2"></script>
   <script type="module" src="/totp-mfa.js"></script>
   <script defer src="/header-profile.js?v=20261010-3"></script>
   <script defer src="/mobile-compat.js"></script>
@@ -796,10 +796,16 @@
           var label = labels[method] || method;
           try {
             if (window.firebase && firebase.firestore) {
-              firebase.firestore().collection('publicProfiles').doc(user.uid).set({
-                signInMethod: label,
-                signInMethodUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
-              }, { merge: true }).catch(function (error) {
+              var signInProfileWrite = window.ibrProfileService
+                ? window.ibrProfileService.updateProfile(user.uid, {
+                    signInMethod: label,
+                    signInMethodUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                  })
+                : firebase.firestore().collection('publicProfiles').doc(user.uid).set({
+                    signInMethod: label,
+                    signInMethodUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                  }, { merge: true });
+              signInProfileWrite.catch(function (error) {
                 console.warn('Could not save sign-in method to public profile:', error);
               });
             }

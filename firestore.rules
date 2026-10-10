@@ -3,7 +3,9 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /publicProfiles/{userId} {
-      allow read: if request.auth != null && resource.data.isPublic == true;
+      // Members must always be able to read their own saved profile for authenticated headers/settings, even when their profile is not public.
+      allow read: if request.auth != null
+        && (request.auth.uid == userId || resource.data.isPublic == true);
 
       // Clients cannot claim successful Onfido verification. A trusted server
       // using the Admin SDK must set onfidoVerified after verification.

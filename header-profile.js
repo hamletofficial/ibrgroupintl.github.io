@@ -5,9 +5,19 @@
   window.__ibrHeaderProfileInitialized = true;
 
   var firestoreSdkPromise;
+  var profileUnsubscribers = [];
+  var activeUid = null;
+
+  function stopProfileListeners() {
+    profileUnsubscribers.forEach(function (unsubscribe) {
+      if (typeof unsubscribe === 'function') unsubscribe();
+    });
+    profileUnsubscribers = [];
+  }
 
   function setFallbackPhoto(photoEl) {
     if (!photoEl) return;
+    photoEl.onerror = null;
     photoEl.src = '/100.png';
     photoEl.alt = 'Profile photo';
   }
@@ -35,7 +45,10 @@
   }
 
   function updateProfile(user) {
+    stopProfileListeners();
+    activeUid = user ? user.uid : null;
     var chips = document.querySelectorAll('[data-auth-profile]');
+
     chips.forEach(function (chip) {
       var nameEl = chip.querySelector('[data-auth-name]');
       var photoEl = chip.querySelector('[data-auth-photo]');
@@ -47,60 +60,64 @@
         return;
       }
 
-      var initialName = user.displayName || user.email || 'Member';
-      if (nameEl) nameEl.textContent = initialName;
+      // Do not flash a stale Firebase Auth displayName before the saved profile loads.
+      if (nameEl) nameEl.textContent = 'Loading profile…';
       if (photoEl) {
         photoEl.referrerPolicy = 'no-referrer';
-        photoEl.alt = initialName + ' profile photo';
+        photoEl.alt = 'Profile photo';
         photoEl.onerror = function () {
-          if (photoEl.src.indexOf('/100.png') === -1) {
-            photoEl.onerror = null;
-            setFallbackPhoto(photoEl);
-          }
+          photoEl.onerror = null;
+          setFallbackPhoto(photoEl);
         };
-        photoEl.src = user.photoURL || '/160.jpg';
+        photoEl.src = '/100.png';
       }
       chip.style.display = 'inline-flex';
     });
 
-    if (!user || !window.firebase || !firebase.firestore) {
-      if (user) {
-        ensureFirestoreCompat().then(function () {
-          return loadSavedProfile(user);
-        }).catch(function (error) {
-          console.warn('Unable to load the signed-in member profile for the header:', error);
+    if (!user) return;
+
+    ensureFirestoreCompat().then(function () {
+      if (activeUid !== user.uid || !window.firebase || !firebase.firestore) return;
+      var unsubscribe = firebase.firestore().collection('publicProfiles').doc(user.uid).onSnapshot(function (snapshot) {
+        if (activeUid !== user.uid) return;
+        var data = snapshot.exists ? (snapshot.data() || {}) : {};
+        var firstName = String(data.firstName || '').trim();
+        var lastName = String(data.lastName || '').trim();
+        var savedName = (firstName + ' ' + lastName).trim()
+          || String(data.displayName || data.name || '').trim()
+          || user.displayName
+          || user.email
+          || 'Member';
+        var savedPhoto = typeof data.imageDataUrl === 'string' && data.imageDataUrl.trim()
+          ? data.imageDataUrl.trim()
+          : String(data.photoURL || data.photoUrl || data.photoURLData || user.photoURL || '').trim();
+
+        document.querySelectorAll('[data-auth-profile]').forEach(function (chip) {
+          var nameEl = chip.querySelector('[data-auth-name]');
+          var photoEl = chip.querySelector('[data-auth-photo]');
+          if (nameEl) nameEl.textContent = savedName;
+          if (photoEl) {
+            photoEl.alt = savedName + ' profile photo';
+            photoEl.onerror = function () { photoEl.onerror = null; setFallbackPhoto(photoEl); };
+            photoEl.src = savedPhoto || '/100.png';
+          }
         });
-      }
-      return;
-    }
-    loadSavedProfile(user);
-  }
-
-  function loadSavedProfile(user) {
-    if (!user || !window.firebase || !firebase.firestore) return Promise.resolve();
-    return firebase.firestore().collection('publicProfiles').doc(user.uid).get().then(function (snapshot) {
-      if (!snapshot.exists) return;
-      var data = snapshot.data() || {};
-      var firstName = String(data.firstName || '').trim();
-      var lastName = String(data.lastName || '').trim();
-      var savedName = (firstName + ' ' + lastName).trim()
-        || String(data.displayName || data.name || '').trim()
-        || user.displayName
-        || user.email
-        || 'Member';
-      var savedPhoto = data.imageDataUrl || data.photoURL || data.photoUrl || data.photoURLData || user.photoURL || '';
-
+      }, function (error) {
+        if (activeUid !== user.uid) return;
+        console.warn('Unable to watch the signed-in member profile for the header:', error);
+        document.querySelectorAll('[data-auth-profile]').forEach(function (chip) {
+          var nameEl = chip.querySelector('[data-auth-name]');
+          if (nameEl) nameEl.textContent = user.displayName || user.email || 'Member';
+        });
+      });
+      profileUnsubscribers.push(unsubscribe);
+    }).catch(function (error) {
+      if (activeUid !== user.uid) return;
+      console.warn('Unable to load the signed-in member profile for the header:', error);
       document.querySelectorAll('[data-auth-profile]').forEach(function (chip) {
         var nameEl = chip.querySelector('[data-auth-name]');
-        var photoEl = chip.querySelector('[data-auth-photo]');
-        if (nameEl) nameEl.textContent = savedName;
-        if (photoEl && savedPhoto) {
-          photoEl.alt = savedName + ' profile photo';
-          photoEl.src = savedPhoto;
-        }
+        if (nameEl) nameEl.textContent = user.displayName || user.email || 'Member';
       });
-    }).catch(function (error) {
-      console.warn('Unable to load the signed-in member profile for the header:', error);
     });
   }
 

@@ -12,7 +12,7 @@
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script defer src="/firebase-config.js"></script>
+  <script defer src="/firebase-config.js"></script><script defer src="/profile-service.js?v=20261010-2"></script>
 <script defer src="/header-profile.js?v=20261010-3"></script>
 <script defer src="/page-transition.js"></script>
   <style>
@@ -159,8 +159,10 @@
         e.preventDefault(); if(!currentUser||!propertyForm.reportValidity())return;
         saveBtn.disabled=true; setFormStatus('Checking identity verification…');
         try{
-          const profileSnap=await db.collection('publicProfiles').doc(currentUser.uid).get();
-          if(!profileSnap.exists || profileSnap.data().onfidoVerified !== true){
+          const profileResult=window.ibrProfileService
+            ? await window.ibrProfileService.getProfile(currentUser.uid)
+            : await db.collection('publicProfiles').doc(currentUser.uid).get().then(function(snap){return {exists:snap.exists,data:snap.exists?(snap.data()||{}):{}}});
+          if(!profileResult.exists || profileResult.data.onfidoVerified !== true){
             setFormStatus('Your listing could not be posted. Please complete identity verification before submitting a property listing. If you experience technical difficulties, contact Support at support@ibrecruitment.com.','error');
             saveBtn.disabled=false;
             return;

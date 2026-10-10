@@ -245,6 +245,7 @@
   </div>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <script defer src="/header-profile.js?v=20261010-3"></script>
   <script defer src="/mobile-compat.js"></script>
@@ -254,6 +255,7 @@
       if (!window.firebase || !window.firebaseConfig) return;
       try { firebase.initializeApp(window.firebaseConfig); } catch (e) {}
       const auth = firebase.auth();
+      const db = firebase.firestore();
       const loginSection = document.getElementById('loginSection');
       const membersShell = document.getElementById('membersShell');
       const signOutBtn = document.getElementById('signOutBtn');
@@ -266,14 +268,29 @@
         signInLink.style.display = 'inline-flex';
         document.body.classList.remove('auth-pending', 'has-sidebar');
       }
-      function showSignedIn(user) {
+      async function showSignedIn(user) {
         loginSection.style.display = 'none';
         membersShell.style.display = 'block';
         signOutBtn.style.display = 'inline-flex';
         signInLink.style.display = 'none';
         document.body.classList.remove('auth-pending');
         document.body.classList.add('has-sidebar');
+
+        // Show the authentication provider's name immediately as a fallback,
+        // then prefer the member's saved First name and Last name from Firestore.
         memberName.textContent = user.displayName || user.email || 'Member';
+        try {
+          const profileSnapshot = await db.collection('publicProfiles').doc(user.uid).get();
+          const profile = profileSnapshot.exists ? (profileSnapshot.data() || {}) : {};
+          const savedName = [profile.firstName, profile.lastName]
+            .filter(value => typeof value === 'string' && value.trim())
+            .map(value => value.trim())
+            .join(' ');
+          if (savedName) memberName.textContent = savedName;
+        } catch (error) {
+          // Keep the authentication name if the profile record cannot be read.
+          console.warn('Unable to load the saved member name from Firestore.', error);
+        }
       }
       auth.onAuthStateChanged(function (user) {
         if (!user) { showSignedOut(); return; }

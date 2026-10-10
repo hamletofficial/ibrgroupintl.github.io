@@ -5,15 +5,15 @@
   function isValidEmail(value){return typeof value==='string'&&EMAIL_PATTERN.test(value.trim());}
   function markup(email){
     if(!isValidEmail(email))return '';
-    return '<span class="email-verified-tick" role="img" aria-label="Email address on file" title="Email address on file">'+SVG+'</span>';
+    return '<span class="email-verified-tick" role="img" aria-label="Verified by e-mail" title="Verified by e-mail">'+SVG+'</span>';
   }
   function create(email){
     if(!isValidEmail(email))return null;
     const badge=document.createElement('span');
     badge.className='email-verified-tick';
     badge.setAttribute('role','img');
-    badge.setAttribute('aria-label','Email address on file');
-    badge.title='Email address on file';
+    badge.setAttribute('aria-label','Verified by e-mail');
+    badge.title='Verified by e-mail';
     badge.innerHTML=SVG;
     return badge;
   }

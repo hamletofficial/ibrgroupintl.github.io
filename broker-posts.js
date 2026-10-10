@@ -290,6 +290,13 @@
       avatar.src = author.photo || FALLBACK_PHOTO;
     });
 
+    if (data.repostOf && typeof data.repostOf === 'object') {
+      var repostNote = document.createElement('div');
+      repostNote.className = 'post-repost-attribution';
+      repostNote.textContent = '🔁 Reposted from ' + (typeof data.repostOf.authorName === 'string' ? data.repostOf.authorName : 'another member');
+      article.appendChild(repostNote);
+    }
+
     var body = document.createElement('p');
     body.className = 'post-body';
     appendFormattedBody(body, data.bodyHtml, typeof data.body === 'string' ? data.body : '');
@@ -306,6 +313,27 @@
 
     var footer = document.createElement('div');
     footer.className = 'post-actions';
+    if (typeof options.onRepost === 'function' && data.ownerUid !== options.currentUid) {
+      var repostButton = document.createElement('button');
+      repostButton.type = 'button';
+      repostButton.className = 'post-action-button post-repost-button';
+      repostButton.textContent = '🔁 Repost';
+      repostButton.addEventListener('click', async function () {
+        if (repostButton.disabled) return;
+        repostButton.disabled = true;
+        repostButton.textContent = 'Reposting…';
+        try {
+          await options.onRepost(post);
+          repostButton.textContent = '✓ Reposted';
+        } catch (error) {
+          console.error('Unable to repost:', error);
+          repostButton.textContent = '🔁 Repost';
+          repostButton.disabled = false;
+        }
+      });
+      footer.appendChild(repostButton);
+    }
+
     if (options.showLike && typeof options.onLike === 'function') {
       var liked = Boolean(options.liked);
       var likeButton = document.createElement('button');

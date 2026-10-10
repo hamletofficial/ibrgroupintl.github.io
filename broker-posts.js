@@ -163,6 +163,73 @@
     if (lastIndex < value.length) container.appendChild(document.createTextNode(value.slice(lastIndex)));
   }
 
+  function appendUrlPreview(container, text) {
+    var value = typeof text === 'string' ? text : '';
+    var match = value.match(/(?:https?:\/\/|www\.)[^\s<>"']+/i);
+    if (!match) return;
+    var raw = match[0].replace(/[.,!?;:)}\]]+$/, '');
+    var url = validUrl(/^www\./i.test(raw) ? 'https://' + raw : raw);
+    if (!url) return;
+
+    var card = document.createElement('a');
+    card.className = 'post-url-preview';
+    card.href = url;
+    card.target = '_blank';
+    card.rel = 'noopener noreferrer';
+    card.setAttribute('aria-label', 'Open link preview in a new tab');
+    var image = document.createElement('img');
+    image.className = 'post-url-preview-image';
+    image.alt = '';
+    image.loading = 'lazy';
+    image.hidden = true;
+    var content = document.createElement('div');
+    content.className = 'post-url-preview-content';
+    var domain = document.createElement('div');
+    domain.className = 'post-url-preview-domain';
+    try { domain.textContent = new URL(url).hostname.replace(/^www\./i, ''); }
+    catch (error) { domain.textContent = url; }
+    var title = document.createElement('div');
+    title.className = 'post-url-preview-title';
+    title.textContent = 'Loading link preview…';
+    var description = document.createElement('div');
+    description.className = 'post-url-preview-description';
+    description.textContent = url;
+    content.append(domain, title, description);
+    card.append(image, content);
+    container.appendChild(card);
+
+    // Microlink extracts Open Graph, Twitter Card and page metadata without
+    // requiring the destination website to allow direct browser scraping.
+    var endpoint = 'https://api.microlink.io/?url=' + encodeURIComponent(url) + '&meta=true&screenshot=false&video=false&audio=false';
+    fetch(endpoint, { method: 'GET', headers: { 'Accept': 'application/json' } })
+      .then(function (response) {
+        if (!response.ok) throw new Error('Preview service returned ' + response.status);
+        return response.json();
+      })
+      .then(function (result) {
+        var data = result && result.data ? result.data : {};
+        if (!data.title && !data.description && !(data.image && data.image.url)) {
+          title.textContent = 'Open link';
+          description.textContent = url;
+          return;
+        }
+        title.textContent = typeof data.title === 'string' && data.title.trim() ? data.title.trim() : url;
+        description.textContent = typeof data.description === 'string' ? data.description.trim() : '';
+        if (data.image && typeof data.image.url === 'string' && validUrl(data.image.url)) {
+          image.src = data.image.url;
+          image.hidden = false;
+          image.onerror = function () { image.hidden = true; };
+        }
+        if (typeof data.publisher === 'string' && data.publisher.trim()) {
+          domain.textContent = data.publisher.trim() + ' · ' + domain.textContent;
+        }
+      })
+      .catch(function () {
+        title.textContent = 'Open link';
+        description.textContent = url;
+      });
+  }
+
   function createPostCard(post, options) {
     options = options || {};
     var data = post && post.data ? post.data : {};
@@ -207,6 +274,10 @@
     body.className = 'post-body';
     appendLinkedText(body, typeof data.body === 'string' ? data.body : '');
     article.appendChild(body);
+    var previewBox = document.createElement('div');
+    previewBox.className = 'post-url-previews';
+    appendUrlPreview(previewBox, typeof data.body === 'string' ? data.body : '');
+    if (previewBox.childNodes.length) article.appendChild(previewBox);
 
     var attachmentBox = document.createElement('div');
     attachmentBox.className = 'post-attachments';

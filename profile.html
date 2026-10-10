@@ -60,7 +60,7 @@ window.addEventListener('load',function(){
    for(let i=0;i<replies.docs.length;i+=400){const batch=db.batch();replies.docs.slice(i,i+400).forEach(function(doc){batch.delete(doc.ref)});await batch.commit()}
    const attachments=Array.isArray(post.data.attachments)?post.data.attachments:[];
    await Promise.all(attachments.map(async function(file){if(!file||!file.path)return;try{await firebase.storage().ref(file.path).delete()}catch(error){console.warn('Unable to remove a post attachment:',error)}}));
-   await ref.delete();if(card&&card.parentNode)card.remove();if(activeProfileUid===activeUser.uid)await renderPrivateLikes()
+   await ref.delete();if(card&&card.parentNode)card.remove();if(activeProfileUid===activeUser.uid)await renderPrivateLikes();if(activeProfileUid===activeUser.uid)await renderPrivateLikes()
  }
  function renderProfilePosts(snapshot){
    const posts=window.ibrBrokerPosts.sortNewest(snapshot.docs.map(function(doc){return {id:doc.id,data:doc.data()||{}}}));

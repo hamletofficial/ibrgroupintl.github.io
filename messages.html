@@ -38,7 +38,45 @@
   <div class="user-menu" style="margin-left:auto;display:flex;align-items:center;gap:12px">
     <div class="auth-profile-chip" data-auth-profile><img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo"><span class="auth-profile-name" data-auth-name></span></div>
     <a class="btn btn-outline nav-login" href="/login.html?next=%2Fmessages.html" id="signInLink">Sign In</a>
-    
+    <button class="btn btn-outline" id="signOutBtn" style="display:none">Sign Out</button>
+  </div>
+</div></header>
+<nav id="topNavMenu" class="sidebar-menu-shell" aria-label="Members navigation">
+<a class="sidebar-menu-link" href="https://www.ibrecruitment.com">🏠 Home</a>
+    <a class="sidebar-menu-link" href="/profile.html"><span class="sidebar-menu-icon" aria-hidden="true">🙎🏿‍♀️</span> View Profile</a>
+<a class="sidebar-menu-link" href="/editprofile.html">🙎🏿‍♀️ Edit Profile</a>
+<a class="sidebar-menu-link" href="/messages.html">✉️ Mailbox</a>
+<a class="sidebar-menu-link" href="/members.html">🧑‍🤝‍🧑 Members Area</a>
+<a class="sidebar-menu-link" href="/insights.html">💡 Insights Archive</a>
+<a class="sidebar-menu-link" href="/requests.html">📋 Media Relations</a>
+<a class="sidebar-menu-link" href="/settings.html">⚙️ Account Settings</a>
+<a class="sidebar-menu-link" href="/contact.html">✉️ Contact Sales</a>
+<a class="sidebar-menu-link" href="/directory.html">📇 Member Directory</a>
+<a class="sidebar-menu-link" href="/invoice.html">💳 Payments</a>
+</nav>
+<main class="mail-shell" id="protectedContent">
+  <div id="loginCard" class="login-card" style="display:none">
+    <div class="login-card-icon" aria-hidden="true">✉️</div>
+    <h2>Sign in to your Mailbox</h2>
+    <p>Real-time direct messaging is available to authenticated and verified members. Sign in to access your conversations and send messages to other members.</p>
+    <a class="btn btn-primary" href="/login.html?next=%2Fmessages.html">Sign In</a>
+  </div>
+  <div class="mail-header" id="mailHeader" style="display:none"><div><h1 class="mail-title">Mailbox</h1><div class="status">Direct messaging between authenticated members.</div></div><div style="display:flex;gap:.55rem;align-items:center;flex-wrap:wrap"><button id="deleteConversationBtn" class="btn btn-outline" type="button" disabled title="Select a conversation first" style="border-color:#fecaca;color:#b91c1c">Delete Conversation</button><button id="closeConversationBtn" class="btn btn-outline" type="button" disabled title="Select a conversation first">Close Conversation</button><button id="archivedMessagesBtn" class="btn btn-outline" type="button">📁 Archived Messages</button><button id="flagImportantBtn" class="btn btn-outline" type="button" disabled title="Select a message first">☆ Flag Important</button><button id="allowMemberBtn" class="btn btn-outline" type="button" disabled title="Select a member first" style="border-color:#86efac;color:#166534">Allow</button><button id="blockMemberBtn" class="btn btn-outline" type="button" disabled title="Select a member first" style="border-color:#fecaca;color:#b91c1c">Block</button></div></div>
+  <div id="mailStatus" class="status"><div class="mail-loading" role="status" aria-live="polite"><span class="mail-loading-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Loading your messages</span></div></div>
+  <section class="mail-layout" id="mailLayout" style="display:none">
+    <div class="panel-box"><div class="conversation-search-wrap"><label class="compose-label" for="conversationSearch">Search conversations and messages</label><input id="conversationSearch" class="conversation-search" type="search" placeholder="Search names or message text…" autocomplete="off"></div><div id="conversationList" class="conversation-list"></div></div>
+    <div class="panel-box thread">
+      <div class="thread-head"><span id="threadTitle">Select a member</span><a id="threadDirectoryLink" class="btn btn-outline" style="display:none;text-decoration:none">Directory</a></div>
+      <div id="pinnedStrip" class="pinned-strip"><strong>📌 Pinned messages</strong><div id="pinnedList" class="pinned-list"></div></div>
+      <div id="threadBody" class="thread-body">
+        <div id="messageStarter" class="message-starter">
+          <div class="empty" style="padding:1.25rem 0 .75rem">Choose a conversation or start one from the Members Directory.</div>
+          <label class="compose-label" for="memberRecipient">Select a public member</label>
+          <select id="memberRecipient" class="member-select" aria-label="Select a public member">
+            <option value="">Loading public members…</option>
+          </select>
+          <div id="recipientNotice" class="recipient-notice">Only members who have submitted a public profile through Edit Profile are listed here and have opted in to receiving direct messages.</div>
+          <button id="startMessageBtn" class="btn btn-primary" type="button" disabled>Compose Message</button>
         </div>
       </div>
       <form id="composeForm" class="compose" style="display:none"><textarea id="messageInput" maxlength="5000" placeholder="Write a direct message…" aria-label="Direct message"></textarea><input id="attachmentInput" type="file" multiple accept=".pdf,.doc,.docx,.docm,.dot,.dotx,.dotm,.xls,.xlsx,.xlsm,.xlsb,.xlt,.xltx,.xltm,.csv,.rtf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden><button id="attachmentButton" class="attachment-control" type="button" title="Attach PDF, Word or Excel files (maximum 2 MB each)" aria-label="Attach documents">📎</button><div id="emojiPicker" class="emoji-picker" role="group" aria-label="Emoji keyboard"></div><button id="emojiToggle" class="btn btn-outline emoji-toggle" type="button" aria-label="Open emoji keyboard" aria-expanded="false" title="Emoji keyboard">😊</button><button class="btn btn-primary" type="submit">Send</button></form><div id="attachmentSelection" class="attachment-hint" style="display:none;padding:0 .9rem .8rem;background:#fff"></div>

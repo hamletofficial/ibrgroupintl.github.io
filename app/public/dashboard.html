@@ -127,7 +127,15 @@
       function showAuthenticated(user){
         currentUser=user; document.body.classList.remove('auth-pending','auth-signed-out'); document.body.classList.add('is-authenticated');
         redirectPanel.hidden=true; resourceShell.style.display='block'; authActionBtn.hidden=false; authActionBtn.textContent='Sign Out'; authActionBtn.onclick=async function(){authActionBtn.disabled=true;try{await auth.signOut();}finally{authActionBtn.disabled=false;}}; profileChip.hidden=false;
-        profileName.textContent=user.displayName||user.email||'Member'; profilePhoto.src='/160.jpg';
+        profileName.textContent=user.displayName||user.email||'Member';
+        profilePhoto.onerror=function(){profilePhoto.onerror=null;profilePhoto.src='/160.jpg';}; profilePhoto.src='/160.jpg';
+        db.collection('publicProfiles').doc(user.uid).get().then(function(profileSnap){
+          if(!currentUser||currentUser.uid!==user.uid||!profileSnap.exists)return;
+          const profile=profileSnap.data()||{};
+          const fullName=[profile.firstName,profile.lastName].filter(function(part){return typeof part==='string'&&part.trim();}).map(function(part){return part.trim();}).join(' ');
+          profileName.textContent=fullName||user.displayName||user.email||'Member';
+          if(typeof profile.imageDataUrl==='string'&&profile.imageDataUrl.trim())profilePhoto.src=profile.imageDataUrl;
+        }).catch(function(error){console.warn('Could not load latest public profile details for header:',error);});
         loadResources();
       }
       function renderResources(snapshot){

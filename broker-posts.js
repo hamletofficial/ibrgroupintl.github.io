@@ -134,7 +134,7 @@
   // Build nodes rather than injecting HTML so user-authored content cannot execute markup.
   function appendLinkedText(container, text) {
     var value = typeof text === 'string' ? text : '';
-    var urlPattern = /((https?:\/\/|www\\.)[^\\s<>"']+)/gi;
+    var urlPattern = /((https?:\/\/|www\.)[^\s<>"']+)/gi;
     var lastIndex = 0;
     var match;
     while ((match = urlPattern.exec(value)) !== null) {
@@ -145,7 +145,7 @@
         trailing = rawUrl.slice(-1) + trailing;
         rawUrl = rawUrl.slice(0, -1);
       }
-      var href = validUrl(/^www\\./i.test(rawUrl) ? 'https://' + rawUrl : rawUrl);
+      var href = validUrl(/^www\./i.test(rawUrl) ? 'https://' + rawUrl : rawUrl);
       if (href) {
         var link = document.createElement('a');
         link.href = href;

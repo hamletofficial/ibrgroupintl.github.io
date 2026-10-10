@@ -92,9 +92,11 @@ service cloud.firestore {
 
     // Members can manage their own private Important flags for mailbox messages.
     match /userMessageFlags/{userId}/flaggedMessages/{messageId} {
-      allow read, create, update, delete: if request.auth != null
+      allow read, delete: if request.auth != null
+        && request.auth.uid == userId;
+      allow create, update: if request.auth != null
         && request.auth.uid == userId
-        && (request.method == 'read' || request.resource.data.messageId == messageId);
+        && request.resource.data.messageId == messageId;
     }
 
     match /insightsFeed/{insightId} {

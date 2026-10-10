@@ -206,22 +206,22 @@
       footer.appendChild(likeButton);
     }
 
-    if (options.showReplies && data.ownerUid !== options.currentUid && typeof options.onRepliesToggle === 'function') {
+    if (options.showReplies && typeof options.onRepliesToggle === 'function') {
       var replyButton = document.createElement('button');
       replyButton.type = 'button';
       replyButton.className = 'post-action-button';
-      replyButton.textContent = '💬 Reply';
+      replyButton.textContent = data.ownerUid === options.currentUid ? '💬 View replies' : '💬 Reply / replies';
       var replies = document.createElement('section');
       replies.className = 'post-replies';
       replies.hidden = true;
       replyButton.addEventListener('click', async function () {
         var opening = replies.hidden;
         replies.hidden = !opening;
-        replyButton.textContent = opening ? 'Hide replies' : '💬 Reply';
+        replyButton.textContent = opening ? 'Hide replies' : (data.ownerUid === options.currentUid ? '💬 View replies' : '💬 Reply / replies');
         if (opening) {
           replyButton.disabled = true;
           try {
-            await options.onRepliesToggle(post, replies, replyButton, true);
+            await options.onRepliesToggle(post, replies, replyButton, true, data.ownerUid !== options.currentUid);
           } catch (error) {
             console.error('Unable to open post replies:', error);
           } finally {

@@ -524,8 +524,10 @@ window.addEventListener('load', function () {
     publishButton.textContent = 'Publishing…';
     var postRef = db.collection('brokerPosts').doc();
     var uploaded = [];
+    var publishStage = files.length ? 'Storage attachment upload' : 'Firestore post creation';
     try {
       uploaded = await uploadAttachments(files, activeUser.uid, postRef.id);
+      publishStage = 'Firestore post creation';
       await postRef.set({
         ownerUid: activeUser.uid,
         body: text,
@@ -545,9 +547,14 @@ window.addEventListener('load', function () {
       await Promise.all(uploaded.map(async function (file) {
         try { await firebase.storage().ref(file.path).delete(); } catch (ignored) {}
       }));
-      announce(error && error.code === 'permission-denied'
-        ? 'Firestore or Storage denied this action. The corresponding Firebase security rules need to be deployed before posting is enabled.'
-        : 'Your post could not be published. Please check your connection and try again.', true);
+      if (error && (error.code === 'permission-denied' || error.code === 'storage/unauthorized')) {
+        console.error('Permission denied during ' + publishStage + '. Firebase error code:', error.code, 'message:', error.message);
+        announce(publishStage === 'Storage attachment upload'
+          ? 'Firebase Storage denied the attachment upload. Deploy Storage rules with: firebase deploy --only storage --project wale-491805'
+          : 'Firestore denied creating the post. Confirm the latest firestore.rules are deployed to project wale-491805 and check the browser console for the rejected operation.', true);
+      } else {
+        announce('Your post could not be published. Please check your connection and try again.', true);
+      }
     } finally {
       publishButton.disabled = false;
       publishButton.textContent = 'Publish post';

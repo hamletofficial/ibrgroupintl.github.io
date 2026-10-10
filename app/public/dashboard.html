@@ -13,7 +13,7 @@
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
-<script defer src="/member-header.js"></script>
+<script defer src="/member-header.js?v=20261010-2"></script>
 <script defer src="/page-transition.js"></script>
   <style>
     :root{--navy:#071D4A;--blue:#0284c7;--ink:#092a4b;--muted:#475569;--line:#dbe3ee;--green:#15803d}
@@ -122,7 +122,7 @@
       function setFormStatus(message,type){formStatus.textContent=message||'';formStatus.className='status'+(type?' '+type:'');}
       function esc(value){return String(value??'').replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]})}
       function showUnauthenticated(){
-        currentUser=null; document.body.classList.remove('auth-pending','is-authenticated'); document.body.classList.add('auth-signed-out');
+        currentUser=null; window.IBRMemberHeader.clear(profileName,profilePhoto); document.body.classList.remove('auth-pending','is-authenticated'); document.body.classList.add('auth-signed-out');
         redirectPanel.hidden=false; resourceShell.style.display='none'; authActionBtn.hidden=false; authActionBtn.textContent='Sign In'; authActionBtn.onclick=function(){window.location.href='/login.html?next=%2Fapp%2Fpublic%2Fdashboard.html';}; profileChip.hidden=true;
       }
       function showAuthenticated(user){

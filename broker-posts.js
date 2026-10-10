@@ -293,6 +293,7 @@
     if (data.repostOf && typeof data.repostOf === 'object') {
       var repostNote = document.createElement('div');
       repostNote.className = 'post-repost-attribution';
+      repostNote.style.cssText = 'font-size:.84rem;color:#64748b;background:#f8fafc;border-radius:8px;padding:.45rem .6rem;margin:.2rem 0 .65rem';
       repostNote.textContent = '🔁 Reposted from ' + (typeof data.repostOf.authorName === 'string' ? data.repostOf.authorName : 'another member');
       article.appendChild(repostNote);
     }
@@ -317,6 +318,7 @@
       var repostButton = document.createElement('button');
       repostButton.type = 'button';
       repostButton.className = 'post-action-button post-repost-button';
+      repostButton.setAttribute('aria-label', 'Repost this member post to your profile feed');
       repostButton.textContent = '🔁 Repost';
       repostButton.addEventListener('click', async function () {
         if (repostButton.disabled) return;

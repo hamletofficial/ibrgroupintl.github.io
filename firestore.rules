@@ -207,11 +207,14 @@ service cloud.firestore {
 
       allow create: if request.auth != null
         && request.resource.data.keys().hasAll(['ownerUid', 'body', 'createdAt'])
-        && request.resource.data.keys().hasOnly(['ownerUid', 'body', 'createdAt', 'attachments'])
+        && request.resource.data.keys().hasOnly(['ownerUid', 'body', 'bodyHtml', 'createdAt', 'attachments'])
         && request.resource.data.ownerUid == request.auth.uid
         && request.resource.data.body is string
         && request.resource.data.body.size() >= 1
         && request.resource.data.body.size() <= 140
+        && (!('bodyHtml' in request.resource.data)
+          || (request.resource.data.bodyHtml is string
+            && request.resource.data.bodyHtml.size() <= 4000))
         && request.resource.data.createdAt == request.time
         && (!('attachments' in request.resource.data)
           || (request.resource.data.attachments is list

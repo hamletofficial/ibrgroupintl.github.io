@@ -105,12 +105,18 @@ service cloud.firestore {
     }
 
     match /commercialProperties/{propertyId} {
+      // Only members whose publicProfiles record confirms completed identity verification
+      // may publish a commercial property listing.
       allow create: if request.auth != null
-        && request.resource.data.ownerUid == request.auth.uid;
+        && request.resource.data.ownerUid == request.auth.uid
+        && exists(/databases/$(database)/documents/publicProfiles/$(request.auth.uid))
+        && get(/databases/$(database)/documents/publicProfiles/$(request.auth.uid)).data.onfidoVerified == true;
       allow read: if request.auth != null;
       allow update: if request.auth != null
         && resource.data.ownerUid == request.auth.uid
-        && request.resource.data.ownerUid == request.auth.uid;
+        && request.resource.data.ownerUid == request.auth.uid
+        && exists(/databases/$(database)/documents/publicProfiles/$(request.auth.uid))
+        && get(/databases/$(database)/documents/publicProfiles/$(request.auth.uid)).data.onfidoVerified == true;
       allow delete: if request.auth != null
         && resource.data.ownerUid == request.auth.uid;
     }

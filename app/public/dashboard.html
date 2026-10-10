@@ -156,7 +156,21 @@
       document.getElementById('cancelFormBtn').addEventListener('click',function(){propertyForm.reset();propertyFormPanel.hidden=true;setFormStatus('');});
       propertyForm.addEventListener('submit',async function(e){
         e.preventDefault(); if(!currentUser||!propertyForm.reportValidity())return;
-        saveBtn.disabled=true; setFormStatus('Saving property resource…');
+        saveBtn.disabled=true; setFormStatus('Checking identity verification…');
+        try{
+          const profileSnap=await db.collection('publicProfiles').doc(currentUser.uid).get();
+          if(!profileSnap.exists || profileSnap.data().onfidoVerified !== true){
+            setFormStatus('Your listing could not be posted. Please complete identity verification before submitting a property listing. If you experience technical difficulties, contact Support at support@ibrecruitment.com.','error');
+            saveBtn.disabled=false;
+            return;
+          }
+        }catch(verificationError){
+          console.error('Unable to verify member identity status:',verificationError);
+          setFormStatus('We could not confirm your identity verification status, so your listing has not been posted. Please try again or contact support@ibrecruitment.com for assistance.','error');
+          saveBtn.disabled=false;
+          return;
+        }
+        setFormStatus('Saving property resource…');
         const data={ownerUid:currentUser.uid,ownerEmail:currentUser.email||'',ownerName:currentUser.displayName||'',propertyName:document.getElementById('propertyName').value.trim(),propertyType:document.getElementById('propertyType').value,address:document.getElementById('address').value.trim(),postcode:document.getElementById('postcode').value.trim(),availability:document.getElementById('availability').value,size:document.getElementById('size').value.trim(),askingRent:document.getElementById('askingRent').value.trim(),contactName:document.getElementById('contactName').value.trim(),contactEmail:document.getElementById('contactEmail').value.trim(),propertyUrl:document.getElementById('propertyUrl').value.trim(),status:document.getElementById('status').value,description:document.getElementById('description').value.trim(),createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
         try{await db.collection('commercialProperties').add(data);propertyForm.reset();propertyFormPanel.hidden=true;setFormStatus('');await loadResources();document.getElementById('resourcesPanel').scrollIntoView({behavior:'smooth'});}catch(error){console.error(error);setFormStatus('The property could not be saved. Please check your Firestore permissions and try again.','error');}finally{saveBtn.disabled=false;}
       });

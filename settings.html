@@ -297,11 +297,21 @@
         settingsShell.style.display = 'none';
         signOutBtn.style.display = 'none';
         signInLink.style.display = 'inline-flex';
+        const message = loginSection.querySelector('p');
+        if (message) message.textContent = 'Sign in to access your account settings.';
+        const action = loginSection.querySelector('a');
+        if (action) action.style.display = '';
         document.body.classList.remove('auth-pending', 'has-sidebar');
       }
       async function showSignedIn(user) {
-        loginSection.style.display = 'none';
-        settingsShell.style.display = 'block';
+        // Keep the settings page hidden until the saved name and profile image
+        // have been read, preventing placeholder values from flashing onscreen.
+        settingsShell.style.display = 'none';
+        loginSection.style.display = 'block';
+        const loadingMessage = loginSection.querySelector('p');
+        if (loadingMessage) loadingMessage.textContent = 'Loading your account settings…';
+        const loadingAction = loginSection.querySelector('a');
+        if (loadingAction) loadingAction.style.display = 'none';
         signOutBtn.style.display = 'inline-flex';
         signInLink.style.display = 'none';
         document.body.classList.remove('auth-pending');
@@ -366,8 +376,14 @@
               : user.email || 'Not available';
           }
         } catch (error) {
-          console.error('Unable to load profile email from Firestore:', error);
+          console.error('Unable to load profile details from Firestore:', error);
+          // The account settings can still be used if the profile read fails;
+          // the existing safe fallback values remain in place.
         }
+
+        // Reveal the settings only after the profile name and photo lookup finishes.
+        loginSection.style.display = 'none';
+        settingsShell.style.display = 'block';
       }
       async function updateMfaUi(user) {
         try {

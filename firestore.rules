@@ -226,6 +226,7 @@ service cloud.firestore {
 
         allow create: if request.auth != null
           && exists(/databases/$(database)/documents/brokerPosts/$(postId))
+          && get(/databases/$(database)/documents/brokerPosts/$(postId)).data.ownerUid != request.auth.uid
           && request.resource.data.keys().hasAll(['ownerUid', 'body', 'createdAt'])
           && request.resource.data.keys().hasOnly(['ownerUid', 'body', 'createdAt'])
           && request.resource.data.ownerUid == request.auth.uid

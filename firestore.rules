@@ -199,5 +199,66 @@ service cloud.firestore {
 
       allow read, update, delete: if false;
     }
+
+    // Broker social posts are readable to authenticated members. A post can only
+    // be created or deleted by the UID recorded as its owner; posts are immutable.
+    match /brokerPosts/{postId} {
+      allow read: if request.auth != null;
+
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll(['ownerUid', 'body', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['ownerUid', 'body', 'createdAt', 'attachments'])
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.body is string
+        && request.resource.data.body.size() >= 1
+        && request.resource.data.body.size() <= 140
+        && request.resource.data.createdAt == request.time
+        && (!('attachments' in request.resource.data)
+          || (request.resource.data.attachments is list
+            && request.resource.data.attachments.size() <= 5));
+
+      allow update: if false;
+      allow delete: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid;
+
+      match /replies/{replyId} {
+        allow read: if request.auth != null;
+
+        allow create: if request.auth != null
+          && exists(/databases/$(database)/documents/brokerPosts/$(postId))
+          && request.resource.data.keys().hasAll(['ownerUid', 'body', 'createdAt'])
+          && request.resource.data.keys().hasOnly(['ownerUid', 'body', 'createdAt'])
+          && request.resource.data.ownerUid == request.auth.uid
+          && request.resource.data.body is string
+          && request.resource.data.body.size() >= 1
+          && request.resource.data.body.size() <= 140
+          && request.resource.data.createdAt == request.time;
+
+        allow update: if false;
+        // A reply author may delete their reply. The parent post's author can
+        // also remove replies when deleting that post.
+        allow delete: if request.auth != null
+          && (
+            resource.data.ownerUid == request.auth.uid
+            || get(/databases/$(database)/documents/brokerPosts/$(postId)).data.ownerUid == request.auth.uid
+          );
+      }
+    }
+
+    // A member's likes are stored only in that member's private subcollection.
+    // No other member (including the author of a liked post) can read them.
+    match /userPostLikes/{userId}/likes/{postId} {
+      allow read, delete: if request.auth != null
+        && request.auth.uid == userId;
+
+      allow create, update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasAll(['postId', 'likedAt'])
+        && request.resource.data.keys().hasOnly(['postId', 'likedAt'])
+        && request.resource.data.postId == postId
+        && request.resource.data.likedAt == request.time
+        && exists(/databases/$(database)/documents/brokerPosts/$(postId));
+    }
+
   }
 }

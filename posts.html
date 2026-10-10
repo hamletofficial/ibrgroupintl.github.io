@@ -47,7 +47,6 @@
     <a class="sidebar-menu-link" href="https://www.ibrecruitment.com"><span aria-hidden="true">🏠</span> Home</a>
     <a class="sidebar-menu-link" href="/profile.html"><span aria-hidden="true">🙎🏿‍♀️</span> My Profile</a>
     <a class="sidebar-menu-link" href="/editprofile.html"><span aria-hidden="true">🙎🏿‍♀️</span> Edit Profile</a>
-    <a class="sidebar-menu-link" href="/posts.html" aria-current="page"><span aria-hidden="true">🗣️</span> Broker Social Feed</a>
     <a class="sidebar-menu-link" href="/messages.html"><span aria-hidden="true">✉️</span> Mailbox</a>
     <a class="sidebar-menu-link" href="/members.html"><span aria-hidden="true">🧑‍🤝‍🧑</span> Members Area</a>
     <a class="sidebar-menu-link" href="/insights.html"><span aria-hidden="true">💡</span> Insights Archive</a>
@@ -213,6 +212,8 @@ window.addEventListener('load', function () {
       catch (error) { console.warn('Unable to remove an attachment while deleting a post:', error); }
     }));
     await ref.delete();
+    await db.collection('userPostLikes').doc(activeUser.uid).collection('likes').doc(post.id).delete().catch(function () {});
+    likedIds.delete(post.id);
     if (card && card.parentNode) card.remove();
     announce('Your post has been deleted.', false);
   }
@@ -348,7 +349,7 @@ window.addEventListener('load', function () {
     try {
       for (var i = 0; i < files.length; i++) {
         var file = files[i];
-        var safeName = file.name.replace(/[^\w.\-()+]/g, '_').slice(-120) || ('attachment-' + i);
+        var safeName = file.name.replace(/[^\w.\-()+]/g, '_').toLowerCase().slice(-120) || ('attachment-' + i);
         var path = 'brokerPostAttachments/' + uid + '/' + postId + '/' + Date.now() + '_' + i + '_' + safeName;
         var reference = firebase.storage().ref(path);
         await reference.put(file, { contentType: file.type || 'application/pdf' });

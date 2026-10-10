@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="/index.css">
   <link rel="stylesheet" href="/mobile-compat.css">
   <link rel="stylesheet" href="/page-transition.css">
-  <link rel="stylesheet" href="/broker-posts.css?v=20261010-4">
+  <link rel="stylesheet" href="/broker-posts.css?v=20261010-5">
+  <link rel="stylesheet" href="/verified-tick.css?v=20261010-1">
   <style>
     *{box-sizing:border-box}
     body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background:linear-gradient(180deg,#f5f9ff 0%,#fff 100%)}
@@ -118,7 +119,8 @@
 <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 <script defer src="/firebase-config.js"></script>
 <script defer src="/profile-service.js?v=20261010-2"></script>
-<script defer src="/broker-posts.js?v=20261010-4"></script>
+<script defer src="/verified-tick.js?v=20261010-1"></script>
+<script defer src="/broker-posts.js?v=20261010-5"></script>
 <script defer src="/header-profile.js?v=20261010-3"></script>
 <script defer src="/mobile-compat.js"></script>
 <script defer src="/page-transition.js"></script>
@@ -357,7 +359,13 @@ window.addEventListener('load', function () {
         var name = document.createElement('span');
         name.className = 'reply-author';
         name.textContent = 'Loading member…';
-        window.ibrBrokerPosts.getAuthorProfile(data.ownerUid).then(function (author) { name.textContent = author.name; });
+        window.ibrBrokerPosts.getAuthorProfile(data.ownerUid).then(function (author) {
+          name.replaceChildren(document.createTextNode(author.name));
+          if (window.IBRVerifiedTick && window.IBRVerifiedTick.isValidEmail(author.email)) {
+            var verifiedTick = window.IBRVerifiedTick.create(author.email);
+            if (verifiedTick) name.appendChild(verifiedTick);
+          }
+        });
         var meta = document.createElement('span');
         meta.className = 'reply-time';
         meta.textContent = window.ibrBrokerPosts.timeLabel(data.createdAt);

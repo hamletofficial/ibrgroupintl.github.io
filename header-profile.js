@@ -14,7 +14,7 @@
     if (profileServicePromise) return profileServicePromise;
     profileServicePromise = new Promise(function (resolve, reject) {
       var script = document.createElement('script');
-      script.src = '/profile-service.js?v=20261010-1';
+      script.src = '/profile-service.js?v=20261010-2';
       script.async = true;
       script.onload = function () {
         if (window.ibrProfileService) resolve();

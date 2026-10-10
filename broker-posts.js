@@ -230,6 +230,21 @@
       });
   }
 
+  function appendFormattedBody(container, html, plainText) {
+    if (typeof html !== 'string' || !html.trim()) { appendLinkedText(container, plainText); return; }
+    var parsed = new DOMParser().parseFromString(html, 'text/html');
+    var allowed = { B: 'strong', STRONG: 'strong', I: 'em', EM: 'em', U: 'u', BR: 'br' };
+    function copyNode(source, target) {
+      if (source.nodeType === Node.TEXT_NODE) { appendLinkedText(target, source.nodeValue || ''); return; }
+      if (source.nodeType !== Node.ELEMENT_NODE) return;
+      var tag = allowed[source.tagName];
+      if (!tag) { Array.prototype.forEach.call(source.childNodes, function (child) { copyNode(child, target); }); return; }
+      var safe = document.createElement(tag); target.appendChild(safe);
+      if (tag !== 'br') Array.prototype.forEach.call(source.childNodes, function (child) { copyNode(child, safe); });
+    }
+    Array.prototype.forEach.call(parsed.body.childNodes, function (child) { copyNode(child, container); });
+  }
+
   function createPostCard(post, options) {
     options = options || {};
     var data = post && post.data ? post.data : {};
@@ -272,7 +287,7 @@
 
     var body = document.createElement('p');
     body.className = 'post-body';
-    appendLinkedText(body, typeof data.body === 'string' ? data.body : '');
+    appendFormattedBody(body, data.bodyHtml, typeof data.body === 'string' ? data.body : '');
     article.appendChild(body);
     var previewBox = document.createElement('div');
     previewBox.className = 'post-url-previews';

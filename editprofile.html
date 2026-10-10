@@ -290,6 +290,7 @@
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <script defer src="/header-profile.js?v=20261010-3"></script>
+  <script defer src="/profile-service.js?v=20261010-1"></script>
   <script defer src="/mobile-compat.js"></script>
   <script defer src="/page-transition.js"></script>
 
@@ -313,13 +314,18 @@
       let currentUser = null;
       const normalize = (v, max) => String(v || '').trim().slice(0, max);
       async function loadProfile() {
-        const snap = await db.collection('publicProfiles').doc(currentUser.uid).get();
-        const data = snap.exists ? snap.data() || {} : {};
+        const result = window.ibrProfileService
+          ? await window.ibrProfileService.getProfile(currentUser.uid)
+          : await db.collection('publicProfiles').doc(currentUser.uid).get().then(snap => ({
+              exists: snap.exists,
+              data: snap.exists ? snap.data() || {} : {}
+            }));
+        const data = result.data || {};
         firstNameInput.value = normalize(data.firstName, 50);
         lastNameInput.value = normalize(data.lastName, 50);
         emailInput.value = currentUser.email || '';
         bioInput.value = normalize(data.bio, 1000);
-        profileDocStatus.textContent = snap.exists ? 'Profile record: found' : 'Profile record: not saved yet';
+        profileDocStatus.textContent = result.exists ? 'Profile record: found' : 'Profile record: not saved yet';
       }
       async function saveProfile() {
         if (!currentUser) return;
@@ -339,7 +345,11 @@
         try {
           saveProfileBtn.disabled = true;
           profileStatus.textContent = 'Saving profile...';
-          await db.collection('publicProfiles').doc(currentUser.uid).set(profilePayload, { merge: true });
+          if (window.ibrProfileService) {
+            await window.ibrProfileService.saveProfile(currentUser.uid, profilePayload);
+          } else {
+            await db.collection('publicProfiles').doc(currentUser.uid).set(profilePayload, { merge: true });
+          }
           profileDocStatus.textContent = 'Profile record: saved';
           profileStatus.textContent = 'Profile saved successfully.';
         } catch (err) {

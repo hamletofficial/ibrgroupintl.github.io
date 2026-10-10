@@ -245,6 +245,7 @@ window.addEventListener('load', function () {
         showReplies: true,
         allowDelete: true,
         onLike: toggleLike,
+        onRepost: repostPost,
         onDelete: deletePost,
         onRepliesToggle: toggleReplies
       }));
@@ -320,6 +321,24 @@ window.addEventListener('load', function () {
     likedIds.add(post.id);
     return true;
   }
+  async function repostPost(post) {
+    if (!activeUser || !post || !post.data || post.data.ownerUid === activeUser.uid) return;
+    var original = post.data;
+    var author = await window.ibrBrokerPosts.getAuthorProfile(original.ownerUid);
+    await db.collection('brokerPosts').add({
+      ownerUid: activeUser.uid,
+      body: typeof original.body === 'string' ? original.body : '',
+      bodyHtml: typeof original.bodyHtml === 'string' ? original.bodyHtml : '',
+      attachments: Array.isArray(original.attachments) ? original.attachments : [],
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      repostOf: {
+        postId: post.id,
+        ownerUid: original.ownerUid || '',
+        authorName: author.name || 'IBR Member'
+      }
+    });
+    announce('Post reposted to your profile feed.', false);
+  }
   async function deletePost(post, card) {
     if (!window.confirm('Delete this post? Only your own posts can be deleted.')) return;
     var ref = db.collection('brokerPosts').doc(post.id);
@@ -329,7 +348,7 @@ window.addEventListener('load', function () {
       repliesSnapshot.docs.slice(start, start + 400).forEach(function (reply) { batch.delete(reply.ref); });
       await batch.commit();
     }
-    var attachments = Array.isArray(post.data.attachments) ? post.data.attachments : [];
+    var attachments = post.data.repostOf ? [] : (Array.isArray(post.data.attachments) ? post.data.attachments : []);
     await Promise.all(attachments.map(async function (attachment) {
       if (!attachment || !attachment.path) return;
       try { await firebase.storage().ref(attachment.path).delete(); }

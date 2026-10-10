@@ -4,9 +4,22 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /publicProfiles/{userId} {
       allow read: if request.auth != null && resource.data.isPublic == true;
-      allow create, update: if request.auth != null
+
+      // Clients cannot claim successful Onfido verification. A trusted server
+      // using the Admin SDK must set onfidoVerified after verification.
+      allow create: if request.auth != null
         && request.auth.uid == userId
-        && request.resource.data.isPublic == true;
+        && request.resource.data.isPublic == true
+        && (!('onfidoVerified' in request.resource.data)
+          || request.resource.data.onfidoVerified == false);
+
+      // Clients may edit other profile fields, but cannot add, change, or remove
+      // the identity-verification flag.
+      allow update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.isPublic == true
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['onfidoVerified']);
+
       allow delete: if request.auth != null && request.auth.uid == userId;
     }
 

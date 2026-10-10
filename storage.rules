@@ -40,9 +40,6 @@ service firebase.storage {
       allow delete: if request.auth != null
         && messageDoc().data.senderUid == request.auth.uid;
     }
-    match /{allPaths=**} {
-      allow read, write: if false;
-    }
 
     // Broker social feed attachments: image files and PDFs only, uploaded by the
     // owner of the post. Files are readable only by authenticated community members.
@@ -51,10 +48,11 @@ service firebase.storage {
       allow create: if request.auth != null
         && request.auth.uid == userId
         && request.resource.size <= 10 * 1024 * 1024
-        && !request.resource.name.matches('.*\\.(doc|docx|docm|dot|dotx|dotm|xls|xlsx|xlsm|xlsb|xlt|xltx|xltm|csv|rtf)
+        && !request.resource.name.matches('.*\\.(doc|docx|docm|dot|dotx|dotm|xls|xlsx|xlsm|xlsb|xlt|xltx|xltm|csv|rtf)$')
+        && (
           (
             request.resource.contentType == 'application/pdf'
-            && request.resource.name.matches('.*\\.(pdf|PDF)$')
+            && request.resource.name.matches('.*\\.pdf$')
           )
           ||
           (
@@ -66,22 +64,9 @@ service firebase.storage {
       allow delete: if request.auth != null
         && request.auth.uid == userId;
     }
-  }
-})
-        && (
-          (
-            request.resource.contentType == 'application/pdf'
-            && request.resource.name.matches('.*\\.(pdf|PDF)$')
-          )
-          ||
-          (
-            request.resource.contentType.matches('image/.*')
-            && request.resource.name.matches('.*\\.[A-Za-z0-9]{2,8}$')
-          )
-        );
-      allow update: if false;
-      allow delete: if request.auth != null
-        && request.auth.uid == userId;
+
+    match /{allPaths=**} {
+      allow read, write: if false;
     }
   }
 }

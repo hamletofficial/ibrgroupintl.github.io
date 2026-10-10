@@ -192,6 +192,7 @@
 
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-functions-compat.js"></script>
   <script defer src="/firebase-config.js"></script>
   <script defer src="/header-profile.js"></script>
@@ -301,7 +302,22 @@
           var result = await callable({});
           var briefs = result.data && Array.isArray(result.data.briefs) ? result.data.briefs : [];
           renderBriefs(briefs);
-          showStatus("Archive loaded for " + (user.email || user.displayName || "your account") + ".",false);
+
+          // Prefer the name saved in Edit Profile; use the authentication
+          // name only when no saved first or last name is available.
+          var archiveName = user.displayName || user.email || "your account";
+          try {
+            var profileSnapshot = await firebase.firestore().collection("publicProfiles").doc(user.uid).get();
+            var profileData = profileSnapshot.exists ? (profileSnapshot.data() || {}) : {};
+            var savedName = [profileData.firstName, profileData.lastName]
+              .filter(function(value) { return typeof value === "string" && value.trim(); })
+              .map(function(value) { return value.trim(); })
+              .join(" ");
+            if (savedName) archiveName = savedName;
+          } catch (profileError) {
+            console.warn("Unable to load the saved archive display name:", profileError);
+          }
+          showStatus("Archive loaded for " + archiveName + ".",false);
         } catch (error) {
           console.error("Brief archive failed:",error);
           countEl.textContent = "Archive unavailable";

@@ -334,12 +334,25 @@ exports.notifyDirectMessageRecipient = onDocumentCreated({
 
   try {
     try { admin.app(); } catch (err) { admin.initializeApp(); }
-    const recipient = await admin.auth().getUser(recipientUid);
-    if (!recipient.email) {
-      console.warn("Direct-message notification skipped because recipient has no email:", recipientUid);
+    // Use the email address explicitly stored in the member's Firestore profile.
+    // Do not silently substitute Firebase Authentication's email: profile email is
+    // the mailbox notification destination requested by the application.
+    const profileSnap = await getFirestore(admin.app()).collection("publicProfiles").doc(recipientUid).get();
+    const profile = profileSnap.exists ? (profileSnap.data() || {}) : {};
+    const recipientEmail = typeof profile.email === "string" ? profile.email.trim() : "";
+    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(recipientEmail)) {
+      console.warn("Direct-message notification skipped because the recipient has no valid email in publicProfiles:", recipientUid);
+      await snap.ref.set({
+        emailNotificationStatus: "skipped",
+        emailNotificationReason: "missing-firestore-profile-email",
+        emailNotificationCheckedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, {merge: true});
       return;
     }
-    await sendDirectMessageNotification(recipient.email, recipient.displayName || "there");
+    const recipientName = [profile.firstName, profile.lastName].filter(function(part) {
+      return typeof part === "string" && part.trim();
+    }).join(" ").trim() || "there";
+    await sendDirectMessageNotification(recipientEmail, recipientName);
     await snap.ref.set({
       emailNotificationStatus: "sent",
       emailNotificationSentAt: admin.firestore.FieldValue.serverTimestamp(),

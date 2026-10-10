@@ -130,6 +130,39 @@
     });
   }
 
+  // Render plain post text while turning HTTP(S) URLs into safe, clickable links.
+  // Build nodes rather than injecting HTML so user-authored content cannot execute markup.
+  function appendLinkedText(container, text) {
+    var value = typeof text === 'string' ? text : '';
+    var urlPattern = /((https?:\/\/|www\\.)[^\\s<>"']+)/gi;
+    var lastIndex = 0;
+    var match;
+    while ((match = urlPattern.exec(value)) !== null) {
+      if (match.index > lastIndex) container.appendChild(document.createTextNode(value.slice(lastIndex, match.index)));
+      var rawUrl = match[0];
+      var trailing = '';
+      while (/[.,!?;:)]$/.test(rawUrl)) {
+        trailing = rawUrl.slice(-1) + trailing;
+        rawUrl = rawUrl.slice(0, -1);
+      }
+      var href = validUrl(/^www\\./i.test(rawUrl) ? 'https://' + rawUrl : rawUrl);
+      if (href) {
+        var link = document.createElement('a');
+        link.href = href;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.className = 'post-body-link';
+        link.textContent = rawUrl;
+        container.appendChild(link);
+      } else {
+        container.appendChild(document.createTextNode(rawUrl));
+      }
+      if (trailing) container.appendChild(document.createTextNode(trailing));
+      lastIndex = urlPattern.lastIndex;
+    }
+    if (lastIndex < value.length) container.appendChild(document.createTextNode(value.slice(lastIndex)));
+  }
+
   function createPostCard(post, options) {
     options = options || {};
     var data = post && post.data ? post.data : {};
@@ -172,7 +205,7 @@
 
     var body = document.createElement('p');
     body.className = 'post-body';
-    body.textContent = typeof data.body === 'string' ? data.body : '';
+    appendLinkedText(body, typeof data.body === 'string' ? data.body : '');
     article.appendChild(body);
 
     var attachmentBox = document.createElement('div');

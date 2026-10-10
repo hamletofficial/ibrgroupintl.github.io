@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/index.css">
   <link rel="stylesheet" href="/mobile-compat.css">
   <link rel="stylesheet" href="/page-transition.css">
-  <link rel="stylesheet" href="/broker-posts.css?v=20261010-2">
+  <link rel="stylesheet" href="/broker-posts.css?v=20261010-4">
   <style>
     *{box-sizing:border-box}
     body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background:linear-gradient(180deg,#f5f9ff 0%,#fff 100%)}
@@ -69,13 +69,23 @@
       </div>
       <form id="postForm">
         <label for="postBody" style="display:block;font-weight:700;color:#334155;margin-bottom:.4rem">What is on your mind?</label>
-        <textarea id="postBody" class="post-textarea" maxlength="140" rows="3" placeholder="Share a thought with fellow brokers…" required></textarea>
+        <div class="format-toolbar" role="toolbar" aria-label="Post formatting">
+          <button type="button" class="format-button" id="emojiToggle" aria-expanded="false" aria-controls="emojiPicker" title="Insert emoji">😊 Emoji</button>
+          <button type="button" class="format-button format-letter" data-format="bold" title="Bold" aria-label="Bold"><strong>B</strong></button>
+          <button type="button" class="format-button format-letter" data-format="italic" title="Italic" aria-label="Italic"><em>I</em></button>
+          <button type="button" class="format-button format-letter" data-format="underline" title="Underline" aria-label="Underline"><u>U</u></button>
+          <div id="emojiPicker" class="emoji-picker" hidden aria-label="Choose an emoji"></div>
+        </div>
+        <div id="postBody" class="post-textarea post-editor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="What is on your mind?" data-placeholder="Share a thought with fellow brokers…" spellcheck="true"></div>
         <div id="postCount" class="character-count">0 / 140</div>
         <div class="composer-tools">
           <label class="attachment-picker" for="postFiles">📎 Add images or PDF files
             <input id="postFiles" type="file" accept="image/*,application/pdf,.pdf" multiple>
           </label>
-          <button id="publishButton" class="primary-post-button" type="submit">Publish post</button>
+          <div class="composer-publish-actions">
+            <button id="saveDraftButton" class="feed-refresh" type="button">Save draft</button>
+            <button id="publishButton" class="primary-post-button" type="submit">Publish post</button>
+          </div>
         </div>
         <div id="selectedFiles" class="selected-files">Up to 5 files, each up to 10 MB. Images and PDFs only; Word and Excel files are not accepted.</div>
       </form>
@@ -108,7 +118,7 @@
 <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 <script defer src="/firebase-config.js"></script>
 <script defer src="/profile-service.js?v=20261010-2"></script>
-<script defer src="/broker-posts.js?v=20261010-3"></script>
+<script defer src="/broker-posts.js?v=20261010-4"></script>
 <script defer src="/header-profile.js?v=20261010-3"></script>
 <script defer src="/mobile-compat.js"></script>
 <script defer src="/page-transition.js"></script>
@@ -139,7 +149,59 @@ window.addEventListener('load', function () {
   var feedUnsubscribe = null;
   var maxAttachments = 5;
   var maxFileBytes = 10 * 1024 * 1024;
+  var emojiToggle = document.getElementById('emojiToggle');
+  var emojiPicker = document.getElementById('emojiPicker');
+  var saveDraftButton = document.getElementById('saveDraftButton');
+  var draftKey = '';
+  var lastEditorRange = null;
+  var emojiList = ['😀','😃','😄','😁','😆','😅','😂','🙂','😉','😊','😍','🥰','😘','🤔','🙌','👏','👍','👎','🤝','💡','🔥','🎉','❤️','💙','💜','🙏','💼','📈','📊','🏡','🏢','📣','📰','🔗','✅','⭐','🚀'];
 
+  function editorText() { return (bodyInput.innerText || bodyInput.textContent || '').replace(/\u00a0/g, ' ').replace(/\r/g, ''); }
+  function updateEditorCount() {
+    var length = editorText().length; count.textContent = length + ' / 140';
+    count.classList.toggle('over-limit', length > 140); publishButton.disabled = length > 140;
+  }
+  function rememberSelection() {
+    var selection = window.getSelection();
+    if (selection && selection.rangeCount && bodyInput.contains(selection.anchorNode)) lastEditorRange = selection.getRangeAt(0).cloneRange();
+  }
+  function restoreSelection() {
+    bodyInput.focus();
+    if (lastEditorRange) { var selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(lastEditorRange); }
+  }
+  function insertEmoji(emoji) {
+    restoreSelection(); document.execCommand('insertText', false, emoji); rememberSelection(); updateEditorCount();
+    emojiPicker.hidden = true; emojiToggle.setAttribute('aria-expanded', 'false');
+  }
+  function setupEmojiPicker() {
+    emojiList.forEach(function (emoji) {
+      var button = document.createElement('button'); button.type = 'button'; button.className = 'emoji-choice'; button.textContent = emoji;
+      button.setAttribute('aria-label', 'Insert ' + emoji);
+      button.addEventListener('mousedown', function (event) { event.preventDefault(); });
+      button.addEventListener('click', function () { insertEmoji(emoji); });
+      emojiPicker.appendChild(button);
+    });
+  }
+  function saveDraft() {
+    if (!activeUser) return;
+    var text = editorText();
+    if (text.length > 140) { announce('Drafts are limited to 140 characters.', true); return; }
+    try { localStorage.setItem(draftKey, JSON.stringify({ body: text, bodyHtml: bodyInput.innerHTML, savedAt: new Date().toISOString() })); announce('Draft saved on this device. Drafts do not appear in the feed.', false); }
+    catch (error) { announce('The draft could not be saved in this browser. Check available storage and privacy settings.', true); }
+  }
+  function restoreDraft() {
+    if (!activeUser) return;
+    draftKey = 'ibrBrokerPostDraft:' + activeUser.uid;
+    try {
+      var saved = localStorage.getItem(draftKey); if (!saved) return;
+      var draft = JSON.parse(saved);
+      if (draft && typeof draft.body === 'string') {
+        bodyInput.innerHTML = typeof draft.bodyHtml === 'string' ? draft.bodyHtml : '';
+        if (!bodyInput.innerHTML) bodyInput.textContent = draft.body;
+        updateEditorCount(); announce('A saved draft has been restored. Publish it when ready.', false);
+      }
+    } catch (error) { console.warn('Unable to restore saved post draft:', error); }
+  }
   function announce(text, isError) {
     statusBox.textContent = text || '';
     statusBox.classList.toggle('error', Boolean(isError));
@@ -426,7 +488,15 @@ window.addEventListener('load', function () {
       throw error;
     }
   }
-  bodyInput.addEventListener('input', function () { count.textContent = bodyInput.value.length + ' / 140'; });
+  setupEmojiPicker();
+  bodyInput.addEventListener('input', updateEditorCount);
+  bodyInput.addEventListener('keyup', rememberSelection); bodyInput.addEventListener('mouseup', rememberSelection); bodyInput.addEventListener('blur', rememberSelection);
+  emojiToggle.addEventListener('click', function () { emojiPicker.hidden = !emojiPicker.hidden; emojiToggle.setAttribute('aria-expanded', String(!emojiPicker.hidden)); });
+  document.querySelectorAll('[data-format]').forEach(function (button) {
+    button.addEventListener('mousedown', function (event) { event.preventDefault(); });
+    button.addEventListener('click', function () { restoreSelection(); document.execCommand(button.getAttribute('data-format'), false, null); rememberSelection(); updateEditorCount(); });
+  });
+  saveDraftButton.addEventListener('click', saveDraft);
   filesInput.addEventListener('change', showSelectedFiles);
   searchInput.addEventListener('input', function () { searchCount.textContent = searchInput.value.length + ' / 140'; });
   searchForm.addEventListener('submit', function (event) { event.preventDefault(); searchAllPosts(); });
@@ -444,7 +514,8 @@ window.addEventListener('load', function () {
   form.addEventListener('submit', async function (event) {
     event.preventDefault();
     hideNotice();
-    var text = bodyInput.value.trim();
+    var text = editorText().trim();
+    var bodyHtml = bodyInput.innerHTML;
     var files = Array.from(filesInput.files || []);
     var fileError = checkFiles(files);
     if (!text || text.length > 140) { announce('A post must contain between 1 and 140 characters.', true); bodyInput.focus(); return; }
@@ -458,11 +529,13 @@ window.addEventListener('load', function () {
       await postRef.set({
         ownerUid: activeUser.uid,
         body: text,
+        bodyHtml: bodyHtml,
         attachments: uploaded,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-      bodyInput.value = '';
-      count.textContent = '0 / 140';
+      bodyInput.replaceChildren();
+      updateEditorCount();
+      if (draftKey) localStorage.removeItem(draftKey);
       filesInput.value = '';
       showSelectedFiles();
       announce('Your post has been published.', false);
@@ -515,6 +588,7 @@ window.addEventListener('load', function () {
       composerPhoto.src = profile.imageDataUrl || profile.photoURL || user.photoURL || '/100.png';
       composerPhoto.alt = name + ' profile photo';
       composerPhoto.onerror = function () { composerPhoto.onerror = null; composerPhoto.src = '/100.png'; };
+      restoreDraft();
       likedIds = await window.ibrBrokerPosts.loadLikedIds(db, user.uid);
       startFeed();
     } catch (error) {

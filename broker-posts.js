@@ -49,9 +49,10 @@
           || (typeof data.photoURL === 'string' && data.photoURL.trim())
           || (typeof data.photoUrl === 'string' && data.photoUrl.trim())
           || FALLBACK_PHOTO;
-        return { name: name, photo: photo };
+        var email = typeof data.email === 'string' ? data.email.trim() : '';
+        return { name: name, photo: photo, email: email };
       } catch (error) {
-        return { name: 'IBR Member', photo: FALLBACK_PHOTO };
+        return { name: 'IBR Member', photo: FALLBACK_PHOTO, email: '' };
       }
     })();
     authorCache.set(uid, promise);
@@ -280,7 +281,11 @@
     article.appendChild(header);
 
     getAuthorProfile(data.ownerUid).then(function (author) {
-      authorLink.textContent = author.name;
+      authorLink.replaceChildren(document.createTextNode(author.name));
+      if (global.IBRVerifiedTick && global.IBRVerifiedTick.isValidEmail(author.email)) {
+        var verifiedTick = global.IBRVerifiedTick.create(author.email);
+        if (verifiedTick) authorLink.appendChild(verifiedTick);
+      }
       avatar.alt = author.name + ' profile photo';
       avatar.src = author.photo || FALLBACK_PHOTO;
     });

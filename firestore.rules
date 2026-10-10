@@ -77,6 +77,19 @@ service cloud.firestore {
         && request.resource.data.archivedAt == request.time;
     }
 
+    // Each member controls their own blocked-member list. A blocked recipient can read
+    // only the specific record that indicates whether they are blocked by that member.
+    match /userMessageBlocks/{userId}/blockedUsers/{otherUid} {
+      allow read: if request.auth != null
+        && (request.auth.uid == userId || request.auth.uid == otherUid);
+      allow create, update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.blockedUid == otherUid
+        && request.resource.data.blockedAt == request.time;
+      allow delete: if request.auth != null
+        && request.auth.uid == userId;
+    }
+
     match /insightsFeed/{insightId} {
       allow read: if request.auth != null;
       allow create, update, delete: if false;

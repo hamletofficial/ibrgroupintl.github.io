@@ -619,8 +619,9 @@ exports.sendHamletCriticalPathReminders = onSchedule({
         Date.now() - delivery.processingAt.toMillis() < 10 * 60 * 1000) continue;
 
     const brokerEmail = await getBrokerEmail(uid);
-    const extraEmail = typeof reminder.email === "string" ? reminder.email.trim() : "";
-    const recipients = Array.from(new Set([brokerEmail, extraEmail]
+    const extraEmailText = typeof reminder.email === "string" ? reminder.email : "";
+    const extraEmails = extraEmailText.split(/[;,]/).map(function(value) { return value.trim(); }).filter(Boolean).slice(0, 5);
+    const recipients = Array.from(new Set([brokerEmail].concat(extraEmails)
       .filter(function(value) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); })
       .map(function(value) { return value.toLowerCase(); })));
 

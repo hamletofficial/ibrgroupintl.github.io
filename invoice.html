@@ -226,6 +226,50 @@
 
   <link rel="stylesheet" href="/theme.css">
   <script src="/theme.js"></script>
+
+  <style id="invoice-dark-white-patch-fix">
+    /* Eliminate residual pure-white surfaces in dark mode, including the auth card and wrapper. */
+    html[data-appearance="dark"] .page-wrapper,
+    html[data-appearance="dark"] main > .payment-container,
+    html[data-appearance="dark"] .payment-card,
+    html[data-appearance="dark"] .auth-prompt-card,
+    html[data-appearance="dark"] .stripe-box,
+    html[data-appearance="dark"] .payment-footer,
+    html[data-appearance="dark"] .payment-footer .payment-container,
+    html[data-appearance="dark"] .cookie-bar,
+    html[data-appearance="dark"] .cookie-actions button,
+    html[data-appearance="dark"] .cookie-actions button:last-child,
+    html[data-appearance="dark"] .payment-nav a:not([aria-current="page"]) {
+      background-color:#111827 !important;
+      background-image:none !important;
+      color:#e5e7eb !important;
+      border-color:#334155 !important;
+    }
+    html[data-appearance="dark"] .payment-kicker {
+      background:#1e3a5f !important;
+      color:#bfdbfe !important;
+      border-color:#365578 !important;
+    }
+    html[data-appearance="dark"] .payment-button,
+    html[data-appearance="dark"] .payment-nav a[aria-current="page"] {
+      background:#1d4ed8 !important;
+      background-image:none !important;
+      color:#fff !important;
+      border-color:#3b82f6 !important;
+    }
+    html[data-appearance="dark"] .payment-footer a,
+    html[data-appearance="dark"] .cookie-bar a,
+    html[data-appearance="dark"] .footer-links a {
+      color:#93c5fd !important;
+    }
+    html[data-appearance="dark"] .page-wrapper [style*="#ffffff"],
+    html[data-appearance="dark"] .page-wrapper [style*="#fff"],
+    html[data-appearance="dark"] .page-wrapper [style*="white"] {
+      background-color:#111827 !important;
+      background-image:none !important;
+    }
+  </style>
+
 </head>
 <body>
   <div class="page-wrapper">

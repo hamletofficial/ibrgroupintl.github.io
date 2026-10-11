@@ -212,9 +212,25 @@
     html[data-appearance="dark"] .cookie-actions button:last-child {
       background:#1f2937 !important; color:#f3f4f6 !important; border:1px solid #475569 !important;
     }
-    html[data-appearance="dark"] .sidebar-menu-shell {
-      background:#111827 !important; color:#f3f4f6 !important; border-color:#475569 !important;
+    html[data-appearance="dark"] .sidebar-menu-shell,
+    html[data-appearance="dark"] #topNavMenu {
+      background-color:#111827 !important;
+      background-image:none !important;
+      color:#f3f4f6 !important;
+      border-color:#475569 !important;
       box-shadow:0 10px 24px rgba(0,0,0,.4) !important;
+      scrollbar-color:#475569 #111827;
+    }
+    html[data-appearance="dark"] #topNavMenu::-webkit-scrollbar {
+      background:#111827;
+    }
+    html[data-appearance="dark"] #topNavMenu::-webkit-scrollbar-track {
+      background:#111827;
+    }
+    html[data-appearance="dark"] #topNavMenu::-webkit-scrollbar-thumb {
+      background:#475569;
+      border:2px solid #111827;
+      border-radius:8px;
     }
     html[data-appearance="dark"] .sidebar-menu-link { color:#e5e7eb !important; }
     html[data-appearance="dark"] .sidebar-menu-link:hover,

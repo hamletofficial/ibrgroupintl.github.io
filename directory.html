@@ -175,6 +175,43 @@
     .directory-pagination-group{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap}
     .directory-pagination select{min-height:36px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:.35rem .5rem;color:#0f172a;font:inherit}
     .directory-pagination .directory-tool-btn{min-height:36px;padding:.4rem .65rem}
+
+    /* Production dark theme: consistent dark surfaces, heading spacing and control contrast. */
+    body { color:#e5e7eb; background:#080f1d; }
+    .page-wrapper { background:#0b1220; box-shadow:0 0 24px rgba(0,0,0,.35); }
+    .directory-title { color:#f8fafc; padding:.15rem 0; }
+    .directory-intro,.directory-summary,.directory-pagination { color:#cbd5e1; }
+    .directory-search,.directory-controls,.directory-pagination { background:#111c2e; border-color:#334155; }
+    .directory-search input { color:#f8fafc; }
+    .directory-search input::placeholder { color:#94a3b8; }
+    .directory-field { color:#cbd5e1; }
+    .directory-field select,.directory-pagination select { background:#0b1220; color:#e5e7eb; border-color:#475569; }
+    .profile-card,.directory-stat,.directory-auth-prompt { background:#111c2e; color:#e5e7eb; border-color:#334155; box-shadow:0 8px 28px rgba(0,0,0,.28); }
+    .profile-card:hover { box-shadow:0 14px 34px rgba(0,0,0,.4); }
+    .profile-card .name { color:#7dd3fc; }
+    .profile-card .bio,.profile-card .bio-empty { color:#cbd5e1; }
+    .profile-card .bio a { color:#7dd3fc; }
+    .directory-stat strong,.directory-empty strong,.directory-auth-prompt h2 { color:#f8fafc; }
+    .directory-stat span,.directory-auth-prompt p { color:#94a3b8; }
+    .directory-empty { color:#cbd5e1; background:#111c2e; border-color:#475569; }
+    .member-badge { background:#1e293b; color:#cbd5e1; border-color:#475569; }
+    .member-badge.identity-verified { background:#123524; color:#bbf7d0; border-color:#166534; }
+    .member-badge.email-listed { background:#172554; color:#bfdbfe; border-color:#1d4ed8; }
+    .member-action,.message-member-btn { background:#172338; color:#7dd3fc; border-color:#0369a1; }
+    .member-action.primary { background:#075985; color:#fff; border-color:#0369a1; }
+    .member-action:hover,.member-action:focus-visible,.message-member-btn:hover,.message-member-btn:focus-visible { background:#0369a1; color:#fff; border-color:#0284c7; }
+    .directory-tool-btn { background:#172338; color:#e2e8f0; border-color:#475569; }
+    .directory-tool-btn:hover,.directory-tool-btn:focus-visible { background:#1e3a5f; color:#f8fafc; border-color:#38bdf8; }
+    .directory-tool-btn[aria-pressed="true"] { background:#075985; border-color:#0284c7; color:#fff; }
+    .directory-tool-btn:disabled { color:#94a3b8; }
+    .directory-loading { color:#cbd5e1; }
+    .directory-loading-mark span { background:#38bdf8; }
+    .online-status.offline-status { color:#9ca3af; }
+    .sidebar-menu-shell { background:#0f1b2d; border-color:#334155; box-shadow:0 10px 24px rgba(0,0,0,.35); }
+    .sidebar-menu-link { color:#e2e8f0; }
+    .sidebar-menu-link:hover,.sidebar-menu-link:focus { background:#1d4ed8; color:#fff; }
+    .directory-title,.directory-stat strong { padding-left:0; padding-right:0; }
+
 </style>
 
   <link rel="stylesheet" href="/theme.css">
@@ -185,7 +222,7 @@
     <header class="resource-nav" role="banner">
       <div class="container container-nav">
         <div class="logo" style="display:flex;align-items:center;gap:12px">
-          <span class="site-title" style="color:lightgrey">Premium</span>
+          <span class="site-title" style="color:lightgrey">Hamlet</span>
         </div>
         <div class="user-menu" style="margin-left:auto;display:flex;align-items:center;gap:12px">
           <div class="auth-profile-chip" data-auth-profile>

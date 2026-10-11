@@ -1,129 +1,64 @@
-# Impact in Business Recruitment
+# Hamlet — Broker Community
 
-End-to-end **jobs aggregator, hiring-request board, and members dashboard** for Impact in Business Recruitment (IB) — a remote recruitment process outsourcing (RPO) practice.
+Hamlet is the broker community app from Impact in Business Recruitment. It brings commercial property brokers together around **live property listings**, a **deal pipeline**, member profiles, a directory, and community messaging.
 
-- Production: [https://uk.ibrecruitment.com](https://uk.ibrecruitment.com)
-- Source: [ibrgroupintl/ibrgroupintl.github.io](https://github.com/ibrgroupintl/ibrgroupintl.github.io)
-- Legal entity on the site footer: Impact in Business Recruitment Group Limited (© 2026)
+- **Production site:** [https://uk.ibrecruitment.com](https://uk.ibrecruitment.com)
+- **Repository:** [ibrgroupintl/ibrgroupintl.github.io](https://github.com/ibrgroupintl/ibrgroupintl.github.io)
+- **Primary app:** Hamlet
+- **Authentication:** Firebase Authentication
+- **Data services:** Firebase / Firestore (and Firebase Storage where configured)
 
-This is not a single landing page. The repo is a small full-stack product: public marketing HTML, signed-in member tools, Firestore data, scheduled RSS ingestion, and callable Cloud Functions that email recruiters and members via Postmark.
+## Core capabilities
 
-## What the product is
+| Capability | Location | Purpose |
+|---|---|---|
+| Live property listings | `/app/public/live.html` | Browse and search commercial property listings available to the broker community |
+| Deal pipeline | `/app/hamlet/index.html` | Manage commercial real-estate deals and critical-path deadlines |
+| Member directory | `/directory.html` | Find community members and access the live properties shortcut |
+| Member hub | `/members.html` | Entry point for signed-in community tools |
+| Member profiles | `/profile.html`, `/editprofile.html` | View and manage member profile information |
+| Social feed | `/posts.html` | Share short community updates, media, likes, and replies |
+| Messaging | `/messages.html` | Send and manage member-to-member communications |
+| Resource management | `/app/public/resources.html` where available | Manage resources associated with property listings |
+| Account settings | `/settings.html` | Account preferences and security settings |
+| Sign-in | `/login.html` | Firebase-backed authentication |
 
-IB helps employers source and shortlist candidates so hiring managers can stay on operations. The product on this domain is the **ATS-facing surface** of that work:
+## Hamlet entry points
 
-| Audience | What they do here |
-|----------|-------------------|
-| Visitors | Learn the service, accept cookies, read legal pages |
-| Hiring managers | Sign in, submit a structured job requisition, pay invoices |
-| Members / recruiters | Directory, profiles, resume uploads, insights feed, LinkedIn live jobs, job adverts |
-| System | Pull Substack RSS every 15 minutes, store insights, broadcast email to opted-in members |
+### Live property listings
 
-The hiring manager keeps the final hire decision. IB’s role is brief-taking, sourcing, and shortlist.
+Open `/app/public/live.html` to access the commercial property listings experience. The page provides listing search and property details. The directory shortcut labelled **🏢 Open Hamlet Live Properties** should link to this route; keep its visible label, accessible `aria-label`, and destination consistent when changing it.
 
-## How a hiring request travels through the app
+### Deal pipeline
 
-1. Visitor lands on `index.html` (jobs board pitch) or `about.html` (RPO explanation).
-2. They authenticate on `login.html` (Firebase Auth).
-3. Signed-in users open `requests.html` and complete role, team, location, plan, budget, and skills fields.
-4. The browser calls the Cloud Function `submitJobRequisition` (`functions/index.js`). The function validates the payload (auth required, allowed fields only, openings 1–500, enums for workplace / employment / urgency / budget, date and URL checks) and emails the recruitment team through Postmark (`admin-messages@ibrecruitment.com`).
-5. Recruiters review the brief (typically one call) and return a shortlist. Resumes can be stored per user in `resumeUploads`.
-6. Optional billing uses `invoice.html` → `success.html`.
+Open `/app/hamlet/index.html` for Hamlet’s commercial real-estate deal pipeline and critical-path deadline management. The page checks Firebase Authentication and redirects unauthenticated visitors to `/login.html`, preserving the requested destination through the `next` query parameter.
 
-Cookie consent (`ibr_cookie_consent_v1`) is shared across public pages.
+## Repository layout
 
-## Pages (repository root)
+- Root-level HTML, CSS, and JavaScript files provide the public site and broker-community features.
+- `app/public/` contains the live commercial property listings experience and related app assets.
+- `app/hamlet/` contains the deal pipeline interface.
+- `firebase-config.js` provides the Firebase configuration consumed by client pages.
+- `firestore.rules`, `firestore.indexes.json`, and Firebase configuration files govern the relevant backend setup.
+- `functions/` contains Cloud Functions for backend workflows.
+- `CNAME` configures the GitHub Pages custom domain.
 
-Public and legal
-
-| Page | Purpose |
-|------|---------|
-| `index.html` | Home: jobs aggregator & hiring-request pitch, metrics, how-it-works, CTAs |
-| `about.html` | What IB provides (agile remote RPO) and the three-step process |
-| `privacy.html`, `cookies.html`, `terms.html` | Policies |
-| `404.html` | Not-found |
-| `loggedout.html` | Signed-out confirmation |
-
-Account and workflow
-
-| Page | Purpose |
-|------|---------|
-| `login.html` | Secure login (Firebase Auth) |
-| `requests.html` | Job requisition form (authenticated) |
-| `members.html` | Members hub |
-| `directory.html` | Public-facing member directory; includes the “🏢 Open Hamlet Live Properties” shortcut linking to `/app/public/live.html` |
-| `editprofile.html` | Name, bio, photo, visibility |
-| `settings.html` | Account settings |
-| `uploads.html` | Resume uploads owned by the signed-in user |
-| `insights.html` | Insights archive (Substack-backed feed) |
-| `livefeed.html` | LinkedIn live jobs board |
-| `invoice.html` / `success.html` | Invoice payment and thank-you |
-
-Shared assets at the root include `index.css`, `mobile-compat.css` / `.js`, `page-transition.css` / `.js`, `header-profile.js`, `firebase-config.js`, `CNAME` (`uk.ibrecruitment.com`), `robots.txt`, and brand images (`160.jpg`, `100.png`).
-
-### Directory shortcut reference
-
-In `directory.html`, the **Open Hamlet Live Properties** shortcut points to `/app/public/live.html` (the live properties listings page). Keep its visible label, accessible `aria-label`, and destination aligned if the shortcut is revised.
-
-## Data model (Firestore)
-
-Rules live in `firestore.rules` (also referenced from `firebase.json` for databases `(default)` and `ibusername`). Fallback is deny-all.
-
-| Collection | Who can read | Who can write | Purpose |
-|------------|--------------|---------------|---------|
-| `publicProfiles/{uid}` | Anyone | Owner only; fields limited (`firstName`, `lastName`, `bio`, `email`, `imageDataUrl`, `isPublic`, …) | Member directory / profile cards |
-| `messages/{messageId}` | Recipient (`recipientUid`) | Create/update by recipient | In-app messages |
-| `resumeUploads/{docId}` | Owner | Owner create only | CV store |
-| `insightsFeed/{docId}` | Signed-in users | No client writes | RSS-ingested articles |
-| `jobAdverts/{docId}` | Signed-in users | Owner create/update/delete; posting state `draft` or `ready`; LinkedIn metadata on update | Member-posted jobs / LinkedIn relay |
-
-## Backend (`functions/`)
-
-Node 22 Cloud Functions (2nd gen config in root `firebase.json`). Dependencies: `firebase-admin`, `firebase-functions`, `postmark`, `rss-parser`. Secret: `POSTMARK_BROADCAST_TOKEN`.
-
-| Export | Trigger | Behaviour |
-|--------|---------|-----------|
-| `fetchAndStoreRssToInsightsFeed` | Pub/Sub every 15 minutes | Parses `https://substack.ibrecruitment.com/feed` and upserts `insightsFeed` |
-| `adminFetchAndRelayRss` | Firestore `insightsFeed/{postId}` create | Emails members in `publicProfiles` who are not unsubscribed; marks the post notified; unsubscribe links to `ibrecruitment.com` |
-| `submitJobRequisition` | HTTPS callable | Auth-gated requisition validation + recruiter notification email |
-
-There is a nested `app/` tree with a second Firebase project layout (`app/firebase.json`, App Hosting emulator yaml, Data Connect, extra functions). Treat that as an adjacent or evolving app host, not a replacement for the root HTML product that GitHub Pages serves.
-
-Firebase Hosting at the repo root points `"public": "public"` (only a stub `public/index.html` and `public/404.html`). The live custom domain is wired through `CNAME` + GitHub Pages serving the **root** HTML files. Keep those two publish paths in mind when you change files.
-
-## Architecture (high level)
-
-```
-Browser (root *.html + CSS/JS)
-        │  Firebase Auth
-        ├─ Firestore: profiles, messages, uploads, adverts, insights
-        └─ Callable FN: submitJobRequisition ──► Postmark ──► recruiters
-
-Pub/Sub every 15 min
-        └─ fetchAndStoreRssToInsightsFeed ──► insightsFeed
-                    └─ adminFetchAndRelayRss ──► Postmark broadcast ──► members
-```
+Check the relevant page and its imported scripts/styles before changing behaviour. Authentication, Firestore rules, and Storage rules must agree: a client-side sign-in gate is not a substitute for server-side security rules.
 
 ## Local preview
+
+From a local clone, start a simple static server at the repository root:
 
 ```bash
 git clone https://github.com/ibrgroupintl/ibrgroupintl.github.io.git
 cd ibrgroupintl.github.io
-python3 -m http.server 8080
+python -m http.server 8080
 ```
 
-Open `http://localhost:8080/index.html`. Login, requisitions, uploads, insights, and invoices need the live Firebase project and functions.
+Then open `http://localhost:8080/`. Features that depend on Firebase, remote assets, authentication, or deployed backend services may require the configured live project and may not work fully in a local static preview.
 
-Functions:
+## Deployment notes
 
-```bash
-cd functions
-npm install
-# firebase emulators:start   # if you use the emulator suite
-```
-
-## Deploy
-
-- **GitHub Pages** serves root HTML on `uk.ibrecruitment.com`.
-- **Firebase**: `firebase deploy` for functions, rules, and (if used) hosting from `public/`.
-- After changing `firestore.rules` or functions, deploy those explicitly so the client pages stay in sync with the backend.
+- Root-level pages are published through GitHub Pages on the configured custom domain.
+- Changes to Firebase Authentication integrations, Firestore rules, Storage rules, or Cloud Functions may require a separate Firebase deployment; a GitHub Pages commit alone does not deploy those backend changes.
+- After deployment, test the live listings page, deal pipeline sign-in redirect, member directory shortcut, and relevant authenticated workflows.

@@ -321,10 +321,25 @@
     }
 
 
-    /* Login hero text over logistics background. */
+    /* Keep the logistics photograph as the login backdrop and ensure hero text stays legible over light or dark areas. */
+    body.login-page {
+      background-image: url('/logistics.jpg') !important;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
     body.login-page .portal-return-btn { color: #fff !important; }
-    body.login-page p.lead { color: #fff !important; }
-    body.login-page h1#signin-title { color: #fff !important; }
+    body.login-page h1#signin-title {
+      color: #fff !important;
+      font-weight: 800;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, .9), 0 0 14px rgba(0, 0, 0, .7);
+    }
+    body.login-page p.lead {
+      color: #fff !important;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, .95), 0 0 12px rgba(0, 0, 0, .7);
+    }
 
     body.login-page .note { color: #fff !important; }
     /* PERMANENT: the login controls sit directly over logistics.jpg. Remove any inherited card/panel halo, padding background or shadow. */

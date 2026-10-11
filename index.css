@@ -146,8 +146,8 @@ html,body{height:100%;margin:0;font-family: "Open Sans", system-ui, -apple-syste
   top: 88px;
   left: 24px;
   width: 220px;
-  background: #ffffff;
-  border: 1px solid #dbe3ee;
+  background: #111827;
+  border: 1px solid #263247;
   border-radius: 12px;
   box-shadow: 0 10px 24px rgba(2, 6, 23, 0.12);
   padding: 10px 0;
@@ -171,7 +171,7 @@ html,body{height:100%;margin:0;font-family: "Open Sans", system-ui, -apple-syste
   padding: 11px 14px;
   margin: 2px 8px;
   border-radius: 8px;
-  color: #092a4b;
+  color: #f2f7ff;
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 600;

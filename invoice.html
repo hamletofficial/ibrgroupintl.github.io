@@ -175,7 +175,54 @@
   </style>
 
 	<style>
-	</style>
+	
+    /* Invoice page: remove remaining light-theme patches in dark appearance. */
+    html[data-appearance="dark"] body {
+      color:#f3f4f6 !important; background:#0b1220 !important; background-image:none !important;
+    }
+    html[data-appearance="dark"] .payment-header {
+      background:#071d4a !important; color:#fff !important; border-bottom-color:#1e3a8a !important;
+      backdrop-filter:none !important;
+    }
+    html[data-appearance="dark"] .payment-brand,
+    html[data-appearance="dark"] .payment-header a { color:#fff !important; }
+    html[data-appearance="dark"] main,
+    html[data-appearance="dark"] .payment-main,
+    html[data-appearance="dark"] .payment-card,
+    html[data-appearance="dark"] .payment-panel,
+    html[data-appearance="dark"] .payment-content {
+      background:#111827 !important; color:#f3f4f6 !important; border-color:#475569 !important;
+      box-shadow:0 8px 28px rgba(0,0,0,.3) !important;
+    }
+    html[data-appearance="dark"] .stripe-box {
+      background:#1f2937 !important; color:#f3f4f6 !important; border-color:#475569 !important;
+    }
+    html[data-appearance="dark"] .payment-intro,
+    html[data-appearance="dark"] .payment-note,
+    html[data-appearance="dark"] .copyright { color:#cbd5e1 !important; }
+    html[data-appearance="dark"] .payment-footer,
+    html[data-appearance="dark"] .payment-footer .payment-container,
+    html[data-appearance="dark"] .cookie-bar {
+      background:#111827 !important; background-image:none !important; color:#e5e7eb !important;
+      border-color:#334155 !important;
+    }
+    html[data-appearance="dark"] .cookie-bar a,
+    html[data-appearance="dark"] .footer-links a { color:#93c5fd !important; }
+    html[data-appearance="dark"] .cookie-actions button,
+    html[data-appearance="dark"] .cookie-actions button:last-child {
+      background:#1f2937 !important; color:#f3f4f6 !important; border:1px solid #475569 !important;
+    }
+    html[data-appearance="dark"] .sidebar-menu-shell {
+      background:#111827 !important; color:#f3f4f6 !important; border-color:#475569 !important;
+      box-shadow:0 10px 24px rgba(0,0,0,.4) !important;
+    }
+    html[data-appearance="dark"] .sidebar-menu-link { color:#e5e7eb !important; }
+    html[data-appearance="dark"] .sidebar-menu-link:hover,
+    html[data-appearance="dark"] .sidebar-menu-link:focus-visible {
+      background:#1d4ed8 !important; color:#fff !important;
+    }
+
+  </style>
 
   <link rel="stylesheet" href="/theme.css">
   <script src="/theme.js"></script>

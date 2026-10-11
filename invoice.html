@@ -49,13 +49,13 @@
 	.payment-intro { margin:0; color:var(--payment-muted); }
 	.stripe-box { margin-top:26px; padding:clamp(14px,3vw,24px); border:1px solid var(--payment-line); border-radius:16px; background:#fff; }
 	.payment-note { margin:18px 0 0; color:var(--payment-muted); font-size:.92rem; }
-	.payment-footer { width:100vw; margin-left:calc(50% - 50vw); padding:20px 0 28px; border-top:0; background:#ffffff!important; color:#0f172a; }
+	.payment-footer { width:100vw; margin-left:calc(50% - 50vw); padding:20px 0 28px; border-top:0; background:#ffffff; color:#0f172a; }
 	.payment-footer .payment-container { width:min(1120px,calc(100% - 2rem)); margin-inline:auto; }
-	.cookie-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; padding:12px 14px; border:0; border-radius:0; background:#ffffff!important; color:#0f172a; }
+	.cookie-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; padding:12px 14px; border:0; border-radius:0; background:#ffffff; color:#0f172a; }
 	.has-cookie-consent #cookieConsentBar { display:none!important; }
 	.cookie-bar a,.footer-links a { color:#0f172a!important; }
 	.cookie-actions { display:flex; gap:8px; }
-	.cookie-actions button,.cookie-actions button:last-child { min-height:40px; padding:8px 12px; border:0; border-radius:9px; color:#0f172a; background:#ffffff!important; font:700 .9rem var(--payment-font); cursor:pointer; }
+	.cookie-actions button,.cookie-actions button:last-child { min-height:40px; padding:8px 12px; border:0; border-radius:9px; color:#0f172a; background:#ffffff; font:700 .9rem var(--payment-font); cursor:pointer; }
 	.footer-links { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
 	.footer-links a { text-decoration:none; }
 	.copyright { margin:0; color:var(--payment-muted); text-align:center; font-size:.9rem; }
@@ -138,7 +138,7 @@
   </style>
   <style>
     :root { --payment-bg:#f5f9ff; --payment-ink:#0f172a; --payment-muted:#475569; --payment-green:#0B2A6F; --payment-light:#0284c7; --payment-line:#dbe3ee; --payment-font:'Open Sans',Arial,sans-serif; }
-    body { color:#0f172a; background:#ffffff!important; font-family:'Open Sans',Arial,sans-serif; }
+    body { color:#0f172a; background:#ffffff; font-family:'Open Sans',Arial,sans-serif; }
     .page-wrapper { width:100%; max-width:1920px; min-height:100vh; margin:0 auto; background:#fff; box-shadow:0 0 20px rgba(0,0,0,.1); }
     .resource-nav { background:#092a4b!important; border-bottom:1px solid #092a4b!important; }
     .auth-profile-chip { display:flex; align-items:center; gap:9px; color:#fff; min-width:0; }
@@ -151,11 +151,11 @@
     .payment-kicker { color:#092a4b; background:#eaf4ff; border-color:#cfe3f1; }
     .payment-button { color:#fff!important; background:#0284c7!important; border-color:#0284c7!important; border-radius:8px; }
     .stripe-box { border-color:#dbe3ee; border-radius:12px; }
-    .payment-footer { width:100vw!important; margin-left:calc(50% - 50vw)!important; border-top:0!important; background:#ffffff!important; color:#0f172a!important; }
+    .payment-footer { width:100vw!important; margin-left:calc(50% - 50vw)!important; border-top:0!important; background:#ffffff; color:#0f172a!important; }
     .payment-footer .payment-container { margin-inline:auto!important; }
-    .cookie-bar { border:0!important; border-radius:0!important; background:#ffffff!important; color:#0f172a!important; }
+    .cookie-bar { border:0!important; border-radius:0!important; background:#ffffff; color:#0f172a!important; }
     .cookie-bar a,.footer-links a { color:#0f172a!important; }
-    .cookie-actions button,.cookie-actions button:last-child { border:0!important; background:#ffffff!important; color:#0f172a!important; }
+    .cookie-actions button,.cookie-actions button:last-child { border:0!important; background:#ffffff; color:#0f172a!important; }
     .copyright { color:#0f172a!important; }
     @media(max-width:900px) { .resource-nav { background:#092a4b!important; border-bottom:1px solid #092a4b!important; } }
 
@@ -168,7 +168,7 @@
     main { border: 0 !important; }
     
         /* Keep the vertical breathing room above and below the payment card balanced. */
-    main { padding:clamp(28px,5vw,56px) 0!important; background:#ffffff!important; }
+    main { padding:clamp(28px,5vw,56px) 0!important; background:#ffffff; }
     @media(max-width:640px) {
       main { padding:24px 0!important; }
     }

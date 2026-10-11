@@ -82,20 +82,30 @@
 	  box-shadow: 0 5px 14px rgba(25, 66, 53, .12);
 	}
 	.about-nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-	.about-nav a, .about-cta {
+	.about-nav a, .about-nav button, .about-cta {
 	  min-height: 44px;
 	  display: inline-flex;
 	  align-items: center;
 	  justify-content: center;
-	  padding: 10px 16px;
-	  border: 1px solid #c6d8ce;
-	  border-radius: 12px;
-	  color: var(--about-ink);
-	  background: rgba(255, 255, 255, .75);
+	  padding: 10px 14px;
+	  border: 1px solid rgba(159, 176, 202, 0.35);
+	  border-radius: 10px;
+	  color: #f9fafb;
+	  background: rgba(255,255,255,0.03);
+	  font: inherit;
 	  font-weight: 700;
 	  text-decoration: none;
-	  transition: transform .2s ease, box-shadow .2s ease;
+	  cursor: pointer;
+	  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 	}
+	.about-nav a:hover, .about-nav button:hover, .about-cta:hover { transform: translateY(-1px); }
+	.about-nav .about-nav-primary, .about-cta-primary {
+	  color: #fff;
+	  border-color: transparent;
+	  background: linear-gradient(135deg, #2f7bff, #1749b8);
+	  box-shadow: 0 10px 24px rgba(47, 123, 255, .32);
+	}
+	.about-nav [hidden] { display: none !important; }
 	.about-nav a:hover, .about-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(25, 66, 53, .1); }
 	.about-nav .about-nav-primary, .about-cta-primary {
 	  color: #fff;
@@ -250,19 +260,22 @@
   </style>
 
   <link rel="stylesheet" href="/theme.css">
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="/firebase-config.js"></script>
   <script src="/theme.js"></script>
 </head>
 <body>
   <header class="about-header" role="banner">
 	<div class="about-container about-header-row">
 	  <a class="about-brand" href="/index.html" aria-label="Impact in Business Recruitment home">
-		<img src="/160.jpg" alt="Impact logo">
 		<span>Impact in Business Recruitment</span>
 	  </a>
 	  <nav class="about-nav" aria-label="Primary navigation">
-		<a href="/index.html" aria-label="Home">Home</a>
+		<a class="btn btn-ghost" href="/index.html" aria-label="Back to Home">Back to Home</a>
 		<a href="/team.html">Meet the Team</a>
-		<a class="about-nav-primary" href="/requests.html">Submit Media Brief</a>
+		<a class="btn btn-primary about-nav-primary" href="/requests.html">Submit Media Brief</a>
+		<button class="btn btn-ghost" id="aboutSignOutBtn" type="button" hidden>Sign Out</button>
 	  </nav>
 	</div>
   </header>
@@ -355,6 +368,35 @@
 	</div>
   </footer>
 
+  <script>
+	(function () {
+	  var signOutBtn = document.getElementById('aboutSignOutBtn');
+	  function setupSignOut() {
+	    if (!window.firebase || typeof window.firebase.auth !== 'function') return;
+	    try {
+	      if (!window.firebase.apps || !window.firebase.apps.length) {
+	        if (window.firebaseConfig) window.firebase.initializeApp(window.firebaseConfig);
+	      }
+	      if (!window.firebase.apps || !window.firebase.apps.length) return;
+	      window.firebase.auth().onAuthStateChanged(function (user) {
+	        if (signOutBtn) signOutBtn.hidden = !user;
+	      });
+	      if (signOutBtn) signOutBtn.addEventListener('click', function () {
+	        window.firebase.auth().signOut().then(function () {
+	          window.location.href = '/index.html';
+	        }).catch(function (error) {
+	          console.error('Unable to sign out:', error);
+	          window.alert('Sign out could not be completed. Please try again.');
+	        });
+	      });
+	    } catch (error) {
+	      console.warn('Sign-out control is unavailable:', error);
+	    }
+	  }
+	  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupSignOut);
+	  else setupSignOut();
+	})();
+  </script>
   <script>
 	(function () {
 	  var cookieName = 'ibr_cookie_consent_v1';

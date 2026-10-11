@@ -301,6 +301,35 @@
 	@media (prefers-reduced-motion: reduce) {
 	  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 	}
+  
+    /* Shared royal-blue header and white, dark-surface navigation buttons. */
+    .about-header {
+      background: linear-gradient(135deg, #071D4A, #0B2A6F) !important;
+      border-bottom: 1px solid rgba(255,255,255,.18) !important;
+      backdrop-filter: none !important;
+    }
+    .about-header .about-brand,
+    .about-header .about-brand span,
+    .about-header .about-nav a,
+    .about-header .about-nav button { color: #fff !important; }
+    .about-header .about-nav a,
+    .about-header .about-nav button,
+    .about-header .about-nav .about-nav-primary {
+      background: #111827 !important;
+      background-image: none !important;
+      border: 1px solid #42516a !important;
+      border-radius: 12px !important;
+      box-shadow: none !important;
+    }
+    .about-header .about-nav a:hover,
+    .about-header .about-nav button:hover {
+      color: #fff !important;
+      background: #111827 !important;
+      border-color: #93b4f5 !important;
+      box-shadow: none !important;
+    }
+    .about-header .about-brand img { display: none !important; }
+
   </style>
 
   <link rel="stylesheet" href="/theme.css">

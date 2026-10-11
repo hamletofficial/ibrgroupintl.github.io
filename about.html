@@ -50,12 +50,12 @@
 	}
 
 	.about-container { width: min(1120px, calc(100% - 2rem)); margin-inline: auto; }
-	.about-header {
+.about-header {
 	  position: sticky;
 	  top: 0;
 	  z-index: 10;
-	  border-bottom: 1px solid rgba(37, 89, 71, .13);
-	  background: rgba(244, 247, 242, .9);
+	  border-bottom: 1px solid rgba(159, 176, 202, .18);
+	  background: linear-gradient(135deg, #071D4A, #0B2A6F);
 	  backdrop-filter: blur(14px);
 	}
 	.about-header-row {
@@ -65,11 +65,11 @@
 	  justify-content: space-between;
 	  gap: 20px;
 	}
-	.about-brand {
+.about-brand {
 	  display: inline-flex;
 	  align-items: center;
 	  gap: 11px;
-	  color: var(--about-ink);
+	  color: #f9fafb;
 	  font-weight: 800;
 	  text-decoration: none;
 	}
@@ -98,7 +98,11 @@
 	  cursor: pointer;
 	  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 	}
-	.about-nav a:hover, .about-nav button:hover, .about-cta:hover { transform: translateY(-1px); }
+	.about-nav a:hover, .about-nav button:hover, .about-cta:hover {
+	  transform: translateY(-1px);
+	  background: rgba(255, 255, 255, .1);
+	  box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+	}
 	.about-nav .about-nav-primary, .about-cta-primary {
 	  color: #fff;
 	  border-color: transparent;
@@ -106,12 +110,16 @@
 	  box-shadow: 0 10px 24px rgba(47, 123, 255, .32);
 	}
 	.about-nav [hidden] { display: none !important; }
-	.about-nav a:hover, .about-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(25, 66, 53, .1); }
+	.about-nav a:hover, .about-nav button:hover, .about-cta:hover {
+	  transform: translateY(-1px);
+	  background: rgba(255, 255, 255, .1);
+	  box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+	}
 	.about-nav .about-nav-primary, .about-cta-primary {
 	  color: #fff;
 	  border-color: transparent;
-	  background: linear-gradient(135deg, var(--about-green), var(--about-green-light));
-	  box-shadow: 0 10px 22px rgba(20, 107, 89, .2);
+	  background: linear-gradient(135deg, #2f7bff, #1749b8);
+	  box-shadow: 0 10px 24px rgba(47, 123, 255, .32);
 	}
 
 	main { flex: 1; padding: clamp(30px, 6vw, 70px) 0 56px; }

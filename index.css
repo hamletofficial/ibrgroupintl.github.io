@@ -249,3 +249,29 @@ body.has-sidebar #protected-content {
   #cookieConsentBar > div:first-child{margin-bottom:8px}
   #cookieConsentBar button{width:100%;}
 }
+
+/* Seamless blended production header palette */
+/* Match the shared header palette used by theme.css; keep nested header elements transparent to prevent colour bands. */
+.resource-nav,
+.site-header,
+header.resource-nav,
+header.site-header {
+  background: linear-gradient(115deg, #071D4A 0%, #0B2A6F 52%, #071D4A 100%) !important;
+  background-color: #071D4A !important;
+  background-repeat: no-repeat !important;
+  border-bottom-color: #071D4A !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.resource-nav > .container,
+.resource-nav .container-nav,
+.resource-nav .user-menu,
+.resource-nav .logo,
+.site-header > .container,
+.site-header .header-row,
+.site-header .nav-links {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}

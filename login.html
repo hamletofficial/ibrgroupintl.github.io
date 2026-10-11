@@ -321,24 +321,21 @@
     }
 
 
-    /* Keep the logistics photograph as the login backdrop and ensure hero text stays legible over light or dark areas. */
-    body.login-page {
-      background-image: url('/logistics.jpg') !important;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
+    /* Explicitly restore the root logistics photo and keep the login heading/subheading readable. */
+    html body.login-page {
+      background: #07111f url("/logistics.jpg") center center / cover no-repeat fixed !important;
+      background-color: #07111f !important;
     }
     body.login-page .portal-return-btn { color: #fff !important; }
-    body.login-page h1#signin-title {
+    body.login-page #signin-title {
       color: #fff !important;
-      font-weight: 800;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, .9), 0 0 14px rgba(0, 0, 0, .7);
+      font-weight: 800 !important;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, .95), 0 0 16px rgba(0, 0, 0, .85) !important;
     }
     body.login-page p.lead {
       color: #fff !important;
-      font-weight: 600;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, .95), 0 0 12px rgba(0, 0, 0, .7);
+      font-weight: 600 !important;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, .98), 0 0 14px rgba(0, 0, 0, .85) !important;
     }
 
     body.login-page .note { color: #fff !important; }

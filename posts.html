@@ -16,6 +16,10 @@
     *{box-sizing:border-box}
     body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background:linear-gradient(180deg,#f5f9ff 0%,#fff 100%)}
     .page-wrapper{background:#fff;max-width:1920px;min-height:100vh;margin:0 auto;box-shadow:0 0 20px rgba(0,0,0,.06)}
+    .posts-shell{width:100%;max-width:none;margin:1.5rem auto 2.5rem;padding:0 clamp(.75rem,2.5vw,2.5rem)}
+    .posts-shell .feed-panel,.posts-shell .post-composer{width:100%;max-width:none}
+    .posts-shell .posts-feed,.posts-shell .post-card{width:100%;max-width:none}
+    @media(max-width:600px){.posts-shell{padding:0 .65rem}.posts-shell .post-composer,.posts-shell .feed-panel{padding:.7rem}}
     .sidebar-menu-shell{display:none;position:fixed;top:88px;left:24px;width:240px;max-height:calc(100vh - 110px);overflow:auto;background:#fff;border:1px solid #dbe3ee;border-radius:12px;box-shadow:0 10px 24px rgba(2,6,23,.12);padding:10px 0;z-index:950}
     .sidebar-menu-link{display:block;padding:11px 14px;margin:2px 8px;border-radius:8px;color:#092a4b;text-decoration:none;font-size:.94rem;font-weight:600;transition:background-color .2s ease,color .2s ease,transform .2s ease}
     .sidebar-menu-link:hover,.sidebar-menu-link:focus{background:#092a4b;color:#fff;transform:translateX(3px)}

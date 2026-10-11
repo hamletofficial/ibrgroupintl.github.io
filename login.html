@@ -43,11 +43,13 @@
     /* Login-page-only dark theme. Does not modify the shared site styles. */
     .mfa-modal[hidden]{display:none!important}
     .mfa-modal{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(7,17,31,.72)}
-    .mfa-modal-card{width:min(420px,100%);padding:1.5rem;border-radius:16px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.28);text-align:left}
-    .mfa-modal-card h2{margin:0 0 .5rem;color:#092a4b}
-    .mfa-modal-card p{color:#475569;line-height:1.5}
-    .mfa-modal-card label{display:block;margin:.9rem 0 .35rem;font-weight:600;color:#0f2f4f}
-    #mfaLoginCode{width:100%;padding:.8rem;border:1px solid #cbd5e1;border-radius:8px;font:inherit;letter-spacing:.3em;text-align:center}
+    .mfa-modal-card{width:min(420px,100%);padding:1.5rem;border:1px solid #374151;border-radius:16px;background:#111827;color:#f3f4f6;box-shadow:0 20px 60px rgba(0,0,0,.45);text-align:left}
+    .mfa-modal-card h2{margin:0 0 .5rem;color:#f9fafb}
+    .mfa-modal-card p{color:#d1d5db;line-height:1.5}
+    .mfa-modal-card label{display:block;margin:.9rem 0 .35rem;font-weight:600;color:#e5e7eb}
+    #mfaLoginCode{width:100%;padding:.8rem;border:1px solid #4b5563;border-radius:8px;background:#1f2937;color:#f9fafb;font:inherit;letter-spacing:.3em;text-align:center}
+    #mfaLoginCode::placeholder{color:#9ca3af}
+    #mfaLoginCode:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}
     .mfa-login-error{min-height:1.3rem;margin:.65rem 0;color:#b91c1c;font-size:.9rem}
     .mfa-modal-card .btn{width:100%}
     body.login-page {

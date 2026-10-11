@@ -2,10 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\public",
+    "\\app\\hamlet",
     "\\blanca",
     "\\dataconnect",
     "\\extensions"
   ],
+  "SelectedNode": "\\app\\hamlet\\index.html",
   "PreviewInSolutionExplorer": false
 }

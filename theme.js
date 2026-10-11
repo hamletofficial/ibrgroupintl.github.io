@@ -95,9 +95,16 @@
     }
   }
 
-  /* Ignore older browser-only preferences and start every new session in dark mode. */
-  writeLocalPreference(DARK);
-  applyAppearance(DARK, false);
+  /* First visit on this version defaults to dark; retain an explicit choice thereafter. */
+  var initialPreference = DARK;
+  try {
+    var storedPreference = window.localStorage.getItem(STORAGE_KEY);
+    if (storedPreference === DARK || storedPreference === LIGHT) initialPreference = storedPreference;
+    else writeLocalPreference(DARK);
+  } catch (error) {
+    initialPreference = DARK;
+  }
+  applyAppearance(initialPreference, false);
 
   function bindControls() {
     document.querySelectorAll("[data-appearance-toggle]").forEach(function (toggle) {

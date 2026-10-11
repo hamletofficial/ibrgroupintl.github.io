@@ -688,6 +688,18 @@
       }
     }
 
+    /* Dark appearance: soften pure-white headings while preserving strong contrast. */
+    html[data-appearance="dark"] h2,
+    html[data-appearance="dark"] .section h2 {
+      color: #d6e1ef !important;
+    }
+    html[data-appearance="dark"] h3,
+    html[data-appearance="dark"] .feature-card h3,
+    html[data-appearance="dark"] .tech-card h3,
+    html[data-appearance="dark"] .step h3 {
+      color: #c4d4e8 !important;
+    }
+
     /* Keep the landing-page cards coherent with the explicit light appearance. */
     html[data-appearance="light"] .hero-shell,
     html[data-appearance="light"] .metric-panel,

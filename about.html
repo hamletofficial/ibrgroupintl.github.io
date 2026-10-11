@@ -124,6 +124,19 @@
 	  background: linear-gradient(135deg, var(--about-green), var(--about-green-light));
 	  box-shadow: 0 13px 27px rgba(20, 107, 89, .28);
 	}
+	/* Header navigation buttons sit directly on the royal-blue header. */
+	.about-nav a, .about-nav button,
+	.about-nav a:not(.about-nav-primary), .about-nav button:not(.about-nav-primary),
+	.about-nav .about-nav-primary {
+	  background: transparent !important;
+	  box-shadow: none !important;
+	}
+	.about-nav a:not(.about-nav-primary):hover,
+	.about-nav button:not(.about-nav-primary):hover,
+	.about-nav .about-nav-primary:hover {
+	  background: transparent !important;
+	  box-shadow: none !important;
+	}
 	.about-nav [hidden] { display: none !important; }
 
 	main { flex: 1; padding: clamp(30px, 6vw, 70px) 0 56px; }

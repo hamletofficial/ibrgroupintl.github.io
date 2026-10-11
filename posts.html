@@ -37,6 +37,41 @@
 
   <link rel="stylesheet" href="/theme.css">
   <script src="/theme.js"></script>
+  <style id="posts-file-picker-dark-fix">
+    /* Compact, legible file chooser in dark mode; avoid an oversized dark surround. */
+    html[data-appearance="dark"] .attachment-picker {
+      background:#111827 !important;
+      color:#e5e7eb !important;
+      border:1px solid #475569 !important;
+      padding:.4rem .6rem !important;
+      gap:.4rem !important;
+    }
+    html[data-appearance="dark"] .attachment-picker input[type="file"] {
+      box-sizing:border-box;
+      max-width:220px;
+      padding:.2rem .25rem !important;
+      color:#e5e7eb !important;
+      background:#1f2937 !important;
+      border:1px solid #475569 !important;
+      border-radius:6px;
+      font-size:.8rem;
+    }
+    html[data-appearance="dark"] .attachment-picker input[type="file"]::file-selector-button {
+      margin-right:.45rem;
+      padding:.3rem .55rem;
+      color:#fff !important;
+      background:#1d4ed8 !important;
+      border:1px solid #3b82f6 !important;
+      border-radius:5px;
+      cursor:pointer;
+    }
+    @media(max-width:600px) {
+      html[data-appearance="dark"] .attachment-picker input[type="file"] {
+        max-width:190px;
+        min-width:0;
+      }
+    }
+  </style>
 </head>
 <body class="auth-pending">
 <div class="page-wrapper">

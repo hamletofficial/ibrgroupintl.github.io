@@ -93,6 +93,23 @@
       transition: transform .2s ease, box-shadow .2s ease;
     }
     .team-nav a:hover, .team-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(25,66,53,.1); }
+    /* Match index.html's dark ghost-button styling for the Home navigation button. */
+    .team-nav a.btn-ghost {
+      color: #ffffff !important;
+      border: 1px solid #263247 !important;
+      border-radius: 12px !important;
+      background: #111827 !important;
+      background-image: none !important;
+      box-shadow: none !important;
+    }
+    .team-nav a.btn-ghost:hover {
+      color: #ffffff !important;
+      border-color: #42516a !important;
+      background: #111827 !important;
+      background-image: none !important;
+      box-shadow: none !important;
+      transform: translateY(-1px) !important;
+    }
     .team-nav .team-nav-primary, .team-cta-primary {
       color: #fff;
       border-color: transparent;
@@ -279,7 +296,7 @@
         <span>Impact in Business Recruitment</span>
       </a>
       <nav class="team-nav" aria-label="Primary navigation">
-        <a href="/index.html" aria-label="Home">Home</a>
+        <a class="btn btn-ghost" href="/index.html" aria-label="Home">Home</a>
         <a href="/about.html">About</a>
         <a class="team-nav-primary" href="/requests.html">Submit Media Brief</a>
       </nav>

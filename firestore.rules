@@ -367,7 +367,7 @@ service cloud.firestore {
         && request.resource.data.owner is string
         && request.resource.data.owner.size() <= 100
         && request.resource.data.email is string
-        && request.resource.data.email.size() <= 254
+        && request.resource.data.email.size() <= 1000
         && request.resource.data.leadDays is int
         && request.resource.data.leadDays >= 0
         && request.resource.data.leadDays <= 30
@@ -399,7 +399,7 @@ service cloud.firestore {
         && request.resource.data.owner is string
         && request.resource.data.owner.size() <= 100
         && request.resource.data.email is string
-        && request.resource.data.email.size() <= 254
+        && request.resource.data.email.size() <= 1000
         && request.resource.data.leadDays is int
         && request.resource.data.leadDays >= 0
         && request.resource.data.leadDays <= 30

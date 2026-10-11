@@ -49,7 +49,31 @@
     <style>
       .mail-header-icon { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:9px; text-decoration:none; font-size:1.15rem; transition:background-color .2s ease, transform .2s ease; }
       .mail-header-icon:hover, .mail-header-icon:focus-visible { background:rgba(255,255,255,.14); transform:translateY(-1px); }
-    </style>
+    
+    /* Dark-mode contrast fixes for file chooser and security/privacy section headings. */
+    html[data-appearance="dark"] #settingsProfilePhotoInput,
+    html[data-appearance="dark"] input[type="file"] {
+      color:#f3f4f6 !important;
+      background:#1f2937 !important;
+      border:1px solid #64748b !important;
+      border-radius:8px;
+      padding:.45rem;
+    }
+    html[data-appearance="dark"] input[type="file"]::file-selector-button {
+      background:#1d4ed8 !important; color:#fff !important; border:1px solid #3b82f6 !important;
+      border-radius:6px; padding:.45rem .75rem; margin-right:.75rem; cursor:pointer;
+    }
+    html[data-appearance="dark"] #securitySettingsHeading ~ .security-mfa-row > div > div:first-child,
+    html[data-appearance="dark"] .security-mfa-row > div > div:first-child,
+    html[data-appearance="dark"] #privacySettingsHeading ~ div > div > div:first-child {
+      color:#f3f4f6 !important;
+    }
+    html[data-appearance="dark"] #securitySettingsHeading ~ .security-mfa-row > div > div:first-child,
+    html[data-appearance="dark"] #privacySettingsHeading + div > div > div:first-child {
+      color:#f3f4f6 !important;
+    }
+
+  </style>
 
   <link rel="stylesheet" href="/theme.css">
   <script src="/theme.js"></script>

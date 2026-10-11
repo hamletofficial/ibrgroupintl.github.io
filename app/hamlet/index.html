@@ -38,7 +38,7 @@
 <div class="stat"><div class="stat-label">Overdue actions</div><div class="stat-value" id="statOverdue">—</div><div class="stat-foot">Requires immediate attention</div></div>
 </section>
 <section>
-<div class="section-head"><div><h2>Visual deal pipeline</h2><p>Move a deal to the next stage by dragging its card or using the stage menu.</p></div><div class="filters"><input id="searchDeals" type="search" placeholder="Search deals or properties…" aria-label="Search deals"><select id="filterType" aria-label="Filter deal type"><option value="">All deal types</option><option>Acquisition</option><option>Disposal</option><option>Leasing</option><option>Investment</option><option>Development</option></select></div></div>
+<div class="section-head"><div><h2>Visual deal pipeline</h2><p>Track inspection, LOI, due diligence, contract, lease execution or closing, commission payout and completion. Drag cards or use the stage menu.</p></div><div class="filters"><input id="searchDeals" type="search" placeholder="Search deals or properties…" aria-label="Search deals"><select id="filterType" aria-label="Filter deal type"><option value="">All deal types</option><option>Acquisition</option><option>Disposal</option><option>Leasing</option><option>Investment</option><option>Development</option></select></div></div>
 <div class="board-wrap"><div class="board" id="board"><div class="loading">Preparing your deal workspace…</div></div></div>
 </section>
 <section>
@@ -61,7 +61,7 @@
 <div class="field"><label for="property">Property / location</label><input id="property" maxlength="120" placeholder="e.g. 14 King Street, London"></div>
 <div class="field"><label for="dealType">Deal type</label><select id="dealType"><option>Acquisition</option><option>Disposal</option><option>Leasing</option><option>Investment</option><option>Development</option></select></div>
 <div class="field"><label for="dealValue">Indicative value (£)</label><input id="dealValue" type="number" min="0" step="1000" placeholder="2500000"></div>
-<div class="field"><label for="dealStage">Pipeline stage</label><select id="dealStage"><option>LOI Issued</option><option>Due Diligence</option><option>Under Contract</option><option>Closing</option><option>Closed</option></select></div>
+<div class="field"><label for="dealStage">Pipeline stage</label><select id="dealStage"><option>Initial Inspection</option><option>LOI Issued</option><option>Due Diligence</option><option>Under Contract</option><option>Lease Execution</option><option>Closing</option><option>Commission Payout</option><option>Closed</option></select></div>
 <div class="field"><label for="dealOwner">Lead broker</label><input id="dealOwner" maxlength="80" placeholder="Name"></div>
 <div class="field"><label for="dealClient">Client / counterparty</label><input id="dealClient" maxlength="100" placeholder="Client or company"></div>
 <div class="field full"><label for="dealNotes">Deal notes</label><textarea id="dealNotes" maxlength="1000" placeholder="Key context, blockers or next steps…"></textarea></div>
@@ -79,8 +79,8 @@
 <script>
 (function(){
 'use strict';
-const stages=['LOI Issued','Due Diligence','Under Contract','Closing','Closed'];
-const stageColors={'LOI Issued':'#7db2ff','Due Diligence':'#b8a2ff','Under Contract':'#f3c36b','Closing':'#64ddc0','Closed':'#8fa2bb'};
+const stages=['Initial Inspection','LOI Issued','Due Diligence','Under Contract','Lease Execution','Closing','Commission Payout','Closed'];
+const stageColors={'Initial Inspection':'#7db2ff','LOI Issued':'#8bb8ff','Due Diligence':'#b8a2ff','Under Contract':'#f3c36b','Lease Execution':'#f0a6c8','Closing':'#64ddc0','Commission Payout':'#83d6a5','Closed':'#8fa2bb'};
 const demoDeals=[
 {id:'demo1',name:'Riverside Exchange',property:'South Bank · London',type:'Acquisition',value:12800000,stage:'Due Diligence',owner:'AM',client:'Northbank Capital',notes:'Environmental review and title search in progress.',demo:true},
 {id:'demo2',name:'King Street Offices',property:'Manchester city centre',type:'Leasing',value:2400000,stage:'LOI Issued',owner:'JS',client:'Meridian Workspace',notes:'Heads of terms issued; awaiting response.',demo:true},

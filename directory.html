@@ -212,7 +212,32 @@
     .sidebar-menu-link:hover,.sidebar-menu-link:focus { background:#1d4ed8; color:#fff; }
     .directory-title,.directory-stat strong { padding-left:0; padding-right:0; }
 
-</style>
+
+    /* Directory dark-mode contrast: search placeholder and linked names in grid cards. */
+    html[data-appearance="dark"] .directory-search {
+      background:#111c2e !important; border-color:#475569 !important;
+    }
+    html[data-appearance="dark"] #directorySearchInput {
+      background:transparent !important; color:#f8fafc !important; caret-color:#f8fafc;
+    }
+    html[data-appearance="dark"] #directorySearchInput::placeholder {
+      color:#cbd5e1 !important; opacity:1 !important;
+    }
+    html[data-appearance="dark"] .directory-grid .profile-card .name,
+    html[data-appearance="dark"] .directory-grid .profile-card a.name,
+    html[data-appearance="dark"] .directory-grid .profile-card .name:visited {
+      color:#7dd3fc !important; background:transparent !important; background-color:transparent !important;
+      text-decoration-color:#7dd3fc !important;
+    }
+    html[data-appearance="dark"] .directory-grid .profile-card .name:hover,
+    html[data-appearance="dark"] .directory-grid .profile-card .name:focus-visible {
+      color:#bae6fd !important; background:transparent !important; background-color:transparent !important;
+    }
+    html[data-appearance="dark"] .directory-grid .profile-card a:not(.member-action):not(.message-member-btn) {
+      background:transparent !important; background-color:transparent !important;
+    }
+
+  </style>
 
   <link rel="stylesheet" href="/theme.css">
   <script src="/theme.js"></script>

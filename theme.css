@@ -1,0 +1,47 @@
+/* Site-wide appearance preference. Applied only when dark mode is selected. */
+html[data-appearance="dark"] { color-scheme: dark; }
+html[data-appearance="dark"] body,
+html[data-appearance="dark"] .page-wrapper,
+html[data-appearance="dark"] main,
+html[data-appearance="dark"] .settings-shell,
+html[data-appearance="dark"] .container,
+html[data-appearance="dark"] section,
+html[data-appearance="dark"] .content,
+html[data-appearance="dark"] .panel,
+html[data-appearance="dark"] .card,
+html[data-appearance="dark"] .settings-card,
+html[data-appearance="dark"] .auth-shell,
+html[data-appearance="dark"] .modal-content,
+html[data-appearance="dark"] .message,
+html[data-appearance="dark"] .post-card,
+html[data-appearance="dark"] .listing-card,
+html[data-appearance="dark"] .resource-card {
+  background-color: #111827 !important;
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+}
+html[data-appearance="dark"] body { background-image: none !important; background-color: #0b1120 !important; color: #e5e7eb !important; }
+html[data-appearance="dark"] h1,
+html[data-appearance="dark"] h2,
+html[data-appearance="dark"] h3,
+html[data-appearance="dark"] h4,
+html[data-appearance="dark"] p,
+html[data-appearance="dark"] li,
+html[data-appearance="dark"] label,
+html[data-appearance="dark"] .settings-label,
+html[data-appearance="dark"] .settings-value,
+html[data-appearance="dark"] .status-note,
+html[data-appearance="dark"] td,
+html[data-appearance="dark"] th { color: #e5e7eb !important; }
+html[data-appearance="dark"] input:not([type="checkbox"]):not([type="radio"]),
+html[data-appearance="dark"] textarea,
+html[data-appearance="dark"] select { background-color: #1f2937 !important; color: #f9fafb !important; border-color: #4b5563 !important; }
+html[data-appearance="dark"] a:not(.btn):not(.sidebar-menu-link) { color: #93c5fd; }
+html[data-appearance="dark"] .resource-nav,
+html[data-appearance="dark"] .site-header,
+html[data-appearance="dark"] header { background-color: #071d4a !important; color: #fff !important; }
+html[data-appearance="dark"] .sidebar-menu-shell { background: #111827 !important; border-color: #374151 !important; }
+html[data-appearance="dark"] .sidebar-menu-link { color: #e5e7eb !important; }
+html[data-appearance="dark"] .sidebar-menu-link:hover { background: #1d4ed8 !important; color: #fff !important; }
+html[data-appearance="dark"] .settings-row { border-bottom-color: #374151 !important; }
+html[data-appearance="dark"] img { filter: none; }

@@ -149,6 +149,24 @@
 	}
 	.about-card h3 { margin: 0 0 8px; color: #175b4c; font-size: 1.12rem; }
 	.about-card p { margin: 0; color: var(--about-muted); }
+	/* Dark-mode card surfaces use the site's #111827 charcoal with high-contrast text. */
+	.about-hero,
+	.about-card,
+	.about-decision {
+	  background: #111827 !important;
+	  border-color: #273244;
+	  color: #f9fafb;
+	  box-shadow: 0 12px 28px rgba(0, 0, 0, .2);
+	}
+	.about-hero h1,
+	.about-hero p,
+	.about-card h3,
+	.about-card p,
+	.about-decision h3,
+	.about-decision p {
+	  color: #f9fafb !important;
+	}
+
 	.about-step-number {
 	  width: 38px;
 	  height: 38px;

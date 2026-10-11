@@ -818,6 +818,34 @@
     }
     html[data-appearance="light"] .stat-value { color: #146b59 !important; }
     html[data-appearance="light"] .stat-value small { color: #53645f !important; }
+  
+    /* Harmonised royal-blue header and white navigation controls. */
+    .site-header {
+      background: linear-gradient(135deg, #071D4A, #0B2A6F) !important;
+      border-bottom: 1px solid rgba(255,255,255,.18) !important;
+      backdrop-filter: none !important;
+    }
+    .site-header .brand,
+    .site-header .brand span,
+    .site-header .nav-links a { color: #fff !important; }
+    .site-header .btn-ghost,
+    .site-header .btn-primary {
+      color: #fff !important;
+      background: #111827 !important;
+      background-image: none !important;
+      border: 1px solid #42516a !important;
+      border-radius: 12px !important;
+      box-shadow: none !important;
+    }
+    .site-header .btn-ghost:hover,
+    .site-header .btn-primary:hover {
+      color: #fff !important;
+      background: #111827 !important;
+      border-color: #93b4f5 !important;
+      box-shadow: none !important;
+    }
+    .site-header .brand img { display: none !important; }
+
   </style>
 
   <link rel="stylesheet" href="/theme.css">

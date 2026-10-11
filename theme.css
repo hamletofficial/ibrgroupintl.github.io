@@ -1,47 +1,182 @@
-/* Site-wide appearance preference. Applied only when dark mode is selected. */
-html[data-appearance="dark"] { color-scheme: dark; }
+/* IBR shared appearance system. Dark mode uses high-contrast neutral surfaces. */
+html[data-appearance="dark"] {
+  color-scheme: dark;
+  --ibr-bg: #0b1120;
+  --ibr-surface: #111827;
+  --ibr-surface-raised: #1f2937;
+  --ibr-text: #f3f4f6;
+  --ibr-muted: #cbd5e1;
+  --ibr-border: #475569;
+  --ibr-link: #93c5fd;
+  --ibr-header: #071d4a;
+}
+
+/* Remove light page canvases, gradients and inline background declarations. */
 html[data-appearance="dark"] body,
 html[data-appearance="dark"] .page-wrapper,
+html[data-appearance="dark"] #protected-content,
 html[data-appearance="dark"] main,
 html[data-appearance="dark"] .settings-shell,
+html[data-appearance="dark"] .members-shell,
 html[data-appearance="dark"] .container,
 html[data-appearance="dark"] section,
 html[data-appearance="dark"] .content,
 html[data-appearance="dark"] .panel,
+html[data-appearance="dark"] .panel-head,
+html[data-appearance="dark"] .panel-body,
 html[data-appearance="dark"] .card,
 html[data-appearance="dark"] .settings-card,
 html[data-appearance="dark"] .auth-shell,
+html[data-appearance="dark"] .modal,
 html[data-appearance="dark"] .modal-content,
 html[data-appearance="dark"] .message,
+html[data-appearance="dark"] .message-card,
 html[data-appearance="dark"] .post-card,
 html[data-appearance="dark"] .listing-card,
-html[data-appearance="dark"] .resource-card {
-  background-color: #111827 !important;
-  color: #e5e7eb !important;
-  border-color: #374151 !important;
+html[data-appearance="dark"] .resource-card,
+html[data-appearance="dark"] .member-guide-card,
+html[data-appearance="dark"] .security-note,
+html[data-appearance="dark"] .mfa-panel,
+html[data-appearance="dark"] .resource-footer,
+html[data-appearance="dark"] footer,
+html[data-appearance="dark"] .site-footer,
+html[data-appearance="dark"] .footer,
+html[data-appearance="dark"] .footer-content,
+html[data-appearance="dark"] .footer-inner,
+html[data-appearance="dark"] .footer-bottom,
+html[data-appearance="dark"] .footer-links,
+html[data-appearance="dark"] .cookie-banner,
+html[data-appearance="dark"] .notice,
+html[data-appearance="dark"] [class*="footer"] {
+  background: var(--ibr-surface) !important;
+  background-image: none !important;
+  color: var(--ibr-text) !important;
+  border-color: var(--ibr-border) !important;
+  box-shadow: none;
 }
-html[data-appearance="dark"] body { background-image: none !important; background-color: #0b1120 !important; color: #e5e7eb !important; }
+
+/* Global readable text, including text with page-specific inline colours. */
+html[data-appearance="dark"] body,
 html[data-appearance="dark"] h1,
 html[data-appearance="dark"] h2,
 html[data-appearance="dark"] h3,
 html[data-appearance="dark"] h4,
+html[data-appearance="dark"] h5,
+html[data-appearance="dark"] h6,
 html[data-appearance="dark"] p,
 html[data-appearance="dark"] li,
 html[data-appearance="dark"] label,
+html[data-appearance="dark"] strong,
+html[data-appearance="dark"] b,
+html[data-appearance="dark"] small,
+html[data-appearance="dark"] dt,
+html[data-appearance="dark"] dd,
+html[data-appearance="dark"] blockquote,
+html[data-appearance="dark"] figcaption,
+html[data-appearance="dark"] legend,
+html[data-appearance="dark"] summary,
+html[data-appearance="dark"] address,
+html[data-appearance="dark"] .muted,
+html[data-appearance="dark"] .text-muted,
 html[data-appearance="dark"] .settings-label,
 html[data-appearance="dark"] .settings-value,
 html[data-appearance="dark"] .status-note,
 html[data-appearance="dark"] td,
-html[data-appearance="dark"] th { color: #e5e7eb !important; }
-html[data-appearance="dark"] input:not([type="checkbox"]):not([type="radio"]),
+html[data-appearance="dark"] th,
+html[data-appearance="dark"] footer *,
+html[data-appearance="dark"] [class*="footer"] * {
+  color: var(--ibr-text) !important;
+}
+
+/* Common nested surfaces often missed by page-level selectors. */
+html[data-appearance="dark"] .settings-row,
+html[data-appearance="dark"] .member-commercial-links,
+html[data-appearance="dark"] .list-group-item,
+html[data-appearance="dark"] .dropdown-menu,
+html[data-appearance="dark"] .dropdown-item,
+html[data-appearance="dark"] .popover,
+html[data-appearance="dark"] .tooltip-inner,
+html[data-appearance="dark"] .table,
+html[data-appearance="dark"] table,
+html[data-appearance="dark"] tr,
+html[data-appearance="dark"] th,
+html[data-appearance="dark"] td,
+html[data-appearance="dark"] hr,
+html[data-appearance="dark"] fieldset {
+  background-color: var(--ibr-surface) !important;
+  border-color: var(--ibr-border) !important;
+}
+html[data-appearance="dark"] .settings-row { border-bottom-color: var(--ibr-border) !important; }
+
+/* Form controls retain a distinct surface and legible placeholder text. */
+html[data-appearance="dark"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
 html[data-appearance="dark"] textarea,
-html[data-appearance="dark"] select { background-color: #1f2937 !important; color: #f9fafb !important; border-color: #4b5563 !important; }
-html[data-appearance="dark"] a:not(.btn):not(.sidebar-menu-link) { color: #93c5fd; }
+html[data-appearance="dark"] select,
+html[data-appearance="dark"] option,
+html[data-appearance="dark"] .form-control {
+  background-color: var(--ibr-surface-raised) !important;
+  color: #f9fafb !important;
+  border-color: #64748b !important;
+}
+html[data-appearance="dark"] input::placeholder,
+html[data-appearance="dark"] textarea::placeholder { color: #cbd5e1 !important; opacity: 1; }
+html[data-appearance="dark"] input[type="checkbox"],
+html[data-appearance="dark"] input[type="radio"] { accent-color: #60a5fa; }
+
+/* Header and navigation use the site's established dark royal-blue palette. */
 html[data-appearance="dark"] .resource-nav,
 html[data-appearance="dark"] .site-header,
-html[data-appearance="dark"] header { background-color: #071d4a !important; color: #fff !important; }
-html[data-appearance="dark"] .sidebar-menu-shell { background: #111827 !important; border-color: #374151 !important; }
-html[data-appearance="dark"] .sidebar-menu-link { color: #e5e7eb !important; }
-html[data-appearance="dark"] .sidebar-menu-link:hover { background: #1d4ed8 !important; color: #fff !important; }
-html[data-appearance="dark"] .settings-row { border-bottom-color: #374151 !important; }
-html[data-appearance="dark"] img { filter: none; }
+html[data-appearance="dark"] header {
+  background: var(--ibr-header) !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-color: #1e3a8a !important;
+}
+html[data-appearance="dark"] .sidebar-menu-shell,
+html[data-appearance="dark"] nav[aria-label] {
+  background: var(--ibr-surface) !important;
+  border-color: var(--ibr-border) !important;
+}
+html[data-appearance="dark"] .sidebar-menu-link { color: var(--ibr-text) !important; }
+html[data-appearance="dark"] .sidebar-menu-link:hover,
+html[data-appearance="dark"] .sidebar-menu-link:focus-visible {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+
+/* Links remain distinguishable; preserve explicit button semantics and contrast. */
+html[data-appearance="dark"] a:not(.btn):not(.sidebar-menu-link):not(.button) {
+  color: var(--ibr-link) !important;
+}
+html[data-appearance="dark"] .btn-primary,
+html[data-appearance="dark"] button.btn-primary,
+html[data-appearance="dark"] .guide-action.btn-primary {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+html[data-appearance="dark"] .btn-outline,
+html[data-appearance="dark"] .guide-action.btn-outline {
+  background: #111827 !important;
+  color: #bfdbfe !important;
+  border-color: #60a5fa !important;
+}
+html[data-appearance="dark"] button:not(.btn-primary):not(.btn-outline),
+html[data-appearance="dark"] input[type="button"],
+html[data-appearance="dark"] input[type="submit"] {
+  color: var(--ibr-text);
+}
+
+/* Keep meaningful status colours and images intact. */
+html[data-appearance="dark"] .error,
+html[data-appearance="dark"] [role="alert"] { color: #fecaca !important; }
+html[data-appearance="dark"] .success,
+html[data-appearance="dark"] [data-status="success"] { color: #86efac !important; }
+html[data-appearance="dark"] img,
+html[data-appearance="dark"] canvas,
+html[data-appearance="dark"] video { filter: none; }
+html[data-appearance="dark"] :focus-visible { outline-color: #93c5fd; }
+html[data-appearance="dark"] ::selection { background: #1d4ed8; color: #ffffff; }
+@media (prefers-reduced-motion: reduce) {
+  html[data-appearance="dark"] * { scroll-behavior: auto !important; }
+}

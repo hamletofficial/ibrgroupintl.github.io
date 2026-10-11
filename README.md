@@ -2,7 +2,7 @@
 
 End-to-end **jobs aggregator, hiring-request board, and members dashboard** for Impact in Business Recruitment (IB) — a remote recruitment process outsourcing (RPO) practice.
 
-- Production: [https://ats.ibrecruitment.com](https://ats.ibrecruitment.com)
+- Production: [https://uk.ibrecruitment.com](https://uk.ibrecruitment.com)
 - Source: [ibrgroupintl/ibrgroupintl.github.io](https://github.com/ibrgroupintl/ibrgroupintl.github.io)
 - Legal entity on the site footer: Impact in Business Recruitment Group Limited (© 2026)
 
@@ -51,7 +51,7 @@ Account and workflow
 | `login.html` | Secure login (Firebase Auth) |
 | `requests.html` | Job requisition form (authenticated) |
 | `members.html` | Members hub |
-| `directory.html` | Public-facing member directory |
+| `directory.html` | Public-facing member directory; includes the “🏢 Open Hamlet Live Properties” shortcut linking to `/app/public/live.html` |
 | `editprofile.html` | Name, bio, photo, visibility |
 | `settings.html` | Account settings |
 | `uploads.html` | Resume uploads owned by the signed-in user |
@@ -59,7 +59,11 @@ Account and workflow
 | `livefeed.html` | LinkedIn live jobs board |
 | `invoice.html` / `success.html` | Invoice payment and thank-you |
 
-Shared assets at the root include `index.css`, `mobile-compat.css` / `.js`, `page-transition.css` / `.js`, `header-profile.js`, `firebase-config.js`, `CNAME` (`ats.ibrecruitment.com`), `robots.txt`, and brand images (`160.jpg`, `100.png`).
+Shared assets at the root include `index.css`, `mobile-compat.css` / `.js`, `page-transition.css` / `.js`, `header-profile.js`, `firebase-config.js`, `CNAME` (`uk.ibrecruitment.com`), `robots.txt`, and brand images (`160.jpg`, `100.png`).
+
+### Directory shortcut reference
+
+In `directory.html`, the **Open Hamlet Live Properties** shortcut points to `/app/public/live.html` (the live properties listings page). Keep its visible label, accessible `aria-label`, and destination aligned if the shortcut is revised.
 
 ## Data model (Firestore)
 
@@ -120,6 +124,6 @@ npm install
 
 ## Deploy
 
-- **GitHub Pages** serves root HTML on `ats.ibrecruitment.com`.
+- **GitHub Pages** serves root HTML on `uk.ibrecruitment.com`.
 - **Firebase**: `firebase deploy` for functions, rules, and (if used) hosting from `public/`.
 - After changing `firestore.rules` or functions, deploy those explicitly so the client pages stay in sync with the backend.

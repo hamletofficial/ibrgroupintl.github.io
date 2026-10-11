@@ -372,8 +372,8 @@
           <button class="directory-tool-btn" type="button" id="reportDirectory" aria-label="Report an issue with the member directory" title="Report an issue with the member directory">⚑ Report</button>
         </div>
         <div class="directory-view-actions" role="group" aria-label="Directory layout">
-          <button class="directory-tool-btn" type="button" id="gridViewBtn" aria-pressed="true">▦ Grid</button>
-          <button class="directory-tool-btn" type="button" id="listViewBtn" aria-pressed="false">☷ List</button>
+          <button class="directory-tool-btn" type="button" id="gridViewBtn" aria-pressed="false">▦ Grid</button>
+          <button class="directory-tool-btn" type="button" id="listViewBtn" aria-pressed="true">☷ List</button>
         </div>
       </div>
       <section class="directory-stats" aria-label="Directory statistics">
@@ -477,7 +477,7 @@
       let allMembers = [];
       let pinnedMember = null;
       let currentUid = '';
-      let currentView = 'grid';
+      let currentView = 'list';
       let currentPage = 1;
       let loading = false;
 

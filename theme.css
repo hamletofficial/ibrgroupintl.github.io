@@ -615,3 +615,36 @@ html[data-appearance="dark"] .posts-shell .status-message.error {
   color: #fecaca !important;
   border-color: #b91c1c !important;
 }
+
+
+/* Final production header pass: one solid royal-blue header across all root pages,
+   overriding older transparent/test palettes and responsive header variants. */
+.resource-nav,
+.site-header,
+header.resource-nav,
+header.site-header {
+  background: #0B2A6F !important;
+  background-color: #0B2A6F !important;
+  background-image: none !important;
+  border-bottom-color: #0B2A6F !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html[data-appearance="dark"] .resource-nav,
+html[data-appearance="dark"] .site-header,
+html[data-appearance="dark"] header.resource-nav,
+html[data-appearance="dark"] header.site-header,
+html[data-appearance="dark"] header {
+  background: #0B2A6F !important;
+  background-color: #0B2A6F !important;
+  background-image: none !important;
+  border-bottom-color: #0B2A6F !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* The signed-in identity line in the Social Feed composer needs readable contrast. */
+html[data-appearance="dark"] .posts-shell .composer-name,
+html[data-appearance="dark"] #composeHeading {
+  color: #F3F4F6 !important;
+}

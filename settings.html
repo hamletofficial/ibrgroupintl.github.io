@@ -130,13 +130,13 @@
     <main id="settingsShell" class="settings-shell" role="main">
       <section class="settings-card" aria-labelledby="appearanceHeading">
         <h2 id="appearanceHeading" style="margin-top:0">Appearance</h2>
-        <p class="status-note">Choose your preferred appearance. This setting applies across the root-level pages of the website on this browser.</p>
-        <p role="note" style="margin:.65rem 0;padding:.75rem .9rem;border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#334155;font-size:.9rem;line-height:1.5"><strong>About this setting:</strong> Your appearance preference is saved in this browser only. It is not saved to your account, so it will not automatically carry over to another browser or device.</p>
+        <p class="status-note">Dark mode is the default. Your chosen appearance is saved to your Firebase account and this browser, and follows you across signed-in sessions and devices.</p>
+        <p role="note" style="margin:.65rem 0;padding:.75rem .9rem;border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#334155;font-size:.9rem;line-height:1.5"><strong>About this setting:</strong> Dark mode is applied at the start of a session. When you change the setting while signed in, the preference is saved to your Firebase profile and synchronised to other signed-in sessions. A local browser copy is also kept for fast loading.</p>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
           <label for="appearanceToggle" style="font-weight:700">Dark mode</label>
           <input id="appearanceToggle" data-appearance-toggle type="checkbox" role="switch" aria-label="Toggle dark mode" style="width:2.8rem;height:1.5rem;accent-color:#2563eb;cursor:pointer">
         </div>
-        <p data-appearance-label class="status-note" role="status" aria-live="polite">Light mode is on</p>
+        <p data-appearance-label class="status-note" role="status" aria-live="polite">Dark mode is on</p>
       </section>
       <section class="settings-card">
         <h2 style="margin-top:0">Account Details</h2>

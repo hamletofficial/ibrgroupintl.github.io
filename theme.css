@@ -648,3 +648,26 @@ html[data-appearance="dark"] .posts-shell .composer-name,
 html[data-appearance="dark"] #composeHeading {
   color: #F3F4F6 !important;
 }
+
+
+/* Fix header banding in dark mode: shared .container surfaces must remain transparent inside the royal-blue header. */
+html[data-appearance="dark"] .resource-nav,
+html[data-appearance="dark"] .site-header,
+html[data-appearance="dark"] .resource-nav > .container,
+html[data-appearance="dark"] .resource-nav .container-nav,
+html[data-appearance="dark"] .resource-nav .user-menu,
+html[data-appearance="dark"] .resource-nav .logo,
+html[data-appearance="dark"] .site-header > .container,
+html[data-appearance="dark"] .site-header .header-row,
+html[data-appearance="dark"] .site-header .nav-links {
+  background: #071D4A !important;
+  background-color: #071D4A !important;
+  background-image: none !important;
+  border-color: #071D4A !important;
+  box-shadow: none !important;
+}
+/* Header controls retain their own intentional button/chip styling; the bar behind them stays uninterrupted. */
+html[data-appearance="dark"] .resource-nav .auth-profile-chip,
+html[data-appearance="dark"] .site-header .auth-profile-chip {
+  background: transparent !important;
+}

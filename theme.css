@@ -180,3 +180,49 @@ html[data-appearance="dark"] ::selection { background: #1d4ed8; color: #ffffff; 
 @media (prefers-reduced-motion: reduce) {
   html[data-appearance="dark"] * { scroll-behavior: auto !important; }
 }
+
+/* Insights Archive: its 20 dynamically rendered cards and nested metadata/tags. */
+html[data-appearance="dark"] #insightsList .insight-card,
+html[data-appearance="dark"] #substackList .insight-card,
+html[data-appearance="dark"] .insights-shell .insight-card {
+  background: #111827 !important;
+  background-image: none !important;
+  color: #f3f4f6 !important;
+  border: 1px solid #475569 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .22) !important;
+}
+html[data-appearance="dark"] .insights-synopsis,
+html[data-appearance="dark"] .insights-synopsis p,
+html[data-appearance="dark"] .insights-synopsis h1,
+html[data-appearance="dark"] #insightsList .insight-card h2,
+html[data-appearance="dark"] #substackList .insight-card h2,
+html[data-appearance="dark"] .insight-card .insight-snippet {
+  color: #f3f4f6 !important;
+}
+html[data-appearance="dark"] .insight-card .insight-meta,
+html[data-appearance="dark"] .insights-status {
+  color: #cbd5e1 !important;
+}
+html[data-appearance="dark"] .insight-card .insight-tag {
+  background: #334155 !important;
+  color: #f8fafc !important;
+  border: 1px solid #64748b !important;
+}
+html[data-appearance="dark"] .insight-card .insight-tag.priority {
+  background: #1e3a8a !important;
+  color: #dbeafe !important;
+  border-color: #3b82f6 !important;
+}
+html[data-appearance="dark"] .insight-card .insight-link {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  border: 1px solid #60a5fa !important;
+}
+html[data-appearance="dark"] .insight-card .insight-link:hover,
+html[data-appearance="dark"] .insight-card .insight-link:focus-visible {
+  background: #1e40af !important;
+  color: #ffffff !important;
+}
+html[data-appearance="dark"] .insights-divider {
+  border-top-color: #475569 !important;
+}

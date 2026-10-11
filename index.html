@@ -688,6 +688,23 @@
       }
     }
 
+    /* Prevent a white strip from appearing beneath the footer at the document edge.
+       The scripts after the footer are functional JavaScript, not visible page content. */
+    html,
+    body {
+      background-color: #111827 !important;
+    }
+    body::before,
+    body::after {
+      content: none !important;
+      display: none !important;
+    }
+    .site-footer {
+      margin-bottom: 0 !important;
+      background: #111827 !important;
+      background-image: none !important;
+    }
+
     /* Unify landing-page surfaces, calls to action, and footer transition in #111827. */
     .hero-shell,
     .metric-panel,

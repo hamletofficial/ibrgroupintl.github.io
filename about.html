@@ -353,7 +353,40 @@
       border-color: #93b4f5 !important;
     }
     .about-header .about-brand img { display: none !important; }
-</style>
+
+    /* Minimalist dark navigation controls, consistent with sectors.html. */
+    .about-header .about-nav .sector-back,
+    .about-header .about-nav button.sector-back {
+      min-height: 36px !important;
+      padding: 7px 11px !important;
+      border: 1px solid #263247 !important;
+      border-radius: 6px !important;
+      color: #f9fafb !important;
+      background: #111827 !important;
+      background-image: none !important;
+      box-shadow: none !important;
+      font-size: .875rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0 !important;
+      text-decoration: none !important;
+      transform: none !important;
+      transition: border-color .15s ease, background-color .15s ease !important;
+    }
+    .about-header .about-nav .sector-back:hover,
+    .about-header .about-nav button.sector-back:hover {
+      color: #fff !important;
+      background: #111827 !important;
+      border-color: #93b4f5 !important;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+    .about-header .about-nav .sector-back:focus-visible,
+    .about-header .about-nav button.sector-back:focus-visible {
+      outline: 2px solid #93b4f5 !important;
+      outline-offset: 2px !important;
+    }
+
+  </style>
 
   <link rel="stylesheet" href="/theme.css">
   <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>

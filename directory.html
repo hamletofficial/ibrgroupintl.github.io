@@ -478,7 +478,7 @@
           <button class="directory-tool-btn" type="button" id="directoryLastPage">Last »</button>
         </div>
       </div>
-      <a class="verify-corner-btn" href="/app/public/live.html" aria-label="Open Hamlet Live Properties">🏢 Open Hamlet Live Properties</a>
+      <a class="verify-corner-btn" href="/app/hamlet/index.html" aria-label="Open Hamlet Deal Pipeline">🏢 Open Hamlet Deal Pipeline</a>
     </main>
     <footer class="resource-footer" role="contentinfo">
       <div class="container" style="text-align:center">
@@ -531,7 +531,8 @@
         document.querySelector('.directory-toolbar'),
         document.querySelector('.directory-stats'),
         summary,
-        pagination
+        pagination,
+        document.querySelector('.verify-corner-btn')
       ];
       function setSignedInControlsVisible(visible) {
         signedInOnlyControls.forEach(function (node) {

@@ -273,5 +273,147 @@ service cloud.firestore {
         && exists(/databases/$(database)/documents/brokerPosts/$(postId));
     }
 
+
+    // Hamlet deal records are private to the signed-in broker who owns them.
+    match /hamletDeals/{dealId} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll([
+          'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
+        ])
+        && request.resource.data.id == dealId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.property is string
+        && request.resource.data.property.size() <= 120
+        && request.resource.data.type in ['Acquisition','Disposal','Leasing','Investment','Development']
+        && request.resource.data.value is number
+        && request.resource.data.value >= 0
+        && request.resource.data.stage in [
+          'Initial Inspection','LOI Issued','Due Diligence','Under Contract',
+          'Lease Execution','Closing','Commission Payout','Closed'
+        ]
+        && request.resource.data.owner is string
+        && request.resource.data.owner.size() <= 80
+        && request.resource.data.client is string
+        && request.resource.data.client.size() <= 100
+        && request.resource.data.notes is string
+        && request.resource.data.notes.size() <= 1000
+        && request.resource.data.createdAt is string
+        && request.resource.data.createdAt.size() <= 50
+        && request.resource.data.updatedAt == request.time;
+
+      allow update: if request.auth != null
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasAll([
+          'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
+        ])
+        && request.resource.data.id == dealId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.property is string
+        && request.resource.data.property.size() <= 120
+        && request.resource.data.type in ['Acquisition','Disposal','Leasing','Investment','Development']
+        && request.resource.data.value is number
+        && request.resource.data.value >= 0
+        && request.resource.data.stage in [
+          'Initial Inspection','LOI Issued','Due Diligence','Under Contract',
+          'Lease Execution','Closing','Commission Payout','Closed'
+        ]
+        && request.resource.data.owner is string
+        && request.resource.data.owner.size() <= 80
+        && request.resource.data.client is string
+        && request.resource.data.client.size() <= 100
+        && request.resource.data.notes is string
+        && request.resource.data.notes.size() <= 1000
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+
+    // Critical-path milestones are private, owner-managed records. A separate
+    // server-only delivery log prevents ordinary clients from spoofing sent reminders.
+    match /hamletReminders/{reminderId} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll([
+          'id','uid','title','dealId','dueDate','owner','email','leadDays','notes','done','createdAt','updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id','uid','title','dealId','dueDate','owner','email','leadDays','notes','done','createdAt','updatedAt'
+        ])
+        && request.resource.data.id == reminderId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 120
+        && request.resource.data.dealId is string
+        && request.resource.data.dealId.size() <= 200
+        && request.resource.data.dueDate is string
+        && request.resource.data.dueDate.size() == 10
+        && request.resource.data.owner is string
+        && request.resource.data.owner.size() <= 100
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 1000
+        && request.resource.data.leadDays is int
+        && request.resource.data.leadDays >= 0
+        && request.resource.data.leadDays <= 30
+        && request.resource.data.notes is string
+        && request.resource.data.notes.size() <= 800
+        && request.resource.data.done is bool
+        && request.resource.data.createdAt is string
+        && request.resource.data.createdAt.size() <= 50
+        && request.resource.data.updatedAt == request.time;
+
+      allow update: if request.auth != null
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasAll([
+          'id','uid','title','dealId','dueDate','owner','email','leadDays','notes','done','createdAt','updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id','uid','title','dealId','dueDate','owner','email','leadDays','notes','done','createdAt','updatedAt'
+        ])
+        && request.resource.data.id == reminderId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 120
+        && request.resource.data.dealId is string
+        && request.resource.data.dealId.size() <= 200
+        && request.resource.data.dueDate is string
+        && request.resource.data.dueDate.size() == 10
+        && request.resource.data.owner is string
+        && request.resource.data.owner.size() <= 100
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 1000
+        && request.resource.data.leadDays is int
+        && request.resource.data.leadDays >= 0
+        && request.resource.data.leadDays <= 30
+        && request.resource.data.notes is string
+        && request.resource.data.notes.size() <= 800
+        && request.resource.data.done is bool
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+
+    match /hamletReminderDeliveries/{deliveryId} {
+      allow read, write: if false;
+    }
+
   }
 }

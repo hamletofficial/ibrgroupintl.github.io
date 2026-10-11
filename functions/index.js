@@ -456,3 +456,220 @@ exports.exchangeLinkedInAuth = onCall({
     throw new HttpsError("internal", (err && err.message) || "LinkedIn sign-in failed.");
   }
 });
+
+
+// Hamlet: deliver critical-path emails independently of an open browser session.
+// The browser stores each reminder under hamletReminders; this scheduled function
+// runs against the project's default Firestore database and uses the existing
+// POSTMARK_OUTBOUND_TOKEN secret.
+function hamletLondonDateKey(date) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const values = {};
+  for (const part of parts) {
+    if (part.type !== "literal") values[part.type] = part.value;
+  }
+  return values.year + "-" + values.month + "-" + values.day;
+}
+
+function hamletShiftIsoDate(dateString, daysBack) {
+  const date = new Date(dateString + "T12:00:00.000Z");
+  date.setUTCDate(date.getUTCDate() - daysBack);
+  return date.toISOString().slice(0, 10);
+}
+
+function sendHamletReminderEmail(recipients, reminder, deal, dueDate, brokerEmail) {
+  const safeTitle = String(reminder.title || "Critical-path deadline").replace(/[\r\n]+/g, " ").slice(0, 140);
+  const safeDealName = String(deal && deal.name || "General deadline").replace(/[\r\n]+/g, " ").slice(0, 160);
+  const safeProperty = String(deal && deal.property || "").replace(/[\r\n]+/g, " ").slice(0, 180);
+  const safeClient = String(deal && deal.client || "").replace(/[\r\n]+/g, " ").slice(0, 140);
+  const dueLabel = new Date(dueDate + "T12:00:00.000Z").toLocaleDateString("en-GB", {
+    timeZone: "Europe/London",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const reminderLead = Math.max(0, Math.min(30, Number(reminder.leadDays) || 0));
+  const leadLabel = reminderLead === 0 ? "on the due date" : reminderLead + " day" + (reminderLead === 1 ? "" : "s") + " before the due date";
+  const workspaceUrl = "https://uk.ibrecruitment.com/app/hamlet/index.html";
+  const lines = [
+    "Hamlet critical-path reminder",
+    "",
+    "Deadline: " + safeTitle,
+    "Due date: " + dueLabel,
+    "Reminder timing: " + leadLabel,
+    "Deal: " + safeDealName,
+    safeProperty ? "Property: " + safeProperty : "",
+    safeClient ? "Client / counterparty: " + safeClient : "",
+    "",
+    "Please review the milestone and any dependencies in Hamlet:",
+    workspaceUrl,
+    "",
+    "This is an automated reminder from Hamlet, the IBR commercial real estate deal workspace.",
+  ].filter(function(line) { return line !== undefined; });
+  const textBodyValue = lines.join("\n");
+  const htmlBodyValue = "<p>Hamlet critical-path reminder</p>" +
+    "<p><strong>Deadline:</strong> " + escapeHtml(safeTitle) + "<br>" +
+    "<strong>Due date:</strong> " + escapeHtml(dueLabel) + "<br>" +
+    "<strong>Reminder timing:</strong> " + escapeHtml(leadLabel) + "<br>" +
+    "<strong>Deal:</strong> " + escapeHtml(safeDealName) +
+    (safeProperty ? "<br><strong>Property:</strong> " + escapeHtml(safeProperty) : "") +
+    (safeClient ? "<br><strong>Client / counterparty:</strong> " + escapeHtml(safeClient) : "") +
+    "</p><p>Please review the milestone and its dependencies in <a href=\"" + workspaceUrl + "\">Hamlet</a>.</p>" +
+    "<p>This is an automated reminder from Hamlet, the IBR commercial real estate deal workspace.</p>";
+  const payload = JSON.stringify({
+    From: "admin-messages@ibrecruitment.com",
+    To: recipients.join(","),
+    ReplyTo: brokerEmail || undefined,
+    Subject: "Hamlet deadline reminder: " + safeTitle + " — due " + dueLabel,
+    TextBody: textBodyValue,
+    HtmlBody: htmlBodyValue,
+    MessageStream: "outbound",
+  });
+  return new Promise(function(resolve, reject) {
+    const req = https.request({
+      hostname: "api.postmarkapp.com",
+      path: "/email",
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-Postmark-Server-Token": postmarkOutboundToken.value(),
+        "Content-Length": Buffer.byteLength(payload),
+      },
+    }, function(res) {
+      let responseBody = "";
+      res.on("data", function(chunk) { responseBody += chunk; });
+      res.on("end", function() {
+        if (res.statusCode >= 200 && res.statusCode < 300) resolve(responseBody);
+        else reject(new Error("Postmark " + res.statusCode + ": " + responseBody));
+      });
+    });
+    req.on("error", reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+exports.sendHamletCriticalPathReminders = onSchedule({
+  schedule: "0 8 * * *",
+  timeZone: "Europe/London",
+  region: "us-central1",
+  secrets: [postmarkOutboundToken],
+  timeoutSeconds: 540,
+  memory: "512MiB",
+}, async function() {
+  try { admin.app(); } catch (err) { admin.initializeApp(); }
+  const db = getFirestore(admin.app());
+  const todayKey = hamletLondonDateKey(new Date());
+  const snapshot = await db.collection("hamletReminders").get();
+  const brokerEmailCache = new Map();
+  let sentCount = 0;
+
+  async function getBrokerEmail(uid) {
+    if (brokerEmailCache.has(uid)) return brokerEmailCache.get(uid);
+    let email = "";
+    try {
+      const account = await admin.auth().getUser(uid);
+      if (account && typeof account.email === "string") email = account.email.trim();
+    } catch (err) {
+      console.warn("Hamlet reminder could not read the account email for UID:", uid, err && err.message);
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      try {
+        const profileSnap = await db.collection("publicProfiles").doc(uid).get();
+        const profile = profileSnap.exists ? (profileSnap.data() || {}) : {};
+        if (typeof profile.email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email.trim())) {
+          email = profile.email.trim();
+        }
+      } catch (err) {
+        console.warn("Hamlet reminder could not read the profile email for UID:", uid, err && err.message);
+      }
+    }
+    brokerEmailCache.set(uid, email);
+    return email;
+  }
+
+  for (const doc of snapshot.docs) {
+    const reminder = doc.data() || {};
+    if (reminder.done === true || reminder.demo === true) continue;
+    const uid = typeof reminder.uid === "string" ? reminder.uid : "";
+    const dueDate = typeof reminder.dueDate === "string" ? reminder.dueDate : "";
+    if (!uid || !/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(dueDate)) continue;
+    const rawLead = Number(reminder.leadDays);
+    const leadDays = Number.isFinite(rawLead) ? Math.max(0, Math.min(30, Math.floor(rawLead))) : 0;
+    const firstReminderDate = hamletShiftIsoDate(dueDate, leadDays);
+    // Catch up on a missed reminder after a deployment/outage, but never send
+    // a new message after the contractual milestone has already passed.
+    if (todayKey < firstReminderDate || todayKey > dueDate) continue;
+
+    const deliveryId = (doc.id + "_" + dueDate).replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 180);
+    const deliveryRef = db.collection("hamletReminderDeliveries").doc(deliveryId);
+    let deliverySnap;
+    try { deliverySnap = await deliveryRef.get(); }
+    catch (err) { console.error("Hamlet could not check reminder delivery status:", doc.id, err); continue; }
+    const delivery = deliverySnap.exists ? (deliverySnap.data() || {}) : {};
+    if (delivery.status === "sent" || delivery.status === "skipped") continue;
+    if (delivery.status === "processing" && delivery.processingAt &&
+        typeof delivery.processingAt.toMillis === "function" &&
+        Date.now() - delivery.processingAt.toMillis() < 10 * 60 * 1000) continue;
+
+    const brokerEmail = await getBrokerEmail(uid);
+    const extraEmailText = typeof reminder.email === "string" ? reminder.email : "";
+    const extraEmails = extraEmailText.split(/[;,]/).map(function(value) { return value.trim(); }).filter(Boolean).slice(0, 5);
+    const recipients = Array.from(new Set([brokerEmail].concat(extraEmails)
+      .filter(function(value) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); })
+      .map(function(value) { return value.toLowerCase(); })));
+
+    if (!recipients.length) {
+      await deliveryRef.set({
+        reminderId: doc.id, ownerUid: uid, dueDate: dueDate, status: "skipped",
+        reason: "No valid broker or additional-recipient email address was available.",
+        processedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, {merge: true});
+      continue;
+    }
+
+    let deal = null;
+    const dealId = typeof reminder.dealId === "string" ? reminder.dealId : "";
+    if (dealId && dealId.length <= 200) {
+      try {
+        const dealSnap = await db.collection("hamletDeals").doc(dealId).get();
+        if (dealSnap.exists && (dealSnap.data() || {}).uid === uid) deal = dealSnap.data() || {};
+      } catch (err) {
+        console.warn("Hamlet reminder could not load linked deal details:", dealId, err && err.message);
+      }
+    }
+    if (deal && deal.stage === "Closed") continue;
+
+    await deliveryRef.set({
+      reminderId: doc.id, ownerUid: uid, dueDate: dueDate, status: "processing",
+      processingAt: admin.firestore.FieldValue.serverTimestamp(),
+      attempts: admin.firestore.FieldValue.increment(1),
+      recipients: recipients,
+    }, {merge: true});
+
+    try {
+      await sendHamletReminderEmail(recipients, reminder, deal, dueDate, brokerEmail);
+      await deliveryRef.set({
+        status: "sent",
+        sentAt: admin.firestore.FieldValue.serverTimestamp(),
+        error: admin.firestore.FieldValue.delete(),
+      }, {merge: true});
+      sentCount++;
+      console.log("Hamlet critical-path reminder email sent:", doc.id, recipients.length);
+    } catch (err) {
+      console.error("Hamlet reminder email failed and will be retried while the deadline is live:", doc.id, err);
+      await deliveryRef.set({
+        status: "failed",
+        failedAt: admin.firestore.FieldValue.serverTimestamp(),
+        error: String(err && err.message || err).slice(0, 500),
+      }, {merge: true});
+    }
+  }
+  console.log("Hamlet critical-path reminder job completed:", {date: todayKey, remindersScanned: snapshot.size, emailsSent: sentCount});
+});

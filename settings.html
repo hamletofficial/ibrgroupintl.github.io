@@ -50,6 +50,9 @@
       .mail-header-icon { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:9px; text-decoration:none; font-size:1.15rem; transition:background-color .2s ease, transform .2s ease; }
       .mail-header-icon:hover, .mail-header-icon:focus-visible { background:rgba(255,255,255,.14); transform:translateY(-1px); }
     </style>
+
+  <link rel="stylesheet" href="/theme.css">
+  <script src="/theme.js"></script>
 </head>
 <body class="auth-pending">
   <div class="page-wrapper">
@@ -101,6 +104,15 @@
       <a class="btn btn-primary" href="/login.html">Go to Sign In</a>
     </section>
     <main id="settingsShell" class="settings-shell" role="main">
+      <section class="settings-card" aria-labelledby="appearanceHeading">
+        <h2 id="appearanceHeading" style="margin-top:0">Appearance</h2>
+        <p class="status-note">Choose your preferred appearance. This setting applies across the root-level pages of the website on this browser.</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+          <label for="appearanceToggle" style="font-weight:700">Dark mode</label>
+          <input id="appearanceToggle" data-appearance-toggle type="checkbox" role="switch" aria-label="Toggle dark mode" style="width:2.8rem;height:1.5rem;accent-color:#2563eb;cursor:pointer">
+        </div>
+        <p data-appearance-label class="status-note" role="status" aria-live="polite">Light mode is on</p>
+      </section>
       <section class="settings-card">
         <h2 style="margin-top:0">Account Details</h2>
         <div class="settings-row">

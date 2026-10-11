@@ -464,3 +464,154 @@ html[data-appearance="dark"] .unread-filter-count {
   background: #14532d !important;
   color: #dcfce7 !important;
 }
+
+
+/* Profile feed: make Like/Delete match the outlined "Your Likes" control. */
+html[data-appearance="dark"] .profile-feed-panel .post-like-button,
+html[data-appearance="dark"] .profile-feed-panel .post-delete-button,
+html[data-appearance="dark"] .profile-feed-panel .post-action-button,
+html[data-appearance="dark"] .profile-feed-panel .reply-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: .45rem .7rem;
+  border: 1px solid #60a5fa !important;
+  border-radius: 8px;
+  background: #111827 !important;
+  color: #bfdbfe !important;
+  font-weight: 700;
+  text-decoration: none;
+}
+html[data-appearance="dark"] .profile-feed-panel .post-like-button.is-liked {
+  background: #172554 !important;
+  color: #dbeafe !important;
+  border-color: #818cf8 !important;
+}
+html[data-appearance="dark"] .profile-feed-panel .post-like-button:hover,
+html[data-appearance="dark"] .profile-feed-panel .post-delete-button:hover,
+html[data-appearance="dark"] .profile-feed-panel .post-action-button:hover,
+html[data-appearance="dark"] .profile-feed-panel .reply-delete:hover {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: #93c5fd !important;
+}
+/* Profile feed PDF and attachment preview surfaces. */
+html[data-appearance="dark"] .profile-feed-panel .post-attachments,
+html[data-appearance="dark"] .profile-feed-panel .post-attachment,
+html[data-appearance="dark"] .profile-feed-panel .post-attachment-pdf,
+html[data-appearance="dark"] .profile-feed-panel .attachment-title,
+html[data-appearance="dark"] .profile-feed-panel .pdf-preview,
+html[data-appearance="dark"] .profile-feed-panel .post-image-preview,
+html[data-appearance="dark"] .profile-feed-panel .post-url-preview {
+  background: #111827 !important;
+  background-image: none !important;
+  color: #f3f4f6 !important;
+  border-color: #475569 !important;
+}
+html[data-appearance="dark"] .profile-feed-panel .pdf-preview {
+  background-color: #1f2937 !important;
+  border: 1px solid #475569 !important;
+  color-scheme: dark;
+}
+html[data-appearance="dark"] .profile-feed-panel .attachment-open-link,
+html[data-appearance="dark"] .profile-feed-panel .post-url-preview-title {
+  color: #bfdbfe !important;
+}
+/* Social Feed: every page-level control, composer action, search/filter button and attachment area. */
+html[data-appearance="dark"] .posts-shell .feed-refresh,
+html[data-appearance="dark"] .posts-shell .post-action-button,
+html[data-appearance="dark"] .posts-shell .format-button,
+html[data-appearance="dark"] .posts-shell .composer-publish-actions button,
+html[data-appearance="dark"] .posts-shell .post-search-button,
+html[data-appearance="dark"] .posts-shell button:not(.primary-post-button),
+html[data-appearance="dark"] .posts-shell input[type="button"],
+html[data-appearance="dark"] .posts-shell input[type="submit"] {
+  background: #111827 !important;
+  color: #bfdbfe !important;
+  border: 1px solid #60a5fa !important;
+  border-radius: 8px;
+  font-weight: 700;
+}
+html[data-appearance="dark"] .posts-shell .primary-post-button,
+html[data-appearance="dark"] .posts-shell button[type="submit"] {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  border: 1px solid #60a5fa !important;
+}
+html[data-appearance="dark"] .posts-shell button:hover,
+html[data-appearance="dark"] .posts-shell button:focus-visible,
+html[data-appearance="dark"] .posts-shell .feed-refresh:hover,
+html[data-appearance="dark"] .posts-shell .format-button:hover,
+html[data-appearance="dark"] .posts-shell .post-action-button:hover {
+  background: #1e40af !important;
+  color: #ffffff !important;
+  border-color: #93c5fd !important;
+}
+html[data-appearance="dark"] .posts-shell .attachment-picker,
+html[data-appearance="dark"] .posts-shell .selected-files,
+html[data-appearance="dark"] .posts-shell .post-attachment,
+html[data-appearance="dark"] .posts-shell .post-attachment-pdf,
+html[data-appearance="dark"] .posts-shell .attachment-title,
+html[data-appearance="dark"] .posts-shell .pdf-preview,
+html[data-appearance="dark"] .posts-shell .post-image-preview,
+html[data-appearance="dark"] .posts-shell .post-url-preview,
+html[data-appearance="dark"] .posts-shell .post-reply,
+html[data-appearance="dark"] .posts-shell .empty-feed {
+  background: #111827 !important;
+  background-image: none !important;
+  color: #f3f4f6 !important;
+  border-color: #475569 !important;
+}
+html[data-appearance="dark"] .posts-shell .attachment-picker {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #60a5fa !important;
+  color: #bfdbfe !important;
+  cursor: pointer;
+}
+html[data-appearance="dark"] .posts-shell .attachment-picker:hover,
+html[data-appearance="dark"] .posts-shell .attachment-picker:focus-within {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+html[data-appearance="dark"] .posts-shell .post-textarea,
+html[data-appearance="dark"] .posts-shell .reply-textarea,
+html[data-appearance="dark"] .posts-shell .post-editor,
+html[data-appearance="dark"] .posts-shell #postSearchInput,
+html[data-appearance="dark"] .posts-shell input:not([type="file"]):not([type="checkbox"]):not([type="radio"]) {
+  background: #1f2937 !important;
+  color: #f3f4f6 !important;
+  border-color: #64748b !important;
+}
+html[data-appearance="dark"] .posts-shell .post-body,
+html[data-appearance="dark"] .posts-shell .reply-body,
+html[data-appearance="dark"] .posts-shell .post-author-name,
+html[data-appearance="dark"] .posts-shell .post-url-preview-title {
+  color: #f3f4f6 !important;
+}
+html[data-appearance="dark"] .posts-shell .post-time,
+html[data-appearance="dark"] .posts-shell .post-private-author,
+html[data-appearance="dark"] .posts-shell .character-count,
+html[data-appearance="dark"] .posts-shell .selected-files,
+html[data-appearance="dark"] .posts-shell .attachment-title,
+html[data-appearance="dark"] .posts-shell .post-url-preview-domain,
+html[data-appearance="dark"] .posts-shell .post-url-preview-description {
+  color: #cbd5e1 !important;
+}
+html[data-appearance="dark"] .posts-shell .emoji-picker,
+html[data-appearance="dark"] .posts-shell .emoji-choice {
+  background: #1f2937 !important;
+  color: #f3f4f6 !important;
+  border-color: #64748b !important;
+}
+html[data-appearance="dark"] .posts-shell .status-message {
+  background: #172554 !important;
+  color: #dbeafe !important;
+  border-color: #3b82f6 !important;
+}
+html[data-appearance="dark"] .posts-shell .status-message.error {
+  background: #450a0a !important;
+  color: #fecaca !important;
+  border-color: #b91c1c !important;
+}

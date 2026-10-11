@@ -277,9 +277,87 @@
   <script defer src="/mobile-compat.js"></script>
   <script defer src="/page-transition.js"></script>
   <script>
-    window.addEventListener('load', function () {
-      // Auth and other scripts restored to functional state.
-    });
+    (function () {
+      'use strict';
+
+      function showSignedOut() {
+        document.body.classList.remove('auth-pending', 'has-sidebar');
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('membersShell').style.display = 'none';
+        document.getElementById('signInLink').style.display = 'inline-flex';
+        document.getElementById('signOutBtn').style.display = 'none';
+        var name = document.getElementById('memberName');
+        if (name) name.textContent = 'Member';
+        try { sessionStorage.removeItem('ibr_auth_transition'); } catch (error) {}
+      }
+
+      function showSignedIn(user) {
+        document.body.classList.remove('auth-pending');
+        document.body.classList.add('has-sidebar');
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('membersShell').style.display = 'block';
+        document.getElementById('signInLink').style.display = 'none';
+        document.getElementById('signOutBtn').style.display = 'inline-flex';
+
+        var name = document.getElementById('memberName');
+        if (name) name.textContent = user.displayName || user.email || 'Member';
+
+        // Prefer the saved Firestore name when available, without blocking access.
+        if (window.firebase && firebase.firestore) {
+          firebase.firestore().collection('publicProfiles').doc(user.uid).get()
+            .then(function (snapshot) {
+              if (!snapshot.exists || !name) return;
+              var data = snapshot.data() || {};
+              var first = String(data.Firstname || data.firstName || data.firstname || '').trim();
+              var last = String(data.Lastname || data.lastName || data.lastname || '').trim();
+              var savedName = (first + ' ' + last).trim() || data.displayName || data.name;
+              if (savedName) name.textContent = savedName;
+            })
+            .catch(function (error) {
+              console.warn('Could not load the saved member name:', error);
+            });
+        }
+        try { sessionStorage.removeItem('ibr_auth_transition'); } catch (error) {}
+      }
+
+      function initialiseMembersAuth() {
+        if (!window.firebase || !window.firebase.auth || !window.firebaseConfig) {
+          showSignedOut();
+          console.error('Members Area authentication could not initialise: Firebase SDK or configuration is unavailable.');
+          return;
+        }
+
+        try {
+          if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
+          var auth = firebase.auth();
+          document.getElementById('signOutBtn').addEventListener('click', function () {
+            auth.signOut().then(function () {
+              window.location.replace('/login.html?next=%2Fmembers.html');
+            }).catch(function (error) {
+              console.error('Sign out failed:', error);
+              window.alert('Unable to sign out. Please try again.');
+            });
+          });
+
+          auth.onAuthStateChanged(function (user) {
+            if (user) showSignedIn(user);
+            else showSignedOut();
+          }, function (error) {
+            showSignedOut();
+            console.error('Members Area authentication state error:', error);
+          });
+        } catch (error) {
+          showSignedOut();
+          console.error('Members Area authentication setup failed:', error);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialiseMembersAuth, { once: true });
+      } else {
+        initialiseMembersAuth();
+      }
+    })();
   </script>
 </body>
 </html>

@@ -16,23 +16,47 @@
 <script defer>
 (function(){
   'use strict';
-  var gate=document.getElementById('hamletAuthGate');
-  var message=document.getElementById('hamletAuthMessage');
   var redirected=false;
+  function setGateMessage(text){
+    var message=document.getElementById('hamletAuthMessage');
+    if(message)message.textContent=text;
+  }
   function requireSignIn(){
     if(redirected)return;
     redirected=true;
-    if(message)message.textContent='You must sign in to access Hamlet. Redirecting to secure sign-in…';
+    setGateMessage('You must sign in to access Hamlet. Redirecting to secure sign-in…');
     var next=window.location.pathname+window.location.search+window.location.hash;
     window.location.replace('/login.html?next='+encodeURIComponent(next));
   }
   function showWorkspace(){
     document.documentElement.classList.remove('hamlet-auth-pending');
+    var gate=document.getElementById('hamletAuthGate');
     if(gate)gate.hidden=true;
+  }
+  function showGuardError(text){
+    setGateMessage(text);
+    var spinner=document.querySelector('#hamletAuthGate .hamlet-gate-spinner');
+    if(spinner)spinner.hidden=true;
+    var card=document.querySelector('#hamletAuthGate .hamlet-gate-card');
+    if(card&&!document.getElementById('hamletAuthRetry')){
+      var retry=document.createElement('button');
+      retry.id='hamletAuthRetry';
+      retry.type='button';
+      retry.textContent='Retry';
+      retry.style.cssText='margin-top:18px;padding:10px 18px;border:1px solid #48658a;border-radius:9px;background:#1b2d46;color:#edf3fc;font:600 13px inherit;cursor:pointer';
+      retry.addEventListener('click',function(){window.location.reload();});
+      card.appendChild(retry);
+      var login=document.createElement('a');
+      login.href='/login.html?next='+encodeURIComponent(window.location.pathname+window.location.search+window.location.hash);
+      login.textContent='Open secure sign-in';
+      login.style.cssText='display:block;margin-top:12px;color:#9fc7ff;font-size:13px';
+      card.appendChild(login);
+    }
   }
   function initGuard(){
     if(!window.firebase||!window.firebaseConfig){
-      if(message)message.textContent='Secure sign-in could not be initialised. Please refresh or try again shortly.';
+      showGuardError('Secure sign-in could not be initialised. Check your connection and retry, or open secure sign-in.');
+      console.error('Hamlet authentication guard: Firebase SDK or configuration is unavailable.');
       return;
     }
     try{
@@ -42,12 +66,11 @@
         else{requireSignIn();}
       },function(error){
         console.error('Hamlet authentication check failed:',error);
-        if(message)message.textContent='Your sign-in could not be verified. Redirecting to secure sign-in…';
         requireSignIn();
       });
     }catch(error){
       console.error('Hamlet authentication initialisation failed:',error);
-      if(message)message.textContent='Secure sign-in could not be initialised. Please refresh or try again shortly.';
+      showGuardError('Secure sign-in could not be initialised. Check your connection and retry, or open secure sign-in.');
     }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initGuard,{once:true});else initGuard();

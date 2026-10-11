@@ -684,6 +684,55 @@
         transition-duration: .01ms !important;
       }
     }
+
+    /* Keep the landing-page cards coherent with the explicit light appearance. */
+    html[data-appearance="light"] .hero-shell,
+    html[data-appearance="light"] .metric-panel,
+    html[data-appearance="light"] .metric,
+    html[data-appearance="light"] .feature-card,
+    html[data-appearance="light"] .tech-card,
+    html[data-appearance="light"] .step,
+    html[data-appearance="light"] .final-cta,
+    html[data-appearance="light"] .cookie-bar {
+      color: #17342e !important;
+      border-color: #d4e2da !important;
+      box-shadow: 0 12px 28px rgba(25, 66, 53, .075) !important;
+    }
+
+    html[data-appearance="light"] .hero-shell {
+      background: linear-gradient(140deg, #ffffff, #eaf3ed) !important;
+    }
+    html[data-appearance="light"] .metric-panel { background: #f8fbf8 !important; }
+    html[data-appearance="light"] .metric { background: #ffffff !important; }
+    html[data-appearance="light"] .feature-card,
+    html[data-appearance="light"] .tech-card,
+    html[data-appearance="light"] .step { background: #ffffff !important; }
+    html[data-appearance="light"] .final-cta {
+      background: linear-gradient(140deg, #e7f3ec, #f9f5e9) !important;
+    }
+    html[data-appearance="light"] .cookie-bar { background: #ffffff !important; }
+
+    html[data-appearance="light"] .hero-shell h1,
+    html[data-appearance="light"] .metric strong,
+    html[data-appearance="light"] .metric span,
+    html[data-appearance="light"] .feature-card h3,
+    html[data-appearance="light"] .feature-card p,
+    html[data-appearance="light"] .tech-card h3,
+    html[data-appearance="light"] .tech-card p,
+    html[data-appearance="light"] .tech-card li,
+    html[data-appearance="light"] .step h3,
+    html[data-appearance="light"] .step p,
+    html[data-appearance="light"] .final-cta p {
+      color: #17342e !important;
+    }
+    html[data-appearance="light"] .feature-card h3,
+    html[data-appearance="light"] .tech-card h3,
+    html[data-appearance="light"] .step h3,
+    html[data-appearance="light"] .metric strong {
+      color: #175b4c !important;
+    }
+    html[data-appearance="light"] .stat-value { color: #146b59 !important; }
+    html[data-appearance="light"] .stat-value small { color: #53645f !important; }
   </style>
 
   <link rel="stylesheet" href="/theme.css">

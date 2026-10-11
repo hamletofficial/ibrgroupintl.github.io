@@ -48,9 +48,20 @@
     .directory-auth-prompt { display:none; max-width:460px; margin:3rem auto; padding:2rem 1.5rem; border:1px solid #dbe3ee; border-radius:16px; background:#fff; box-shadow:0 8px 28px rgba(2,6,23,.08); text-align:center; }
     .directory-auth-prompt h2 { margin:0 0 .5rem; color:#092a4b; font-size:1.35rem; }
     .directory-auth-prompt p { margin:0 0 1.25rem; color:var(--muted); line-height:1.5; }
-    /* Match the Hamlet shortcut to the Send Brief primary button. */
-    body .verify-corner-btn { background: #0284c7 !important; border-color: #0284c7 !important; color: #fff !important; }
-    body .verify-corner-btn:hover, body .verify-corner-btn:focus-visible { background: #0369a1 !important; border-color: #0369a1 !important; color: #fff !important; }
+    /* Hamlet shortcut: subdued dark-mode treatment to match the directory palette. */
+    body .verify-corner-btn {
+      background: #172338 !important;
+      border-color: #334155 !important;
+      color: #cbd5e1 !important;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, .22) !important;
+    }
+    body .verify-corner-btn:hover,
+    body .verify-corner-btn:focus-visible {
+      background: #1e293b !important;
+      border-color: #64748b !important;
+      color: #f1f5f9 !important;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .3) !important;
+    }
     .sidebar-menu-shell {
       display: none;
       position: fixed;

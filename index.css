@@ -20,8 +20,8 @@ html,body{height:100%;margin:0;font-family: "Open Sans", system-ui, -apple-syste
 /* Header */
 .resource-nav{
   /* simplified header background (removed image for a cleaner, consistent header) */
-  background: linear-gradient(180deg, rgba(2,6,23,0.9), rgba(2,6,23,0.85));
-  border-bottom:1px solid rgba(255,255,255,0.08);
+  background: #071D4A;
+  border-bottom:1px solid #071D4A;
   padding:1rem 0;
   color: #fff;
 }

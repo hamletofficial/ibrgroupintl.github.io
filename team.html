@@ -283,6 +283,33 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
     }
+  
+    /* Shared royal-blue header and white, dark-surface navigation buttons. */
+    .team-header {
+      background: linear-gradient(135deg, #071D4A, #0B2A6F) !important;
+      border-bottom: 1px solid rgba(255,255,255,.18) !important;
+      backdrop-filter: none !important;
+    }
+    .team-header .team-brand,
+    .team-header .team-brand span,
+    .team-header .team-nav a { color: #fff !important; }
+    .team-header .team-nav a,
+    .team-header .team-nav .team-nav-primary {
+      background: #111827 !important;
+      background-image: none !important;
+      border: 1px solid #42516a !important;
+      border-radius: 12px !important;
+      box-shadow: none !important;
+    }
+    .team-header .team-nav a:hover {
+      color: #fff !important;
+      background: #111827 !important;
+      border-color: #93b4f5 !important;
+      box-shadow: none !important;
+      transform: translateY(-1px) !important;
+    }
+    .team-header .team-brand img { display: none !important; }
+
   </style>
 
   <link rel="stylesheet" href="/theme.css">
@@ -292,7 +319,6 @@
   <header class="team-header" role="banner">
     <div class="team-container team-header-row">
       <a class="team-brand" href="/index.html" aria-label="Impact in Business Recruitment home">
-        <img src="/160.jpg" alt="Impact logo">
         <span>Impact in Business Recruitment</span>
       </a>
       <nav class="team-nav" aria-label="Primary navigation">

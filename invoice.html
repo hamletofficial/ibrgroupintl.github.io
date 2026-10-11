@@ -232,6 +232,27 @@
       border:2px solid #111827;
       border-radius:8px;
     }
+    /* Remove white strips from the menu's links, descendants and pseudo-elements. */
+    html[data-appearance="dark"] #topNavMenu,
+    html[data-appearance="dark"] #topNavMenu *,
+    html[data-appearance="dark"] #topNavMenu *::before,
+    html[data-appearance="dark"] #topNavMenu *::after {
+      background-image:none !important;
+      box-shadow:none !important;
+    }
+    html[data-appearance="dark"] #topNavMenu .sidebar-menu-link,
+    html[data-appearance="dark"] #topNavMenu .sidebar-menu-link:link,
+    html[data-appearance="dark"] #topNavMenu .sidebar-menu-link:visited,
+    html[data-appearance="dark"] #topNavMenu .sidebar-menu-link:active {
+      background-color:#111827 !important;
+      color:#e5e7eb !important;
+      border-color:transparent !important;
+    }
+    html[data-appearance="dark"] #topNavMenu .sidebar-menu-link:hover,
+    html[data-appearance="dark"] #topNavMenu .sidebar-menu-link:focus-visible {
+      background-color:#1d4ed8 !important;
+      color:#fff !important;
+    }
     html[data-appearance="dark"] .sidebar-menu-link { color:#e5e7eb !important; }
     html[data-appearance="dark"] .sidebar-menu-link:hover,
     html[data-appearance="dark"] .sidebar-menu-link:focus-visible {

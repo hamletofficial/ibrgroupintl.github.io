@@ -377,3 +377,90 @@ html[data-appearance="dark"] .payment-footer .cookie-bar a,
 html[data-appearance="dark"] .payment-footer .footer-links a {
   color: #bfdbfe !important;
 }
+
+/* Mailbox-specific surfaces and unread/new-message indicators. */
+html[data-appearance="dark"] .mail-shell,
+html[data-appearance="dark"] .panel-box,
+html[data-appearance="dark"] .conversation-search-wrap,
+html[data-appearance="dark"] .conversation-item,
+html[data-appearance="dark"] .thread,
+html[data-appearance="dark"] .compose,
+html[data-appearance="dark"] .pinned-strip,
+html[data-appearance="dark"] .pinned-chip,
+html[data-appearance="dark"] .login-card,
+html[data-appearance="dark"] .emoji-picker,
+html[data-appearance="dark"] .attachment-item {
+  background: #111827 !important;
+  background-image: none !important;
+  color: #f3f4f6 !important;
+  border-color: #475569 !important;
+}
+html[data-appearance="dark"] .conversation-item:hover,
+html[data-appearance="dark"] .conversation-item.active,
+html[data-appearance="dark"] .conversation-star:hover,
+html[data-appearance="dark"] .attachment-control:hover {
+  background: #1e3a8a !important;
+  color: #ffffff !important;
+}
+html[data-appearance="dark"] .conversation-name,
+html[data-appearance="dark"] .compose-label,
+html[data-appearance="dark"] .login-card h2,
+html[data-appearance="dark"] .message-body,
+html[data-appearance="dark"] .pinned-strip strong {
+  color: #f3f4f6 !important;
+}
+html[data-appearance="dark"] .conversation-preview,
+html[data-appearance="dark"] .message-meta,
+html[data-appearance="dark"] .recipient-notice,
+html[data-appearance="dark"] .attachment-hint,
+html[data-appearance="dark"] .attachment-pending,
+html[data-appearance="dark"] .login-card p,
+html[data-appearance="dark"] .empty,
+html[data-appearance="dark"] .status {
+  color: #cbd5e1 !important;
+}
+html[data-appearance="dark"] .conversation-search,
+html[data-appearance="dark"] .member-select,
+html[data-appearance="dark"] .compose textarea,
+html[data-appearance="dark"] .attachment-control,
+html[data-appearance="dark"] .format-toggle,
+html[data-appearance="dark"] .emoji-choice,
+html[data-appearance="dark"] .anonymise-message-btn {
+  background: #1f2937 !important;
+  color: #f3f4f6 !important;
+  border-color: #64748b !important;
+}
+html[data-appearance="dark"] .message,
+html[data-appearance="dark"] .message.incoming {
+  background: #1f2937 !important;
+  color: #f3f4f6 !important;
+  border-color: #475569 !important;
+}
+html[data-appearance="dark"] .message.outgoing {
+  background: #172554 !important;
+  color: #eff6ff !important;
+  border-color: #3b82f6 !important;
+}
+html[data-appearance="dark"] .unread-filter-btn,
+html[data-appearance="dark"] .mail-unread-indicator {
+  background: #1f2937 !important;
+  color: #dbeafe !important;
+  border-color: #64748b !important;
+}
+html[data-appearance="dark"] .unread-filter-btn[aria-pressed="true"] {
+  background: #14532d !important;
+  color: #dcfce7 !important;
+  border-color: #22c55e !important;
+}
+html[data-appearance="dark"] .mail-unread-indicator.has-unread,
+html[data-appearance="dark"] .conversation-item.has-unread,
+html[data-appearance="dark"] .message.is-unread,
+html[data-appearance="dark"] .message-unread-label {
+  background: #422006 !important;
+  color: #fef3c7 !important;
+  border-color: #f59e0b !important;
+}
+html[data-appearance="dark"] .unread-filter-count {
+  background: #14532d !important;
+  color: #dcfce7 !important;
+}

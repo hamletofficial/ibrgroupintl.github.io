@@ -94,6 +94,23 @@
     /* Shared dark-mode rules filled page wrappers with an opaque surface.
        Keep those wrappers transparent so the particles canvas remains visible.
        Card surfaces (.members-welcome, .member-guide-card, .security-note) are untouched. */
+    /* Let the particles canvas show through the welcome panel and site footer. */
+    #membersShell > .panel.members-welcome,
+    #membersShell > .panel.members-welcome > .panel-head,
+    #membersShell > .panel.members-welcome > .panel-body,
+    .page-wrapper > .resource-footer {
+      background: transparent !important;
+      background-color: transparent !important;
+      background-image: none !important;
+      box-shadow: none !important;
+    }
+    #membersShell > .panel.members-welcome {
+      border-color: transparent !important;
+    }
+    .page-wrapper > .resource-footer {
+      border-top-color: transparent !important;
+    }
+
     html[data-appearance="dark"] .page-wrapper,
     html[data-appearance="dark"] #membersShell,
     html[data-appearance="dark"] main#membersShell,

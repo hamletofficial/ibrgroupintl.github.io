@@ -16,6 +16,26 @@
     .policy-note p:last-child { margin-bottom: 0; }
     #feesContent[hidden], #authGate[hidden] { display: none; }
     .legal-signout { border: 0; cursor: pointer; }
+
+    /* Dark appearance: keep the sign-in gate and subsection callout on the shared dark palette. */
+    html[data-appearance="dark"] .auth-gate,
+    html[data-appearance="dark"] .policy-note {
+      background: #111827 !important;
+      background-image: none !important;
+      color: #f3f4f6 !important;
+      border-color: #475569 !important;
+      box-shadow: none !important;
+    }
+    html[data-appearance="dark"] .policy-note {
+      border-left: 4px solid #3b82f6 !important;
+    }
+    html[data-appearance="dark"] .auth-gate h1,
+    html[data-appearance="dark"] .auth-gate h2,
+    html[data-appearance="dark"] .auth-gate p,
+    html[data-appearance="dark"] .policy-note p,
+    html[data-appearance="dark"] .policy-note strong {
+      color: #f3f4f6 !important;
+    }
   </style>
 
   <link rel="stylesheet" href="/theme.css">

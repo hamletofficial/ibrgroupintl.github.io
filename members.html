@@ -89,6 +89,19 @@
 
   <link rel="stylesheet" href="/theme.css">
   <script src="/theme.js"></script>
+  <style id="members-particles-background-fix">
+    /* Shared dark-mode rules filled page wrappers with an opaque surface.
+       Keep those wrappers transparent so the particles canvas remains visible.
+       Card surfaces (.members-welcome, .member-guide-card, .security-note) are untouched. */
+    html[data-appearance="dark"] #membersShell,
+    html[data-appearance="dark"] main#membersShell,
+    html[data-appearance="dark"] #membersShell > .member-guides,
+    html[data-appearance="dark"] #membersShell > .member-commercial-links {
+      background: transparent !important;
+      background-color: transparent !important;
+      background-image: none !important;
+    }
+  </style>
 </head>
 <body class="auth-pending">
   <div id="particles-js" aria-hidden="true"></div>

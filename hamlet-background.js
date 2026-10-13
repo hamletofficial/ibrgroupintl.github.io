@@ -2,7 +2,7 @@
 (function(){
   'use strict';
   var path=(location.pathname||'/').replace(/\/$/,'')||'/';
-  if(path==='/'||path==='/index.html'||path==='/app/hamlet'||path==='/app/hamlet/index.html'||path.indexOf('/app/public/')===0)return;
+  if(path==='/'||path==='/index.html'||path==='/app/hamlet'||path==='/app/hamlet/index.html'||path==='/members.html'||path.indexOf('/app/public/')===0)return;
   if(document.getElementById('hamlet-particles-background'))return;
   var style=document.createElement('style');
   style.id='hamlet-particles-background-style';

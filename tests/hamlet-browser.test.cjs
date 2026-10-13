@@ -126,7 +126,7 @@ test('signed-in broker can save a deal, save a search and upload a transaction d
       buffer: Buffer.from('%PDF-1.4\\n% Hamlet E2E test file\\n%%EOF')
     });
     await page.locator('#uploadDocumentBtn').click();
-    await page.getByText('E2E heads of terms', {exact: true}).waitFor({state: 'visible', timeout: 10000});
+    await page.locator('#transactionDocumentsList').getByText('E2E heads of terms', {exact: true}).waitFor({state: 'visible', timeout: 10000});
     assert.match(await page.locator('#documentUploadStatus').textContent(), /Upload complete/);
   } finally {
     await browser.close();

@@ -23,7 +23,7 @@ test('advanced transaction features are present and connected', () => {
   for (const id of [
     'hamletAdvancedTools', 'transactionHistoryList', 'transactionDocumentForm',
     'transactionDocumentsList', 'savedSearchForm', 'savedSearchesList',
-    'dealIntelligenceList', 'firebase-storage-compat.js'
+    'dealIntelligenceList', 'dealCalculatorForm', 'calculatorValue', 'dealCalculatorResults', 'firebase-storage-compat.js'
   ]) assert.ok(html.includes(id), 'missing feature hook: ' + id);
   assert.match(html, /function renderAll\(\)[\s\S]*?renderAdvancedPanels\(\)/);
   assert.match(html, /function checkSavedSearchAlerts\(\)/);
@@ -51,6 +51,15 @@ test('deal activity timeline combines transaction changes, documents and critica
   assert.match(html, /\.\.\.advancedHistory\.map\(e=>\(\{id:'event:'/);
   assert.match(html, /\.\.\.advancedDocuments\.map\(d=>\(\{id:'document:'/);
   assert.match(html, /\.\.\.reminders\.map\(r=>\(\{id:'reminder:'/);
+});
+
+test('commercial deal calculator computes rental yields, unit pricing and optional VAT-inclusive fees', () => {
+  assert.match(html, /function calculateDealCalculator\\(\\)/);
+  assert.match(html, /rent\\/price\\*100/);
+  assert.match(html, /\\(rent-costs\\)\\/price\\*100/);
+  assert.match(html, /price\\/area/);
+  assert.match(html, /fee\\*1\\.2/);
+  assert.match(html, /Calculations stay in this browser and are not saved to your account/);
 });
 
 test('transaction history is append-only and owner-scoped', () => {

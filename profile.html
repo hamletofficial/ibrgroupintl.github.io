@@ -21,7 +21,7 @@
 </style>
   <link rel="stylesheet" href="/theme.css">
   <script src="/theme.js"></script>
-  <link rel="stylesheet" href="/hamlet-workspace.css?v=20261013-3">
+  <link rel="stylesheet" href="/hamlet-workspace.css?v=20261013-5">
 </head>
 <body class="auth-pending"><div class="page-wrapper">
 <header class="resource-nav"><div class="container container-nav"><div class="logo"><span class="site-title" style="color:lightgrey">hamlet</span></div><div class="user-menu" style="margin-left:auto;display:flex;align-items:center;gap:12px"><div class="auth-profile-chip" data-auth-profile><img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo"><span class="auth-profile-name" data-auth-name></span></div><a class="btn btn-outline" href="/login.html" id="signInLink">Sign In</a><button class="btn btn-outline" id="signOutBtn" style="display:none">Sign Out</button></div></div></header>
@@ -146,5 +146,5 @@ window.addEventListener('load',function(){
  likesToggle.addEventListener('click',function(){const opening=likesPanel.hidden;likesPanel.hidden=!opening;likesToggle.setAttribute('aria-expanded',String(opening));likesToggle.textContent=opening?'💜 Hide Likes':'💜 Your Likes';if(opening)likesPanel.scrollIntoView({behavior:'smooth',block:'start'});});
  likesClose.addEventListener('click',function(){likesPanel.hidden=true;likesToggle.setAttribute('aria-expanded','false');likesToggle.textContent='💜 Your Likes';likesToggle.focus()});
  signOut.addEventListener('click',async function(){try{await auth.signOut();location.replace('/login.html')}catch(e){console.error('Sign out failed',e)}});
-});</script>  <script src="/hamlet-workspace.js?v=20261013-7"></script>
+});</script>  <script src="/hamlet-workspace.js?v=20261013-9"></script>
 </body></html>

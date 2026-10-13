@@ -1,16 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\requests.html||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:requests.html||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\index.html||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:index.html||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -28,37 +19,11 @@
         },
         {
           "DockedWidth": 152,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{7513ff4e-9271-4984-bbcd-46ff9e185399}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "requests.html",
-              "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\requests.html",
-              "RelativeDocumentMoniker": "requests.html",
-              "ToolTip": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\requests.html",
-              "RelativeToolTip": "requests.html",
-              "ViewState": "AgIAAIsAAAAAAAAAAAAcwJsAAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2026-10-12T06:28:45.274Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "index.html",
-              "DocumentMoniker": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\index.html",
-              "RelativeDocumentMoniker": "index.html",
-              "ToolTip": "C:\\Users\\44746\\AppData\\Local\\Microsoft\\WindowsApps\\wget\\repo\\premo\\new\\ibrgroupintl.github.io\\index.html",
-              "RelativeToolTip": "index.html",
-              "ViewState": "AgIAALgDAAAAAAAAAAAcwMgDAABiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2026-10-12T06:27:11.74Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -71,10 +36,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             }
           ]
         },

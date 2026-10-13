@@ -86,6 +86,7 @@ function prefillSearch(){
  if(id){var field=document.getElementById(id);if(field){field.value=q;field.setAttribute('data-hamlet-deep-search','true');field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}))}}
 }
 function buildBrand(){
+ if(currentPath()==='/app/hamlet'||currentPath()==='/app/hamlet/index.html')return;
  var brand=document.getElementById('hamlet-fixed-brand');
  if(brand)return;
  brand=make('a','hamlet-fixed-brand','hamlet');

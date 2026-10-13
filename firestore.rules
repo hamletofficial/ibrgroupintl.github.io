@@ -435,5 +435,109 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+
+    // Hamlet transaction history is append-only for authenticated clients.
+    // Server administrators can retain/export these events independently.
+    match /hamletDealEvents/{eventId} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll(['id','uid','dealId','dealName','eventType','stageFrom','stageTo','summary','changedFields','createdAt'])
+        && request.resource.data.keys().hasOnly(['id','uid','dealId','dealName','eventType','stageFrom','stageTo','summary','changedFields','createdAt'])
+        && request.resource.data.id == eventId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.dealId is string
+        && request.resource.data.dealId.size() <= 200
+        && exists(/databases/$(database)/documents/hamletDeals/$(request.resource.data.dealId))
+        && get(/databases/$(database)/documents/hamletDeals/$(request.resource.data.dealId)).data.uid == request.auth.uid
+        && request.resource.data.dealName is string
+        && request.resource.data.dealName.size() <= 100
+        && request.resource.data.eventType in ['created','updated','stage_changed']
+        && request.resource.data.stageFrom is string
+        && request.resource.data.stageFrom.size() <= 100
+        && request.resource.data.stageTo is string
+        && request.resource.data.stageTo.size() <= 100
+        && request.resource.data.summary is string
+        && request.resource.data.summary.size() <= 240
+        && request.resource.data.changedFields is list
+        && request.resource.data.changedFields.size() <= 12
+        && request.resource.data.createdAt == request.time;
+      allow update, delete: if false;
+    }
+
+    // Private transaction document metadata. Binary files live in a matching
+    // owner-scoped Storage path and are separately protected by storage.rules.
+    match /hamletDocuments/{documentId} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll(['id','uid','dealId','title','category','fileName','storagePath','size','contentType','notes','createdAt'])
+        && request.resource.data.keys().hasOnly(['id','uid','dealId','title','category','fileName','storagePath','size','contentType','notes','createdAt'])
+        && request.resource.data.id == documentId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.dealId is string
+        && exists(/databases/$(database)/documents/hamletDeals/$(request.resource.data.dealId))
+        && get(/databases/$(database)/documents/hamletDeals/$(request.resource.data.dealId)).data.uid == request.auth.uid
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 120
+        && request.resource.data.category is string
+        && request.resource.data.category.size() <= 50
+        && request.resource.data.fileName is string
+        && request.resource.data.fileName.size() <= 180
+        && request.resource.data.storagePath is string
+        && request.resource.data.storagePath.matches('hamletDocuments/' + request.auth.uid + '/.*')
+        && request.resource.data.size is int
+        && request.resource.data.size > 0
+        && request.resource.data.size <= 15 * 1024 * 1024
+        && request.resource.data.contentType in ['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/csv','text/plain','image/png','image/jpeg','image/webp']
+        && request.resource.data.notes is string
+        && request.resource.data.notes.size() <= 300
+        && request.resource.data.createdAt == request.time;
+      allow update: if false;
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+
+    // Saved searches are private to their owner and keep the alert cursor used
+    // to detect new matching deals when the workspace is opened.
+    match /hamletSavedSearches/{searchId} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll(['id','uid','name','query','stage','type','alertsEnabled','lastMatchedIds','createdAt','updatedAt'])
+        && request.resource.data.keys().hasOnly(['id','uid','name','query','stage','type','alertsEnabled','lastMatchedIds','createdAt','updatedAt'])
+        && request.resource.data.id == searchId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 80
+        && request.resource.data.query is string
+        && request.resource.data.query.size() <= 100
+        && request.resource.data.stage in ['', 'Initial Inspection','LOI Issued','Due Diligence','Under Contract','Lease Execution','Closing','Commission Payout','Closed']
+        && request.resource.data.type in ['', 'Acquisition','Disposal','Leasing','Investment','Development']
+        && request.resource.data.alertsEnabled is bool
+        && request.resource.data.lastMatchedIds is list
+        && request.resource.data.lastMatchedIds.size() <= 500
+        && request.resource.data.createdAt is string
+        && request.resource.data.createdAt.size() <= 50
+        && request.resource.data.updatedAt == request.time;
+      allow update: if request.auth != null
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasAll(['id','uid','name','query','stage','type','alertsEnabled','lastMatchedIds','createdAt','updatedAt'])
+        && request.resource.data.keys().hasOnly(['id','uid','name','query','stage','type','alertsEnabled','lastMatchedIds','createdAt','updatedAt'])
+        && request.resource.data.id == searchId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 80
+        && request.resource.data.query is string
+        && request.resource.data.query.size() <= 100
+        && request.resource.data.stage in ['', 'Initial Inspection','LOI Issued','Due Diligence','Under Contract','Lease Execution','Closing','Commission Payout','Closed']
+        && request.resource.data.type in ['', 'Acquisition','Disposal','Leasing','Investment','Development']
+        && request.resource.data.alertsEnabled is bool
+        && request.resource.data.lastMatchedIds is list
+        && request.resource.data.lastMatchedIds.size() <= 500
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+
   }
 }

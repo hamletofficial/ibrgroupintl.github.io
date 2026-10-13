@@ -673,6 +673,10 @@ window.addEventListener('load', function () {
       restoreDraft();
       likedIds = await window.ibrBrokerPosts.loadLikedIds(db, user.uid);
       startFeed();
+      if (searchInput.value.trim()) {
+        searchCount.textContent = searchInput.value.length + ' / 140';
+        searchAllPosts();
+      }
     } catch (error) {
       console.error('Unable to initialise social feed:', error);
       announce('Unable to load your saved profile or private likes. Please refresh the page.', true);

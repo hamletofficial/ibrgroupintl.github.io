@@ -15,6 +15,7 @@ test('all inline JavaScript blocks parse', () => {
   for (const [index, block] of blocks.entries()) {
     assert.doesNotThrow(() => new vm.Script(block[2], { filename: 'hamlet-inline-' + index + '.js' }));
   }
+  assert.doesNotThrow(() => new vm.Script(functions, { filename: 'functions/index.js' }));
 });
 
 test('advanced transaction features are present and connected', () => {

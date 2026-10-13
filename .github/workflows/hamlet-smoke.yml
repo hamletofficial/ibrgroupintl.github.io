@@ -45,6 +45,6 @@ jobs:
           distribution: temurin
           java-version: '21'
       - name: Install isolated Firebase test dependencies
-        run: npm install --no-save --ignore-scripts firebase-tools firebase @firebase/rules-unit-testing
+        run: npm install --no-save --ignore-scripts --package-lock=false firebase-tools firebase @firebase/rules-unit-testing
       - name: Test Firestore and Storage rules in emulators
         run: npx firebase-tools emulators:exec --only firestore,storage --project demo-hamlet-rules "node --test tests/hamlet-rules.test.cjs"

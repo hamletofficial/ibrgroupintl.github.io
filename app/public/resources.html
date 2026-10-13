@@ -132,7 +132,7 @@ if(!allResources.length){resourceList.innerHTML='<div class="empty">You have no 
 if(!filtered.length){resourceList.innerHTML='<div class="empty">No properties match these filters. Clear one or more filters to see your resources.</div>';return}
 resourceList.innerHTML='';
 filtered.forEach(function(item){
-const p=item.data,card=document.createElement('article');card.className='property-card';card.dataset.propertyId=item.id;
+const p=item.data,card=document.createElement('article');card.className='property-card';card.id='property-'+item.id;card.dataset.propertyId=item.id;
 card.innerHTML='<div class="property-head"><h3>'+esc(p.propertyName||'Commercial Property')+'</h3><span class="badge">'+esc(p.status||'Active')+'</span></div>'+
 '<div class="property-meta"><div><strong>Type</strong>'+esc(p.propertyType||'—')+'</div><div><strong>Location</strong>'+esc(p.address||'—')+(p.postcode?' · '+esc(p.postcode):'')+'</div><div><strong>Availability</strong>'+esc(p.availability||'—')+'</div><div><strong>Size</strong>'+esc(p.size||'—')+'</div></div>'+
 '<div class="property-description">'+esc(p.description||'No description provided.')+'</div>'+

@@ -65,6 +65,40 @@ service firebase.storage {
         && request.auth.uid == userId;
     }
 
+
+    // Hamlet transaction documents are restricted to the owning broker and to
+    // a transaction document they own. Download access remains authenticated.
+    match /hamletDocuments/{userId}/{dealId}/{documentId}/{fileName} {
+      function ownedDeal() {
+        return firestore.get(/databases/(default)/documents/hamletDeals/$(dealId)).data.uid == userId;
+      }
+      allow read: if request.auth != null
+        && request.auth.uid == userId
+        && ownedDeal();
+      allow create: if request.auth != null
+        && request.auth.uid == userId
+        && ownedDeal()
+        && request.resource.size > 0
+        && request.resource.size <= 15 * 1024 * 1024
+        && request.resource.contentType in [
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'text/csv',
+          'text/plain',
+          'image/png',
+          'image/jpeg',
+          'image/webp'
+        ]
+        && request.resource.name.matches('.*\\.(pdf|doc|docx|xls|xlsx|csv|txt|png|jpg|jpeg|webp)$');
+      allow update: if false;
+      allow delete: if request.auth != null
+        && request.auth.uid == userId
+        && ownedDeal();
+    }
+
     match /{allPaths=**} {
       allow read, write: if false;
     }

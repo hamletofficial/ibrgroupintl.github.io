@@ -76,8 +76,9 @@ service cloud.firestore {
           )
         );
 
-      // Either authenticated participant may delete a message when removing their conversation.
+      // A member may permanently delete only messages they sent; a recipient cannot erase the sender's record.
       allow delete: if request.auth != null
+        && request.auth.uid == resource.data.senderUid
         && request.auth.uid in resource.data.participants;
     }
 

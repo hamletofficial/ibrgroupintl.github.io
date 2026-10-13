@@ -54,12 +54,12 @@ test('deal activity timeline combines transaction changes, documents and critica
 });
 
 test('commercial deal calculator computes rental yields, unit pricing and optional VAT-inclusive fees', () => {
-  assert.match(html, /function calculateDealCalculator\\(\\)/);
-  assert.match(html, /rent\\/price\\*100/);
-  assert.match(html, /\\(rent-costs\\)\\/price\\*100/);
-  assert.match(html, /price\\/area/);
-  assert.match(html, /fee\\*1\\.2/);
-  assert.match(html, /Calculations stay in this browser and are not saved to your account/);
+  assert.ok(html.includes('function calculateDealCalculator()'));
+  assert.ok(html.includes('rent/price*100'));
+  assert.ok(html.includes('(rent-costs)/price*100'));
+  assert.ok(html.includes('price/area'));
+  assert.ok(html.includes('fee*1.2'));
+  assert.ok(html.includes('Calculations stay in this browser and are not saved to your account'));
 });
 
 test('transaction history is append-only and owner-scoped', () => {

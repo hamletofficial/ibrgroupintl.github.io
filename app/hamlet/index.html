@@ -219,7 +219,7 @@ const stageColors={'Initial Inspection':'#7db2ff','LOI Issued':'#8bb8ff','Due Di
 const demoDeals=[];
 const today=new Date();today.setHours(0,0,0,0);const iso=d=>{const x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};const addDays=(n)=>{const d=new Date(today);d.setDate(d.getDate()+n);return iso(d)};
 const demoReminders=[];
-let deals=[...demoDeals],reminders=[...demoReminders],properties=[],contacts=[],db=null,auth=null,user=null,cloudReady=false,toastTimer=null,dragId=null,dealsListView=false,editingDealId=null,editingReminderId=null,advancedHistory=[],advancedDocuments=[],savedSearches=[];
+let deals=[...demoDeals],reminders=[...demoReminders],properties=[],contacts=[],db=null,auth=null,user=null,cloudReady=false,toastTimer=null,dragId=null,dealsListView=false,editingDealId=null,editingReminderId=null,advancedHistory=[],advancedDocuments=[],savedSearches=[],advancedHistoryUnsubscribe=null;
 const $=id=>document.getElementById(id);
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function money(n){if(!Number(n))return '—';return Number(n)>=1000000?'£'+(Number(n)/1000000).toLocaleString('en-GB',{maximumFractionDigits:1})+'m':'£'+Number(n).toLocaleString('en-GB',{maximumFractionDigits:0})}
@@ -321,7 +321,7 @@ function renderDealIntelligence(){
 async function loadAdvancedData(){
  if(!user||!db||!cloudReady)return;
  try{const [hs,ds,ss]=await Promise.all([db.collection('hamletDealEvents').where('uid','==',user.uid).get(),db.collection('hamletDocuments').where('uid','==',user.uid).get(),db.collection('hamletSavedSearches').where('uid','==',user.uid).get()]);
- advancedHistory=hs.docs.map(doc=>({...doc.data(),id:doc.id}));advancedDocuments=ds.docs.map(doc=>({...doc.data(),id:doc.id}));savedSearches=ss.docs.map(doc=>({...doc.data(),id:doc.id}));renderAdvancedPanels();await checkSavedSearchAlerts()
+ advancedHistory=hs.docs.map(doc=>({...doc.data(),id:doc.id}));advancedDocuments=ds.docs.map(doc=>({...doc.data(),id:doc.id}));savedSearches=ss.docs.map(doc=>({...doc.data(),id:doc.id}));if(advancedHistoryUnsubscribe)advancedHistoryUnsubscribe();advancedHistoryUnsubscribe=db.collection('hamletDealEvents').where('uid','==',user.uid).onSnapshot(snapshot=>{advancedHistory=snapshot.docs.map(doc=>({...doc.data(),id:doc.id}));renderAdvancedPanels()},error=>console.warn('Hamlet transaction history subscription failed:',error));renderAdvancedPanels();await checkSavedSearchAlerts()
  }catch(err){console.warn('Hamlet advanced records could not be loaded:',err);$('documentUploadStatus').textContent='Advanced records could not be loaded. Check Firestore rules and Storage configuration.'}
 }
 async function checkSavedSearchAlerts(){
@@ -332,7 +332,7 @@ async function checkSavedSearchAlerts(){
  }
  if(total){showToast(total+' new saved-search match'+(total===1?'':'es')+' found.');if('Notification'in window&&Notification.permission==='granted')new Notification('Hamlet saved-search alerts',{body:notes.slice(0,3).join(' · ')})}
 }
-function resetAdvancedFeatureState(){advancedHistory=[];advancedDocuments=[];savedSearches=[];renderAdvancedPanels()}
+function resetAdvancedFeatureState(){if(advancedHistoryUnsubscribe){advancedHistoryUnsubscribe();advancedHistoryUnsubscribe=null}advancedHistory=[];advancedDocuments=[];savedSearches=[];renderAdvancedPanels()}
 $('historyDealFilter').addEventListener('change',renderAdvancedPanels);
 $('savedSearchForm').addEventListener('submit',async e=>{
  e.preventDefault();if(!user||!cloudReady||!db){showToast('Sign in and sync your workspace before saving searches.');return}

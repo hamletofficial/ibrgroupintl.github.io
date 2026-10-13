@@ -2,7 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const {initializeTestEnvironment, assertSucceeds, assertFails} = require('@firebase/rules-unit-testing');
-const {doc, getDoc, setDoc, serverTimestamp} = require('firebase/firestore');
+const {doc, getDoc, setDoc, deleteDoc, serverTimestamp} = require('firebase/firestore');
 const {ref, uploadBytes, getBytes} = require('firebase/storage');
 
 let env;
@@ -31,6 +31,28 @@ test.beforeEach(async () => {
       updatedAt: new Date(),
     });
   });
+});
+
+test('only a message sender can permanently delete their own message', async () => {
+  await env.withSecurityRulesDisabled(async (context) => {
+    const db = context.firestore();
+    await setDoc(doc(db, 'directMessages/message-from-owner'), {
+      senderUid: 'owner', recipientUid: 'other', participants: ['owner', 'other'],
+      body: 'Sent by owner', sentAt: new Date(), pinnedBy: [], readBy: [],
+    });
+    await setDoc(doc(db, 'directMessages/message-from-other'), {
+      senderUid: 'other', recipientUid: 'owner', participants: ['other', 'owner'],
+      body: 'Sent by other', sentAt: new Date(), pinnedBy: [], readBy: [],
+    });
+  });
+
+  const owner = env.authenticatedContext('owner').firestore();
+  const other = env.authenticatedContext('other').firestore();
+
+  await assertFails(deleteDoc(doc(other, 'directMessages/message-from-owner')));
+  await assertFails(deleteDoc(doc(owner, 'directMessages/message-from-other')));
+  await assertSucceeds(deleteDoc(doc(owner, 'directMessages/message-from-owner')));
+  await assertSucceeds(deleteDoc(doc(other, 'directMessages/message-from-other')));
 });
 
 test('deal records are private to the broker UID', async () => {

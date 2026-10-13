@@ -216,6 +216,8 @@
     .member-tags{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.4rem;margin:.2rem 0 .65rem}
     .member-badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:4px 8px;border:1px solid #cbd5e1;color:#475569;background:#f8fafc;font-size:.72rem;line-height:1.25;font-weight:800}
     .member-badge.identity-verified{color:#166534;background:#f0fdf4;border-color:#bbf7d0}
+    .member-badge.identity-unverified-link{cursor:pointer;text-decoration:none;color:inherit}
+    .member-badge.identity-unverified-link:hover,.member-badge.identity-unverified-link:focus-visible{border-color:#94a3b8;outline:2px solid #64748b;outline-offset:2px}
     .verify-corner-btn { position: fixed; left: 22px; bottom: 22px; z-index: 1000; display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 44px; padding: .7rem 1rem; border: 1px solid #0284c7; border-radius: 10px; background: #0284c7; color: #fff !important; text-decoration: none; font-weight: 700; font-size: .9rem; box-shadow: 0 8px 20px rgba(2, 132, 199, .22); transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease; }
     .verify-corner-btn:hover, .verify-corner-btn:focus-visible { background: #0369a1; border-color: #0369a1; color: #fff !important; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(2, 132, 199, .28); }
     @media (max-width: 600px) { .verify-corner-btn { left: 14px; bottom: 14px; min-height: 42px; padding: .65rem .85rem; font-size: .84rem; } }
@@ -661,9 +663,14 @@
         }
         main.appendChild(nameRow);
         const tags = makeElement('div', 'member-tags');
-        const identity = makeElement('span', 'member-badge' + (identityVerified ? ' identity-verified' : ''),
+        const identity = makeElement(identityVerified ? 'span' : 'a', 'member-badge' + (identityVerified ? ' identity-verified' : ' identity-unverified-link'),
           identityVerified ? 'Identity verified' : 'Identity unverified');
         identity.setAttribute('aria-label', identityVerified ? 'Identity verification completed' : 'Identity not verified');
+        if (!identityVerified) {
+          identity.href = '/onfido/oauth/verify.html';
+          identity.style.textDecoration = 'none';
+          identity.style.color = 'inherit';
+        }
         tags.appendChild(identity);
         if (emailListed) tags.appendChild(makeElement('span', 'member-badge email-listed', 'Email on file'));
         main.appendChild(tags);

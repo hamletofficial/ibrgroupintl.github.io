@@ -45,7 +45,7 @@ function buildPalette(){
  var close=make('button','hamlet-search-close','×');close.type='button';close.setAttribute('aria-label','Close search');close.addEventListener('click',closePalette);head.appendChild(close);dialog.appendChild(head);
  var form=make('form','hamlet-search-form');form.setAttribute('role','search');paletteInput=make('input','hamlet-search-input');paletteInput.type='search';paletteInput.maxLength=140;paletteInput.placeholder='Property, location, member, deal or post…';paletteInput.setAttribute('aria-label','Search term');form.appendChild(paletteInput);
  var submit=make('button','hamlet-search-submit','Go');submit.type='submit';form.appendChild(submit);dialog.appendChild(form);
- form.addEventListener('submit',function(e){e.preventDefault();var q=paletteInput.value.trim();var destination=paletteLinks[0];if(destination)location.href=withQuery(destination.dataset.base,q)});
+ form.addEventListener('submit',function(e){e.preventDefault();var q=paletteInput.value.trim();var destination=paletteLinks.find(function(a){return a.dataset.base==='/app/public/live.html'})||paletteLinks[0];if(destination)location.href=withQuery(destination.dataset.base,q)});
  var caption=make('div','hamlet-search-caption','Choose where to search');dialog.appendChild(caption);
  var list=make('div','hamlet-search-destinations');
  routes.filter(function(r){return r.href!=='/members.html'}).forEach(function(r){
@@ -73,7 +73,6 @@ function prefillSearch(){
  else if(path==='/app/public/live.html')id='listingSearch';
  else if(path==='/directory.html')id='directorySearchInput';
  else if(path==='/posts.html')id='postSearch';
- if(id){var input=document.getElementById(id);if(input){input.value=q;input.setAttribute('data-hamlet-deep-search','true')}}
  if(id){var field=document.getElementById(id);if(field){field.value=q;field.setAttribute('data-hamlet-deep-search','true');field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}))}}
 }
 function initialise(){buildNav();buildPalette();prefillSearch()}

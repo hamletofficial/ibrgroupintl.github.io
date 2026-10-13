@@ -1,10 +1,11 @@
-name: Hamlet CRM smoke tests
+name: Hamlet CRM smoke and security tests
 
 on:
   push:
     branches: [main]
     paths:
       - 'app/hamlet/index.html'
+      - 'functions/index.js'
       - 'firestore.rules'
       - 'storage.rules'
       - 'tests/**'
@@ -29,5 +30,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Parse JavaScript and verify feature/security hooks
+      - name: Parse client and Cloud Function JavaScript
         run: node --test tests/hamlet-static.test.cjs
+
+  firebase-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install isolated Firebase test dependencies
+        run: npm install --no-save --ignore-scripts firebase-tools firebase @firebase/rules-unit-testing
+      - name: Test Firestore and Storage rules in emulators
+        run: npx firebase-tools emulators:exec --only firestore,storage --project demo-hamlet-rules "node --test tests/hamlet-rules.test.cjs"

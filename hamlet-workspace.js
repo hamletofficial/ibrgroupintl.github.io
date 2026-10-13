@@ -60,7 +60,7 @@ function buildPalette(){
    a.addEventListener('click',function(e){var q=paletteInput.value.trim();paletteRouteSelect.value=r.href;paletteLinks.forEach(function(link){link.classList.toggle('is-selected',link===a);link.setAttribute('aria-current',link===a?'true':'false')});if(q){e.preventDefault();location.href=withQuery(r.href,q)}});
    list.appendChild(a);paletteLinks.push(a);
  });
- dialog.appendChild(list);var hint=make('div','hamlet-search-hint','Press Esc to close · Ctrl/Command + K to open');dialog.appendChild(hint);
+ dialog.appendChild(list);paletteRouteSelect.addEventListener('change',function(){paletteLinks.forEach(function(link){var selected=link.dataset.base===paletteRouteSelect.value;link.classList.toggle('is-selected',selected);if(selected)link.setAttribute('aria-current','true');else link.removeAttribute('aria-current')})});var hint=make('div','hamlet-search-hint','Press Esc to close · Ctrl/Command + K to open');dialog.appendChild(hint);
  palette.appendChild(dialog);palette.addEventListener('click',function(e){if(e.target===palette)closePalette()});document.body.appendChild(palette);
  document.addEventListener('keydown',function(e){
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openPalette();return}

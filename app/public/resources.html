@@ -166,11 +166,12 @@ resourceStatus.textContent='Resource deleted successfully. It has been removed f
 await loadResources();
 }catch(e){console.error(e);button.disabled=false;resourceStatus.textContent='The resource could not be deleted. Please refresh and try again.';resourceStatus.className='status error'}
 }
-document.getElementById('propertySearch').addEventListener('input',function(){renderResources(allResources.map(function(x){return{id:x.id,data:function(){return x.data}}}))});
-document.getElementById('propertyTypeFilter').addEventListener('change',function(){renderResources(allResources.map(function(x){return{id:x.id,data:function(){return x.data}}))});
-document.getElementById('propertyStatusFilter').addEventListener('change',function(){renderResources(allResources.map(function(x){return{id:x.id,data:function(){return x.data}}))});
-document.getElementById('propertySort').addEventListener('change',function(){renderResources(allResources.map(function(x){return{id:x.id,data:function(){return x.data}}))});
-document.getElementById('clearPropertyFilters').addEventListener('click',function(){document.getElementById('propertySearch').value='';document.getElementById('propertyTypeFilter').value='';document.getElementById('propertyStatusFilter').value='';document.getElementById('propertySort').value='newest';renderResources(allResources.map(function(x){return{id:x.id,data:function(){return x.data}}));document.getElementById('propertySearch').focus()});
+function redrawPropertyResources(){renderResources(allResources.map(function(item){return{id:item.id,data:function(){return item.data;}};}));}
+document.getElementById('propertySearch').addEventListener('input',redrawPropertyResources);
+document.getElementById('propertyTypeFilter').addEventListener('change',redrawPropertyResources);
+document.getElementById('propertyStatusFilter').addEventListener('change',redrawPropertyResources);
+document.getElementById('propertySort').addEventListener('change',redrawPropertyResources);
+document.getElementById('clearPropertyFilters').addEventListener('click',function(){document.getElementById('propertySearch').value='';document.getElementById('propertyTypeFilter').value='';document.getElementById('propertyStatusFilter').value='';document.getElementById('propertySort').value='newest';redrawPropertyResources();document.getElementById('propertySearch').focus()});
 document.getElementById('exportPropertiesBtn').addEventListener('click',function(){
 if(!allResources.length){resourceStatus.textContent='There are no property records to export.';return}
 const columns=[['Property name','propertyName'],['Type','propertyType'],['Status','status'],['Address','address'],['Postcode','postcode'],['Availability','availability'],['Size','size'],['Asking rent / lease terms','askingRent'],['Description','description'],['Created at','createdAt']];

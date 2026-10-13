@@ -280,10 +280,10 @@ service cloud.firestore {
 
       allow create: if request.auth != null
         && request.resource.data.keys().hasAll([
-          'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
+          'id','uid','name','property','propertyResourceId','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.keys().hasOnly([
-          'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
+          'id','uid','name','property','propertyResourceId','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.id == dealId
         && request.resource.data.uid == request.auth.uid
@@ -292,6 +292,9 @@ service cloud.firestore {
         && request.resource.data.name.size() <= 100
         && request.resource.data.property is string
         && request.resource.data.property.size() <= 120
+        && (!('propertyResourceId' in request.resource.data)
+          || (request.resource.data.propertyResourceId is string
+            && request.resource.data.propertyResourceId.size() <= 200))
         && request.resource.data.type in ['Acquisition','Disposal','Leasing','Investment','Development']
         && request.resource.data.value is number
         && request.resource.data.value >= 0
@@ -312,10 +315,10 @@ service cloud.firestore {
       allow update: if request.auth != null
         && resource.data.uid == request.auth.uid
         && request.resource.data.keys().hasAll([
-          'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
+          'id','uid','name','property','propertyResourceId','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.keys().hasOnly([
-          'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
+          'id','uid','name','property','propertyResourceId','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.id == dealId
         && request.resource.data.uid == request.auth.uid
@@ -325,6 +328,9 @@ service cloud.firestore {
         && request.resource.data.name.size() <= 100
         && request.resource.data.property is string
         && request.resource.data.property.size() <= 120
+        && (!('propertyResourceId' in request.resource.data)
+          || (request.resource.data.propertyResourceId is string
+            && request.resource.data.propertyResourceId.size() <= 200))
         && request.resource.data.type in ['Acquisition','Disposal','Leasing','Investment','Development']
         && request.resource.data.value is number
         && request.resource.data.value >= 0

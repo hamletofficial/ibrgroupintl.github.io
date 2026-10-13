@@ -49,7 +49,7 @@ test('signed-in broker can save a deal, save a search and upload a transaction d
           const docs = [];
           for (const [path, data] of stores.entries()) {
             if (!path.startsWith(collection + '/')) continue;
-            if (filters.every(([field, op, value]) => op === '==' && data[field] === value)) {
+            if (filters.every(([field, op, value]) => op === '==' ? data[field] === value : op === 'array-contains' ? Array.isArray(data[field]) && data[field].includes(value) : false)) {
               docs.push({id: path.slice(collection.length + 1), data: () => ({...data})});
             }
           }
@@ -61,6 +61,7 @@ test('signed-in broker can save a deal, save a search and upload a transaction d
               const filters = [[field, op, value]];
               const q = {
                 where(f, o, v) { filters.push([f, o, v]); return q; },
+                limit() { return q; },
                 async get() { return snapshot(name, filters); },
                 onSnapshot(callback) { callback(snapshot(name, filters)); return () => {}; }
               };
@@ -81,6 +82,8 @@ test('signed-in broker can save a deal, save a search and upload a transaction d
             }
           };
         }};
+        stores.set(key('publicProfiles', 'e2e-contact'), {isPublic: true, firstName: 'Eve', lastName: 'Broker', displayName: 'Eve Broker', company: 'E2E Property Co'});
+        stores.set(key('directMessages', 'e2e-message'), {senderUid: 'e2e-owner', recipientUid: 'e2e-contact', participants: ['e2e-owner', 'e2e-contact'], body: 'Inspection follow-up on Baker Street', sentAt: new Date(), pinnedBy: [], readBy: []});
         function auth() {
           return {onAuthStateChanged(callback) { callback(currentUser); return () => {}; }, async signOut() {}};
         }
@@ -107,12 +110,32 @@ test('signed-in broker can save a deal, save a search and upload a transaction d
     await page.waitForFunction(() => document.querySelector('#syncLabel')?.textContent === 'Synced workspace', null, {timeout: 10000});
     assert.equal(await page.locator('#hamletAdvancedTools').isVisible(), true);
 
+    await page.locator('#workspaceSearchInput').fill('Baker Street');
+    await page.locator('#workspaceSearchResults').getByText('Inspection follow-up on Baker Street', {exact: true}).waitFor({state: 'visible', timeout: 10000});
+    assert.equal(await page.locator('#workspaceSearchResults a[href="/messages.html?to=e2e-contact"]').count(), 1);
+    await page.locator('#workspaceSearchInput').fill('');
+
     await page.locator('#addDealBtn').click();
     await page.locator('#dealName').fill('E2E office acquisition');
     await page.locator('#property').fill('10 Market Street, London');
     await page.locator('#dealValue').fill('1250000');
     await page.locator('#saveDealBtn').click();
     await page.getByText('E2E office acquisition', {exact: true}).first().waitFor({state: 'visible', timeout: 10000});
+
+    await page.locator('#calculatorDeal').selectOption({label: 'E2E office acquisition'});
+    await page.locator('#useDealValueBtn').click();
+    assert.equal(await page.locator('#calculatorValue').inputValue(), '1250000');
+    await page.locator('#calculatorValue').fill('1000000');
+    await page.locator('#calculatorAnnualRent').fill('80000');
+    await page.locator('#calculatorAnnualCosts').fill('10000');
+    await page.locator('#calculatorCommissionRate').fill('1.5');
+    await page.locator('#calculatorFloorArea').fill('10000');
+    await page.locator('#calculatorAddVat').check();
+    await page.locator('#calculateDealBtn').click();
+    await page.locator('#dealCalculatorResults').getByText('8.00%', {exact: true}).waitFor({state: 'visible', timeout: 10000});
+    await page.locator('#dealCalculatorResults').getByText('7.00%', {exact: true}).waitFor({state: 'visible', timeout: 10000});
+    await page.locator('#dealCalculatorResults').getByText('£100.00', {exact: true}).waitFor({state: 'visible', timeout: 10000});
+    await page.locator('#dealCalculatorResults').getByText('£18,000.00', {exact: true}).waitFor({state: 'visible', timeout: 10000});
 
     await page.locator('#savedSearchName').fill('E2E saved search');
     await page.locator('#savedSearchQuery').fill('Market Street');

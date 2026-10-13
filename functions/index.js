@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 const {getFirestore} = require("firebase-admin/firestore");
 const {defineSecret} = require("firebase-functions/params");
 const {HttpsError, onCall} = require("firebase-functions/v2/https");
-const {onDocumentCreated} = require("firebase-functions/v2/firestore");
+const {onDocumentCreated, onDocumentWritten} = require("firebase-functions/v2/firestore");
 const {onSchedule} = require("firebase-functions/v2/scheduler");
 
 const postmarkOutboundToken = defineSecret("POSTMARK_OUTBOUND_TOKEN");
@@ -554,6 +554,71 @@ function sendHamletReminderEmail(recipients, reminder, deal, dueDate, brokerEmai
     req.end();
   });
 }
+
+
+/**
+ * Server-authored Hamlet deal history. Firestore retries are made idempotent
+ * using the source document's update time; clients cannot create, edit or
+ * delete history entries directly.
+ */
+exports.recordHamletDealHistory = onDocumentWritten({
+  document: "hamletDeals/{dealId}",
+  region: "us-central1",
+  timeoutSeconds: 60,
+  memory: "256MiB",
+}, async function(event) {
+  const change = event.data;
+  if (!change) return;
+  const beforeExists = change.before.exists;
+  const afterExists = change.after.exists;
+  if (!beforeExists && !afterExists) return;
+  const before = beforeExists ? (change.before.data() || {}) : {};
+  const after = afterExists ? (change.after.data() || {}) : {};
+  const ownerUid = String((afterExists ? after.uid : before.uid) || "");
+  const dealId = String(event.params.dealId || "");
+  if (!ownerUid || !dealId) return;
+  const tracked = ["name", "property", "type", "value", "stage", "owner", "client", "notes", "propertyResourceId", "contactUid"];
+  const changedFields = beforeExists && afterExists ?
+    tracked.filter(function(key) { return String(before[key] == null ? "" : before[key]) !== String(after[key] == null ? "" : after[key]); }) :
+    tracked.filter(function(key) { return (afterExists ? after[key] : before[key]) !== undefined; });
+  if (beforeExists && afterExists && !changedFields.length) return;
+  const eventType = !beforeExists ? "created" : !afterExists ? "deleted" :
+    String(before.stage || "") !== String(after.stage || "") ? "stage_changed" : "updated";
+  const stageFrom = String(before.stage || "").slice(0, 100);
+  const stageTo = String(after.stage || "").slice(0, 100);
+  const dealName = String((afterExists ? after.name : before.name) || dealId).slice(0, 100);
+  const summary = eventType === "created" ? "Transaction created" :
+    eventType === "deleted" ? "Transaction deleted" :
+    eventType === "stage_changed" ? "Pipeline stage changed from " + stageFrom + " to " + stageTo :
+    "Transaction updated: " + changedFields.join(", ");
+  try { admin.app(); } catch (err) { admin.initializeApp(); }
+  const db = getFirestore(admin.app());
+  const sourceTime = (afterExists ? change.after.updateTime : change.before.updateTime);
+  const suffix = sourceTime && typeof sourceTime.toMillis === "function" ? sourceTime.toMillis() : Date.now();
+  const safeId = dealId.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 100);
+  const historyId = "evt_" + safeId + "_" + suffix;
+  try {
+    await db.collection("hamletDealEvents").doc(historyId).create({
+      id: historyId,
+      uid: ownerUid,
+      dealId: dealId.slice(0, 200),
+      dealName: dealName,
+      eventType: eventType,
+      stageFrom: stageFrom,
+      stageTo: stageTo,
+      summary: summary.slice(0, 240),
+      changedFields: changedFields.slice(0, 12),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+  } catch (err) {
+    if (err && (err.code === 6 || err.code === "already-exists")) {
+      console.log("Hamlet history event already recorded:", historyId);
+      return;
+    }
+    console.error("Unable to record Hamlet deal history:", historyId, err);
+    throw err;
+  }
+});
 
 exports.sendHamletCriticalPathReminders = onSchedule({
   schedule: "0 8 * * *",

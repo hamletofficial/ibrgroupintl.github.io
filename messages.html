@@ -35,6 +35,7 @@
 
   <link rel="stylesheet" href="/theme.css">
   <script src="/theme.js"></script>
+  <link rel="stylesheet" href="/hamlet-workspace.css?v=20261013-1">
 </head>
 <body class="auth-pending">
 <div class="page-wrapper">
@@ -188,4 +189,5 @@ window.addEventListener('load',function(){
  flagImportantBtn.addEventListener('click',()=>{const latest=latestActiveMessage();if(latest)toggleImportant(latest)});deleteConversationBtn.addEventListener('click',deleteConversation);closeConversationBtn.addEventListener('click',closeConversation);archivedMessagesBtn.addEventListener('click',()=>{showArchived=!showArchived;activeUid=null;history.replaceState(null,'','/messages.html'+(showArchived?'?folder=archived':''));renderConversations();renderThread();});allowMemberBtn.addEventListener('click',()=>setMemberBlocked(false));blockMemberBtn.addEventListener('click',()=>setMemberBlocked(true));recipientSelect.addEventListener('change',()=>{startMessageBtn.disabled=!recipientSelect.value});startMessageBtn.addEventListener('click',()=>{if(recipientSelect.value)selectConversation(recipientSelect.value)});conversationSearch.addEventListener('input',()=>{renderConversations();if(activeUid)renderThread()});unreadFilterBtn.addEventListener('click',()=>{showUnreadOnly=!showUnreadOnly;renderConversations()});markConversationReadBtn.addEventListener('click',markActiveConversationRead);signOut.onclick=()=>auth.signOut();
 });
 </script>
+  <script src="/hamlet-workspace.js?v=20261013-1"></script>
 </body></html>

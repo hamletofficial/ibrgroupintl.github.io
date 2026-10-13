@@ -46,6 +46,13 @@ test('workspace search includes authenticated messages alongside deals, properti
   assert.match(html, /href="\/messages\.html\?to='\+encodeURIComponent\(m\.id\)\+'"/);
 });
 
+test('deal activity timeline combines transaction changes, documents and critical-path reminders', () => {
+  assert.match(html, /Deal activity timeline/);
+  assert.match(html, /\.\.\.advancedHistory\.map\(e=>\(\{id:'event:'/);
+  assert.match(html, /\.\.\.advancedDocuments\.map\(d=>\(\{id:'document:'/);
+  assert.match(html, /\.\.\.reminders\.map\(r=>\(\{id:'reminder:'/);
+});
+
 test('transaction history is append-only and owner-scoped', () => {
   assert.match(firestore, /match \/hamletDealEvents\/{eventId}/);
   assert.match(firestore, /allow read: if request\.auth != null && resource\.data\.uid == request\.auth\.uid/);

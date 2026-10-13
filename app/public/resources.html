@@ -47,7 +47,7 @@ body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background-
 /* Dark transparent header override */
 .resource-nav{background:rgba(15,43,110,.88)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
 </style>
-  <link rel="stylesheet" href="/hamlet-workspace.css?v=20261013-3">
+  <link rel="stylesheet" href="/hamlet-workspace.css?v=20261013-5">
 </head>
 <body>
 <div class="page-wrapper">
@@ -195,6 +195,6 @@ const url=URL.createObjectURL(new Blob(['\ufeff',csv],{type:'text/csv;charset=ut
 try{if(!window.firebase||!window.firebaseConfig)throw Error('Firebase configuration unavailable');if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);auth=firebase.auth();db=firebase.firestore();auth.onAuthStateChanged(function(u){u?showIn(u):showOut()})}catch(e){console.error(e);showOut()}
 });
 </script>
-  <script src="/hamlet-workspace.js?v=20261013-7"></script>
+  <script src="/hamlet-workspace.js?v=20261013-9"></script>
 </body>
 </html>

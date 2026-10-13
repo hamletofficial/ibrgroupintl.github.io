@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 
 const html = fs.readFileSync('app/hamlet/index.html', 'utf8');
+const messagesHtml = fs.readFileSync('messages.html', 'utf8');
 const firestore = fs.readFileSync('firestore.rules', 'utf8');
 const storage = fs.readFileSync('storage.rules', 'utf8');
 const functions = fs.readFileSync('functions/index.js', 'utf8');
@@ -27,6 +28,15 @@ test('advanced transaction features are present and connected', () => {
   assert.match(html, /function renderAll\(\)[\s\S]*?renderAdvancedPanels\(\)/);
   assert.match(html, /function checkSavedSearchAlerts\(\)/);
   assert.match(html, /function renderDealIntelligence\(\)/);
+});
+
+test('mailbox bulk-delete action only removes messages sent by the signed-in member', () => {
+  const deleteConversation = messagesHtml.match(/async function deleteConversation\(\)\{([\s\S]*?)\}\s*async function closeConversation/);
+  assert.ok(deleteConversation, 'expected the mailbox delete function');
+  assert.match(deleteConversation[1], /m\.senderUid===me\.uid&&m\.recipientUid===otherUid/);
+  assert.match(deleteConversation[1], /Messages sent by the other member will remain/);
+  assert.match(messagesHtml, /Delete My Messages/);
+  assert.match(firestore, /allow delete: if request\.auth != null\s*&& request\.auth\.uid == resource\.data\.senderUid\s*&& request\.auth\.uid in resource\.data\.participants;/);
 });
 
 test('transaction history is append-only and owner-scoped', () => {

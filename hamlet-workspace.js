@@ -85,14 +85,6 @@ function prefillSearch(){
  else if(path==='/archive.html')id='archiveSearch';
  if(id){var field=document.getElementById(id);if(field){field.value=q;field.setAttribute('data-hamlet-deep-search','true');field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}))}}
 }
-function buildBrand(){
- if(currentPath()==='/app/hamlet'||currentPath()==='/app/hamlet/index.html')return;
- var brand=document.getElementById('hamlet-fixed-brand');
- if(brand)return;
- brand=make('a','hamlet-fixed-brand','hamlet');
- brand.id='hamlet-fixed-brand';brand.href='/index.html';brand.setAttribute('aria-label','hamlet home');brand.title='hamlet home';
- document.body.appendChild(brand);
-}
-function initialise(){buildBrand();buildNav();buildPalette();prefillSearch()}
+function initialise(){buildNav();buildPalette();prefillSearch()}
 initialise();
 })();

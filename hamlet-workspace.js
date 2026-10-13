@@ -10,6 +10,8 @@ var routes=[
  {label:'Contacts & Directory',short:'Contacts',href:'/directory.html',icon:'♙',paths:['/directory.html'],desc:'Find members and start a conversation.'},
  {label:'Messages',short:'Messages',href:'/messages.html',icon:'✉',paths:['/messages.html'],desc:'Open your member mailbox.'},
  {label:'Social Feed',short:'Social',href:'/posts.html',icon:'◉',paths:['/posts.html'],desc:'Search community updates and posts.'},
+ {label:'Archive',short:'Archive',href:'/archive.html',icon:'▱',paths:['/archive.html'],desc:'Find saved and archived communications.'},
+ {label:'Account Settings',short:'Settings',href:'/settings.html',icon:'⚙',paths:['/settings.html'],desc:'Manage your profile, privacy and security.',searchable:false},
  {label:'Members Area',short:'Members',href:'/members.html',icon:'▣',paths:['/members.html'],desc:'Open member resources and account tools.'}
 ];
 var palette=null,paletteInput=null,paletteLinks=[],paletteRouteSelect=null,paletteStatus=null,lastFocus=null,previousBodyOverflow='';
@@ -19,7 +21,7 @@ function make(tag,cls,text){var node=document.createElement(tag);if(cls)node.cla
 function buildNav(){
  var existing=document.querySelector('nav.workspace-nav');
  if(existing){
-  routes.forEach(function(r){if(!existing.querySelector('a[href="'+r.href+'"]')&&r.href==='/app/public/live.html'){var a=make('a','workspace-nav-link','▤ Live Listings');a.href=r.href;existing.appendChild(a)}});
+  routes.forEach(function(r){if(r.href==='/members.html'||existing.querySelector('a[href="'+r.href+'"]'))return;var a=make('a','workspace-nav-link');a.href=r.href;a.appendChild(document.createTextNode(r.icon+' '+(r.short==='Settings'?'Settings':r.short)));if(r.paths.indexOf(currentPath())!==-1){a.setAttribute('aria-current','page');a.title=r.label}existing.appendChild(a)});
   if(!existing.querySelector('.hamlet-global-search')){var b=make('button','hamlet-global-search','Search Hamlet');b.type='button';b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-label','Search Hamlet (Ctrl or Command + K)');var k=make('kbd','','Ctrl K');b.appendChild(k);b.addEventListener('click',openPalette);existing.appendChild(b)}
   return;
  }
@@ -45,7 +47,7 @@ function buildPalette(){
  var close=make('button','hamlet-search-close','×');close.type='button';close.setAttribute('aria-label','Close search');close.addEventListener('click',closePalette);head.appendChild(close);dialog.appendChild(head);
  var form=make('form','hamlet-search-form');form.setAttribute('role','search');paletteInput=make('input','hamlet-search-input');paletteInput.type='search';paletteInput.maxLength=140;paletteInput.placeholder='Property, location, member, deal or post…';paletteInput.setAttribute('aria-label','Search term');form.appendChild(paletteInput);
  paletteRouteSelect=make('select','hamlet-search-route');paletteRouteSelect.setAttribute('aria-label','Choose where to search');var choose=make('option','','Choose workspace…');choose.value='';paletteRouteSelect.appendChild(choose);
- routes.filter(function(r){return r.href!=='/members.html'}).forEach(function(r){var option=make('option','',r.label);option.value=r.href;paletteRouteSelect.appendChild(option)});
+ routes.filter(function(r){return r.href!=='/members.html'&&r.searchable!==false}).forEach(function(r){var option=make('option','',r.label);option.value=r.href;paletteRouteSelect.appendChild(option)});
  var submit=make('button','hamlet-search-submit','Search');submit.type='submit';form.appendChild(paletteRouteSelect);form.appendChild(submit);dialog.appendChild(form);
  paletteStatus=make('div','hamlet-search-status');paletteStatus.setAttribute('role','status');paletteStatus.setAttribute('aria-live','polite');paletteStatus.hidden=true;dialog.appendChild(paletteStatus);
  form.addEventListener('submit',function(e){e.preventDefault();var q=paletteInput.value.trim(),target=paletteRouteSelect.value;if(!target){var path=currentPath(),current=routes.find(function(r){return r.paths.indexOf(path)!==-1&&r.href!=='/members.html'});if(current&&current.href!='/messages.html'){target=current.href}else{paletteStatus.textContent='Choose a workspace below or select one from the destination menu.';paletteStatus.hidden=false;paletteRouteSelect.focus();return}}location.href=withQuery(target,q)});
@@ -79,6 +81,7 @@ function prefillSearch(){
  else if(path==='/directory.html')id='directorySearchInput';
  else if(path==='/posts.html')id='postSearch';
  else if(path==='/messages.html')id='conversationSearch';
+ else if(path==='/archive.html')id='archiveSearch';
  if(id){var field=document.getElementById(id);if(field){field.value=q;field.setAttribute('data-hamlet-deep-search','true');field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}))}}
 }
 function initialise(){buildNav();buildPalette();prefillSearch()}

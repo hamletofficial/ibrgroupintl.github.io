@@ -42,7 +42,7 @@
 <header class="resource-nav" role="banner"><div class="container container-nav">
   <div class="logo"><span class="site-title" style="color:lightgrey">hamlet</span></div>
   <div class="user-menu" style="margin-left:auto;display:flex;align-items:center;gap:12px">
-    <div class="auth-profile-chip" data-auth-profile><img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo"><span class="auth-profile-name" data-auth-name></span></div>
+    <div class="auth-profile-chip" data-auth-profile><img class="auth-profile-photo" data-auth-photo src="/assets/images/dark-hamlet.png" alt="Profile photo"><span class="auth-profile-name" data-auth-name></span></div>
     <a class="btn btn-outline nav-login" href="/login.html?next=%2Fmessages.html" id="signInLink">Sign In</a>
     <button class="btn btn-outline" id="signOutBtn" style="display:none">Sign Out</button>
   </div>
@@ -103,7 +103,7 @@ window.addEventListener('load',function(){
  const validEmail=IBRVerifiedTick.isValidEmail;
  const emailTickMarkup=p=>IBRVerifiedTick.markup(p?.email);
  const convoKey=(a,b)=>[a,b].sort().join('__'); const recipientSelect=document.getElementById('memberRecipient'),startMessageBtn=document.getElementById('startMessageBtn'),messageStarter=document.getElementById('messageStarter');
- const profileImage=p=>p?.imageDataUrl||'/100.png';
+ const profileImage=p=>p?.imageDataUrl||'/assets/images/dark-hamlet.png';
  function updateSidebar(){const n=document.getElementById('topNavMenu');n.style.display=document.body.classList.contains('has-sidebar')?'block':'none'} document.addEventListener('DOMContentLoaded',updateSidebar);new MutationObserver(updateSidebar).observe(document.body,{attributes:true,attributeFilter:['class']});
  function showSignedOut(){me=null;allMessages=[];profiles={};publicMembers=[];blockedUsers=new Set();flaggedMessageIds=new Set();if(flagImportantBtn){flagImportantBtn.disabled=true;flagImportantBtn.textContent='☆ Flag Important';}if(allowMemberBtn)allowMemberBtn.disabled=true;if(blockMemberBtn)blockMemberBtn.disabled=true;archivedConversations=new Set();showArchived=false;activeUid=null;list.innerHTML='';body.innerHTML='';compose.style.display='none';document.querySelector('.mail-header').style.display='none';status.style.display='none';layout.style.display='none';loginCard.style.display='block';loginCard.querySelector('h2').textContent='Sign in to your Mailbox';loginCard.querySelector('p').textContent='Your sign-in session has ended or is no longer active. Please sign in again to access your conversations and send messages to other members.';signOut.style.display='none';signIn.style.display='inline-flex';document.body.classList.remove('auth-pending','has-sidebar')}
  function unreadFor(uid){return allMessages.filter(m=>m.senderUid===uid&&m.recipientUid===me.uid&&!blockedUsers.has(m.senderUid)&&!(Array.isArray(m.readBy)&&m.readBy.includes(me.uid)))}

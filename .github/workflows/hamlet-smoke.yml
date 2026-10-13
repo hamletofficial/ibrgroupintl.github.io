@@ -33,6 +33,20 @@ jobs:
       - name: Parse client and Cloud Function JavaScript
         run: node --test tests/hamlet-static.test.cjs
 
+  browser-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright
+        run: npm install --no-save --ignore-scripts --package-lock=false playwright
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Exercise Hamlet deal, saved-search and document flows
+        run: node --test tests/hamlet-browser.test.cjs
+
   firebase-rules:
     runs-on: ubuntu-latest
     steps:

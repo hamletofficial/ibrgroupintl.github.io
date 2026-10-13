@@ -12,6 +12,7 @@ function setWorkspaceAuthState(user){
 function watchWorkspaceAuth(){
  try{
   if(!window.firebase||typeof firebase.auth!=='function')return;
+  if(!firebase.apps.length&&window.firebaseConfig)firebase.initializeApp(window.firebaseConfig);
   var auth=firebase.auth();
   if(auth&&typeof auth.onAuthStateChanged==='function'){
    auth.onAuthStateChanged(function(user){setWorkspaceAuthState(user)},function(error){

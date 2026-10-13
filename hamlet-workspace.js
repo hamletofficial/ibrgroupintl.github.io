@@ -7,6 +7,7 @@ var routes=[
  {label:'Deal Pipeline',short:'Deals',href:'/app/hamlet/',icon:'▦',paths:['/app/hamlet','/app/hamlet/','/app/hamlet/index.html'],desc:'Find transactions and next actions.'},
  {label:'My Properties',short:'Properties',href:'/app/public/resources.html',icon:'⌂',paths:['/app/public/resources.html'],desc:'Search and manage properties you own.'},
  {label:'Live Listings',short:'Listings',href:'/app/public/live.html',icon:'▤',paths:['/app/public/live.html'],desc:'Discover active commercial property listings.'},
+ {label:'Broker Dashboard',short:'Dashboard',href:'/app/public/dashboard.html',icon:'▣',paths:['/app/public/dashboard.html'],desc:'Manage your commercial property brokerage workspace.',searchable:false},
  {label:'Contacts & Directory',short:'Contacts',href:'/directory.html',icon:'♙',paths:['/directory.html'],desc:'Find members and start a conversation.'},
  {label:'Messages',short:'Messages',href:'/messages.html',icon:'✉',paths:['/messages.html'],desc:'Open your member mailbox.'},
  {label:'Social Feed',short:'Social',href:'/posts.html',icon:'◉',paths:['/posts.html'],desc:'Search community updates and posts.'},

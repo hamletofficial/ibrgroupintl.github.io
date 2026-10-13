@@ -283,7 +283,7 @@ service cloud.firestore {
           'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.keys().hasOnly([
-          'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
+          'id','uid','name','property','propertyResourceId','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.id == dealId
         && request.resource.data.uid == request.auth.uid
@@ -321,7 +321,7 @@ service cloud.firestore {
           'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.keys().hasOnly([
-          'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
+          'id','uid','name','property','propertyResourceId','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.id == dealId
         && request.resource.data.uid == request.auth.uid

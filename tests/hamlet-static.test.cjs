@@ -6,6 +6,7 @@ const vm = require('node:vm');
 const html = fs.readFileSync('app/hamlet/index.html', 'utf8');
 const firestore = fs.readFileSync('firestore.rules', 'utf8');
 const storage = fs.readFileSync('storage.rules', 'utf8');
+const functions = fs.readFileSync('functions/index.js', 'utf8');
 
 test('all inline JavaScript blocks parse', () => {
   const blocks = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
@@ -30,7 +31,8 @@ test('advanced transaction features are present and connected', () => {
 test('transaction history is append-only and owner-scoped', () => {
   assert.match(firestore, /match \/hamletDealEvents\/{eventId}/);
   assert.match(firestore, /allow read: if request\.auth != null && resource\.data\.uid == request\.auth\.uid/);
-  assert.match(firestore, /allow update, delete: if false;/);
+  assert.match(firestore, /allow create, update, delete: if false;/);
+  assert.match(functions, /exports\.recordHamletDealHistory = onDocumentWritten/);
   assert.match(firestore, /request\.resource\.data\.createdAt == request\.time/);
 });
 

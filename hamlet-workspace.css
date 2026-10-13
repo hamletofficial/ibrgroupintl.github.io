@@ -1,3 +1,8 @@
+/* Shared navigation is visible only after Firebase confirms sign-in. */
+html.hamlet-auth-pending .hamlet-primary-nav,
+html.hamlet-auth-pending nav.workspace-nav,
+html:not(.hamlet-authenticated) .hamlet-primary-nav,
+html:not(.hamlet-authenticated) nav.workspace-nav{display:none!important}
 /* Hamlet shared workspace navigation and universal search */
 .hamlet-primary-nav{position:relative;z-index:20;display:flex;align-items:center;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding:9px clamp(12px,2.4vw,30px);border-bottom:1px solid #263750;background:#0b1220;color:#e5e7eb}
 .hamlet-primary-nav .hamlet-nav-link{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;min-height:38px;padding:8px 11px;border:1px solid transparent;border-radius:9px;color:#cbd5e1;text-decoration:none;font:700 12px/1.2 'DM Sans','Open Sans',Arial,sans-serif;white-space:nowrap;transition:background .15s ease,border-color .15s ease,color .15s ease}

@@ -234,22 +234,7 @@ async function saveRecord(collection,obj){
 if(user){
  if(!cloudReady||!db)throw new Error('Cloud sync is unavailable; refusing to report an unsynced save as successful.');
  const copy={...obj};delete copy.demo;if(collection==='hamletDeals')delete copy.contactName;
- let prior=null;
- if(collection==='hamletDeals'){try{const snap=await db.collection(collection).doc(obj.id).get();if(snap.exists)prior=snap.data()}catch(readError){console.warn('Could not read previous deal state for history:',readError)}}
  await db.collection(collection).doc(obj.id).set({...copy,uid:user.uid,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
- if(collection==='hamletDeals'){
-  try{
-   const keys=['name','property','type','value','stage','owner','client','notes','propertyResourceId','contactUid'];
-   const changed=prior?keys.filter(key=>String(prior[key]??'')!==String(copy[key]??'')):keys.filter(key=>copy[key]!==undefined&&copy[key]!==''&&copy[key]!==0);
-   if(!prior||changed.length){
-    const stageFrom=prior?(prior.stage||''):'',stageTo=copy.stage||'';
-    const eventType=!prior?'created':stageFrom!==stageTo?'stage_changed':'updated';
-    const summary=!prior?'Transaction created':stageFrom!==stageTo?'Pipeline stage changed from '+stageFrom+' to '+stageTo:'Transaction updated: '+(changed.length?changed.join(', '):'saved fields');
-    const eventId='evt_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
-    await db.collection('hamletDealEvents').doc(eventId).set({id:eventId,uid:user.uid,dealId:obj.id,dealName:String(copy.name||obj.id).slice(0,100),eventType,stageFrom,stageTo,summary:summary.slice(0,240),changedFields:changed.slice(0,12),createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-   }
-  }catch(historyError){console.warn('Deal saved, but its history entry could not be written:',historyError)}
- }
 }else persistLocal()
 }async function removeRecord(collection,id){if(user){if(!cloudReady||!db)throw new Error('Cloud sync is unavailable.');await db.collection(collection).doc(id).delete()}else persistLocal()}
 function updateStats(){const open=deals.filter(d=>d.stage!=='Closed');const activeRem=reminders.filter(r=>!r.done);const due=activeRem.filter(r=>{const n=daysAway(r.dueDate);return n!==null&&n>=0&&n<=7});const late=activeRem.filter(r=>daysAway(r.dueDate)<0);$('statActive').textContent=open.length;$('statValue').textContent=money(open.reduce((s,d)=>s+(Number(d.value)||0),0));$('statDue').textContent=due.length;$('statOverdue').textContent=late.length}

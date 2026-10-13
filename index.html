@@ -1,1091 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="theme-color" content="#f4f7f2" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="robots" content="index, follow" />
-  <title>Impact in Business — Strategic Communications</title>
-  <link rel="stylesheet" href="/index.css" />
-  <link rel="stylesheet" href="/mobile-compat.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
-  <!-- Firebase SDKs and config -->
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script defer src="/firebase-config.js"></script>
-  <style>
-    :root {
-      --bg: #060b17;
-      --bg-soft: #0e172a;
-      --card: #0f1c33;
-      --muted: #b7c6dc;
-      --text: #f2f7ff;
-      --line: #2b3f62;
-      --brand: #2f7bff;
-      --brand-2: #00b7ff;
-      --accent: #24d3a5;
-      --warning: #ffc857;
-      --radius: 16px;
-      --shadow: 0 18px 40px rgba(2, 8, 23, 0.35);
-    }
-
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    html {
-      min-height: 100%;
-      background: var(--bg);
-    }
-    body {
-      min-height: 100vh;
-      font-family: 'Open Sans', Arial, sans-serif;
-      color: var(--text);
-      background-color: var(--bg);
-      background-image: linear-gradient(rgba(7, 17, 31, .42), rgba(7, 17, 31, .42)), url('/logistics.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      line-height: 1.55;
-    }
-
-    .container {
-      width: min(1120px, calc(100% - 2rem));
-      margin-inline: auto;
-    }
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-      background: rgba(6, 11, 23, 0.72);
-      border-bottom: 1px solid rgba(159, 176, 202, 0.16);
-    }
-
-    .header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      min-height: 74px;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    .brand img {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      object-fit: cover;
-      border: 1px solid rgba(159, 176, 202, 0.35);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border-radius: 10px;
-      padding: 10px 14px;
-      text-decoration: none;
-      font-weight: 700;
-      border: 1px solid transparent;
-      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-    }
-    .btn:hover { transform: translateY(-1px); }
-
-    .btn-ghost {
-      color: var(--text);
-      border-color: rgba(159, 176, 202, 0.35);
-      background: rgba(255,255,255,0.03);
-    }
-
-    .btn-primary {
-      color: #fff;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      box-shadow: 0 10px 24px rgba(47, 123, 255, 0.32);
-    }
-
-    .hero {
-      padding: 68px 0 36px;
-    }
-
-    .hero-shell {
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      background: linear-gradient(145deg, rgba(47,123,255,.12), rgba(15,28,51,.78));
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 28px;
-      padding: 34px;
-      align-items: center;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: .82rem;
-      font-weight: 700;
-      letter-spacing: .02em;
-      text-transform: uppercase;
-      color: #cff8ff;
-      background: rgba(0,183,255,.15);
-      border: 1px solid rgba(0,183,255,.42);
-      border-radius: 999px;
-      padding: 6px 10px;
-    }
-
-    h1 {
-      margin: 14px 0 10px;
-      font-size: clamp(1.8rem, 4.2vw, 3rem);
-      line-height: 1.15;
-    }
-
-    .hero p {
-      margin: 0;
-      color: #d7e4f8;
-      max-width: 62ch;
-    }
-
-    .hero-cta {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .metric-panel {
-      border: 1px solid rgba(159,176,202,.25);
-      border-radius: 16px;
-      background: rgba(6, 11, 23, 0.55);
-      padding: 18px;
-      display: grid;
-      gap: 12px;
-    }
-
-    .metric {
-      border: 1px solid rgba(159,176,202,.2);
-      background: rgba(9, 18, 35, 0.95);
-      border-radius: 12px;
-      padding: 10px 12px;
-    }
-    .metric strong { font-size: 1.18rem; color: #fff; display: block; }
-    .metric span { color: #d7e4f8; font-size: .9rem; }
-
-    .section {
-      padding: 36px 0;
-    }
-
-    .section h2 {
-      margin: 0 0 10px;
-      font-size: clamp(1.35rem, 2.5vw, 2rem);
-      color: #ffffff;
-    }
-    .section .lead { color: #d7e4f8; margin: 0 0 18px; }
-    .lead-yellow, .section .lead-yellow {
-      color: #ffc857 !important;
-    }
-
-    .lead-borderline {
-      display: inline-block;
-      position: relative;
-      top: -16px;
-      margin: 0 auto 4px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(159, 176, 202, 0.38);
-      background: rgba(8, 16, 30, 0.92);
-      color: #dce8fa;
-      box-shadow: 0 0 0 1px rgba(43, 63, 98, 0.55);
-    }
-
-    .heading-dark-chip {
-      display: inline-block;
-      color: #0f2445;
-      background: rgba(229, 238, 255, 0.96);
-      border: 1px solid rgba(16, 35, 63, 0.18);
-      border-radius: 10px;
-      padding: 8px 12px;
-    }
-
-    .lead-dark-chip {
-      display: inline-block;
-      color: #1b345a;
-      background: rgba(229, 238, 255, 0.92);
-      border: 1px solid rgba(16, 35, 63, 0.14);
-      border-radius: 10px;
-      padding: 8px 12px;
-      margin-top: 10px;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .feature-card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(160deg, rgba(12,23,43,.98), rgba(9,17,34,.98));
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-    .feature-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: #fff; }
-    .feature-card p { margin: 0; color: #d7e4f8; }
-
-    /* Fix: ensure cards use white text for visibility on dark backgrounds */
-    .feature-card,
-    .feature-card h3,
-    .feature-card p,
-    .tech-card,
-    .tech-card h3,
-    .tech-card p,
-    .tech-card ul,
-    .tech-card li,
-    .step,
-    .step h3,
-    .step p {
-      color: #ffffff !important;
-    }
-
-    .feature-card .cta-link {
-      margin-top: 14px;
-      display: inline-flex;
-      color: #d6f4ff;
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      align-items: stretch;
-    }
-
-    .tech-card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(160deg, rgba(12,23,43,.98), rgba(9,17,34,.98));
-      padding: 20px;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .tech-card h3 { margin: 0; color: #fff; }
-    .stat-value { font-size: 1.9rem; font-weight: 800; color: #fff; line-height: 1; }
-    .stat-value small { font-size: .9rem; font-weight: 600; color: #d7e4f8; }
-    .tech-card ul { margin: 0; padding-left: 18px; color: #d7e4f8; }
-    .tech-card li + li { margin-top: 6px; }
-    .tech-card.featured {
-      border-color: rgba(36, 211, 165, 0.65);
-      box-shadow: 0 20px 44px rgba(36, 211, 165, 0.18);
-    }
-
-    .workflow {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .step {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(9, 18, 35, 0.95);
-      padding: 16px;
-    }
-    .step h3 { margin: 0 0 8px; color: #fff; }
-    .step p { margin: 0; color: #d7e4f8; }
-
-    .step-number {
-      width: 30px;
-      height: 30px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--brand-2));
-      color: #05202a;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .final-cta {
-      margin-top: 16px;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 22px;
-      text-align: center;
-      background: linear-gradient(145deg, rgba(36,211,165,.18), rgba(11,20,36,.94));
-    }
-
-    .final-cta-star {
-      font-size: 1.35rem;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .final-cta p { color: #d7e4f8; margin: 0 0 14px; }
-
-    .site-footer {
-      margin-top: 24px;
-      border-top: 1px solid rgba(159,176,202,.16);
-      padding: 22px 0 28px;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .footer-social {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin: 2px 0 14px;
-    }
-
-    .social-icon {
-      width: 36px;
-      height: 36px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(20, 107, 89, .18);
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .58);
-      color: #175b4c;
-      text-decoration: none;
-      box-shadow: 0 5px 14px rgba(25, 66, 53, .08);
-      transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
-    }
-
-    .social-icon svg {
-      width: 17px;
-      height: 17px;
-      fill: currentColor;
-    }
-
-    .social-icon:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 255, 255, .88);
-      color: #146b59;
-      box-shadow: 0 8px 18px rgba(25, 66, 53, .13);
-    }
-
-    .social-icon:focus-visible {
-      outline: 3px solid rgba(20, 107, 89, .35);
-      outline-offset: 3px;
-    }
-
-    .footer-links a { color: var(--muted); text-decoration: none; }
-
-    .cookie-bar {
-      margin: 0 auto 12px;
-      max-width: 1120px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(11, 20, 36, .92);
-      padding: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      text-align: center;
-    }
-
-    .cookie-actions {
-      display: inline-flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .btn-small {
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: .9rem;
-      font-weight: 700;
-      border: 1px solid var(--line);
-      color: var(--text);
-      background: rgba(255,255,255,.04);
-    }
-    .btn-small.accept {
-      border: none;
-      color: #021a2a;
-      background: linear-gradient(135deg, var(--warning), #ffda7a);
-    }
-
-    @media (max-width: 960px) {
-      .hero-grid,
-      .feature-grid,
-      .stats-grid,
-      .workflow {
-        grid-template-columns: 1fr;
-      }
-      .hero-grid { padding: 22px; }
-      .header-row {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 0;
-      }
-      .brand {
-        margin-bottom: 0;
-      }
-      .nav-links {
-        padding-right: 90px; /* Move buttons inward to clear the ribbon */
-      }
-      .footer-links { gap: 8px; margin-bottom: 8px; }
-      .footer-social { gap: 9px; margin: 2px 0 12px; }
-    }
-
-    /* Corner Triangle Ribbon */
-    .corner-triangle {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 0;
-      height: 0;
-      z-index: 200;
-      border-top: 160px solid #ffc857;
-      border-left: 160px solid transparent;
-      pointer-events: none;
-    }
-    .corner-triangle .triangle-text {
-      position: fixed;
-      top: 45px;
-      right: -30px;
-      width: 180px;
-      color: #0b1220;
-      font-weight: 800;
-      font-size: 1.08rem;
-      text-align: center;
-      transform: rotate(45deg);
-      letter-spacing: 0.04em;
-      z-index: 201;
-      pointer-events: auto;
-      user-select: none;
-      background: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 40px;
-    }
-
-    @media (max-width: 900px) {
-      #signInOutBtn,
-      #authBtn {
-        display: none !important;
-      }
-    }
-
-    /* Fresh editorial theme: warm canvas, evergreen accents, and clear contrast.
-       Keep the existing responsive layout and component structure intact. */
-    :root {
-      --bg: #f4f7f2;
-      --bg-soft: #eaf1eb;
-      --card: #ffffff;
-      --muted: #53645f;
-      --text: #17342e;
-      --line: #d4e2da;
-      --brand: #146b59;
-      --brand-2: #43a18a;
-      --accent: #e9a544;
-      --warning: #efb64e;
-      --radius: 18px;
-      --shadow: 0 18px 42px rgba(25, 66, 53, 0.11);
-      --font-body: 'DM Sans', 'Segoe UI', Arial, sans-serif;
-    }
-
-    html { background: var(--bg); }
-    body {
-      font-family: var(--font-body);
-      color: var(--text);
-      background-color: var(--bg);
-      background-image:
-        linear-gradient(180deg, rgba(244,247,242,.55), rgba(244,247,242,.82)),
-        url("/logistics.jpg");
-      background-repeat: no-repeat;
-      background-position: center top;
-      background-size: cover;
-      background-attachment: scroll;
-    }
-
-    h1, h2, h3 { font-family: var(--font-body); color: var(--text); }
-    h1, .section h2 { letter-spacing: -0.035em; }
-
-    .site-header {
-      background: rgba(244, 247, 242, .88);
-      border-bottom-color: rgba(37, 89, 71, .13);
-      backdrop-filter: blur(14px);
-    }
-    .brand img {
-      border-color: rgba(20, 107, 89, .22);
-      box-shadow: 0 5px 14px rgba(25, 66, 53, .12);
-    }
-    .btn { border-radius: 12px; }
-    .btn-ghost {
-      color: var(--text);
-      border-color: #c6d8ce;
-      background: rgba(255, 255, 255, .72);
-    }
-    .btn-ghost:hover {
-      background: #fff;
-      box-shadow: 0 8px 20px rgba(25, 66, 53, .1);
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      box-shadow: 0 10px 22px rgba(20, 107, 89, .22);
-    }
-    .btn-primary:hover { box-shadow: 0 13px 27px rgba(20, 107, 89, .28); }
-
-    .hero-shell {
-      border-color: #d1e2d8;
-      background: linear-gradient(140deg, rgba(255, 255, 255, .98), rgba(232, 243, 236, .96));
-      box-shadow: 0 24px 60px rgba(25, 66, 53, .12);
-    }
-    .badge {
-      color: #155644;
-      background: #e1f1e8;
-      border-color: #b8dcc8;
-    }
-    .hero p { color: #4f625c; }
-    .metric-panel {
-      border-color: #d6e4dc;
-      background: rgba(255, 255, 255, .74);
-    }
-    .metric {
-      border-color: #e0eae4;
-      background: #fff;
-    }
-    .metric strong { color: #175b4c; }
-    .metric span { color: #5a6c65; }
-
-    .section h2 { color: var(--text); }
-    .section .lead,
-    .lead-yellow,
-    .section .lead-yellow { color: var(--muted) !important; }
-    #media-relations,
-    #media-details,
-    #how-it-works { text-align: left; }
-    #media-relations .feature-card,
-    #media-details .tech-card,
-    #how-it-works .step { text-align: left; }
-    .final-cta,
-    #how-it-works .final-cta {
-      text-align: center;
-    }
-    .final-cta p {
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .lead-borderline {
-      border-color: #d4e3da;
-      background: #e9f2ec;
-      color: #24614f;
-      box-shadow: none;
-      font-weight: 700;
-    }
-    .feature-card,
-    .tech-card,
-    .step {
-      border-color: #d8e4dd;
-      background: #fff;
-      box-shadow: 0 12px 28px rgba(25, 66, 53, .075);
-    }
-    .feature-card,
-    .feature-card h3,
-    .feature-card p,
-    .tech-card,
-    .tech-card h3,
-    .tech-card p,
-    .tech-card ul,
-    .tech-card li,
-    .step,
-    .step h3,
-    .step p {
-      color: var(--text) !important;
-    }
-    .feature-card h3, .tech-card h3, .step h3 { color: #175b4c !important; }
-    .tech-card.featured {
-      border-color: #8fc8ad;
-      box-shadow: 0 18px 36px rgba(34, 127, 94, .12);
-    }
-    .stat-value { color: #146b59; }
-    .stat-value small { color: #61736b; }
-    .step-number {
-      color: #fff;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-    }
-    .final-cta {
-      border-color: #cfe1d6;
-      background: linear-gradient(140deg, #e7f3ec, #f9f5e9);
-    }
-    .final-cta p { color: #4f625c; }
-    .site-footer { border-top-color: #d9e4dd; }
-    .footer-links a { color: #53645f; }
-    .cookie-bar {
-      border-color: #d4e2da;
-      background: #fff;
-      box-shadow: 0 10px 26px rgba(25, 66, 53, .08);
-    }
-    #cookieConsentBar a { color: #146b59 !important; }
-    .site-footer > .container > p { color: var(--muted) !important; }
-    .btn-small {
-      color: var(--text);
-      border-color: #d2dfd7;
-      background: #f8faf8;
-      cursor: pointer;
-    }
-    .btn-small.accept {
-      color: #fff;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-    }
-    .corner-triangle { border-top-color: #C6A044; } /* Medium yellowish gold */
-    .corner-triangle .triangle-text { color: #000; }
-
-    :where(a, button):focus-visible {
-      outline: 3px solid rgba(20, 107, 89, .55);
-      outline-offset: 3px;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-      }
-    }
-
-    /* Prevent a white strip from appearing beneath the footer at the document edge.
-       The scripts after the footer are functional JavaScript, not visible page content. */
-    html,
-    body {
-      background-color: #111827 !important;
-    }
-    body::before,
-    body::after {
-      content: none !important;
-      display: none !important;
-    }
-    .site-footer {
-      margin-bottom: 0 !important;
-      background: #111827 !important;
-      background-image: none !important;
-    }
-
-    /* Unify landing-page surfaces, calls to action, and footer transition in #111827. */
-    .hero-shell,
-    .metric-panel,
-    .metric,
-    .feature-card,
-    .tech-card,
-    .step,
-    .final-cta,
-    .cookie-bar,
-    .site-footer {
-      background: #111827 !important;
-      background-image: none !important;
-      border-color: #263247 !important;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, .24) !important;
-    }
-    .btn-primary,
-    .btn-ghost,
-    .btn-small,
-    .btn-small.accept,
-    .feature-card .cta-link,
-    .social-icon {
-      background: #111827 !important;
-      background-image: none !important;
-      border-color: #263247 !important;
-      box-shadow: none !important;
-    }
-    .btn-primary,
-    .btn-ghost,
-    .btn-small,
-    .btn-small.accept,
-    .feature-card .cta-link,
-    .social-icon {
-      color: #ffffff !important;
-    }
-    .social-icon:hover,
-    .btn-ghost:hover {
-      background: #111827 !important;
-      border-color: #42516a !important;
-    }
-    .step-number {
-      background: #111827 !important;
-      color: #ffffff !important;
-      border: 1px solid #42516a;
-    }
-    /* Section label tags sit above the headings; give them a lighter blue surface
-       so they stand out clearly against the #111827 landing-page background. */
-    .badge,
-    .lead-borderline {
-      background: #263b61 !important;
-      border-color: #5273a5 !important;
-      color: #f2f7ff !important;
-    }
-
-    /* Dark appearance: soften pure-white headings while preserving strong contrast. */
-    html[data-appearance="dark"] h2,
-    html[data-appearance="dark"] .section h2 {
-      color: #d6e1ef !important;
-    }
-    html[data-appearance="dark"] h3,
-    html[data-appearance="dark"] .feature-card h3,
-    html[data-appearance="dark"] .tech-card h3,
-    html[data-appearance="dark"] .step h3 {
-      color: #c4d4e8 !important;
-    }
-
-    /* Keep the landing-page cards coherent with the explicit light appearance. */
-    html[data-appearance="light"] .hero-shell,
-    html[data-appearance="light"] .metric-panel,
-    html[data-appearance="light"] .metric,
-    html[data-appearance="light"] .feature-card,
-    html[data-appearance="light"] .tech-card,
-    html[data-appearance="light"] .step,
-    html[data-appearance="light"] .final-cta,
-    html[data-appearance="light"] .cookie-bar {
-      color: #17342e !important;
-      border-color: #d4e2da !important;
-      box-shadow: 0 12px 28px rgba(25, 66, 53, .075) !important;
-    }
-
-    html[data-appearance="light"] .hero-shell {
-      background: linear-gradient(140deg, #ffffff, #eaf3ed) !important;
-    }
-    html[data-appearance="light"] .metric-panel { background: #f8fbf8 !important; }
-    html[data-appearance="light"] .metric { background: #ffffff !important; }
-    html[data-appearance="light"] .feature-card,
-    html[data-appearance="light"] .tech-card,
-    html[data-appearance="light"] .step { background: #ffffff !important; }
-    html[data-appearance="light"] .final-cta {
-      background: linear-gradient(140deg, #e7f3ec, #f9f5e9) !important;
-    }
-    html[data-appearance="light"] .cookie-bar { background: #ffffff !important; }
-
-    html[data-appearance="light"] .hero-shell h1,
-    html[data-appearance="light"] .metric strong,
-    html[data-appearance="light"] .metric span,
-    html[data-appearance="light"] .feature-card h3,
-    html[data-appearance="light"] .feature-card p,
-    html[data-appearance="light"] .tech-card h3,
-    html[data-appearance="light"] .tech-card p,
-    html[data-appearance="light"] .tech-card li,
-    html[data-appearance="light"] .step h3,
-    html[data-appearance="light"] .step p,
-    html[data-appearance="light"] .final-cta p {
-      color: #17342e !important;
-    }
-    html[data-appearance="light"] .feature-card h3,
-    html[data-appearance="light"] .tech-card h3,
-    html[data-appearance="light"] .step h3,
-    html[data-appearance="light"] .metric strong {
-      color: #175b4c !important;
-    }
-    html[data-appearance="light"] .stat-value { color: #146b59 !important; }
-    html[data-appearance="light"] .stat-value small { color: #53645f !important; }
-  
-    /* Harmonised royal-blue header and white navigation controls. */
-    .site-header {
-      background: linear-gradient(135deg, #071D4A, #0B2A6F) !important;
-      border-bottom: 1px solid rgba(255,255,255,.18) !important;
-      backdrop-filter: none !important;
-    }
-    .site-header .brand,
-    .site-header .brand span,
-    .site-header .nav-links a { color: #fff !important; }
-    .site-header .btn-ghost,
-    .site-header .btn-primary {
-      color: #fff !important;
-      background: #111827 !important;
-      background-image: none !important;
-      border: 1px solid #42516a !important;
-      border-radius: 12px !important;
-      box-shadow: none !important;
-    }
-    .site-header .btn-ghost:hover,
-    .site-header .btn-primary:hover {
-      color: #fff !important;
-      background: #111827 !important;
-      border-color: #93b4f5 !important;
-      box-shadow: none !important;
-    }
-    .site-header .brand img { display: none !important; }
-
-    /* Keep the main site footer transparent so the page background continues behind it. */
-    .site-footer {
-      background: transparent !important;
-      background-color: transparent !important;
-      background-image: none !important;
-      box-shadow: none !important;
-      border-top-color: transparent !important;
-    }
-
-  </style>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Explore hamlet by IBR: a connected workspace for commercial property listings, deal pipeline management, broker networking and communications.">
+  <title>Home | hamlet by IBR</title>
   <link rel="stylesheet" href="/theme.css">
-  <script src="/theme.js"></script>
+  <link rel="stylesheet" href="/mobile-compat.css">
+  <style>
+    :root{color-scheme:dark;--bg:#111827;--surface:#111827;--raised:#1f2937;--line:#374151;--text:#fff;--muted:#cbd5e1;--blue:#071d4a;--link:#bfdbfe}
+    *{box-sizing:border-box}
+    html{min-height:100%;background:var(--bg);scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;background:#111827;color:#fff;font-family:"DM Sans","Segoe UI",Arial,sans-serif;line-height:1.65}
+    a{color:var(--link);text-underline-offset:3px}
+    a:focus-visible,button:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
+    .container{width:min(1120px,calc(100% - 2rem));margin-inline:auto}
+    .site-header{position:sticky;top:0;z-index:20;background:#071d4a;border-bottom:1px solid #374151}
+    .header-row{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .brand{font-size:1.35rem;font-weight:800;letter-spacing:-.04em;text-decoration:none;color:#fff}
+    .brand span{color:#bfdbfe}
+    .nav{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+    .button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.68rem .95rem;border:1px solid #4b5563;border-radius:9px;background:#111827;color:#fff;text-decoration:none;font-weight:700;font-size:.92rem}
+    .button:hover{border-color:#93c5fd;background:#1f2937}
+    .button.primary{background:#fff;color:#111827;border-color:#fff}
+    .button.primary:hover{background:#e5e7eb}
+    .hero{padding:clamp(3rem,8vw,6.2rem) 0 3rem}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr);gap:2rem;align-items:center}
+    .eyebrow{display:inline-flex;padding:.32rem .7rem;border:1px solid #4b5563;border-radius:999px;color:#e5e7eb;font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    h1{font-size:clamp(2.4rem,6vw,4.8rem);line-height:1.03;letter-spacing:-.06em;margin:1rem 0}
+    h1 span{color:#bfdbfe}
+    .hero p{max-width:66ch;color:var(--muted);font-size:1.08rem}
+    .actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem}
+    .hero-panel{border:1px solid var(--line);border-radius:16px;background:#111827;padding:1.35rem}
+    .hero-panel h2{font-size:1rem;margin:0 0 .8rem}
+    .signal{display:grid;grid-template-columns:2rem 1fr;gap:.75rem;padding:.8rem 0;border-top:1px solid #374151}
+    .signal:first-of-type{border-top:0}
+    .signal-icon{font-size:1.3rem}
+    .signal strong{display:block}
+    .signal p{font-size:.9rem;margin:.15rem 0 0;color:var(--muted)}
+    section.content-section{padding:2.8rem 0}
+    .section-heading{max-width:760px;margin-bottom:1.3rem}
+    .section-heading h2{font-size:clamp(1.65rem,3vw,2.4rem);line-height:1.15;letter-spacing:-.04em;margin:0 0 .65rem}
+    .section-heading p{margin:0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+    .card{min-width:0;border:1px solid var(--line);border-radius:14px;background:#111827;padding:1.2rem}
+    .card .icon{font-size:1.55rem}
+    .card h3{margin:.45rem 0;font-size:1.08rem}
+    .card p{margin:0 0 .8rem;color:var(--muted);font-size:.95rem}
+    .card a{font-weight:700}
+    .usp{display:grid;grid-template-columns:.8fr 1.2fr;gap:1.5rem;align-items:start;border:1px solid var(--line);border-radius:16px;padding:clamp(1.2rem,3vw,2rem);background:#111827}
+    .usp h2{font-size:clamp(1.7rem,3.2vw,2.5rem);line-height:1.12;letter-spacing:-.04em;margin:0}
+    .usp p{margin:0 0 .8rem;color:var(--muted)}
+    .ticks{list-style:none;padding:0;margin:1rem 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+    .ticks li{padding:.7rem;border:1px solid #374151;border-radius:9px}
+    .workflow{counter-reset:step;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.9rem}
+    .workflow article{border:1px solid var(--line);border-radius:12px;padding:1rem;background:#111827}
+    .workflow article:before{counter-increment:step;content:counter(step,decimal-leading-zero);display:inline-block;color:#bfdbfe;font-weight:800;font-size:.85rem;margin-bottom:.7rem}
+    .workflow h3{font-size:1rem;margin:0 0 .4rem}
+    .workflow p{font-size:.9rem;color:var(--muted);margin:0}
+    .notice{border:1px solid #374151;border-left:3px solid #93c5fd;border-radius:10px;padding:1rem 1.1rem;color:var(--muted);margin-top:1rem}
+    .cta{padding:2rem;border:1px solid #4b5563;border-radius:16px;background:#111827;text-align:center}
+    .cta h2{margin:0 0 .5rem;font-size:clamp(1.6rem,3vw,2.3rem)}
+    .cta p{margin:.2rem auto 1.2rem;color:var(--muted);max-width:60ch}
+    footer{border-top:1px solid #374151;padding:1.5rem 0 2rem;color:var(--muted);font-size:.9rem}
+    .footer-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+    .footer-links{display:flex;gap:1rem;flex-wrap:wrap}
+    .footer-links a{color:var(--muted)}
+    .footer-social-link{display:inline-flex;align-items:center;justify-content:center;color:var(--muted);line-height:1}
+    .footer-social-link:hover{color:#fff}
+    @media(max-width:850px){.hero-grid,.usp{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:560px){.header-row{align-items:flex-start;flex-direction:column;padding:.8rem 0}.nav{width:100%}.nav .button{flex:1}.grid,.ticks,.workflow{grid-template-columns:1fr}.hero{padding-top:2.8rem}.hero-panel{padding:1rem}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+  </style>
 </head>
 <body>
-    <div class="corner-triangle">
-      <span class="triangle-text">Automated CRM</span>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="brand" href="/index.html" aria-label="hamlet home">hamlet <span>by IBR</span></a>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="button" href="/members.html">Members area</a>
+        <a class="button primary" href="/app/hamlet/index.html">Open hamlet</a>
+      </nav>
     </div>
-    <header class="site-header" role="banner">
-      <div class="container header-row">
-        <a class="brand" href="/index.html" aria-label="home">
-          <span>hamlet</span>
-        </a>
-        <nav class="nav-links" aria-label="Primary navigation">
-          <a class="btn btn-ghost" id="signInOutBtn" href="/login.html" target="_blank" rel="noopener noreferrer">Sign In</a>
-          <a class="btn btn-primary" id="authBtn" href="/requests.html">Submit Media Brief</a>
-        </nav>
-      </div>
-    </header>
+  </header>
 
   <main>
     <section class="hero">
-      <div class="container hero-shell">
-        <div class="hero-grid">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">A connected workspace for property professionals</span>
+          <h1>Less fragmentation.<br><span>More connected deals.</span></h1>
+          <p>hamlet brings commercial property activity into one practical workspace: discover opportunities, organise your deal pipeline, manage resources, connect with other members and keep important communications together.</p>
+          <div class="actions">
+            <a class="button primary" href="/app/hamlet/index.html">🏢 Open hamlet workspace</a>
+            <a class="button" href="/members.html">Explore member services</a>
+            <a class="button" href="#modules">Browse the modules ↓</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="What hamlet brings together">
+          <h2>One connected workflow</h2>
+          <div class="signal"><span class="signal-icon" aria-hidden="true">🔎</span><div><strong>Find opportunities</strong><p>Browse commercial property listings and search for relevant details.</p></div></div>
+          <div class="signal"><span class="signal-icon" aria-hidden="true">🗂️</span><div><strong>Structure the process</strong><p>Use the deal pipeline to keep track of deal stages and critical-path actions.</p></div></div>
+          <div class="signal"><span class="signal-icon" aria-hidden="true">🤝</span><div><strong>Stay connected</strong><p>Use member profiles, messaging and the social feed to communicate with the network.</p></div></div>
+          <div class="signal"><span class="signal-icon" aria-hidden="true">🔐</span><div><strong>Member access</strong><p>Sign in to access protected workspace modules and account services.</p></div></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="content-section" aria-labelledby="usp-title">
+      <div class="container">
+        <div class="usp">
+          <div><span class="eyebrow">The hamlet difference</span><h2 id="usp-title" style="margin-top:1rem">A joined-up view of the work around a deal.</h2></div>
           <div>
-            <span class="badge">Press & Media Relations</span>
-            <h1>Send a press or media brief to our strategic communications team.</h1>
-            <p>Share the original press release, company, and press officer details so the team can review the announcement.</p>
-            <div class="hero-cta">
-              <a class="btn btn-primary" href="/requests.html">Submit Media Brief</a>
-              <a class="btn btn-ghost" href="#how-it-works">How It Works</a>
-			  <a class="btn btn-ghost" href="/about.html">About IB</a>
-			  <a class="btn btn-ghost sectors-nav-btn" href="/sectors.html">Sectors</a>
-            </div>
+            <p>Property work can be spread across listings, personal notes, contact lists, messages and deadline reminders. hamlet's distinctive proposition is to bring these complementary tasks into a shared digital environment, so members can move from discovering an opportunity to managing follow-up without treating every step as a separate destination.</p>
+            <ul class="ticks">
+              <li>✓ Property discovery and resource management</li>
+              <li>✓ Deal pipeline and critical-path focus</li>
+              <li>✓ Member directory and profile context</li>
+              <li>✓ Direct messaging and social updates</li>
+              <li>✓ Authenticated member workspace</li>
+              <li>✓ Clear routes to policies and support</li>
+            </ul>
           </div>
-          <aside class="metric-panel" aria-label="Press communication overview">
-            <div class="metric"><strong>Sign in</strong><span>Media brief submission is available to authenticated users</span></div>
-            <div class="metric"><strong>Structured brief</strong><span>Capture the release link, company, and spokesperson in one form</span></div>
-            <div class="metric"><strong>Communications review</strong><span>Submitted briefs are sent to the communications team</span></div>
-          </aside>
+        </div>
+        <p class="notice"><strong>Important:</strong> hamlet is a workflow and networking environment, not a guarantee that a listing is accurate, a transaction will complete, or a counterparty has been independently vetted. Carry out your own commercial, legal, financial and property due diligence.</p>
+      </div>
+    </section>
+
+    <section class="content-section" id="modules">
+      <div class="container">
+        <div class="section-heading"><h2>Explore the modules</h2><p>Each module has a specific role. Use the links below to go straight to the relevant part of the IBR and hamlet environment.</p></div>
+        <div class="grid">
+          <article class="card"><div class="icon" aria-hidden="true">🏢</div><h3>Deal pipeline</h3><p>Organise commercial real estate opportunities in the hamlet workspace. Use the pipeline to maintain deal context and monitor the next action or critical-path item.</p><a href="/app/hamlet/index.html">Open deal pipeline →</a></article>
+          <article class="card"><div class="icon" aria-hidden="true">📍</div><h3>Live property listings</h3><p>Browse published commercial property opportunities, search listing details and move between the listings view and your resource-management tools.</p><a href="/app/public/live.html">Browse live listings →</a></article>
+          <article class="card"><div class="icon" aria-hidden="true">🗃️</div><h3>Manage resources</h3><p>Manage your property resources from the dashboard. Posting access may be subject to the platform's identity-verification requirements and policies.</p><a href="/app/public/dashboard.html">Open resource dashboard →</a></article>
+          <article class="card"><div class="icon" aria-hidden="true">👥</div><h3>Member directory</h3><p>Find other members and use profile information to understand who you are contacting. Availability indicators reflect platform activity signals, not a promise of immediate response.</p><a href="/directory.html">Open directory →</a></article>
+          <article class="card"><div class="icon" aria-hidden="true">✉️</div><h3>Messages</h3><p>Keep member-to-member conversations in the mailbox. Depending on the conversation tools available, you can organise messages and share supported attachments.</p><a href="/messages.html">Open messages →</a></article>
+          <article class="card"><div class="icon" aria-hidden="true">💬</div><h3>Social feed</h3><p>Share concise professional updates that are separate from formal property listings. Follow relevant activity, react to posts and participate in discussions.</p><a href="/posts.html">Open social feed →</a></article>
+          <article class="card"><div class="icon" aria-hidden="true">🪪</div><h3>Profile and identity</h3><p>Keep your member profile and contact details current. Where requested, follow the platform's identity-verification process and read what a verification indicator does—and does not—mean.</p><a href="/profile.html">View your profile →</a></article>
+          <article class="card"><div class="icon" aria-hidden="true">📨</div><h3>Communications briefs</h3><p>Submit a structured press or communications brief with the announcement, organisation and contact details needed for follow-up.</p><a href="/requests.html">Submit a brief →</a></article>
+          <article class="card"><div class="icon" aria-hidden="true">⚙️</div><h3>Account and settings</h3><p>Review account information and available security controls. Use strong authentication and keep your sign-in credentials private.</p><a href="/settings.html">Open settings →</a></article>
         </div>
       </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="section" id="media-relations">
+    <section class="content-section" id="how-to-use">
       <div class="container">
-        <div class="lead-borderline">Media Relations</div>
-        <h2>A clearer brief for every announcement</h2>
-        <p class="lead lead-yellow">Signed-in users can send a strategic communications brief, including the original press release and the press officer contact.</p>
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h3>Company &amp; officer</h3>
-            <p>Name the company, press or media officer, phone number, and email.</p>
-          </div>
-          <div class="feature-card">
-            <h3>Release link</h3>
-            <p>Include the original press release URL, headline, announcement type, and embargo date so the team can time the announcement.</p>
-          </div>
-          <div class="feature-card">
-            <h3>Key message</h3>
-            <p>Set out the announcement message, supporting notes, and any context the communications team needs before follow-up.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Communications Details Section -->
-    <section class="section" id="media-details">
-      <div class="container">
-        <div class="lead-borderline">Communications Details</div>
-        <h2>Everything needed to brief the media team</h2>
-        <p class="lead lead-yellow">The form collects the release, company, and press officer so the team can follow up.</p>
-        <div class="stats-grid">
-          <div class="tech-card">
-            <h3>Organisation</h3>
-            <div class="stat-value">Company <small>&amp; officer</small></div>
-            <ul>
-              <li>Company name and press officer</li>
-              <li>Phone number and officer email</li>
-              <li>Account used for the signed-in submission</li>
-            </ul>
-          </div>
-          <div class="tech-card featured">
-            <h3>Release link</h3>
-            <div class="stat-value">Release <small>&amp; timing</small></div>
-            <ul>
-              <li>Original press release link</li>
-              <li>Headline and announcement type</li>
-              <li>Optional embargo date</li>
-            </ul>
-          </div>
-          <div class="tech-card">
-            <h3>Message</h3>
-            <div class="stat-value">Story <small>&amp; notes</small></div>
-            <ul>
-              <li>Key message for the announcement</li>
-              <li>Supporting notes for the media team</li>
-              <li>Officer email for follow-up</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Workflow Section -->
-    <section class="section" id="how-it-works">
-      <div class="container">
-        <div class="lead-borderline">How It Works</div>
-        <h2>From announcement to media follow-up</h2>
-        <p class="lead lead-yellow">Submit a press brief through the authenticated form in hamlet and the communications team will be notified for review.</p>
+        <div class="section-heading"><h2>How to get started</h2><p>A simple route from sign-in to everyday use.</p></div>
         <div class="workflow">
-          <div class="step">
-            <div class="step-number">1</div>
-            <h3>Sign in</h3>
-            <p>Authenticate with your account to access the press and media form.</p>
-          </div>
-          <div class="step">
-            <div class="step-number">2</div>
-            <h3>Share the announcement</h3>
-            <p>Add the press release link, company, press officer, phone, and email for follow-up.</p>
-          </div>
-          <div class="step">
-            <div class="step-number">3</div>
-            <h3>Submit for review</h3>
-            <p>The brief is sent to the communications team, and the page confirms when the submission succeeds.</p>
-          </div>
+          <article><h3>Sign in securely</h3><p>Use the sign-in page to authenticate. Some modules and actions are available only to signed-in members.</p></article>
+          <article><h3>Complete your profile</h3><p>Check that your name, contact information and profile details are accurate and professional.</p></article>
+          <article><h3>Choose your task</h3><p>Open the listings to discover opportunities, the dashboard to manage resources, or the deal pipeline to organise follow-up.</p></article>
+          <article><h3>Communicate and review</h3><p>Use messages, the directory and social feed to stay in touch. Review the relevant policy before posting or acting on a listing.</p></article>
         </div>
-        <div class="final-cta">
-          <div class="final-cta-star" aria-label="Five star rating">⭐⭐⭐⭐⭐</div>
-          <p>Ready to submit a confidential media brief?</p>
-          <a class="btn btn-primary" href="/callback.html">Request Call Back</a>
+        <div class="actions"><a class="button primary" href="/login.html">Sign in</a><a class="button" href="/members.html">Open members area</a><a class="button" href="/app/public/ibfees.html">Broker policy and fees</a></div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="container">
+        <div class="section-heading"><h2>Designed around practical use</h2><p>Use these shared features to navigate with confidence and keep your activity organised.</p></div>
+        <div class="grid">
+          <article class="card"><h3>🔐 Account protection</h3><p>Protected modules use account authentication. Verification checks, where required, are distinct from ordinary email confirmation and do not replace your own due diligence.</p></article>
+          <article class="card"><h3>🔔 Communication trail</h3><p>Use the messaging area for direct conversations and the social feed for shorter, wider professional updates. Keep sensitive information in the appropriate channel.</p></article>
+          <article class="card"><h3>📱 Responsive interface</h3><p>The pages are designed to work across desktop and mobile browsers. For the best experience, use an up-to-date browser and keep your account details current.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="container">
+        <div class="cta">
+          <h2>Ready to get to work?</h2>
+          <p>Sign in to access your member tools, or open the hamlet deal pipeline to begin organising your commercial property workflow.</p>
+          <div class="actions" style="justify-content:center">
+            <a class="button primary" href="/app/hamlet/index.html">🏢 Open hamlet</a>
+            <a class="button" href="/login.html">Sign in</a>
+            <a class="button" href="/contact.html">Contact IBR</a>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer" role="contentinfo">
-    <div class="container">
-      <div id="cookieConsentBar" class="cookie-bar">
-        <div>
-          This website uses cookies to improve your experience.
-          <a href="/cookies.html" style="color:#cde9ff">Cookie Policy</a>
-          <span aria-hidden="true">|</span>
-          <a href="/privacy.html" style="color:#cde9ff">Privacy Policy</a>
-        </div>
-        <div class="cookie-actions">
-          <button id="cookieDeclineBtn" class="btn-small" type="button">Decline</button>
-          <button id="cookieAcceptBtn" class="btn-small accept" type="button">Accept</button>
-        </div>
-      </div>
-
-      <div class="footer-links footer-social" aria-label="Social media">
-        <a class="social-icon" href="https://www.linkedin.com/company/ibrgroupintl/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.25A1.75 1.75 0 1 1 6.5 4.75a1.75 1.75 0 0 1 0 3.5ZM5 9.75h3v9H5v-9Zm4.75 0h2.88v1.23h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.6v4.71h-3v-4.17c0-1-.02-2.3-1.4-2.3-1.4 0-1.61 1.1-1.61 2.23v4.24h-3v-9Z"/></svg>
-        </a>
-        <a class="social-icon" href="https://x.com/ibrinfo" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 4h3.6l3.62 4.83L16.52 4h2.28l-5.33 6.27L19.5 20h-3.6l-4.04-5.38L7.06 20H4.78l5.74-6.82L5.2 4Zm3.02 1.55H7.6l8.7 12.9h.63L8.22 5.55Z"/></svg>
-        </a>
-        <a class="social-icon" href="https://www.instagram.com/ibrinfo/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 3.5h9.6A3.7 3.7 0 0 1 20.5 7.2v9.6a3.7 3.7 0 0 1-3.7 3.7H7.2a3.7 3.7 0 0 1-3.7-3.7V7.2a3.7 3.7 0 0 1 3.7-3.7Zm0 1.7A2 2 0 0 0 5.2 7.2v9.6a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2V7.2a2 2 0 0 0-2-2H7.2Zm9.82 1.28a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 1.7a2.3 2.3 0 1 0 0 4.6 2.3 2.3 0 0 0 0-4.6Z"/></svg>
-        </a>
-        <a class="social-icon" href="https://fb.me/groups/energyandinfra" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.65 20v-7h2.38l.36-2.72h-2.74V8.54c0-.79.22-1.33 1.38-1.33h1.48V4.78c-.26-.04-1.14-.11-2.16-.11-2.14 0-3.61 1.3-3.61 3.68v1.93H8.3V13h2.44v7h2.91Z"/></svg>
-        </a>
-      </div>
-
-      <div class="footer-links">
-        <span aria-label="Version">v0.3 (Beta)</span>
-      </div>
-
-      <div class="footer-links">
-        <a href="/terms.html">Terms</a>
-        <span aria-hidden="true">|</span>
-        <a href="/privacy.html">Privacy</a>
-        <span aria-hidden="true">|</span>
-        <a href="/cookies.html">Cookies</a>
-      </div>
-      <p style="margin:0; text-align:center; color:#FFF">© 2026 Impact in Business Recruitment Group Limited. All rights reserved.</p>
+  <footer>
+    <div class="container footer-row">
+      <div>© 2026 Impact in Business Recruitment Group Limited · hamlet</div>
+      <nav class="footer-links" aria-label="Legal and site links">
+        <a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/cookies.html">Cookies</a><a href="/contact.html">Contact</a><a class="footer-social-link" href="https://www.linkedin.com/showcase/hamlet-ai" target="_blank" rel="noopener noreferrer" aria-label="hamlet on LinkedIn" title="hamlet on LinkedIn"><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.35V9h3.414v1.561h.049c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.369 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM3.56 9h3.554v11.452H3.56V9zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      </nav>
     </div>
   </footer>
-
-  <script>
-    (function () {
-      var cookieName = 'ibr_cookie_consent_v1';
-      function setCookie(name, value, days) {
-        var d = new Date();
-        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-        document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
-      }
-      function getCookie(name) {
-        var v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-        return v ? decodeURIComponent(v.pop()) : null;
-      }
-      var bar = document.getElementById('cookieConsentBar');
-      if (!bar) return;
-      if (getCookie(cookieName)) {
-        bar.style.display = 'none';
-        return;
-      }
-      var accept = document.getElementById('cookieAcceptBtn');
-      var decline = document.getElementById('cookieDeclineBtn');
-      if (accept) accept.addEventListener('click', function () { setCookie(cookieName, 'accepted', 365); bar.style.display = 'none'; });
-      if (decline) decline.addEventListener('click', function () { setCookie(cookieName, 'declined', 365); bar.style.display = 'none'; });
-    })();
-  </script>
-  <script>
-    window.addEventListener('DOMContentLoaded', function() {
-      if (!window.firebase || !window.firebaseConfig) return;
-      try { firebase.initializeApp(window.firebaseConfig); } catch (e) {}
-      const auth = firebase.auth();
-      const signInOutBtn = document.getElementById('signInOutBtn');
-      auth.onAuthStateChanged(function(user) {
-        if (user) {
-          signInOutBtn.textContent = 'Sign Out';
-          signInOutBtn.href = '#';
-          signInOutBtn.removeAttribute('target');
-          signInOutBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            auth.signOut().then(function() {
-              window.location.reload();
-            });
-          }, { once: true });
-        } else {
-          signInOutBtn.textContent = 'Sign In';
-          signInOutBtn.href = '/login.html';
-          signInOutBtn.setAttribute('target', '_blank');
-        }
-      });
-    });
-  </script>
 </body>
 </html>

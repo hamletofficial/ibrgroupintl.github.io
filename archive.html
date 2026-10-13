@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#07111f">
   <meta name="robots" content="noindex,nofollow">
-  <title>Brief Archive | Impact in Business Recruitment</title>
+  <title>Brief Archive | Hamlet</title>
   <link rel="stylesheet" href="/mobile-compat.css">
   <link rel="stylesheet" href="/legal-pages.css">
   <style>
@@ -119,6 +119,30 @@
       .brief-card{box-shadow:none;break-inside:avoid}
     }
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+    
+    .archive-status,.empty,.brief-card {
+      background:#111827 !important;
+      border-color:#374151 !important;
+      color:#e5e7eb !important;
+    }
+    .brief-card-head {
+      background:linear-gradient(135deg,#111827,#1f2937) !important;
+      border-bottom-color:#374151 !important;
+    }
+    .brief-card-head h2,.brief-card-head h3,.field-value { color:#f3f4f6 !important; }
+    .brief-meta,.brief-ref,.brief-select,.field-label { color:#cbd5e1 !important; }
+    .field,.field:nth-child(odd) { border-bottom-color:#374151 !important; border-right-color:#374151 !important; }
+    .archive-search,.archive-actions a,.archive-actions button,.archive-signout,.archive-menu-toggle {
+      background:#111827 !important; color:#f9fafb !important; border:1px solid #4b5563 !important;
+    }
+    .archive-search::placeholder { color:#9ca3af !important; }
+    .archive-search:focus { border-color:#60a5fa !important; box-shadow:0 0 0 3px rgba(96,165,250,.18) !important; }
+    .archive-actions a:hover,.archive-actions button:hover,.archive-signout:hover,.archive-menu-toggle:hover {
+      background:#1f2937 !important; border-color:#6b7280 !important;
+    }
+    #deleteBtn:not(:disabled) { border-color:#ef4444 !important; color:#fca5a5 !important; }
+    .archive-status.error { background:#2b151a !important; border-color:#7f1d1d !important; color:#fecaca !important; }
   </style>
 
   <link rel="stylesheet" href="/theme.css">
@@ -127,7 +151,7 @@
 <body>
   <header class="archive-topbar" role="banner">
     <div class="archive-topbar-inner">
-      <a class="archive-brand" href="/">Premium</a>
+      <a class="archive-brand" href="/">hamlet</a>
       <div class="archive-user-area">
         <div class="archive-user-profile auth-profile-chip" data-auth-profile aria-label="Signed-in user">
           <img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo">

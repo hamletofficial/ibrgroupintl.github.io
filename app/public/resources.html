@@ -29,6 +29,12 @@ body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background-
 .resource-list{display:grid;gap:.8rem}.property-card{border:1px solid var(--line);border-radius:12px;padding:1rem;background:#fbfdff}
 .property-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}.property-card h3{margin:0;color:var(--ink);font-size:1rem}
 .badge{display:inline-flex;padding:.3rem .55rem;border-radius:999px;background:#e8f5ec;color:var(--green);font-size:.75rem;font-weight:800}
+.resource-tools{display:grid;grid-template-columns:minmax(220px,2fr) repeat(3,minmax(130px,1fr));gap:.8rem;padding:1rem;margin:1rem 0 1.1rem;border:1px solid var(--line);border-radius:12px;background:#f8fafc}
+.resource-tool{display:flex;flex-direction:column;gap:.4rem;color:#334155;font-size:.76rem;font-weight:800}
+.resource-tool input,.resource-tool select{width:100%;min-width:0;padding:.68rem .72rem;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;font:inherit;font-weight:500}
+.resource-tool input:focus,.resource-tool select:focus{outline:2px solid #2563eb;outline-offset:1px}
+.resource-tool-actions{grid-column:1/-1;display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;color:var(--muted);font-size:.82rem}
+.resource-tool-actions #propertyResultCount{margin-right:auto}
 .property-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;margin:.8rem 0;color:var(--muted);font-size:.84rem}
 .property-meta strong{display:block;color:#173b5d;font-size:.78rem;margin-bottom:.15rem}.property-description{color:#475569;font-size:.88rem;line-height:1.5;white-space:pre-wrap}
 .card-actions{display:flex;justify-content:flex-end;gap:.6rem;flex-wrap:wrap;margin-top:1rem;padding-top:.85rem;border-top:1px solid #edf1f6}
@@ -36,8 +42,8 @@ body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background-
 .empty{padding:1rem;border:1px dashed #cbd5e1;border-radius:10px;color:var(--muted)}
 .status{margin:.8rem 0 0;color:var(--muted)}.status.success{color:var(--green)}.status.error{color:var(--red)}
 .resource-footer{border-top:1px solid var(--line);padding:22px 1rem 30px;text-align:center;color:var(--muted);font-size:.82rem}.resource-footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-bottom:8px}.resource-footer a{color:var(--muted);text-decoration:none}.resource-footer a:hover{color:var(--blue);text-decoration:underline}
-@media(max-width:800px){.topbar{align-items:flex-start;flex-direction:column}.topbar-actions{width:100%;flex-wrap:wrap}.property-meta{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.resource-shell{padding:0 .65rem}.hero,.panel{padding:1.1rem}.property-meta{grid-template-columns:1fr}.property-head{flex-direction:column}}
+@media(max-width:800px){.topbar{align-items:flex-start;flex-direction:column}.topbar-actions{width:100%;flex-wrap:wrap}.resource-tools{grid-template-columns:1fr 1fr}.resource-tool:first-child{grid-column:1/-1}.property-meta{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.resource-shell{padding:0 .65rem}.hero,.panel{padding:1.1rem}.resource-tools{grid-template-columns:1fr;padding:.75rem}.resource-tool:first-child{grid-column:auto}.resource-tool-actions{align-items:stretch;flex-direction:column}.resource-tool-actions .btn{width:100%;text-align:center}.property-meta{grid-template-columns:1fr}.property-head{flex-direction:column}}
 /* Dark transparent header override */
 .resource-nav{background:rgba(15,43,110,.88)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
 </style>
@@ -49,7 +55,7 @@ body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background-
 <div class="logo"><span class="site-title" style="color:lightgrey">hamlet</span></div>
 <div class="topbar-actions">
 <div class="profile" id="profileChip" data-auth-profile hidden><img id="profilePhoto" data-auth-photo src="/160.jpg" alt="Profile photo"><span id="profileName" data-auth-name></span></div>
-<a class="btn btn-outline" href="/app/public/dashboard.html">Back to Resources</a>
+<a class="btn btn-outline" href="/app/hamlet/">Deal Pipeline</a>
 <a class="btn btn-outline" href="/app/public/live.html">Live Listings</a>
 <button class="btn btn-outline" id="authActionBtn" type="button">Sign In</button>
 </div>
@@ -73,6 +79,13 @@ body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background-
 <h2>Resource Management</h2>
 <p class="panel-intro">Only resources owned by your authenticated account are displayed here.</p>
 <div class="notice"><strong>Important:</strong> Deletion is permanent. Once a property resource is removed, it will no longer be available through <strong>Live Listings</strong> or your property workspace. Use this page to correct accidental or erroneous submissions.</div>
+<div class="resource-tools" role="search" aria-label="Filter your property resources">
+<label class="resource-tool"><span>Search properties</span><input id="propertySearch" type="search" placeholder="Name, location, postcode or details…" autocomplete="off"></label>
+<label class="resource-tool"><span>Property type</span><select id="propertyTypeFilter"><option value="">All types</option></select></label>
+<label class="resource-tool"><span>Status</span><select id="propertyStatusFilter"><option value="">All statuses</option></select></label>
+<label class="resource-tool"><span>Sort by</span><select id="propertySort"><option value="newest">Recently added</option><option value="oldest">Oldest first</option><option value="name">Property name A–Z</option><option value="location">Location A–Z</option></select></label>
+<div class="resource-tool-actions"><span id="propertyResultCount" aria-live="polite">Preparing properties…</span><button class="btn btn-outline" type="button" id="exportPropertiesBtn">Export CSV</button><button class="btn btn-outline" type="button" id="clearPropertyFilters">Clear filters</button></div>
+</div>
 <div class="resource-list" id="resourceList"><div class="empty">Loading your property resources…</div></div>
 <p class="status" id="resourceStatus" role="status" aria-live="polite"></p>
 </section>
@@ -94,20 +107,37 @@ body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background-
 <script>
 document.addEventListener('DOMContentLoaded',function(){
 const authPanel=document.getElementById('authPanel'),resourceShell=document.getElementById('resourceShell'),resourceList=document.getElementById('resourceList'),resourceStatus=document.getElementById('resourceStatus'),authActionBtn=document.getElementById('authActionBtn'),profileChip=document.getElementById('profileChip'),profileName=document.getElementById('profileName'),profilePhoto=document.getElementById('profilePhoto');
-let auth=null,db=null,currentUser=null;
+let auth=null,db=null,currentUser=null,allResources=[];
 function esc(v){return String(v??'').replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]})}
 function showOut(){currentUser=null;authPanel.hidden=false;resourceShell.style.display='none';authActionBtn.textContent='Sign In';authActionBtn.onclick=function(){location.href='/login.html?next=%2Fapp%2Fpublic%2Fresources.html'};profileChip.hidden=true}
 function showIn(u){currentUser=u;authPanel.hidden=true;resourceShell.style.display='block';authActionBtn.textContent='Sign Out';authActionBtn.onclick=async function(){authActionBtn.disabled=true;try{await auth.signOut()}finally{authActionBtn.disabled=false}};profileChip.hidden=false;loadResources()}
-function renderResources(s){
-if(s.empty){resourceList.innerHTML='<div class="empty">You have no commercial property resources to manage.</div>';return}
+function resourceDate(record){const value=record.createdAt;try{if(value&&typeof value.toMillis==='function')return value.toMillis();if(value&&typeof value.toDate==='function')return value.toDate().getTime();const parsed=Date.parse(value||'');return Number.isFinite(parsed)?parsed:0}catch(e){return 0}}
+function populatePropertyFilters(){
+const typeSelect=document.getElementById('propertyTypeFilter'),statusSelect=document.getElementById('propertyStatusFilter');
+const selectedType=typeSelect.value,selectedStatus=statusSelect.value;
+const types=[...new Set(allResources.map(x=>String(x.data.propertyType||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+const statuses=[...new Set(allResources.map(x=>String(x.data.status||'Active').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+typeSelect.innerHTML='<option value="">All types</option>'+types.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
+statusSelect.innerHTML='<option value="">All statuses</option>'+statuses.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
+if(types.includes(selectedType))typeSelect.value=selectedType;if(statuses.includes(selectedStatus))statusSelect.value=selectedStatus;
+}
+function renderResources(docs){
+allResources=(docs||[]).map(function(d){return{id:d.id,data:d.data()||{}}});
+populatePropertyFilters();
+const query=document.getElementById('propertySearch').value.trim().toLowerCase(),type=document.getElementById('propertyTypeFilter').value,status=document.getElementById('propertyStatusFilter').value,sort=document.getElementById('propertySort').value;
+let filtered=allResources.filter(function(item){const p=item.data;const searchable=[p.propertyName,p.propertyType,p.address,p.postcode,p.availability,p.size,p.description,p.status,p.askingRent].join(' ').toLowerCase();return(!query||searchable.includes(query))&&(!type||String(p.propertyType||'').trim()===type)&&(!status||String(p.status||'Active').trim()===status)});
+filtered.sort(function(a,b){const pa=a.data,pb=b.data;if(sort==='oldest')return resourceDate(pa)-resourceDate(pb);if(sort==='name')return String(pa.propertyName||'').localeCompare(String(pb.propertyName||''));if(sort==='location')return String(pa.address||'').localeCompare(String(pb.address||''));return resourceDate(pb)-resourceDate(pa)});
+document.getElementById('propertyResultCount').textContent=filtered.length+' of '+allResources.length+' propert'+(allResources.length===1?'y':'ies');
+if(!allResources.length){resourceList.innerHTML='<div class="empty">You have no commercial property resources to manage yet. Add a property from the members’ property workspace to get started.</div>';return}
+if(!filtered.length){resourceList.innerHTML='<div class="empty">No properties match these filters. Clear one or more filters to see your resources.</div>';return}
 resourceList.innerHTML='';
-s.forEach(function(d){
-const p=d.data(),card=document.createElement('article');card.className='property-card';
+filtered.forEach(function(item){
+const p=item.data,card=document.createElement('article');card.className='property-card';card.dataset.propertyId=item.id;
 card.innerHTML='<div class="property-head"><h3>'+esc(p.propertyName||'Commercial Property')+'</h3><span class="badge">'+esc(p.status||'Active')+'</span></div>'+
 '<div class="property-meta"><div><strong>Type</strong>'+esc(p.propertyType||'—')+'</div><div><strong>Location</strong>'+esc(p.address||'—')+(p.postcode?' · '+esc(p.postcode):'')+'</div><div><strong>Availability</strong>'+esc(p.availability||'—')+'</div><div><strong>Size</strong>'+esc(p.size||'—')+'</div></div>'+
 '<div class="property-description">'+esc(p.description||'No description provided.')+'</div>'+
 (p.askingRent?'<div class="property-description" style="margin-top:.65rem"><strong>Asking rent / lease terms:</strong> '+esc(p.askingRent)+'</div>':'')+
-'<div class="card-actions"><a class="btn btn-outline" href="/app/public/live.html">View Live Listings</a><button class="delete-btn" type="button" data-id="'+esc(d.id)+'">Delete Resource</button></div>';
+'<div class="card-actions"><a class="btn btn-outline" href="/app/public/live.html">View Live Listings</a><button class="delete-btn" type="button" data-id="'+esc(item.id)+'">Delete Resource</button></div>';
 resourceList.appendChild(card);
 });
 resourceList.querySelectorAll('.delete-btn').forEach(function(btn){btn.addEventListener('click',function(){deleteResource(btn.dataset.id,btn)})});
@@ -117,8 +147,8 @@ resourceStatus.textContent='Loading…';resourceStatus.className='status';
 try{
 const s=await db.collection('commercialProperties').where('ownerUid','==',currentUser.uid).get();
 const docs=Array.from(s.docs).sort(function(a,b){const at=a.data().createdAt?.toMillis?.()||0,bt=b.data().createdAt?.toMillis?.()||0;return bt-at});
-renderResources({empty:docs.length===0,forEach:function(fn){docs.forEach(fn)}});
-resourceStatus.textContent=docs.length?docs.length+' resource'+(docs.length===1?'':'s')+' available.':'';
+renderResources(docs);
+resourceStatus.textContent=docs.length?docs.length+' resource'+(docs.length===1?'':'s')+' available.':'No property resources found.';
 }catch(e){console.error(e);resourceList.innerHTML='<div class="empty">Your property resources could not be loaded. Please refresh and try again.</div>';resourceStatus.textContent='There was a problem reading your property resources.';resourceStatus.className='status error'}
 }
 async function deleteResource(id,button){
@@ -136,6 +166,18 @@ resourceStatus.textContent='Resource deleted successfully. It has been removed f
 await loadResources();
 }catch(e){console.error(e);button.disabled=false;resourceStatus.textContent='The resource could not be deleted. Please refresh and try again.';resourceStatus.className='status error'}
 }
+document.getElementById('propertySearch').addEventListener('input',function(){renderResources(allResources.map(function(x){return{id:x.id,data:function(){return x.data}}}))});
+document.getElementById('propertyTypeFilter').addEventListener('change',function(){renderResources(allResources.map(function(x){return{id:x.id,data:function(){return x.data}}))});
+document.getElementById('propertyStatusFilter').addEventListener('change',function(){renderResources(allResources.map(function(x){return{id:x.id,data:function(){return x.data}}))});
+document.getElementById('propertySort').addEventListener('change',function(){renderResources(allResources.map(function(x){return{id:x.id,data:function(){return x.data}}))});
+document.getElementById('clearPropertyFilters').addEventListener('click',function(){document.getElementById('propertySearch').value='';document.getElementById('propertyTypeFilter').value='';document.getElementById('propertyStatusFilter').value='';document.getElementById('propertySort').value='newest';renderResources(allResources.map(function(x){return{id:x.id,data:function(){return x.data}}));document.getElementById('propertySearch').focus()});
+document.getElementById('exportPropertiesBtn').addEventListener('click',function(){
+if(!allResources.length){resourceStatus.textContent='There are no property records to export.';return}
+const columns=[['Property name','propertyName'],['Type','propertyType'],['Status','status'],['Address','address'],['Postcode','postcode'],['Availability','availability'],['Size','size'],['Asking rent / lease terms','askingRent'],['Description','description'],['Created at','createdAt']];
+const quote=function(value){let v=value;if(v&&typeof v.toDate==='function')v=v.toDate().toISOString();else if(v&&typeof v.toMillis==='function')v=new Date(v.toMillis()).toISOString();return '"'+String(v??'').replace(/"/g,'""')+'"'};
+const csv=[columns.map(function(c){return quote(c[0])}).join(','),...allResources.map(function(item){return columns.map(function(c){return quote(item.data[c[1]])}).join(',')})].join('\r\n');
+const url=URL.createObjectURL(new Blob(['\ufeff',csv],{type:'text/csv;charset=utf-8;'})),link=document.createElement('a');link.href=url;link.download='hamlet-property-resources-'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(link);link.click();link.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);resourceStatus.textContent='Exported '+allResources.length+' property records to CSV.';
+});
 try{if(!window.firebase||!window.firebaseConfig)throw Error('Firebase configuration unavailable');if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);auth=firebase.auth();db=firebase.firestore();auth.onAuthStateChanged(function(u){u?showIn(u):showOut()})}catch(e){console.error(e);showOut()}
 });
 </script>

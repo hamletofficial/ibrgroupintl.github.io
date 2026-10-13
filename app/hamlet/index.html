@@ -113,6 +113,7 @@ button:disabled{opacity:.6;cursor:wait}.stat{background:linear-gradient(135deg,#
 </style>
 
 <script>document.documentElement.classList.add('hamlet-auth-pending');</script>
+  <link rel="stylesheet" href="/hamlet-workspace.css?v=20261013-1">
 </head>
 <body>
 <div id="hamletAuthGate" role="status" aria-live="polite"><div class="hamlet-gate-card"><div class="hamlet-gate-mark">H</div><h1>Secure Hamlet workspace</h1><p id="hamletAuthMessage">Checking your Firebase sign-in…</p><div class="hamlet-gate-spinner" aria-hidden="true"></div></div></div>
@@ -251,5 +252,6 @@ function checkDeadlineAlerts(){if(!('Notification'in window)||Notification.permi
 loadLocal();renderAll();if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',connectFirebase);else connectFirebase();setTimeout(checkDeadlineAlerts,1800);
 })();
 </script>
+  <script src="/hamlet-workspace.js?v=20261013-1"></script>
 </body>
 </html>

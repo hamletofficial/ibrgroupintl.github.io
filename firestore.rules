@@ -438,30 +438,11 @@ service cloud.firestore {
 
     // Hamlet transaction history is append-only for authenticated clients.
     // Server administrators can retain/export these events independently.
+    // History entries are created only by the trusted Cloud Function.
+    // Authenticated owners can read their own records; clients cannot alter them.
     match /hamletDealEvents/{eventId} {
       allow read: if request.auth != null && resource.data.uid == request.auth.uid;
-      allow create: if request.auth != null
-        && request.resource.data.keys().hasAll(['id','uid','dealId','dealName','eventType','stageFrom','stageTo','summary','changedFields','createdAt'])
-        && request.resource.data.keys().hasOnly(['id','uid','dealId','dealName','eventType','stageFrom','stageTo','summary','changedFields','createdAt'])
-        && request.resource.data.id == eventId
-        && request.resource.data.uid == request.auth.uid
-        && request.resource.data.dealId is string
-        && request.resource.data.dealId.size() <= 200
-        && exists(/databases/$(database)/documents/hamletDeals/$(request.resource.data.dealId))
-        && get(/databases/$(database)/documents/hamletDeals/$(request.resource.data.dealId)).data.uid == request.auth.uid
-        && request.resource.data.dealName is string
-        && request.resource.data.dealName.size() <= 100
-        && request.resource.data.eventType in ['created','updated','stage_changed']
-        && request.resource.data.stageFrom is string
-        && request.resource.data.stageFrom.size() <= 100
-        && request.resource.data.stageTo is string
-        && request.resource.data.stageTo.size() <= 100
-        && request.resource.data.summary is string
-        && request.resource.data.summary.size() <= 240
-        && request.resource.data.changedFields is list
-        && request.resource.data.changedFields.size() <= 12
-        && request.resource.data.createdAt == request.time;
-      allow update, delete: if false;
+      allow create, update, delete: if false;
     }
 
     // Private transaction document metadata. Binary files live in a matching

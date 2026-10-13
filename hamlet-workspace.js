@@ -85,6 +85,6 @@ function prefillSearch(){
  else if(path==='/archive.html')id='archiveSearch';
  if(id){var field=document.getElementById(id);if(field){field.value=q;field.setAttribute('data-hamlet-deep-search','true');field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}))}}
 }
-function initialise(){buildPalette();prefillSearch()}
+function initialise(){buildNav();buildPalette();prefillSearch()}
 initialise();
 })();

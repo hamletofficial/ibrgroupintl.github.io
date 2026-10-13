@@ -566,6 +566,7 @@ exports.recordHamletDealHistory = onDocumentWritten({
   region: "us-central1",
   timeoutSeconds: 60,
   memory: "256MiB",
+  retry: true,
 }, async function(event) {
   const change = event.data;
   if (!change) return;
@@ -594,7 +595,11 @@ exports.recordHamletDealHistory = onDocumentWritten({
   try { admin.app(); } catch (err) { admin.initializeApp(); }
   const db = getFirestore(admin.app());
   const sourceTime = (afterExists ? change.after.updateTime : change.before.updateTime);
-  const suffix = sourceTime && typeof sourceTime.toMillis === "function" ? sourceTime.toMillis() : Date.now();
+  // CloudEvent IDs stay stable across retries and differ for a deletion even
+  // when it immediately follows the last update to the same deal.
+  const rawSuffix = event.id || (sourceTime && sourceTime.seconds !== undefined ?
+    String(sourceTime.seconds) + "_" + String(sourceTime.nanoseconds || 0) : String(Date.now()));
+  const suffix = String(rawSuffix).replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 100);
   const safeId = dealId.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 100);
   const historyId = "evt_" + safeId + "_" + suffix;
   try {

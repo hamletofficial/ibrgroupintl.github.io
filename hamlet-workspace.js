@@ -74,13 +74,8 @@ function prefillSearch(){
  else if(path==='/directory.html')id='directorySearchInput';
  else if(path==='/posts.html')id='postSearch';
  if(id){var input=document.getElementById(id);if(input){input.value=q;input.setAttribute('data-hamlet-deep-search','true')}}
- document.addEventListener('DOMContentLoaded',function(){
-  if(id){var field=document.getElementById(id);if(field){field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}))}}
-  if(path==='/posts.html'){
-   var form=document.getElementById('postSearchForm');if(form&&document.getElementById('postSearch')&&document.getElementById('postSearch').value)form.requestSubmit();
-  }
- },{once:true});
+ if(id){var field=document.getElementById(id);if(field){field.value=q;field.setAttribute('data-hamlet-deep-search','true');field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}))}}
 }
 function initialise(){buildNav();buildPalette();prefillSearch()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialise,{once:true});else initialise();
+initialise();
 })();

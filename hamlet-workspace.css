@@ -34,3 +34,9 @@
 .hamlet-related-contact{overflow-wrap:anywhere}
 @media(max-width:760px){.hamlet-primary-nav{padding:8px 12px;gap:4px}.hamlet-primary-nav .hamlet-nav-link{padding:8px 10px}.hamlet-primary-nav .hamlet-global-search{margin-left:0}.hamlet-search-overlay{padding:5vh 10px 16px}.hamlet-search-form{flex-wrap:wrap;padding:0 14px 14px}.hamlet-search-input{flex-basis:100%}.hamlet-search-route{flex:1 1 60%;min-width:0}.hamlet-search-submit{flex:0 0 auto}.hamlet-search-heading,.hamlet-search-caption{padding-left:14px;padding-right:14px}.hamlet-search-status{margin-left:14px;margin-right:14px}.hamlet-search-destinations{grid-template-columns:1fr;padding-left:14px;padding-right:14px}.hamlet-search-dialog{max-height:90vh}}
 @media(prefers-reduced-motion:reduce){.hamlet-primary-nav .hamlet-nav-link{transition:none}}
+
+
+/* Universal fixed Hamlet wordmark: consistent placement on desktop and mobile. */
+.hamlet-fixed-brand{position:fixed!important;top:10px!important;left:14px!important;z-index:100002!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:34px!important;padding:5px 11px!important;border:1px solid rgba(191,219,254,.38)!important;border-radius:8px!important;background:#071d4a!important;color:#fff!important;font:800 19px/1 'DM Sans','Segoe UI',Arial,sans-serif!important;letter-spacing:-.055em!important;text-decoration:none!important;box-shadow:0 3px 12px rgba(0,0,0,.24)!important;isolation:isolate!important}
+.hamlet-fixed-brand:hover,.hamlet-fixed-brand:focus-visible{background:#0b2a6f!important;color:#fff!important;outline:2px solid #93c5fd!important;outline-offset:2px!important}
+@media(max-width:760px){.hamlet-fixed-brand{top:8px!important;left:10px!important;min-height:32px!important;padding:5px 9px!important;font-size:18px!important}}

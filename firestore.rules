@@ -283,7 +283,7 @@ service cloud.firestore {
           'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.keys().hasOnly([
-          'id','uid','name','property','propertyResourceId','type','value','stage','owner','client','notes','createdAt','updatedAt'
+          'id','uid','name','property','propertyResourceId','contactUid','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.id == dealId
         && request.resource.data.uid == request.auth.uid
@@ -298,6 +298,10 @@ service cloud.firestore {
             && request.resource.data.propertyResourceId.size() <= 200
             && exists(/databases/$(database)/documents/commercialProperties/$(request.resource.data.propertyResourceId))
             && get(/databases/$(database)/documents/commercialProperties/$(request.resource.data.propertyResourceId)).data.ownerUid == request.auth.uid))
+        && (!('contactUid' in request.resource.data)
+          || (request.resource.data.contactUid is string
+            && request.resource.data.contactUid.size() <= 128
+            && exists(/databases/$(database)/documents/publicProfiles/$(request.resource.data.contactUid))))
         && request.resource.data.type in ['Acquisition','Disposal','Leasing','Investment','Development']
         && request.resource.data.value is number
         && request.resource.data.value >= 0
@@ -321,7 +325,7 @@ service cloud.firestore {
           'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.keys().hasOnly([
-          'id','uid','name','property','propertyResourceId','type','value','stage','owner','client','notes','createdAt','updatedAt'
+          'id','uid','name','property','propertyResourceId','contactUid','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.id == dealId
         && request.resource.data.uid == request.auth.uid
@@ -337,6 +341,10 @@ service cloud.firestore {
             && request.resource.data.propertyResourceId.size() <= 200
             && exists(/databases/$(database)/documents/commercialProperties/$(request.resource.data.propertyResourceId))
             && get(/databases/$(database)/documents/commercialProperties/$(request.resource.data.propertyResourceId)).data.ownerUid == request.auth.uid))
+        && (!('contactUid' in request.resource.data)
+          || (request.resource.data.contactUid is string
+            && request.resource.data.contactUid.size() <= 128
+            && exists(/databases/$(database)/documents/publicProfiles/$(request.resource.data.contactUid))))
         && request.resource.data.type in ['Acquisition','Disposal','Leasing','Investment','Development']
         && request.resource.data.value is number
         && request.resource.data.value >= 0

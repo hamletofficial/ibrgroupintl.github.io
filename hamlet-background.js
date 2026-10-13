@@ -6,7 +6,7 @@
   if(document.getElementById('hamlet-particles-background'))return;
   var style=document.createElement('style');
   style.id='hamlet-particles-background-style';
-  style.textContent='html{min-height:100%;background:#111827!important}body{position:relative;isolation:isolate;background:transparent!important}#hamlet-particles-background{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden;background:#111827}#hamlet-particles-background canvas{display:block;width:100%;height:100%}body>*:not(#hamlet-particles-background){position:relative;z-index:1}body>.page-wrapper,body>main,body>.container{background:transparent!important;background-color:transparent!important}';
+  style.textContent='html{min-height:100%;background:transparent!important}body{position:relative;isolation:isolate;background:transparent!important}#hamlet-particles-background{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden;background:transparent}#hamlet-particles-background canvas{display:block;width:100%;height:100%}body>*:not(#hamlet-particles-background){position:relative;z-index:1}body>.page-wrapper,body>main,body>.container{background:transparent!important;background-color:transparent!important}';
   (document.head||document.documentElement).appendChild(style);
   var layer=document.createElement('div');
   layer.id='hamlet-particles-background';layer.setAttribute('aria-hidden','true');

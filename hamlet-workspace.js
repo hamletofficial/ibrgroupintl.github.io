@@ -27,7 +27,7 @@ function buildNav(){
   return;
  }
  if(document.querySelector('.hamlet-primary-nav'))return;
- var header=document.querySelector('header.resource-nav, header.topbar');
+ var header=document.querySelector('header.resource-nav, header.topbar, header.archive-topbar');
  var nav=make('nav','hamlet-primary-nav');nav.setAttribute('aria-label','Hamlet workspace');
  var path=currentPath();
  routes.forEach(function(r){

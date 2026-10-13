@@ -3,7 +3,7 @@
   if (global.ibrBrokerPosts) return;
 
   var authorCache = new Map();
-  var FALLBACK_PHOTO = '/100.png';
+  var FALLBACK_PHOTO = '/assets/images/dark-hamlet.png';
 
   function asDate(value) {
     if (!value) return null;

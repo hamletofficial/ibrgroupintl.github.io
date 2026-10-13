@@ -760,8 +760,5 @@ html[data-appearance="dark"] .sidebar-menu-link { color:#e2e8f0 !important; }
 html[data-appearance="dark"] .sidebar-menu-link:hover,
 html[data-appearance="dark"] .sidebar-menu-link:focus-visible { background:#1d4ed8 !important; color:#fff !important; }
 
-/* Remove the legacy account-links menu; Hamlet's own workspace navigation remains available. */
-.sidebar-menu-shell,
-#topNavMenu { display:none !important; }
 body.has-sidebar #protected-content,
 body.has-sidebar #dashboard { margin-left:0 !important; }

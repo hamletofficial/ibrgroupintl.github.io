@@ -344,7 +344,13 @@
       text-decoration: underline;
     }
 
-  </style>
+  
+    /* Align the directory heading and its supporting copy with the content column. */
+    .directory-header { justify-content: flex-start; }
+    .directory-header > div:first-child { text-align: left !important; margin-left: 0 !important; padding-left: 0 !important; }
+    .directory-header .directory-title,
+    .directory-header .directory-intro { text-align: left !important; margin-left: 0 !important; }
+</style>
 
   <link rel="stylesheet" href="/theme.css">
   <script src="/theme.js"></script>

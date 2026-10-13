@@ -23,6 +23,7 @@ This deploys the rules and the server-side history trigger. The web workspace is
 
 GitHub Actions runs:
 - JavaScript syntax and feature/security-hook smoke tests.
+- A Playwright browser flow using a mock Firebase layer to exercise deal creation, saved-search creation and document upload UI.
 - Firestore and Storage rule tests against Firebase emulators, including owner isolation, immutable history, saved-search ownership and transaction-file access.
 
 These are automated code/security checks, not a full authenticated browser test against production Firebase. Confirm the workflow run and perform a signed-in smoke test after deployment.

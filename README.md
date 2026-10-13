@@ -13,7 +13,7 @@ Hamlet is the broker community app from Impact in Business Recruitment. It bring
 | Capability | Location | Purpose |
 |---|---|---|
 | Live property listings | `/app/public/live.html` | Browse and search commercial property listings available to the broker community |
-| Deal pipeline | `/app/hamlet/index.html` | Manage commercial real-estate deals and critical-path deadlines |
+| Deal pipeline | `/app/hamlet/index.html` | Manage commercial real-estate deals and critical-path deadlines; switch between Kanban and list views, link owned property records and public member contacts, and export workspace CSV |
 | Member directory | `/directory.html` | Find community members and access the live properties shortcut |
 | Member hub | `/members.html` | Entry point for signed-in community tools |
 | Member profiles | `/profile.html`, `/editprofile.html` | View and manage member profile information |
@@ -31,7 +31,7 @@ Open `/app/public/live.html` to access the commercial property listings experien
 
 ### Deal pipeline
 
-Open `/app/hamlet/index.html` for Hamlet’s commercial real-estate deal pipeline and critical-path deadline management. The page checks Firebase Authentication and redirects unauthenticated visitors to `/login.html`, preserving the requested destination through the `next` query parameter.
+Open `/app/hamlet/index.html` for Hamlet’s commercial real-estate deal pipeline and critical-path deadline management. Brokers can switch between Kanban and list views, link deals to property records they own, and optionally connect a deal to a public member profile. Live listings include an **Add to Deal Pipeline** action that pre-fills a draft deal with property context for review. The page checks Firebase Authentication and preserves the requested destination through the `next` query parameter.
 
 ## Repository layout
 

@@ -36,7 +36,7 @@
   function setFallbackPhoto(photoEl) {
     if (!photoEl) return;
     photoEl.onerror = null;
-    photoEl.src = '/100.png';
+    photoEl.src = '/assets/images/dark-hamlet.png';
     photoEl.alt = 'Profile photo';
   }
 
@@ -87,7 +87,7 @@
           photoEl.onerror = null;
           setFallbackPhoto(photoEl);
         };
-        photoEl.src = '/100.png';
+        photoEl.src = '/assets/images/dark-hamlet.png';
       }
       chip.style.display = 'inline-flex';
     });
@@ -110,7 +110,7 @@
           if (photoEl) {
             photoEl.alt = savedName + ' profile photo';
             photoEl.onerror = function () { photoEl.onerror = null; setFallbackPhoto(photoEl); };
-            photoEl.src = savedPhoto || '/100.png';
+            photoEl.src = savedPhoto || '/assets/images/dark-hamlet.png';
           }
         });
       }, function (error) {

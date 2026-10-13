@@ -3,28 +3,6 @@
 'use strict';
 if(window.__hamletWorkspaceUX)return;
 window.__hamletWorkspaceUX=true;
-// Keep shared navigation concealed until Firebase confirms an authenticated session.
-document.documentElement.classList.add('hamlet-auth-pending');
-function setWorkspaceAuthState(user){
- document.documentElement.classList.remove('hamlet-auth-pending');
- document.documentElement.classList.toggle('hamlet-authenticated',!!user);
-}
-function watchWorkspaceAuth(){
- try{
-  if(!window.firebase||typeof firebase.auth!=='function')return;
-  if(!firebase.apps.length&&window.firebaseConfig)firebase.initializeApp(window.firebaseConfig);
-  var auth=firebase.auth();
-  if(auth&&typeof auth.onAuthStateChanged==='function'){
-   auth.onAuthStateChanged(function(user){setWorkspaceAuthState(user)},function(error){
-    console.error('Hamlet navigation auth check failed:',error);
-    setWorkspaceAuthState(null);
-   });
-  }
- }catch(error){
-  console.error('Hamlet navigation auth check failed:',error);
-  setWorkspaceAuthState(null);
- }
-}
 var routes=[
  {label:'Deal Pipeline',short:'Deals',href:'/app/hamlet/',icon:'▦',paths:['/app/hamlet','/app/hamlet/','/app/hamlet/index.html'],desc:'Find transactions and next actions.'},
  {label:'My Properties',short:'Properties',href:'/app/public/resources.html',icon:'⌂',paths:['/app/public/resources.html'],desc:'Search and manage properties you own.'},
@@ -107,6 +85,6 @@ function prefillSearch(){
  else if(path==='/archive.html')id='archiveSearch';
  if(id){var field=document.getElementById(id);if(field){field.value=q;field.setAttribute('data-hamlet-deep-search','true');field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}))}}
 }
-function initialise(){buildNav();buildPalette();prefillSearch();watchWorkspaceAuth()}
+function initialise(){buildNav();buildPalette();prefillSearch()}
 initialise();
 })();

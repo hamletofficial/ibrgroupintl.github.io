@@ -34,3 +34,15 @@
 .hamlet-related-contact{overflow-wrap:anywhere}
 @media(max-width:760px){.hamlet-primary-nav{padding:8px 12px;gap:4px}.hamlet-primary-nav .hamlet-nav-link{padding:8px 10px}.hamlet-primary-nav .hamlet-global-search{margin-left:0}.hamlet-search-overlay{padding:5vh 10px 16px}.hamlet-search-form{flex-wrap:wrap;padding:0 14px 14px}.hamlet-search-input{flex-basis:100%}.hamlet-search-route{flex:1 1 60%;min-width:0}.hamlet-search-submit{flex:0 0 auto}.hamlet-search-heading,.hamlet-search-caption{padding-left:14px;padding-right:14px}.hamlet-search-status{margin-left:14px;margin-right:14px}.hamlet-search-destinations{grid-template-columns:1fr;padding-left:14px;padding-right:14px}.hamlet-search-dialog{max-height:90vh}}
 @media(prefers-reduced-motion:reduce){.hamlet-primary-nav .hamlet-nav-link{transition:none}}
+
+/* Keep the shared navigation available while page-level authentication checks are pending. */
+html.hamlet-auth-pending .hamlet-primary-nav,
+html.hamlet-auth-pending nav.workspace-nav,
+body.auth-pending .hamlet-primary-nav,
+body.auth-pending nav.workspace-nav {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 100001 !important;
+}

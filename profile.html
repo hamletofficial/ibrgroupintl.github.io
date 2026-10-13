@@ -146,5 +146,5 @@ window.addEventListener('load',function(){
  likesToggle.addEventListener('click',function(){const opening=likesPanel.hidden;likesPanel.hidden=!opening;likesToggle.setAttribute('aria-expanded',String(opening));likesToggle.textContent=opening?'💜 Hide Likes':'💜 Your Likes';if(opening)likesPanel.scrollIntoView({behavior:'smooth',block:'start'});});
  likesClose.addEventListener('click',function(){likesPanel.hidden=true;likesToggle.setAttribute('aria-expanded','false');likesToggle.textContent='💜 Your Likes';likesToggle.focus()});
  signOut.addEventListener('click',async function(){try{await auth.signOut();location.replace('/login.html')}catch(e){console.error('Sign out failed',e)}});
-});</script>  <script src="/hamlet-workspace.js?v=20261013-5"></script>
+});</script>  <script src="/hamlet-workspace.js?v=20261013-7"></script>
 </body></html>

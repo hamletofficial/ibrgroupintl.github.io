@@ -2,7 +2,7 @@
 
 **Hamlet** is a commercial property CRM and broker-community platform developed by Impact in Business Recruitment Group Limited. Built around the principle **“less fragmentation, more connected deals,”** Hamlet brings property opportunities, deal progression, professional relationships and broker communications into a more connected workspace. Its tools include live property listings, a deal pipeline with critical-path deadlines, member profiles and directory, social updates, and direct messaging—helping brokers organise information and maintain momentum from opportunity to transaction.
 
-- **Production site:** [https://uk.ibrecruitment.com](https://uk.ibrecruitment.com)
+- **Production site:** [https://hamlet-ai.co.uk](https://hamlet-ai.co.uk)
 - **Repository:** [ibrgroupintl/ibrgroupintl.github.io](https://github.com/ibrgroupintl/ibrgroupintl.github.io)
 - **Primary app:** Hamlet
 - **Authentication:** Firebase Authentication

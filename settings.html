@@ -89,7 +89,7 @@
         </div>
         <div class="user-menu" style="margin-left:auto;display:flex;align-items:center;gap:12px">
           <div class="auth-profile-chip" data-auth-profile>
-            <img class="auth-profile-photo" data-auth-photo src="/100.png" alt="Profile photo">
+            <img class="auth-profile-photo" data-auth-photo src="/assets/images/dark-hamlet.png" alt="Profile photo">
             <span class="auth-profile-name" data-auth-name></span>
           </div>
           
@@ -154,7 +154,7 @@
       <section class="settings-card" aria-labelledby="profilePhotoHeading">
         <h2 id="profilePhotoHeading" style="margin-top:0">Profile Photo</h2>
         <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.8rem">
-          <img id="settingsProfilePhotoPreview" src="/100.png" alt="Current profile photo" style="width:88px;height:88px;border-radius:50%;object-fit:cover;border:2px solid #e2e8f0">
+          <img id="settingsProfilePhotoPreview" src="/assets/images/dark-hamlet.png" alt="Current profile photo" style="width:88px;height:88px;border-radius:50%;object-fit:cover;border:2px solid #e2e8f0">
           <div style="flex:1;min-width:220px">
             <label for="settingsProfilePhotoInput" style="display:block;font-weight:600;color:#092a4b;margin-bottom:.4rem">Adjust profile photo</label>
             <input id="settingsProfilePhotoInput" type="file" accept="image/*" style="max-width:100%;display:block;margin-bottom:.5rem">
@@ -406,8 +406,8 @@
             .join(' ');
           settingsUserName.textContent = savedName || user.displayName || 'Not set';
           const savedPhoto = profileData.imageDataUrl || '';
-          settingsPhotoPreview.src = typeof savedPhoto === 'string' && savedPhoto ? savedPhoto : '/100.png';
-          settingsPhotoPreview.onerror = function () { settingsPhotoPreview.onerror = null; settingsPhotoPreview.src = '/100.png'; };
+          settingsPhotoPreview.src = typeof savedPhoto === 'string' && savedPhoto ? savedPhoto : '/assets/images/dark-hamlet.png';
+          settingsPhotoPreview.onerror = function () { settingsPhotoPreview.onerror = null; settingsPhotoPreview.src = '/assets/images/dark-hamlet.png'; };
           const incognito = profileSnapshot.exists && profileData.incognito === true;
           if (incognitoBtn) {
             incognitoBtn.setAttribute('aria-pressed', String(incognito));

@@ -1,0 +1,33 @@
+name: Hamlet CRM smoke tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/hamlet/index.html'
+      - 'firestore.rules'
+      - 'storage.rules'
+      - 'tests/**'
+      - '.github/workflows/hamlet-smoke.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app/hamlet/index.html'
+      - 'firestore.rules'
+      - 'storage.rules'
+      - 'tests/**'
+      - '.github/workflows/hamlet-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  static-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Parse JavaScript and verify feature/security hooks
+        run: node --test tests/hamlet-static.test.cjs

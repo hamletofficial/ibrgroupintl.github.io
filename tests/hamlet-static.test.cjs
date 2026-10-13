@@ -39,6 +39,13 @@ test('mailbox bulk-delete action only removes messages sent by the signed-in mem
   assert.match(firestore, /allow delete: if request\.auth != null\s*&& request\.auth\.uid == resource\.data\.senderUid\s*&& request\.auth\.uid in resource\.data\.participants;/);
 });
 
+test('workspace search includes authenticated messages alongside deals, properties and public profiles', () => {
+  assert.match(html, /Searches your deals, owned properties, accessible messages and public member profiles/);
+  assert.match(html, /db\\.collection\\('directMessages'\\)\\.where\\('participants','array-contains',u\\.uid\\)\\.limit\\(250\\)\\.get\\(\\)/);
+  assert.match(html, /kind:'Message'/);
+  assert.match(html, /href="\\/messages\\.html\\?to='\\+encodeURIComponent\\(m\\.id\\)\\+'"/);
+});
+
 test('transaction history is append-only and owner-scoped', () => {
   assert.match(firestore, /match \/hamletDealEvents\/{eventId}/);
   assert.match(firestore, /allow read: if request\.auth != null && resource\.data\.uid == request\.auth\.uid/);

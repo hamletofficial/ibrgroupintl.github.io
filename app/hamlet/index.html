@@ -185,6 +185,28 @@ button:disabled{opacity:.6;cursor:wait}.stat{background:linear-gradient(135deg,#
     <section class="advanced-panel" aria-labelledby="documentsTitle"><h3 id="documentsTitle">Transaction documents</h3><p class="advanced-intro">Attach supporting files to a deal. Files are stored under your account’s restricted Firebase Storage path.</p><form id="transactionDocumentForm" class="advanced-form"><div><label for="documentDeal">Related transaction *</label><select id="documentDeal" required><option value="">Select a saved transaction</option></select></div><div class="advanced-inline"><div><label for="documentTitle">Document title *</label><input id="documentTitle" maxlength="120" required placeholder="Heads of terms"></div><div><label for="documentCategory">Category</label><select id="documentCategory"><option>Heads of terms</option><option>Legal</option><option>Due diligence</option><option>Valuation</option><option>Lease / contract</option><option>Finance</option><option>Correspondence</option><option>Other</option></select></div></div><div><label for="documentFile">Choose file (max 15 MB) *</label><input class="advanced-file" id="documentFile" type="file" required accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.png,.jpg,.jpeg,.webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*,text/plain,text/csv"></div><div><label for="documentNotes">Notes (optional)</label><input id="documentNotes" maxlength="300" placeholder="Version, expiry date or context"></div><div><button class="btn primary" id="uploadDocumentBtn" type="submit">Upload document</button><div class="advanced-status" id="documentUploadStatus" role="status"></div></div></form><div class="advanced-list" id="transactionDocumentsList" aria-live="polite"><div class="advanced-empty">No transaction documents loaded.</div></div><p class="advanced-caveat">Do not upload documents unless you are authorised to store them. Treat download links as confidential and do not forward them.</p></section>
     <section class="advanced-panel" aria-labelledby="savedSearchesTitle"><h3 id="savedSearchesTitle">Saved searches &amp; alerts</h3><p class="advanced-intro">Save a name, keyword and stage filter. Hamlet checks for newly matching deals when you open this workspace; browser notifications require permission.</p><form id="savedSearchForm" class="advanced-form"><div><label for="savedSearchName">Search name *</label><input id="savedSearchName" maxlength="80" required placeholder="London acquisitions to progress"></div><div><label for="savedSearchQuery">Keyword / client / property</label><input id="savedSearchQuery" maxlength="100" placeholder="London, lease, client…"></div><div class="advanced-inline"><div><label for="savedSearchStage">Pipeline stage</label><select id="savedSearchStage"><option value="">Any stage</option><option>Initial Inspection</option><option>LOI Issued</option><option>Due Diligence</option><option>Under Contract</option><option>Lease Execution</option><option>Closing</option><option>Commission Payout</option><option>Closed</option></select></div><div><label for="savedSearchType">Deal type</label><select id="savedSearchType"><option value="">Any type</option><option>Acquisition</option><option>Disposal</option><option>Leasing</option><option>Investment</option><option>Development</option></select></div></div><label><input id="savedSearchAlerts" type="checkbox" checked> Alert me when new deals match</label><button class="btn primary" id="saveSearchBtn" type="submit">Save search</button></form><div class="advanced-list" id="savedSearchesList" aria-live="polite"><div class="advanced-empty">No saved searches yet.</div></div><div class="advanced-actions"><button class="btn small" type="button" id="enableSearchNotifications">Enable browser alerts</button></div></section>
     <section class="advanced-panel" aria-labelledby="dealIntelligenceTitle"><h3 id="dealIntelligenceTitle">Deal intelligence · rules-based</h3><p class="advanced-intro">Prioritised next steps grounded in the deal fields and deadlines already in this workspace. This transparent rules-based analysis sends no records to an external AI service.</p><div class="advanced-list" id="dealIntelligenceList" aria-live="polite"><div class="advanced-empty">Your saved transactions and deadlines will appear here as actionable recommendations.</div></div><p class="advanced-caveat">Recommendations are deterministic decision support, not legal, valuation or investment advice. Confirm all dates and source information.</p></section>
+    <section class="advanced-panel" aria-labelledby="dealCalculatorTitle">
+      <h3 id="dealCalculatorTitle">Commercial deal calculator</h3>
+      <p class="advanced-intro">Estimate rental yields, price per square foot and a broker fee from figures you supply. Calculations stay in this browser and are not saved to your account.</p>
+      <form id="dealCalculatorForm" class="advanced-form" novalidate>
+        <div><label for="calculatorDeal">Use a saved deal (optional)</label><select id="calculatorDeal"><option value="">Select a saved deal</option></select></div>
+        <div><button type="button" class="btn small" id="useDealValueBtn">Use selected deal value</button></div>
+        <div><label for="calculatorValue">Property / transaction value (£) *</label><input id="calculatorValue" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="e.g. 1250000" required></div>
+        <div class="advanced-inline">
+          <div><label for="calculatorAnnualRent">Annual rental income (£)</label><input id="calculatorAnnualRent" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 85000"></div>
+          <div><label for="calculatorAnnualCosts">Annual operating costs (£)</label><input id="calculatorAnnualCosts" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Enter to calculate net yield"></div>
+        </div>
+        <div class="advanced-inline">
+          <div><label for="calculatorCommissionRate">Agreed broker fee (%)</label><input id="calculatorCommissionRate" type="number" min="0" max="100" step="0.01" inputmode="decimal" placeholder="Enter agreed rate"></div>
+          <div><label for="calculatorFloorArea">Floor area (sq ft, optional)</label><input id="calculatorFloorArea" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 10000"></div>
+        </div>
+        <label><input id="calculatorAddVat" type="checkbox"> Add standard VAT at 20% where applicable</label>
+        <div class="advanced-actions"><button type="button" class="btn primary" id="calculateDealBtn">Calculate metrics</button><button type="reset" class="btn" id="resetDealCalculatorBtn">Reset</button></div>
+        <div class="advanced-status" id="calculatorStatus" role="status" aria-live="polite"></div>
+      </form>
+      <div class="advanced-list" id="dealCalculatorResults" aria-live="polite"><div class="advanced-empty">Enter a property value and any available assumptions, then calculate.</div></div>
+      <p class="advanced-caveat">Indicative calculations only. Net yield depends on the costs entered and excludes any unentered finance, tax, vacancy or capital expenditure. VAT treatment varies by supply and transaction; confirm applicability and the agreed broker-fee basis before relying on an estimate.</p>
+    </section>
   </div>
 </section>
 <footer class="footer"><span>Hamlet · Commercial real estate deal management</span><span id="workspaceFooter">Private workspace · no deals loaded</span></footer>
@@ -290,9 +312,9 @@ function checkDeadlineAlerts(){if(!('Notification'in window)||Notification.permi
 
 function advancedMatchSearch(search,deal){const q=String(search.query||'').trim().toLowerCase();return(!q||[deal.name,deal.property,deal.client,deal.owner,deal.stage,deal.type,deal.notes].join(' ').toLowerCase().includes(q))&&(!search.stage||deal.stage===search.stage)&&(!search.type||deal.type===search.type)}
 function renderAdvancedPanels(){
- const hf=$('historyDealFilter'),dd=$('documentDeal');if(!hf||!dd)return;
- const hprev=hf.value,dprev=dd.value,opts=deals.filter(d=>!d.demo).map(d=>'<option value="'+escapeHtml(d.id)+'">'+escapeHtml(d.name)+'</option>').join('');
- hf.innerHTML='<option value="">All transactions</option>'+opts;hf.value=hprev;dd.innerHTML='<option value="">Select a saved transaction</option>'+opts;dd.value=dprev;
+ const hf=$('historyDealFilter'),dd=$('documentDeal'),cd=$('calculatorDeal');if(!hf||!dd||!cd)return;
+ const hprev=hf.value,dprev=dd.value,cprev=cd.value,opts=deals.filter(d=>!d.demo).map(d=>'<option value="'+escapeHtml(d.id)+'">'+escapeHtml(d.name)+'</option>').join('');
+ hf.innerHTML='<option value="">All transactions</option>'+opts;hf.value=hprev;dd.innerHTML='<option value="">Select a saved transaction</option>'+opts;dd.value=dprev;cd.innerHTML='<option value="">Select a saved deal</option>'+opts;cd.value=cprev;
  const filter=hf.value;
  const timelineEvents=[
   ...advancedHistory.map(e=>({id:'event:'+e.id,dealId:e.dealId,title:e.dealName||dealFor(e.dealId)?.name||'Transaction',summary:e.summary||e.eventType||'Transaction updated',eventLabel:String(e.eventType||'Deal change').replace('_',' '),stageFrom:e.stageFrom,stageTo:e.stageTo,createdAt:e.createdAt})),
@@ -373,6 +395,29 @@ $('transactionDocumentsList').addEventListener('click',async e=>{
  if(open){const d=advancedDocuments.find(x=>x.id===open.dataset.openDocument);if(!d)return;try{const url=await firebase.storage().ref(d.storagePath).getDownloadURL();window.open(url,'_blank','noopener,noreferrer')}catch(err){showToast('Could not open this document. Check access permissions and Storage configuration.')}return}
  if(remove){const d=advancedDocuments.find(x=>x.id===remove.dataset.deleteDocument);if(!d||!confirm('Permanently delete “'+(d.title||d.fileName)+'”?'))return;remove.disabled=true;try{await firebase.storage().ref(d.storagePath).delete();await db.collection('hamletDocuments').doc(d.id).delete();advancedDocuments=advancedDocuments.filter(x=>x.id!==d.id);renderAdvancedPanels();showToast('Document deleted.')}catch(err){showToast('Could not fully delete this document. Check Storage and Firestore permissions.');remove.disabled=false}}
 });
+
+function calculateDealCalculator(){
+ const status=$('calculatorStatus'),results=$('dealCalculatorResults');
+ const rawValue=$('calculatorValue').value.trim(),price=Number(rawValue);
+ if(rawValue===''||!Number.isFinite(price)||price<=0){status.textContent='Enter a property or transaction value greater than £0.';results.innerHTML='<div class="advanced-empty">A positive property / transaction value is required before yields and fees can be calculated.</div>';return}
+ const rentRaw=$('calculatorAnnualRent').value.trim(),costsRaw=$('calculatorAnnualCosts').value.trim(),commissionRaw=$('calculatorCommissionRate').value.trim(),areaRaw=$('calculatorFloorArea').value.trim();
+ const rent=rentRaw===''?null:Number(rentRaw),costs=costsRaw===''?null:Number(costsRaw),commission=commissionRaw===''?null:Number(commissionRaw),area=areaRaw===''?null:Number(areaRaw);
+ if((rent!==null&&(!Number.isFinite(rent)||rent<0))||(costs!==null&&(!Number.isFinite(costs)||costs<0))||(commission!==null&&(!Number.isFinite(commission)||commission<0||commission>100))||(area!==null&&(!Number.isFinite(area)||area<=0))){status.textContent='Check the inputs: income and costs must be non-negative, the fee rate must be 0–100%, and floor area must be greater than zero.';return}
+ const gbp=n=>new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+ const pct=n=>n.toFixed(2)+'%';
+ const metric=(label,value,note)=>'<article class="advanced-item"><div class="advanced-item-head"><div class="advanced-item-title">'+escapeHtml(label)+'</div><span class="intelligence-score">'+escapeHtml(value)+'</span></div><div class="advanced-meta">'+escapeHtml(note)+'</div></article>';
+ const rows=[];
+ if(rent!==null)rows.push(metric('Gross rental yield',pct(rent/price*100),'Annual rental income ÷ property value.'));
+ if(rent!==null&&costs!==null)rows.push(metric('Net rental yield',pct((rent-costs)/price*100),'(Annual rent − entered annual operating costs) ÷ property value; other costs are excluded unless entered.'));
+ if(area!==null)rows.push(metric('Price per square foot',gbp(price/area),'Property / transaction value ÷ entered floor area.'));
+ if(commission!==null){const fee=price*commission/100;rows.push(metric('Estimated broker fee (before VAT)',gbp(fee),'Calculated from the property / transaction value and your entered fee rate of '+commission+'%.'));if($('calculatorAddVat').checked){rows.push(metric('Indicative VAT at 20%',gbp(fee*0.2),'Added only because you selected the VAT option; confirm VAT applies to the service.'));rows.push(metric('Estimated fee including VAT',gbp(fee*1.2),'Before any other deductions or contractual adjustments.'))}else{rows.push(metric('VAT treatment','Not added','The fee is shown before VAT.'))}}
+ if(!rows.length)rows.push('<div class="advanced-empty">Add annual rental income, both income and operating costs, an agreed broker-fee rate or floor area to calculate additional metrics.</div>');
+ results.innerHTML=rows.join('');
+ status.textContent='Indicative calculation complete. Figures are not saved to your account.';
+}
+$('calculateDealBtn').addEventListener('click',calculateDealCalculator);
+$('useDealValueBtn').addEventListener('click',()=>{const deal=dealFor($('calculatorDeal').value);if(!deal){showToast('Select a saved deal first.');return}$('calculatorValue').value=Number(deal.value||0)>0?Number(deal.value):'';$('calculatorStatus').textContent='Loaded the indicative value for '+deal.name+'. Review it before calculating.';calculateDealCalculator()});
+$('dealCalculatorForm').addEventListener('reset',()=>{setTimeout(()=>{$('calculatorStatus').textContent='';$('dealCalculatorResults').innerHTML='<div class="advanced-empty">Enter a property value and any available assumptions, then calculate.</div>'},0)});
 
 loadLocal();renderAll();if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',connectFirebase);else connectFirebase();setTimeout(checkDeadlineAlerts,1800);
 })();

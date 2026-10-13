@@ -41,9 +41,9 @@ test('mailbox bulk-delete action only removes messages sent by the signed-in mem
 
 test('workspace search includes authenticated messages alongside deals, properties and public profiles', () => {
   assert.match(html, /Searches your deals, owned properties, accessible messages and public member profiles/);
-  assert.match(html, /db\\.collection\\('directMessages'\\)\\.where\\('participants','array-contains',u\\.uid\\)\\.limit\\(250\\)\\.get\\(\\)/);
+  assert.match(html, /db\.collection\('directMessages'\)\.where\('participants','array-contains',u\.uid\)\.limit\(250\)\.get\(\)/);
   assert.match(html, /kind:'Message'/);
-  assert.match(html, /href="\\/messages\\.html\\?to='\\+encodeURIComponent\\(m\\.id\\)\\+'"/);
+  assert.match(html, /href="\/messages\.html\?to='\+encodeURIComponent\(m\.id\)\+'"/);
 });
 
 test('transaction history is append-only and owner-scoped', () => {

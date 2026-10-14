@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#111827">
+  <meta name="theme-color" content="#071d4a">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Hamlet by IBR | Less fragmentation. More connected deals.">
+  <meta property="og:description" content="A connected commercial property workspace for listings, deal progression and professional relationships.">
+  <meta property="og:url" content="https://hamlet-ai.co.uk/">
+  <meta name="twitter:card" content="summary">
   <meta name="description" content="Explore hamlet by IBR: a connected workspace for commercial property listings, deal pipeline management, broker networking and communications.">
   <title>Home | hamlet by IBR</title>
   <link rel="stylesheet" href="/theme.css">
@@ -71,8 +75,25 @@
     .footer-links a{color:var(--muted)}
     .footer-social-link{display:inline-flex;align-items:center;justify-content:center;color:var(--muted);line-height:1}
     .footer-social-link:hover{color:#fff}
-    @media(max-width:850px){.hero-grid,.usp{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:560px){.header-row{align-items:flex-start;flex-direction:column;padding:.8rem 0}.nav{width:100%}.nav .button{flex:1}.grid,.ticks,.workflow{grid-template-columns:1fr}.hero{padding-top:2.8rem}.hero-panel{padding:1rem}}
+    .product-preview{padding:0;overflow:hidden;background:#0e192a;border-color:#365277;box-shadow:0 22px 58px #0005}
+    .preview-top{display:flex;align-items:center;justify-content:space-between;gap:.7rem;padding:.95rem 1rem;border-bottom:1px solid #253851;background:#111f33}
+    .preview-brand{display:flex;align-items:center;gap:.55rem;min-width:0;font-size:.92rem;letter-spacing:-.03em}.preview-brand strong{white-space:nowrap}.preview-brand strong span{color:#91a5c0;font-size:.75rem;font-weight:600}
+    .preview-mark{display:grid;place-items:center;width:29px;height:29px;flex:0 0 auto;border-radius:9px;color:#071326;background:linear-gradient(145deg,#9bcaff,#386bd4);font-weight:900}
+    .preview-badge{padding:.23rem .45rem;border:1px solid #385579;border-radius:999px;color:#b9d8ff;font-size:.62rem;font-weight:800;white-space:nowrap}
+    .preview-body{padding:1rem}.preview-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.8rem}.preview-heading h2{margin:0;font-size:1rem}.preview-heading p{margin:.15rem 0 0;color:#91a5c0;font-size:.74rem}
+    .preview-search{padding:.58rem .7rem;margin-bottom:.7rem;border:1px solid #2a3c55;border-radius:8px;color:#91a5c0;background:#101e31;font-size:.75rem}
+    .preview-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem}.preview-column{min-width:0;padding:.45rem;border:1px solid #283c56;border-radius:9px;background:#111f32}
+    .preview-column-title{display:flex;align-items:center;gap:.3rem;min-height:28px;margin-bottom:.35rem;color:#cfdef1;font-size:.64rem;font-weight:800}
+    .stage-dot{width:6px;height:6px;flex:0 0 auto;border-radius:50%;background:#7cb6ff}.stage-dot.amber{background:#f6c56d}.stage-dot.teal{background:#64ddc0}
+    .preview-deal{padding:.48rem;border:1px solid #2a3c55;border-radius:7px;background:#16263b}.preview-deal strong{display:block;font-size:.65rem;line-height:1.35;overflow-wrap:anywhere}.preview-deal small{display:block;margin-top:.25rem;color:#91a5c0;font-size:.6rem}
+    .preview-bottom{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:.65rem}.preview-mini{padding:.6rem;border:1px solid #2a3c55;border-radius:8px;background:#111f32}.preview-mini strong{display:block;font-size:.72rem}.preview-mini span{display:block;margin-top:.12rem;color:#91a5c0;font-size:.65rem}
+    .preview-caption{margin:0;padding:0 1rem 1rem;color:#91a5c0;font-size:.68rem}
+    .capability-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;padding:0 0 1rem}.capability{min-width:0;padding:1rem;border:1px solid #2a3b55;border-radius:12px;background:#101a2a}.capability .icon{font-size:1.35rem}.capability strong{display:block;margin:.25rem 0;font-size:.9rem}.capability p{margin:0;color:var(--muted);font-size:.82rem;line-height:1.5}
+    .pricing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;align-items:stretch}.price-card{display:flex;flex-direction:column;padding:1.25rem;border:1px solid var(--line);border-radius:14px;background:#111827}.price-card.featured{border-color:#6b9fe0;background:linear-gradient(150deg,#172d49,#111827 76%)}
+    .price-label{margin:0 0 .6rem;color:#bddcff;font-size:.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.price{margin:0;font-size:clamp(2rem,3.5vw,2.6rem);line-height:1.1;font-weight:850;letter-spacing:-.055em}.price span{color:#a8b8cf;font-size:.82rem;font-weight:650;letter-spacing:0}
+    .price-description{flex:1;margin:.65rem 0 1rem;color:var(--muted);font-size:.9rem}.price-card .button{width:100%}.pricing-note{margin-top:1.1rem;padding:1rem 1.1rem;border:1px solid #33445d;border-left:3px solid #93c5fd;border-radius:10px;color:var(--muted);background:#101a2a;font-size:.87rem}.pricing-note strong{color:#fff}
+    @media(max-width:850px){.hero-grid,.usp{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow{grid-template-columns:repeat(2,minmax(0,1fr))}.capability-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.pricing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:560px){.header-row{align-items:flex-start;flex-direction:column;padding:.8rem 0}.nav{width:100%}.nav .button{flex:1}.grid,.ticks,.workflow,.capability-strip,.pricing-grid{grid-template-columns:1fr}.hero{padding-top:2.8rem}.hero-panel{padding:1rem}.product-preview{padding:0}.preview-body{padding:.7rem}.preview-top{padding:.75rem}.preview-columns{gap:.3rem}.preview-column{padding:.35rem}.preview-deal{padding:.38rem}.preview-column-title{font-size:.59rem}.preview-deal strong{font-size:.6rem}.preview-deal small{font-size:.56rem}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
   </style>
 </head>
@@ -81,6 +102,9 @@
     <div class="container header-row">
       <a class="brand" href="/index.html" aria-label="hamlet home">hamlet <span>by IBR</span></a>
       <nav class="nav" aria-label="Main navigation">
+        <a class="button" href="#modules">Modules</a>
+        <a class="button" href="#how-to-use">How it works</a>
+        <a class="button" href="#pricing">Pricing</a>
         <a class="button" href="/members.html">Members area</a>
         <a class="button primary" href="/app/hamlet/index.html">Open hamlet</a>
       </nav>
@@ -100,13 +124,37 @@
             <a class="button" href="#modules">Browse the modules ↓</a>
           </div>
         </div>
-        <aside class="hero-panel" aria-label="What hamlet brings together">
-          <h2>One connected workflow</h2>
-          <div class="signal"><span class="signal-icon" aria-hidden="true">🔎</span><div><strong>Find opportunities</strong><p>Browse commercial property listings and search for relevant details.</p></div></div>
-          <div class="signal"><span class="signal-icon" aria-hidden="true">🗂️</span><div><strong>Structure the process</strong><p>Use the deal pipeline to keep track of deal stages and critical-path actions.</p></div></div>
-          <div class="signal"><span class="signal-icon" aria-hidden="true">🤝</span><div><strong>Stay connected</strong><p>Use member profiles, messaging and the social feed to communicate with the network.</p></div></div>
-          <div class="signal"><span class="signal-icon" aria-hidden="true">🔐</span><div><strong>Member access</strong><p>Sign in to access protected workspace modules and account services.</p></div></div>
+        <aside class="hero-panel product-preview" aria-label="Illustrative Hamlet deal pipeline preview">
+          <div class="preview-top">
+            <div class="preview-brand"><span class="preview-mark" aria-hidden="true">H</span><strong>hamlet <span>/ workspace</span></strong></div>
+            <span class="preview-badge">DEAL PIPELINE</span>
+          </div>
+          <div class="preview-body">
+            <div class="preview-heading"><div><h2>Your deal workspace</h2><p>Keep context and next actions together</p></div><span class="preview-badge">Illustration</span></div>
+            <div class="preview-search" aria-hidden="true">⌕ &nbsp; Search the workspace</div>
+            <div class="preview-columns" aria-hidden="true">
+              <div class="preview-column"><div class="preview-column-title"><span class="stage-dot"></span> Opportunity</div><div class="preview-deal"><strong>Property opportunity</strong><small>Review details</small></div></div>
+              <div class="preview-column"><div class="preview-column-title"><span class="stage-dot amber"></span> Review</div><div class="preview-deal"><strong>Commercial enquiry</strong><small>Check next steps</small></div></div>
+              <div class="preview-column"><div class="preview-column-title"><span class="stage-dot teal"></span> Progress</div><div class="preview-deal"><strong>Deal follow-up</strong><small>Review critical path</small></div></div>
+            </div>
+            <div class="preview-bottom">
+              <div class="preview-mini"><strong>Deal activity</strong><span>Recent actions in view</span></div>
+              <div class="preview-mini"><strong>Critical path</strong><span>Deadlines and next steps</span></div>
+            </div>
+          </div>
+          <p class="preview-caption">Illustrative preview only. The labels shown are examples, not live customer or transaction data.</p>
         </aside>
+      </div>
+    </section>
+
+    <section class="content-section" aria-label="Key Hamlet workspace capabilities">
+      <div class="container">
+        <div class="capability-strip">
+          <article class="capability"><div class="icon" aria-hidden="true">⌕</div><strong>Workspace search</strong><p>Find relevant items in your deal workspace more directly.</p></article>
+          <article class="capability"><div class="icon" aria-hidden="true">↗</div><strong>Deal activity timeline</strong><p>Keep recent deal activity and follow-up context in view.</p></article>
+          <article class="capability"><div class="icon" aria-hidden="true">◷</div><strong>Critical-path actions</strong><p>Focus on deadlines and the next step in deal progression.</p></article>
+          <article class="capability"><div class="icon" aria-hidden="true">∑</div><strong>Commercial deal calculator</strong><p>Access calculation support from the Hamlet workspace.</p></article>
+        </div>
       </div>
     </section>
 
@@ -140,6 +188,7 @@
           <article class="card"><div class="icon" aria-hidden="true">👥</div><h3>Member directory</h3><p>Find other members and use profile information to understand who you are contacting. Availability indicators reflect platform activity signals, not a promise of immediate response.</p><a href="/directory.html">Open directory →</a></article>
           <article class="card"><div class="icon" aria-hidden="true">✉️</div><h3>Messages</h3><p>Keep member-to-member conversations in the mailbox. Depending on the conversation tools available, you can organise messages and share supported attachments.</p><a href="/messages.html">Open messages →</a></article>
           <article class="card"><div class="icon" aria-hidden="true">💬</div><h3>Social feed</h3><p>Share concise professional updates that are separate from formal property listings. Follow relevant activity, react to posts and participate in discussions.</p><a href="/posts.html">Open social feed →</a></article>
+          <article class="card"><div class="icon" aria-hidden="true">💡</div><h3>Insights Feed</h3><p>Explore the Insights Feed and review the published member subscription options through the Members Area.</p><a href="/insights.html">Explore Insights Feed →</a></article>
           <article class="card"><div class="icon" aria-hidden="true">🪪</div><h3>Profile and identity</h3><p>Keep your member profile and contact details current. Where requested, follow the platform's identity-verification process and read what a verification indicator does—and does not—mean.</p><a href="/profile.html">View your profile →</a></article>
           <article class="card"><div class="icon" aria-hidden="true">📨</div><h3>Communications briefs</h3><p>Submit a structured press or communications brief with the announcement, organisation and contact details needed for follow-up.</p><a href="/requests.html">Submit a brief →</a></article>
           <article class="card"><div class="icon" aria-hidden="true">⚙️</div><h3>Account and settings</h3><p>Review account information and available security controls. Use strong authentication and keep your sign-in credentials private.</p><a href="/settings.html">Open settings →</a></article>
@@ -157,6 +206,18 @@
           <article><h3>Communicate and review</h3><p>Use messages, the directory and social feed to stay in touch. Review the relevant policy before posting or acting on a listing.</p></article>
         </div>
         <div class="actions"><a class="button primary" href="/login.html">Sign in</a><a class="button" href="/members.html">Open members area</a><a class="button" href="/ibfees.html">Broker policy and fees</a></div>
+      </div>
+    </section>
+
+    <section class="content-section" id="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <div class="section-heading"><h2 id="pricing-title">Membership and subscription pricing</h2><p>The Members Area lists the following Insights Feed subscription and Premium membership options. The Social Feed itself is free at the point of use.</p></div>
+        <div class="pricing-grid">
+          <article class="price-card"><p class="price-label">Monthly subscription</p><p class="price">$5.99 <span>/ month</span></p><p class="price-description">Monthly subscription to the Insights Feed, as described in the Members Area.</p><a class="button" href="/insights.html">Explore Insights Feed →</a></article>
+          <article class="price-card featured"><p class="price-label">Annual subscription</p><p class="price">$35.99 <span>/ year</span></p><p class="price-description">Annual subscription option for the Insights Feed.</p><a class="button primary" href="/members.html">View member options →</a></article>
+          <article class="price-card"><p class="price-label">Premium membership</p><p class="price">$80.00 <span>one-off</span></p><p class="price-description">One-time payment option for Premium membership.</p><a class="button" href="/members.html">Open Members Area →</a></article>
+        </div>
+        <p class="pricing-note"><strong>Pricing context:</strong> these are the published member and Insights Feed prices, not a separately stated software-licence price for the Hamlet workspace. Payment options are accessed through the signed-in Members Area; review the plan and amount presented by Stripe before paying.</p>
       </div>
     </section>
 

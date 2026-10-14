@@ -141,6 +141,11 @@
     .login-page .container{display:flex;flex-direction:column;align-items:center;justify-content:center}
     /* Match the root pages: keep the Hamlet wordmark anchored to the left of the header. */
     body.login-page .resource-nav .container.container-nav {
+      width: min(1120px, calc(100% - 2rem)) !important;
+      max-width: 1120px !important;
+      margin-inline: auto !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
       display: flex !important;
       flex-direction: row !important;
       align-items: center !important;

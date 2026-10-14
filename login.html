@@ -170,7 +170,20 @@
         touch-action: pan-y;
       }
       body.login-page .resource-nav {
-        display: none !important;
+        display: block !important;
+        flex: 0 0 auto;
+        width: 100%;
+      }
+      body.login-page .resource-nav .container-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 56px;
+      }
+      body.login-page .resource-nav .logo {
+        display: inline-flex !important;
+        min-height: 40px;
+        align-items: center;
       }
       .login-page .resource-nav,
       .login-page .resource-footer,
@@ -609,7 +622,7 @@
 <body class="login-page">
   <header class="resource-nav" role="banner">
     <div class="container container-nav">
-      <div class="logo" style="display:flex;align-items:center;gap:12px"></div>
+      <a class="logo" href="/index.html" aria-label="Hamlet home" style="display:flex;align-items:center;gap:12px;color:#fff!important;text-decoration:none;font-size:1.35rem;font-weight:800;letter-spacing:-.04em;line-height:1">hamlet</a>
       <div class="user-menu">
         <div class="auth-profile-chip" data-auth-profile>
           <img class="auth-profile-photo" data-auth-photo src="/160.jpg" alt="Profile photo">

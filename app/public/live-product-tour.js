@@ -34,7 +34,7 @@
   function close() {
     clearHighlight();
     if (backdrop) backdrop.hidden = true;
-    if (card && card.open) card.close();
+    
     if (previousFocus && document.contains(previousFocus)) {
       try { previousFocus.focus({ preventScroll: true }); } catch (e) { previousFocus.focus(); }
     }
@@ -43,8 +43,6 @@
   function finish(status) { remember(status); close(); }
   function placeCard(target) {
     if (!card) return;
-    card.classList.remove('hamlet-live-tour-at-top');
-    if (target && target.getBoundingClientRect().top > window.innerHeight * 0.56) card.classList.add('hamlet-live-tour-at-top');
   }
   function highlight(selector) {
     clearHighlight();
@@ -81,10 +79,10 @@
   function build() {
     if (backdrop) return;
     var style = el('style', { id: 'hamletLiveTourStyles' });
-    style.textContent = '#hamletLiveTourBackdrop{position:fixed;inset:0;z-index:100000;background:rgba(3,12,29,.74);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}#hamletLiveTourBackdrop[hidden]{display:none!important}#hamletLiveTourCard{position:fixed;z-index:100002;margin:0;inset:auto;left:50%;bottom:20px;transform:translateX(-50%);width:min(510px,calc(100vw - 36px));max-height:min(68vh,560px);overflow:auto;border:1px solid #365982;border-radius:18px;background:linear-gradient(145deg,#fff,#f3f8ff);color:#092a4b;box-shadow:0 26px 80px #02081799;font-family:"Open Sans",Arial,sans-serif}#hamletLiveTourCard::backdrop{background:transparent}#hamletLiveTourCard.hamlet-live-tour-at-top{top:18px;bottom:auto}.hamlet-live-tour-top{padding:22px 24px 0}.hamlet-live-tour-eyebrow{font-size:10px;font-weight:800;letter-spacing:.14em;color:#0369a1}.hamlet-live-tour-title{margin:8px 0 10px;font-size:22px;line-height:1.25;color:#071d4a}.hamlet-live-tour-body{padding:0 24px 20px;margin:0;color:#334155;font-size:14px;line-height:1.7}.hamlet-live-tour-progress-track{height:4px;background:#dbeafe}.hamlet-live-tour-progress{height:100%;width:0;background:linear-gradient(90deg,#0284c7,#1d4ed8);transition:width .2s ease}.hamlet-live-tour-controls{display:flex;align-items:center;gap:8px;padding:14px 20px 18px;border-top:1px solid #dbe3ee}.hamlet-live-tour-controls button{border:1px solid #cbd5e1;border-radius:9px;padding:9px 12px;background:#fff;color:#173b5d;font:700 12px "Open Sans",Arial,sans-serif;cursor:pointer}.hamlet-live-tour-controls .hamlet-live-tour-next{margin-left:auto;background:#0754a6;color:#fff;border-color:#0754a6}.hamlet-live-tour-controls button:disabled{opacity:.4;cursor:default}.hamlet-live-tour-skip{border:0!important;background:transparent!important;color:#64748b!important}.hamlet-live-tour-target{position:relative!important;z-index:100001!important;outline:3px solid #38bdf8!important;outline-offset:4px!important;box-shadow:0 0 0 7px rgba(2,132,199,.2)!important;border-radius:10px!important;scroll-margin:24px!important}.hamlet-live-tour-launch{background:#e0f2fe!important;color:#073b70!important;border-color:#7dd3fc!important}.hamlet-live-tour-launch:focus-visible,.hamlet-live-tour-controls button:focus-visible{outline:3px solid #0284c7;outline-offset:3px}@media(max-width:520px){#hamletLiveTourCard{width:calc(100vw - 24px);bottom:12px;border-radius:16px;max-height:58vh}#hamletLiveTourCard.hamlet-live-tour-at-top{top:12px}.hamlet-live-tour-top{padding:18px 18px 0}.hamlet-live-tour-title{font-size:20px}.hamlet-live-tour-body{padding:0 18px 16px;font-size:13px}.hamlet-live-tour-controls{padding:12px;gap:6px}.hamlet-live-tour-controls button{padding:9px 10px;font-size:11px}}@media(prefers-reduced-motion:reduce){.hamlet-live-tour-progress{transition:none}}';
+    style.textContent = '#hamletLiveTourBackdrop{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(3,12,29,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);font-family:'Open Sans',Arial,sans-serif}#hamletLiveTourBackdrop[hidden]{display:none!important}#hamletLiveTourCard{position:relative;z-index:1;width:min(520px,100%);max-height:min(88vh,680px);overflow:auto;border:1px solid #365982;border-radius:18px;background:linear-gradient(145deg,#fff,#f3f8ff);color:#092a4b;box-shadow:0 26px 80px #02081799;font-family:"Open Sans",Arial,sans-serif}.hamlet-live-tour-top{padding:22px 24px 0}.hamlet-live-tour-eyebrow{font-size:10px;font-weight:800;letter-spacing:.14em;color:#0369a1}.hamlet-live-tour-title{margin:8px 0 10px;font-size:22px;line-height:1.25;color:#071d4a}.hamlet-live-tour-body{padding:0 24px 20px;margin:0;color:#334155;font-size:14px;line-height:1.7}.hamlet-live-tour-progress-track{height:4px;background:#dbeafe}.hamlet-live-tour-progress{height:100%;width:0;background:linear-gradient(90deg,#0284c7,#1d4ed8);transition:width .2s ease}.hamlet-live-tour-controls{display:flex;align-items:center;gap:8px;padding:14px 20px 18px;border-top:1px solid #dbe3ee}.hamlet-live-tour-controls button{border:1px solid #cbd5e1;border-radius:9px;padding:9px 12px;background:#fff;color:#173b5d;font:700 12px "Open Sans",Arial,sans-serif;cursor:pointer}.hamlet-live-tour-controls .hamlet-live-tour-next{margin-left:auto;background:#0754a6;color:#fff;border-color:#0754a6}.hamlet-live-tour-controls button:disabled{opacity:.4;cursor:default}.hamlet-live-tour-skip{border:0!important;background:transparent!important;color:#64748b!important}.hamlet-live-tour-target{outline:3px solid #38bdf8!important;outline-offset:4px!important;box-shadow:0 0 0 7px rgba(2,132,199,.2)!important;border-radius:10px!important;scroll-margin:24px!important}.hamlet-live-tour-launch{background:#e0f2fe!important;color:#073b70!important;border-color:#7dd3fc!important}.hamlet-live-tour-launch:focus-visible,.hamlet-live-tour-controls button:focus-visible{outline:3px solid #0284c7;outline-offset:3px}@media(max-width:520px){#hamletLiveTourBackdrop{padding:12px}#hamletLiveTourCard{width:100%;border-radius:16px;max-height:88vh}.hamlet-live-tour-top{padding:18px 18px 0}.hamlet-live-tour-title{font-size:20px}.hamlet-live-tour-body{padding:0 18px 16px;font-size:13px}.hamlet-live-tour-controls{padding:12px;gap:6px}.hamlet-live-tour-controls button{padding:9px 10px;font-size:11px}}@media(prefers-reduced-motion:reduce){.hamlet-live-tour-progress{transition:none}}';
     document.head.appendChild(style);
     backdrop = el('div', { id: 'hamletLiveTourBackdrop', hidden: 'hidden', 'aria-hidden': 'true' });
-    card = el('dialog', { id: 'hamletLiveTourCard', 'aria-modal': 'true', 'aria-labelledby': 'hamletLiveTourTitle', 'aria-describedby': 'hamletLiveTourBody' });
+    card = el('section', { id: 'hamletLiveTourCard', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'hamletLiveTourTitle', 'aria-describedby': 'hamletLiveTourBody' });
     var top = el('div', { 'class': 'hamlet-live-tour-top' });
     top.appendChild(el('div', { 'class': 'hamlet-live-tour-eyebrow hamlet-live-tour-count' }, 'STEP 1 OF ' + steps.length));
     top.appendChild(el('h2', { id: 'hamletLiveTourTitle', 'class': 'hamlet-live-tour-title' }, 'Welcome to Live Listings'));
@@ -100,9 +98,10 @@
     next.addEventListener('click', function () { move(1); });
     controls.append(skip, back, next);
     card.append(top, body, track, controls);
-    document.body.append(backdrop, card);
+    backdrop.appendChild(card);
+    document.body.appendChild(backdrop);
     document.addEventListener('keydown', function (event) {
-      if (!card || !card.open) return;
+      if (!card || !backdrop || backdrop.hidden) return;
       if (event.key === 'Escape') { event.preventDefault(); finish('skipped'); }
       else if (event.key === 'ArrowRight') { event.preventDefault(); move(1); }
       else if (event.key === 'ArrowLeft') { event.preventDefault(); move(-1); }
@@ -114,7 +113,7 @@
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
       }
     });
-    window.addEventListener('resize', function () { if (card && card.open) placeCard(activeTarget); });
+    window.addEventListener('resize', function () { if (card && backdrop && !backdrop.hidden) placeCard(activeTarget); });
   }
   function open() {
     if (!uid) return;
@@ -122,7 +121,6 @@
     previousFocus = document.activeElement;
     index = 0;
     backdrop.hidden = false;
-    if (!card.open) card.showModal();
     render();
     var next = card.querySelector('.hamlet-live-tour-next');
     if (next) next.focus();

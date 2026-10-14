@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1220"><meta name="robots" content="noindex,nofollow">
+<title>Hamlet | Super Administrator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script defer src="/firebase-config.js"></script>
+<style>
+:root{color-scheme:dark;--bg:#080f1c;--panel:#101c2d;--line:#26374e;--muted:#9aabc1;--blue:#2e66d4;--white:#f3f7ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#132b4a 0,transparent 40%),var(--bg);color:var(--white);font:15px 'DM Sans',sans-serif;min-height:100vh}.shell{max-width:1280px;margin:auto;padding:26px clamp(16px,3vw,36px) 48px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:22px}.brand{font:800 13px Manrope,sans-serif;letter-spacing:.18em;color:#b9c9e0}.brand span{color:#7da9ff}.tag{font-size:12px;color:#a9c5ff;border:1px solid #345783;border-radius:99px;padding:7px 11px}.hero{padding:30px 0 24px}.eyebrow{color:#8db4ff;text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:800}.hero h1{font:800 clamp(28px,4vw,42px) Manrope,sans-serif;margin:9px 0}.hero p{color:var(--muted);margin:0;line-height:1.6}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid #3a506d;border-radius:10px;padding:10px 14px;background:#162740;color:white;font-weight:700;cursor:pointer;text-decoration:none}.btn.primary{background:var(--blue);border-color:var(--blue)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.metric,.panel{background:linear-gradient(145deg,#122138,#0e1929);border:1px solid var(--line);border-radius:16px;padding:20px;min-width:0}.metric .label{font-size:13px;color:var(--muted)}.metric .value{font:800 clamp(27px,3vw,36px) Manrope,sans-serif;margin:12px 0 7px;overflow-wrap:anywhere}.metric .note{font-size:12px;color:#91a5bf;line-height:1.5}.section{margin-top:24px}.section h2{font:750 20px Manrope,sans-serif;margin:0 0 14px}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px}.rowline{display:flex;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px solid #25364b}.rowline:last-child{border-bottom:0}.rowline span:first-child{color:var(--muted)}.status{margin-top:16px;color:var(--muted);font-size:13px;line-height:1.6}.status.error{color:#ffb2b2}.status.ok{color:#9ee3bf}.notice{border:1px solid #4c482d;background:#252316;color:#e8dba4;padding:13px 15px;border-radius:12px;font-size:13px;line-height:1.6;margin-top:18px}.hidden{display:none!important}.gate{max-width:540px;margin:9vh auto;background:var(--panel);border:1px solid var(--line);padding:28px;border-radius:18px}.gate h1{font:800 25px Manrope}.gate p{color:var(--muted);line-height:1.6}.foot{margin-top:28px;color:#72849b;font-size:12px}@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.twocol{grid-template-columns:1fr}}@media(max-width:430px){.grid{grid-template-columns:1fr 1fr;gap:9px}.metric{padding:14px}.metric .value{font-size:25px}.shell{padding-left:13px;padding-right:13px}}
+</style></head>
+<body><main class="shell">
+<div id="gate" class="gate"><div class="brand">HAMLET <span>ADMIN</span></div><h1>Super Administrator</h1><p id="gateMsg">Verifying your Secure Login session…</p><div class="actions"><a class="btn primary" href="/login.html?next=%2Fapp%2Fhamlet%2Fadmin.html">Secure Login</a><a class="btn" href="/app/hamlet/">Return to Hamlet</a></div></div>
+<div id="app" class="hidden">
+<header class="top"><div class="brand">HAMLET <span>PLATFORM INTELLIGENCE</span></div><div class="actions"><span class="tag">SUPER ADMINISTRATOR</span><button id="refresh" class="btn">Refresh data</button><button id="signout" class="btn">Sign out</button></div></header>
+<section class="hero"><div class="eyebrow">Platform overview</div><h1>Super Administrator Dashboard</h1><p>Membership, engagement and commercial property deal flow across Hamlet.</p><p id="signedAs" class="status"></p></section>
+<section class="grid">
+<article class="metric"><div class="label">Registered member profiles</div><div class="value" id="members">—</div><div class="note">Distinct public profile records</div></article>
+<article class="metric"><div class="label">Daily active users</div><div class="value" id="dau">—</div><div class="note">Unique profiles with activity in the last 24 hours</div></article>
+<article class="metric"><div class="label">Monthly active users</div><div class="value" id="mau">—</div><div class="note">Unique profiles with activity in the last 30 days</div></article>
+<article class="metric"><div class="label">New registrations · 30 days</div><div class="value" id="newMembers">—</div><div class="note">Based on available profile creation dates</div></article>
+<article class="metric"><div class="label">Recorded commercial deals</div><div class="value" id="deals">—</div><div class="note">Across supported deal collections</div></article>
+<article class="metric"><div class="label">Aggregate deal flow</div><div class="value" id="dealFlow">—</div><div class="note">Sum of recognised deal-value fields</div></article>
+<article class="metric"><div class="label">Commercial property listings</div><div class="value" id="properties">—</div><div class="note">Records in commercialProperties</div></article>
+<article class="metric"><div class="label">Workspaces</div><div class="value" id="workspaces">—</div><div class="note">Records in recognised workspace collections</div></article>
+</section>
+<section class="section twocol"><article class="panel"><h2>Engagement and registration</h2><div class="rowline"><span>Active in last 24 hours</span><strong id="dauDetail">—</strong></div><div class="rowline"><span>Active in last 7 days</span><strong id="wau">—</strong></div><div class="rowline"><span>Active in last 30 days</span><strong id="mauDetail">—</strong></div><div class="rowline"><span>Joined in last 30 days</span><strong id="newDetail">—</strong></div></article><article class="panel"><h2>Deal flow coverage</h2><div class="rowline"><span>Deals included in value total</span><strong id="valuedDeals">—</strong></div><div class="rowline"><span>Deal records without a recognised value</span><strong id="unvaluedDeals">—</strong></div><div class="rowline"><span>Currency handling</span><strong>As recorded</strong></div><p class="status">Value totals assume a consistent currency. Mixed currencies are not converted.</p></article></section>
+<div id="status" class="status" role="status">Loading platform data…</div>
+<div class="notice"><strong>Metric definitions:</strong> Active users are estimated from recognised last-login/activity timestamps in member profile documents. If the platform does not currently write these timestamps consistently, activity totals will be understated. Deal totals depend on the collections and value fields currently used by Hamlet.</div>
+<footer class="foot">Restricted administrative view · Firebase project wale-491805</footer>
+</div></main>
+<script>
+(function(){
+'use strict';
+var ADMIN='uk-hr-enquiries@ibrecruitment.com',auth,db,loading=false;
+var $=function(id){return document.getElementById(id)};
+function gate(message,error){$('gateMsg').textContent=message;$('gateMsg').className=error?'status error':'status'}
+function fmt(n){return Number(n||0).toLocaleString('en-GB')}
+function money(n){return new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP',maximumFractionDigits:0}).format(n||0)}
+function dateOf(v){if(!v)return null;if(v.toDate&&typeof v.toDate==='function')return v.toDate();if(v.seconds)return new Date(v.seconds*1000);if(typeof v==='number')return new Date(v<1e12?v*1000:v);if(typeof v==='string'){var d=new Date(v);return isNaN(d)?null:d}return null}
+function firstDate(d,keys){for(var i=0;i<keys.length;i++){var x=dateOf(d[keys[i]]);if(x)return x}return null}
+function set(id,val){$(id).textContent=val}
+function dataOf(s){return s.docs.map(function(doc){return {id:doc.id,data:doc.data()||{}}})}
+async function readCollection(name){try{return dataOf(await db.collection(name).get())}catch(e){console.warn('Admin read skipped:',name,e.code||e.message);return null}}
+async function load(){
+if(loading)return;loading=true;$('refresh').disabled=true;set('status','Reading platform records…');$('status').className='status';
+try{
+var profileNames=['publicProfiles','users','members'];var profileRows=null,profileSource='';
+for(var i=0;i<profileNames.length;i++){var candidate=await readCollection(profileNames[i]);if(candidate&&candidate.length){profileRows=candidate;profileSource=profileNames[i];break}if(candidate&&profileRows===null){profileRows=candidate;profileSource=profileNames[i]}}
+profileRows=profileRows||[];
+var now=Date.now(),day=now-86400000,week=now-7*86400000,month=now-30*86400000,seen={},dau=0,wau=0,mau=0,newCount=0;
+profileRows.forEach(function(row){var d=row.data,created=firstDate(d,['createdAt','joinedAt','registrationDate','created_at']);if(created&&created.getTime()>=month)newCount++;var last=firstDate(d,['lastLogin','lastLoginAt','lastSeen','lastActiveAt','lastActivityAt','lastActive','lastSignInAt','updatedAt']);if(last){var t=last.getTime();if(t>=day)dau++;if(t>=week)wau++;if(t>=month)mau++}});
+set('members',fmt(profileRows.length));set('dau',fmt(dau));set('mau',fmt(mau));set('newMembers',fmt(newCount));set('dauDetail',fmt(dau));set('wau',fmt(wau));set('mauDetail',fmt(mau));set('newDetail',fmt(newCount));
+var dealCollectionNames=['deals','hamletDeals','workspaceDeals','workspace_deals','commercialDeals'];var propRows=await readCollection('commercialProperties');var workspaceRows=await readCollection('workspaces');
+var allDeals=[],visited={};for(var j=0;j<dealCollectionNames.length;j++){var rows=await readCollection(dealCollectionNames[j]);if(rows)rows.forEach(function(r){if(!visited[r.id]){visited[r.id]=true;allDeals.push(r)}})}
+// Listings are not automatically counted as negotiated deals: only recognised deal collections contribute to deal count/value.
+var fields=['dealValue','dealAmount','transactionValue','propertyValue','askingPrice','value','amount','price'];var total=0,valued=0;allDeals.forEach(function(row){var d=row.data;for(var k=0;k<fields.length;k++){var v=d[fields[k]];if(typeof v==='number'&&isFinite(v)){total+=v;valued++;break}if(typeof v==='string'&&v.trim()){var n=Number(v.replace(/[£$,\s]/g,''));if(isFinite(n)){total+=n;valued++;break}}}});
+var workspaceCount=workspaceRows?workspaceRows.length:0;set('deals',fmt(allDeals.length));set('dealFlow',money(total));set('properties',propRows?fmt(propRows.length):'Unavailable');set('workspaces',workspaceRows?fmt(workspaceCount):'Unavailable');set('valuedDeals',fmt(valued));set('unvaluedDeals',fmt(Math.max(0,allDeals.length-valued)));
+var notes=[];if(!profileRows.length)notes.push('No profile records were returned. Check collection names and Firestore permissions.');if(!allDeals.length)notes.push('No records found in the recognised deal collections; confirm the collection used by the current deal pipeline.');if(profileSource)notes.push('Member source: '+profileSource+'.');notes.push('Last refreshed '+new Date().toLocaleString('en-GB')+'.');
+$('status').textContent=notes.join(' ');$('status').className='status '+(!profileRows.length?'error':'ok');
+}catch(e){console.error(e);$('status').textContent='Unable to load dashboard data: '+(e.message||e.code||'unknown error')+'. Check Firestore rules and Firebase project configuration.';$('status').className='status error'}finally{loading=false;$('refresh').disabled=false}
+}
+function init(){if(!window.firebase||!window.firebaseConfig){gate('Firebase configuration did not load. Please reload the page.',true);return}try{if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);auth=firebase.auth();db=firebase.firestore();auth.onAuthStateChanged(async function(user){if(!user){$('app').classList.add('hidden');$('gate').classList.remove('hidden');gate('Please sign in using Secure Login with the authorised administrator email.');return}if((user.email||'').toLowerCase()!==ADMIN||!user.emailVerified){await auth.signOut();$('app').classList.add('hidden');$('gate').classList.remove('hidden');gate('Access denied. A verified sign-in for the designated super administrator is required.',true);return}try{await user.getIdToken(true)}catch(e){}$('gate').classList.add('hidden');$('app').classList.remove('hidden');set('signedAs','Signed in as '+user.email+' · verified account');load()},function(e){gate('Unable to verify your Firebase session: '+(e.message||'please reload.'),true)})}catch(e){gate('Firebase initialisation failed: '+e.message,true)}}
+$('refresh').addEventListener('click',load);$('signout').addEventListener('click',function(){if(auth)auth.signOut().then(function(){location.href='/login.html'})});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script></body></html>

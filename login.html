@@ -139,6 +139,25 @@
     .note{font-size:0.84rem;color:var(--rc-text-dim, var(--muted));text-align:center;line-height:1.5;margin-top:16px}
     #error{color:#b00020;font-size:0.92rem;display:none;margin:8px 0 12px;padding:10px 12px;background:rgba(176,0,32,0.08);border:1px solid rgba(176,0,32,0.2);border-radius:8px}
     .login-page .container{display:flex;flex-direction:column;align-items:center;justify-content:center}
+    /* Match the root pages: keep the Hamlet wordmark anchored to the left of the header. */
+    body.login-page .resource-nav .container.container-nav {
+      width: min(1120px, calc(100% - 2rem)) !important;
+      max-width: 1120px !important;
+      margin-inline: auto !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      text-align: left !important;
+    }
+    body.login-page .resource-nav .logo {
+      margin-right: auto !important;
+      align-self: center !important;
+      flex: 0 0 auto;
+    }
+    body.login-page .resource-nav .user-menu { margin-left: auto; }
     @media (max-width: 720px) {
       .login-page footer .container {
         width: 100%;
@@ -170,7 +189,20 @@
         touch-action: pan-y;
       }
       body.login-page .resource-nav {
-        display: none !important;
+        display: block !important;
+        flex: 0 0 auto;
+        width: 100%;
+      }
+      body.login-page .resource-nav .container-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 56px;
+      }
+      body.login-page .resource-nav .logo {
+        display: inline-flex !important;
+        min-height: 40px;
+        align-items: center;
       }
       .login-page .resource-nav,
       .login-page .resource-footer,
@@ -609,7 +641,7 @@
 <body class="login-page">
   <header class="resource-nav" role="banner">
     <div class="container container-nav">
-      <div class="logo" style="display:flex;align-items:center;gap:12px"></div>
+      <a class="logo" href="/index.html" aria-label="Hamlet home" style="display:flex;align-items:center;gap:12px;color:#fff!important;text-decoration:none;font-size:1.35rem;font-weight:800;letter-spacing:-.04em;line-height:1">hamlet</a>
       <div class="user-menu">
         <div class="auth-profile-chip" data-auth-profile>
           <img class="auth-profile-photo" data-auth-photo src="/160.jpg" alt="Profile photo">
@@ -676,7 +708,7 @@
         <button id="mfaLoginBtn" class="btn btn-primary" type="button">Verify &amp; Continue</button>
       </div>
     </div>
-    <p class="note">No password is stored in this portal.</p>
+    <p class="note">Operated and managed by IBR.</p>
     <div class="meta-links" style="margin-top:12px"></div>
     </div>
   </main>

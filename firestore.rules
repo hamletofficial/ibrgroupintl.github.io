@@ -521,5 +521,13 @@ service cloud.firestore {
       allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
     }
 
+    // Read-only platform-wide access for the designated Hamlet super administrator.
+    // Keep this identity aligned with the administrator configured in admin.html.
+    match /{document=**} {
+      allow read: if request.auth != null
+        && request.auth.token.email == 'uk-hr-enquiries@ibrecruitment.com'
+        && request.auth.token.email_verified == true;
+    }
+
   }
 }

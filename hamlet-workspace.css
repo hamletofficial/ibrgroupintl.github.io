@@ -250,3 +250,17 @@ header.resource-nav,
   letter-spacing: 0;
   margin-left: .3em;
 }
+
+/* Compact dropdowns keep related account and billing links grouped. */
+.hamlet-nav-group{position:relative;display:inline-flex;align-items:center;flex:0 0 auto}
+.hamlet-nav-group>summary{list-style:none;cursor:pointer}
+.hamlet-nav-group>summary::-webkit-details-marker{display:none}
+.hamlet-nav-group[open]>summary{background:#17263c;border-color:#354b68;color:#fff}
+.hamlet-nav-child{display:flex!important;align-items:center;min-height:36px;padding:9px 12px!important;border-radius:7px;color:#cbd5e1;text-decoration:none;white-space:nowrap;font:700 12px/1.25 'DM Sans','Open Sans',Arial,sans-serif}
+.hamlet-nav-child:hover,.hamlet-nav-child:focus-visible,.hamlet-nav-child[aria-current=page]{background:#1d4ed8;color:#fff;outline:2px solid transparent}
+.hamlet-primary-nav .hamlet-nav-group[open]{z-index:30}
+.hamlet-primary-nav .hamlet-nav-group[open]>.hamlet-nav-child{position:absolute;left:0;top:100%;min-width:100%;background:#0f172a;border:1px solid #334155;box-shadow:0 12px 24px #0005}
+.hamlet-primary-nav .hamlet-nav-group[open]>.hamlet-nav-child+.hamlet-nav-child{top:calc(100% + 37px)}
+.workspace-nav-group{flex-wrap:wrap}
+.workspace-nav-group .hamlet-nav-child{margin-left:12px}
+@media(max-width:760px){.hamlet-primary-nav .hamlet-nav-group[open]>.hamlet-nav-child{position:static;box-shadow:none;display:flex;width:100%}.hamlet-primary-nav .hamlet-nav-group[open]{align-items:stretch;flex-wrap:wrap}}

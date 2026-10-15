@@ -765,6 +765,7 @@ exports.getSuperAdminAccountMetrics = onCall({
     throw new HttpsError("permission-denied", "Only the verified designated Super Administrator may retrieve these metrics.");
   }
   try {
+    try { admin.app(); } catch (initializationError) { admin.initializeApp(); }
     let totalUsers = 0;
     let newRegistrations30Days = 0;
     let pageToken;

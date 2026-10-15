@@ -27,9 +27,17 @@ function buildNav(){
  var existing=document.querySelector('nav.workspace-nav');
  if(existing){
   routes.filter(function(r){return !r.parent&&r.href!='/members.html'}).forEach(function(r){
-   if(existing.querySelector('a[href="'+r.href+'"]'))return;
    var children=routes.filter(function(child){return child.parent===r.short});
-   if(children.length){var group=make('details','hamlet-nav-group workspace-nav-group');var summary=make('summary','workspace-nav-link',r.icon+' '+r.short+' ▾');group.appendChild(summary);children.forEach(function(child){var a=make('a','workspace-nav-link hamlet-nav-child');a.href=child.href;a.textContent=child.icon+' '+child.short;if(child.paths.indexOf(currentPath())!==-1)a.setAttribute('aria-current','page');group.appendChild(a)});existing.appendChild(group);return}
+   var existingLink=existing.querySelector('a[href="'+r.href+'"]');
+   if(children.length){
+    if(existing.querySelector('.workspace-nav-group[data-parent="'+r.short+'"]'))return;
+    var group=make('details','hamlet-nav-group workspace-nav-group');group.setAttribute('data-parent',r.short);
+    var summary=make('summary','workspace-nav-link',r.icon+' '+r.short+' ▾');group.appendChild(summary);
+    children.forEach(function(child){var a=make('a','workspace-nav-link hamlet-nav-child');a.href=child.href;a.textContent=child.icon+' '+child.short;if(child.paths.indexOf(currentPath())!==-1){a.setAttribute('aria-current','page');group.open=true}group.appendChild(a)});
+    if(existingLink&&existingLink.parentNode)existingLink.parentNode.replaceChild(group,existingLink);else existing.appendChild(group);
+    return;
+   }
+   if(existingLink)return;
    var a=make('a','workspace-nav-link');a.href=r.href;a.appendChild(document.createTextNode(r.icon+' '+r.short));if(r.paths.indexOf(currentPath())!==-1){a.setAttribute('aria-current','page');a.title=r.label}if(r.external){a.target='_blank';a.rel='noopener noreferrer'}existing.appendChild(a)
   });
   if(!existing.querySelector('.hamlet-global-search')){var b=make('button','hamlet-global-search','Search Hamlet');b.type='button';b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-label','Search Hamlet (Ctrl or Command + K)');var k=make('kbd','','Ctrl K');b.appendChild(k);b.addEventListener('click',openPalette);existing.appendChild(b)}

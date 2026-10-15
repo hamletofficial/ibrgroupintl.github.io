@@ -204,3 +204,41 @@ body .directory-auth-prompt a.btn.btn-primary:focus-visible {
   border-color: #6b7280 !important;
   color: #fff !important;
 }
+
+
+/* Canonical Hamlet header treatment, aligned with /index.html. */
+.resource-nav,
+header.resource-nav,
+.site-header,
+.about-header,
+.team-header,
+.payment-header,
+.pricing-header {
+  background: #071d4a !important;
+  color: #f8fafc;
+}
+.resource-nav .site-title {
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+.resource-nav .site-title .brand-by-ibr {
+  color: #93c5fd;
+  font-size: .72em;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-left: .3em;
+}
+.resource-nav .logo a.site-title:hover,
+.resource-nav .logo a.site-title:focus-visible {
+  color: #fff !important;
+  text-decoration: none;
+}
+.site-header .brand,
+.about-header .about-brand,
+.team-header .team-brand,
+.payment-header .payment-brand,
+.pricing-header .pricing-brand {
+  color: #fff;
+}

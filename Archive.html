@@ -16,7 +16,7 @@
     body{margin:0;min-height:100vh;background:var(--soft);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
     .archive-topbar{background:#fff;color:var(--ink);position:relative!important;z-index:10001!important;isolation:isolate}
     .archive-topbar-inner{min-height:72px;width:100%;max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px}
-    .archive-brand{color:var(--ink);text-decoration:none;font-weight:800;letter-spacing:-.02em}
+    .archive-brand{color:#fff;text-decoration:none;font-weight:800;letter-spacing:-.035em;font-size:1.125rem}.archive-brand .brand-by-ibr{color:#93c5fd;font-size:.72em;font-weight:700;letter-spacing:0;margin-left:.3em}
     .archive-user-area{display:flex;align-items:center;gap:10px;min-width:0}
     .archive-user-profile{display:flex;align-items:center;gap:8px;max-width:240px;padding:6px 10px;border:1px solid #374151;border-radius:999px;background:#111827;color:#f9fafb}
     .archive-user-profile img{width:26px;height:26px;border-radius:50%;object-fit:cover;border:1px solid #4b5563}
@@ -171,7 +171,7 @@
 <body>
   <header class="archive-topbar" role="banner">
     <div class="archive-topbar-inner">
-      <a class="archive-brand" href="/">hamlet</a>
+      <a class="archive-brand" href="/index.html" aria-label="hamlet home">hamlet <span class="brand-by-ibr">by IBR</span></a>
       <div class="archive-user-area">
         <div class="archive-user-profile auth-profile-chip" data-auth-profile aria-label="Signed-in user">
           <img class="auth-profile-photo" data-auth-photo src="/assets/images/dark-hamlet.png" alt="Profile photo">
@@ -268,17 +268,36 @@
       function signInFromArchive(providerName) {
         if (!auth) { if (signInError) signInError.textContent = "Authentication is still loading. Please try again."; return; }
         var provider;
-        if (providerName === "google") { provider = new firebase.auth.GoogleAuthProvider(); provider.setCustomParameters({prompt:"select_account"}); }
-        else if (providerName === "facebook") { provider = new firebase.auth.FacebookAuthProvider(); }
-        else if (providerName === "linkedin") { window.location.assign("/login.html?provider=linkedin&next=%2Farchive.html"); return; }
-        else if (providerName === "twitter") { provider = new firebase.auth.TwitterAuthProvider(); }
-        else return;
+        if (providerName === "google") {
+          provider = new firebase.auth.GoogleAuthProvider();
+          provider.setCustomParameters({prompt:"select_account"});
+        } else if (providerName === "facebook") {
+          provider = new firebase.auth.FacebookAuthProvider();
+        } else if (providerName === "linkedin") {
+          // LinkedIn's OAuth code exchange is handled by the main sign-in page.
+          window.location.assign("/login.html?next=%2Farchive.html");
+          return;
+        } else if (providerName === "twitter") {
+          provider = new firebase.auth.TwitterAuthProvider();
+        } else return;
+
         var buttons = signInCard.querySelectorAll("button");
         buttons.forEach(function(button) { button.disabled = true; });
         if (signInError) signInError.textContent = "";
         auth.signInWithPopup(provider).catch(function(error) {
+          var code = error && error.code;
           console.error("Archive sign-in failed:", error);
-          if (signInError) signInError.textContent = error && error.code === "auth/multi-factor-auth-required"
+          // Popup sign-in is commonly blocked or unsupported in mobile Safari.
+          // Fall back to a full-page redirect for those specific browser errors.
+          if (code === "auth/popup-blocked" ||
+              code === "auth/operation-not-supported-in-this-environment" ||
+              code === "auth/web-storage-unsupported") {
+            return auth.signInWithRedirect(provider).catch(function(redirectError) {
+              console.error("Archive redirect sign-in failed:", redirectError);
+              if (signInError) signInError.textContent = (redirectError && redirectError.message) || "Sign-in could not be started. Please try again.";
+            });
+          }
+          if (signInError) signInError.textContent = code === "auth/multi-factor-auth-required"
             ? "This account requires two-factor authentication. Please use the main sign-in page to complete verification."
             : ((error && error.message) || "Sign-in failed. Please try again.");
         }).finally(function() {
@@ -418,6 +437,12 @@
           if (!window.firebase || !window.firebaseConfig) throw new Error("Firebase could not be initialized.");
           if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
           auth = firebase.auth();
+          // Consume provider redirect results when popup sign-in falls back to a full-page redirect.
+          auth.getRedirectResult().catch(function(error) {
+            if (!error || error.code === "auth/no-auth-event") return;
+            console.error("Archive redirect result failed:", error);
+            if (signInError) signInError.textContent = (error && error.message) || "Sign-in could not be completed. Please try again.";
+          });
           auth.onAuthStateChanged(function(user) {
             setArchiveAccess(!!user);
             if (user) {

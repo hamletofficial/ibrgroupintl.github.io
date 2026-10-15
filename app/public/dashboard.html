@@ -142,7 +142,7 @@
           const card=document.createElement('article'); card.className='property-card';
           card.innerHTML='<div class="property-head"><h3>'+esc(p.propertyName)+'</h3><span class="badge">'+esc(p.status||'Active')+'</span></div>'+
             '<div class="property-meta"><div><strong>Type</strong>'+esc(p.propertyType)+'</div><div><strong>Location</strong>'+esc(p.address)+'</div><div><strong>Availability</strong>'+esc(p.availability)+'</div></div>'+
-            '<div style="color:#475569;font-size:.88rem;line-height:1.5">'+esc(p.description)+'</div>'+(p.sustainabilityStandard?'<div class="property-description" style="margin-top:.65rem"><strong>Sustainability:</strong> '+esc(p.sustainabilityStandard)+' · '+esc(p.sustainabilityStatus||'Not certified')+(p.certificationClass?' · '+esc(p.certificationClass):'')+(p.certificateReference?' · Ref '+esc(p.certificateReference):'')+(p.certificateUrl&&/^https?:\\/\\//i.test(p.certificateUrl)?' · <a href="'+esc(p.certificateUrl)+'" target="_blank" rel="noopener noreferrer">View evidence ↗</a>':'')+'</div>':'');
+            '<div style="color:#475569;font-size:.88rem;line-height:1.5">'+esc(p.description)+'</div>'+(p.sustainabilityStandard?'<div class="property-description" style="margin-top:.65rem"><strong>Sustainability:</strong> '+esc(p.sustainabilityStandard)+' · '+esc(p.sustainabilityStatus||'Not certified')+(p.certificationClass?' · '+esc(p.certificationClass):'')+(p.certificateReference?' · Ref '+esc(p.certificateReference):'')+(p.certificateUrl&&/^(https?:\/\/)/i.test(p.certificateUrl)?' · <a href="'+esc(p.certificateUrl)+'" target="_blank" rel="noopener noreferrer">View evidence ↗</a>':'')+'</div>':'');
           resourceList.appendChild(card);
         });
       }

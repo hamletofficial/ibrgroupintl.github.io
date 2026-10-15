@@ -166,3 +166,41 @@ body.auth-pending nav.workspace-nav {
     border-radius: 16px;
   }
 }
+
+
+/* Override legacy light card rules on these pages regardless of local stylesheet order. */
+body .signed-out-shell,
+body .login-card,
+body .directory-auth-prompt {
+  border-color: #374151 !important;
+  background: #111827 !important;
+  color: #f9fafb !important;
+  box-shadow: 0 12px 34px rgba(2, 6, 23, .12) !important;
+}
+body .signed-out-shell h1,
+body .login-card h1,
+body .login-card h2,
+body .login-card h3,
+body .directory-auth-prompt h1,
+body .directory-auth-prompt h2,
+body .directory-auth-prompt h3 { color: #fff !important; }
+body .signed-out-shell p,
+body .login-card p,
+body .directory-auth-prompt p { color: #cbd5e1 !important; }
+body .signed-out-shell a.btn.btn-primary,
+body .login-card a.btn.btn-primary,
+body .directory-auth-prompt a.btn.btn-primary {
+  background: #111827 !important;
+  color: #f9fafb !important;
+  border-color: #4b5563 !important;
+}
+body .signed-out-shell a.btn.btn-primary:hover,
+body .signed-out-shell a.btn.btn-primary:focus-visible,
+body .login-card a.btn.btn-primary:hover,
+body .login-card a.btn.btn-primary:focus-visible,
+body .directory-auth-prompt a.btn.btn-primary:hover,
+body .directory-auth-prompt a.btn.btn-primary:focus-visible {
+  background: #1f2937 !important;
+  border-color: #6b7280 !important;
+  color: #fff !important;
+}

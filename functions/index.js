@@ -743,3 +743,44 @@ exports.sendHamletCriticalPathReminders = onSchedule({
   }
   console.log("Hamlet critical-path reminder job completed:", {date: todayKey, remindersScanned: snapshot.size, emailsSent: sentCount});
 });
+
+
+exports.getSuperAdminAccountMetrics = onCall({
+  region: "us-central1",
+  timeoutSeconds: 120,
+  memory: "256MiB",
+}, async (request) => {
+  const allowedUid = "6epDJRISlBbRPWKosDZZWuiGQzK2";
+  const allowedEmail = "uk-hr-enquiries@ibrecruitment.com";
+  const user = request.auth;
+  const token = user && user.token;
+  if (!user || !token) {
+    throw new HttpsError("unauthenticated", "Sign in to view administrator metrics.");
+  }
+  if (user.uid !== allowedUid ||
+      String(token.email || "").trim().toLowerCase() !== allowedEmail ||
+      token.email_verified !== true ||
+      !token.firebase ||
+      token.firebase.sign_in_provider !== "password") {
+    throw new HttpsError("permission-denied", "Only the verified designated Super Administrator may retrieve these metrics.");
+  }
+  try {
+    let totalUsers = 0;
+    let newRegistrations30Days = 0;
+    let pageToken;
+    const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    do {
+      const page = await admin.auth().listUsers(1000, pageToken);
+      totalUsers += page.users.length;
+      page.users.forEach((account) => {
+        const created = Date.parse(account.metadata.creationTime || "");
+        if (Number.isFinite(created) && created >= cutoff) newRegistrations30Days++;
+      });
+      pageToken = page.pageToken;
+    } while (pageToken);
+    return { totalUsers, newRegistrations30Days, source: "firebase-authentication", generatedAt: new Date().toISOString() };
+  } catch (error) {
+    console.error("Unable to calculate administrator Authentication metrics:", error);
+    throw new HttpsError("internal", "Firebase Authentication metrics are temporarily unavailable.");
+  }
+});

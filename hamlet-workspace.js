@@ -13,9 +13,9 @@ var routes=[
  {label:'Social Feed',short:'Social',href:'/posts.html',icon:'◉',paths:['/posts.html'],desc:'Search community updates and posts.'},
  {label:'Archive',short:'Archive',href:'/archive.html',icon:'▱',paths:['/archive.html'],desc:'Find saved and archived communications.'},
  {label:'Account Settings',short:'Settings',href:'/settings.html',icon:'⚙',paths:['/settings.html'],desc:'Manage your profile, privacy and security.',searchable:false},
- {label:'Edit Profile',short:'Edit Profile',href:'/editprofile.html',icon:'♙',paths:['/editprofile.html'],desc:'Update your member profile details.',searchable:false,parent:'Settings'},
+ {label:'Edit Profile',short:'Edit Profile',href:'/editprofile.html',icon:'♙',paths:['/editprofile.html'],desc:'Update your member profile details.',searchable:false},
  {label:'Pricing',short:'Pricing',href:'/pricing.html',icon:'£',paths:['/pricing.html'],desc:'Review Hamlet plans and subscription options.',searchable:false},
- {label:'Invoices',short:'Invoices',href:'/invoice.html',icon:'▤',paths:['/invoice.html'],desc:'View subscription and payment options.',searchable:false,parent:'Pricing'},
+ {label:'Invoices',short:'Invoices',href:'/invoice.html',icon:'▤',paths:['/invoice.html'],desc:'View subscription and payment options.',searchable:false},
  {label:'Hamlet Support Centre',short:'Support',href:'https://support.hamlet-ai.co.uk/',icon:'?',paths:[],desc:'Get help from the Hamlet Support Centre.',searchable:false,external:true},
  {label:'Members Area',short:'Members',href:'/members.html',icon:'▣',paths:['/members.html'],desc:'Open member resources and account tools.'}
 ];
@@ -26,6 +26,15 @@ function make(tag,cls,text){var node=document.createElement(tag);if(cls)node.cla
 function buildNav(){
  var existing=document.querySelector('nav.workspace-nav');
  if(existing){
+  /* Flatten previously grouped links so Edit Profile and Invoices remain visible
+     as independent menu items for signed-in and signed-out visitors alike. */
+  existing.querySelectorAll('.workspace-nav-group, .hamlet-nav-group').forEach(function(group){
+   Array.prototype.slice.call(group.querySelectorAll('a[href]')).forEach(function(link){
+    link.classList.remove('hamlet-nav-child');
+    if(group.parentNode)group.parentNode.insertBefore(link,group);
+   });
+   if(group.parentNode)group.parentNode.removeChild(group);
+  });
   routes.filter(function(r){return !r.parent&&r.href!='/members.html'}).forEach(function(r){
    var children=routes.filter(function(child){return child.parent===r.short});
    var existingLink=existing.querySelector('a[href="'+r.href+'"]');

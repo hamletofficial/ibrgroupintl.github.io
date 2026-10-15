@@ -398,13 +398,33 @@
         signOutBtn.textContent = "Signing Out…";
         try {
           if (!auth) throw new Error("Authentication is not ready. Please try again.");
+          // Remove private archive content before ending the session so it cannot
+          // remain visible if the browser restores this page from its back-forward cache.
+          archiveList.replaceChildren();
+          countEl.textContent = "";
+          showStatus("Signing out securely…",false);
           await auth.signOut();
-          window.location.href = "/login.html";
+          if (auth.currentUser) throw new Error("Your session could not be cleared. Please try again.");
+          window.location.replace("/login.html");
         } catch (error) {
           console.error("Sign out failed:",error);
           signOutBtn.disabled = false;
           signOutBtn.textContent = "Sign Out";
           showStatus(error && error.message ? error.message : "Unable to sign out. Please try again.",true);
+        }
+      });
+
+      // Safari and other browsers may restore a previous page from the
+      // back-forward cache without rerunning the normal authentication setup.
+      // Recheck the session when that happens and never leave cached briefs visible.
+      window.addEventListener("pageshow",function(event){
+        if (!event.persisted) return;
+        if (!auth || !auth.currentUser) {
+          archiveList.replaceChildren();
+          countEl.textContent = "";
+          window.location.replace("/login.html?next=%2Farchive.html");
+        } else {
+          loadArchive();
         }
       });
       var menuToggle = document.getElementById("menuToggle"), topNavMenu = document.getElementById("topNavMenu");

@@ -13,9 +13,9 @@ var routes=[
  {label:'Social Feed',short:'Social',href:'/posts.html',icon:'◉',paths:['/posts.html'],desc:'Search community updates and posts.'},
  {label:'Archive',short:'Archive',href:'/archive.html',icon:'▱',paths:['/archive.html'],desc:'Find saved and archived communications.'},
  {label:'Account Settings',short:'Settings',href:'/settings.html',icon:'⚙',paths:['/settings.html'],desc:'Manage your profile, privacy and security.',searchable:false},
- {label:'Edit Profile',short:'Edit Profile',href:'/editprofile.html',icon:'♙',paths:['/editprofile.html'],desc:'Update your member profile details.',searchable:false},
+ {label:'Edit Profile',short:'Edit Profile',href:'/editprofile.html',icon:'♙',paths:['/editprofile.html'],desc:'Update your member profile details.',searchable:false,parent:'Settings'},
  {label:'Pricing',short:'Pricing',href:'/pricing.html',icon:'£',paths:['/pricing.html'],desc:'Review Hamlet plans and subscription options.',searchable:false},
- {label:'Invoices',short:'Invoices',href:'/invoice.html',icon:'▤',paths:['/invoice.html'],desc:'View subscription and payment options.',searchable:false},
+ {label:'Invoices',short:'Invoices',href:'/invoice.html',icon:'▤',paths:['/invoice.html'],desc:'View subscription and payment options.',searchable:false,parent:'Pricing'},
  {label:'Hamlet Support Centre',short:'Support',href:'https://support.hamlet-ai.co.uk/',icon:'?',paths:[],desc:'Get help from the Hamlet Support Centre.',searchable:false,external:true},
  {label:'Members Area',short:'Members',href:'/members.html',icon:'▣',paths:['/members.html'],desc:'Open member resources and account tools.'}
 ];
@@ -26,7 +26,12 @@ function make(tag,cls,text){var node=document.createElement(tag);if(cls)node.cla
 function buildNav(){
  var existing=document.querySelector('nav.workspace-nav');
  if(existing){
-  routes.forEach(function(r){if(r.href==='/members.html'||existing.querySelector('a[href="'+r.href+'"]'))return;var a=make('a','workspace-nav-link');a.href=r.href;a.appendChild(document.createTextNode(r.icon+' '+(r.short==='Settings'?'Settings':r.short)));if(r.paths.indexOf(currentPath())!==-1){a.setAttribute('aria-current','page');a.title=r.label}existing.appendChild(a)});
+  routes.filter(function(r){return !r.parent&&r.href!='/members.html'}).forEach(function(r){
+   if(existing.querySelector('a[href="'+r.href+'"]'))return;
+   var children=routes.filter(function(child){return child.parent===r.short});
+   if(children.length){var group=make('details','hamlet-nav-group workspace-nav-group');var summary=make('summary','workspace-nav-link',r.icon+' '+r.short+' ▾');group.appendChild(summary);children.forEach(function(child){var a=make('a','workspace-nav-link hamlet-nav-child');a.href=child.href;a.textContent=child.icon+' '+child.short;if(child.paths.indexOf(currentPath())!==-1)a.setAttribute('aria-current','page');group.appendChild(a)});existing.appendChild(group);return}
+   var a=make('a','workspace-nav-link');a.href=r.href;a.appendChild(document.createTextNode(r.icon+' '+r.short));if(r.paths.indexOf(currentPath())!==-1){a.setAttribute('aria-current','page');a.title=r.label}if(r.external){a.target='_blank';a.rel='noopener noreferrer'}existing.appendChild(a)
+  });
   if(!existing.querySelector('.hamlet-global-search')){var b=make('button','hamlet-global-search','Search Hamlet');b.type='button';b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-label','Search Hamlet (Ctrl or Command + K)');var k=make('kbd','','Ctrl K');b.appendChild(k);b.addEventListener('click',openPalette);existing.appendChild(b)}
   return;
  }
@@ -34,11 +39,13 @@ function buildNav(){
  var header=document.querySelector('header.resource-nav, header.topbar, header.archive-topbar, header.legal-topbar');
  var nav=make('nav','hamlet-primary-nav');nav.setAttribute('aria-label','Hamlet workspace');
  var path=currentPath();
- routes.forEach(function(r){
+ routes.filter(function(r){return !r.parent}).forEach(function(r){
+   var children=routes.filter(function(child){return child.parent===r.short});
+   if(children.length){var group=make('details','hamlet-nav-group');var summary=make('summary','hamlet-nav-link');var icon=make('span','',r.icon);icon.setAttribute('aria-hidden','true');summary.appendChild(icon);summary.appendChild(document.createTextNode(' '+r.short+' ▾'));group.appendChild(summary);children.forEach(function(child){var a=make('a','hamlet-nav-link hamlet-nav-child');a.href=child.href;a.appendChild(document.createTextNode(child.icon+' '+child.short));if(child.paths.indexOf(path)!==-1){a.setAttribute('aria-current','page');a.title=child.label;group.open=true}group.appendChild(a)});nav.appendChild(group);return}
    var a=make('a','hamlet-nav-link');a.href=r.href;
    var icon=make('span','',r.icon);icon.setAttribute('aria-hidden','true');a.appendChild(icon);a.appendChild(document.createTextNode(' '+r.short));
-   if(r.paths.indexOf(path)!==-1){a.setAttribute('aria-current','page');a.title=r.label}
-   else a.title=r.label;
+   if(r.paths.indexOf(path)!==-1){a.setAttribute('aria-current','page');a.title=r.label}else a.title=r.label;
+   if(r.external){a.target='_blank';a.rel='noopener noreferrer'}
    nav.appendChild(a);
  });
  var search=make('button','hamlet-global-search','Search Hamlet');search.type='button';search.setAttribute('aria-haspopup','dialog');search.setAttribute('aria-label','Search Hamlet (Ctrl or Command + K)');var key=make('kbd','','Ctrl K');search.appendChild(key);search.addEventListener('click',openPalette);nav.appendChild(search);
@@ -52,13 +59,13 @@ function buildPalette(){
  var close=make('button','hamlet-search-close','×');close.type='button';close.setAttribute('aria-label','Close search');close.addEventListener('click',closePalette);head.appendChild(close);dialog.appendChild(head);
  var form=make('form','hamlet-search-form');form.setAttribute('role','search');paletteInput=make('input','hamlet-search-input');paletteInput.type='search';paletteInput.maxLength=140;paletteInput.placeholder='Property, location, member, deal or post…';paletteInput.setAttribute('aria-label','Search term');form.appendChild(paletteInput);
  paletteRouteSelect=make('select','hamlet-search-route');paletteRouteSelect.setAttribute('aria-label','Choose where to search');var choose=make('option','','Choose workspace…');choose.value='';paletteRouteSelect.appendChild(choose);
- routes.filter(function(r){return r.href!=='/members.html'&&r.searchable!==false}).forEach(function(r){var option=make('option','',r.label);option.value=r.href;paletteRouteSelect.appendChild(option)});
+ routes.filter(function(r){return r.href!=='/members.html'&&r.searchable!==false&&!r.parent}).forEach(function(r){var option=make('option','',r.label);option.value=r.href;paletteRouteSelect.appendChild(option)});
  var submit=make('button','hamlet-search-submit','Search');submit.type='submit';form.appendChild(paletteRouteSelect);form.appendChild(submit);dialog.appendChild(form);
  paletteStatus=make('div','hamlet-search-status');paletteStatus.setAttribute('role','status');paletteStatus.setAttribute('aria-live','polite');paletteStatus.hidden=true;dialog.appendChild(paletteStatus);
  form.addEventListener('submit',function(e){e.preventDefault();var q=paletteInput.value.trim(),target=paletteRouteSelect.value;if(!target){var path=currentPath(),current=routes.find(function(r){return r.paths.indexOf(path)!==-1&&r.href!=='/members.html'});if(current&&current.href!='/messages.html'){target=current.href}else{paletteStatus.textContent='Choose a workspace below or select one from the destination menu.';paletteStatus.hidden=false;paletteRouteSelect.focus();return}}location.href=withQuery(target,q)});
  var caption=make('div','hamlet-search-caption','Choose where to search');dialog.appendChild(caption);
  var list=make('div','hamlet-search-destinations');
- routes.filter(function(r){return r.href!=='/members.html'}).forEach(function(r){
+ routes.filter(function(r){return r.href!=='/members.html'&&r.searchable!==false&&!r.parent}).forEach(function(r){
    var a=make('a','hamlet-search-destination');a.href=r.href;a.dataset.base=r.href;
    var strong=make('strong','',r.label);var desc=make('span','',r.desc);a.appendChild(strong);a.appendChild(desc);
    a.addEventListener('click',function(e){var q=paletteInput.value.trim();paletteRouteSelect.value=r.href;paletteLinks.forEach(function(link){link.classList.toggle('is-selected',link===a);link.setAttribute('aria-current',link===a?'true':'false')});if(q){e.preventDefault();location.href=withQuery(r.href,q)}});

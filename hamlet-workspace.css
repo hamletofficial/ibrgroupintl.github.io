@@ -264,3 +264,74 @@ header.resource-nav,
 .workspace-nav-group{flex-wrap:wrap}
 .workspace-nav-group .hamlet-nav-child{margin-left:12px}
 @media(max-width:760px){.hamlet-primary-nav .hamlet-nav-group[open]>.hamlet-nav-child{position:static;box-shadow:none;display:flex;width:100%}.hamlet-primary-nav .hamlet-nav-group[open]{align-items:stretch;flex-wrap:wrap}}
+
+/* Navigation visibility and Hamlet sky-blue menu identity. */
+.hamlet-primary-nav .hamlet-nav-link,
+.hamlet-primary-nav a.hamlet-nav-link,
+nav.workspace-nav .workspace-nav-link,
+.hamlet-nav-group>summary,
+.hamlet-primary-nav .hamlet-nav-child,
+nav.workspace-nav .hamlet-nav-child {
+  color: #7dd3fc !important;
+}
+.hamlet-primary-nav .hamlet-nav-link:hover,
+.hamlet-primary-nav .hamlet-nav-link:focus-visible,
+.hamlet-primary-nav .hamlet-nav-link[aria-current="page"],
+nav.workspace-nav .workspace-nav-link:hover,
+nav.workspace-nav .workspace-nav-link:focus-visible,
+nav.workspace-nav .workspace-nav-link[aria-current="page"],
+.hamlet-nav-group[open]>summary {
+  color: #bae6fd !important;
+  background: #0c2948 !important;
+  border-color: #38bdf8 !important;
+}
+.hamlet-nav-group[open] {
+  z-index: 1005 !important;
+}
+.hamlet-primary-nav .hamlet-nav-group[open]>.hamlet-nav-child {
+  top: auto !important;
+  bottom: 100% !important;
+  left: 0;
+  z-index: 1006;
+  color: #7dd3fc !important;
+  background: #071d4a !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 12px 28px rgba(0,0,0,.35);
+}
+.hamlet-primary-nav .hamlet-nav-group[open]>.hamlet-nav-child+.hamlet-nav-child {
+  top: auto !important;
+  bottom: calc(100% + 37px) !important;
+}
+.workspace-nav-group .hamlet-nav-child {
+  color: #7dd3fc !important;
+  background: #071d4a !important;
+  border: 1px solid #1e4970;
+}
+.workspace-nav-group .hamlet-nav-child:hover,
+.workspace-nav-group .hamlet-nav-child:focus-visible,
+.workspace-nav-group .hamlet-nav-child[aria-current="page"] {
+  color: #bae6fd !important;
+  background: #0c2948 !important;
+}
+.sidebar-menu-shell {
+  background: #071d4a !important;
+  border-color: #1e4970 !important;
+}
+.sidebar-menu-shell .sidebar-menu-link {
+  color: #7dd3fc !important;
+}
+.sidebar-menu-shell .sidebar-menu-link:hover,
+.sidebar-menu-shell .sidebar-menu-link:focus-visible {
+  color: #bae6fd !important;
+  background: #0c2948 !important;
+}
+@media(max-width:760px) {
+  .hamlet-primary-nav .hamlet-nav-group[open]>.hamlet-nav-child {
+    position: static !important;
+    bottom: auto !important;
+    width: 100%;
+  }
+  .hamlet-primary-nav .hamlet-nav-group[open]>.hamlet-nav-child+.hamlet-nav-child {
+    bottom: auto !important;
+  }
+}

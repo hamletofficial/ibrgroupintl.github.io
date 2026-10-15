@@ -197,7 +197,7 @@
       <div class="archive-signin-actions">
         <button type="button" data-archive-provider="google">Continue with Google</button>
         <button type="button" data-archive-provider="facebook">Continue with Facebook</button>
-        <button type="button" data-archive-provider="apple">Continue with Apple</button>
+        <button type="button" data-archive-provider="linkedin">Continue with LinkedIn</button>
         <button type="button" data-archive-provider="twitter">Continue with X</button>
       </div>
       <div id="archiveSignInError" role="alert" aria-live="polite"></div>
@@ -270,7 +270,7 @@
         var provider;
         if (providerName === "google") { provider = new firebase.auth.GoogleAuthProvider(); provider.setCustomParameters({prompt:"select_account"}); }
         else if (providerName === "facebook") { provider = new firebase.auth.FacebookAuthProvider(); }
-        else if (providerName === "apple") { provider = new firebase.auth.OAuthProvider("apple.com"); provider.addScope("email"); provider.addScope("name"); }
+        else if (providerName === "linkedin") { window.location.assign("/login.html?provider=linkedin&next=%2Farchive.html"); return; }
         else if (providerName === "twitter") { provider = new firebase.auth.TwitterAuthProvider(); }
         else return;
         var buttons = signInCard.querySelectorAll("button");

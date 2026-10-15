@@ -3,7 +3,7 @@
 <head>
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
   <meta charset="utf-8">
-  <meta name="theme-color" content="#f4f7f2">
+  <meta name="theme-color" content="#07111f">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex, follow">
   <meta name="description" content="Payment confirmation for Hamlet.">
@@ -33,7 +33,9 @@
 	.payment-header-row { min-height:72px; display:flex; align-items:center; justify-content:space-between; gap:18px; }
 	.payment-brand { display:inline-flex; align-items:center; gap:11px; color:#fff; font-size:1.35rem; letter-spacing:-.045em; font-weight:800; text-decoration:none; }
 	.payment-nav { display:flex; gap:8px; flex-wrap:wrap; }
-	.payment-nav a,.payment-button { min-height:44px; display:inline-flex; align-items:center; justify-content:center; padding:9px 14px; border:1px solid #c6d8ce; border-radius:11px; color:var(--payment-ink); background:#fff; font:700 .95rem var(--payment-font); text-decoration:none; }\n\t.payment-nav a { border-color:#34465c; color:#f8fafc; background:#111f32; }\n\t.payment-nav a:hover { background:#20324a; }
+	.payment-nav a,.payment-button { min-height:44px; display:inline-flex; align-items:center; justify-content:center; padding:9px 14px; border:1px solid #c6d8ce; border-radius:11px; color:var(--payment-ink); background:#fff; font:700 .95rem var(--payment-font); text-decoration:none; }
+	.payment-nav a { border-color:#34465c; color:#f8fafc; background:#111f32; }
+	.payment-nav a:hover { background:#20324a; }
 	.payment-nav a[aria-current="page"],.payment-button { color:#fff; border-color:transparent; background:linear-gradient(135deg,var(--payment-green),var(--payment-light)); }
 	main { flex:1; display:grid; place-items:center; padding:clamp(36px,7vw,78px) 0; }
 	.success-card { width:min(760px,100%); padding:clamp(28px,6vw,56px); border:1px solid #d1e2d8; border-radius:24px; background:linear-gradient(145deg,#fff,#edf5ef); box-shadow:0 24px 60px rgba(25,66,53,.11); text-align:center; }
@@ -60,12 +62,12 @@
 <body>
   <header class="payment-header" role="banner">
 	<div class="payment-container payment-header-row">
-	  <a class="payment-brand" href="/index.html" aria-label="Impact in Business Recruitment home">
-		<span>Impact in Business Recruitment</span>
+	  <a class="payment-brand" href="/" aria-label="Hamlet home">
+		<span>hamlet</span>
 	  </a>
 	  <nav class="payment-nav" aria-label="Primary navigation">
-		<a href="/index.html">Home</a>
-		<a href="/about.html">About IB</a>
+		<a href="/">Home</a>
+		<a href="/about.html">About Hamlet</a>
 		<a href="/invoice.html">Invoice</a>
 		<a href="/requests.html">Submit a request</a>
 	  </nav>

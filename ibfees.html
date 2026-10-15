@@ -4,22 +4,15 @@
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow">
+  <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#081224">
   <title>IB Fees &amp; Listing Access Policy — Hamlet</title>
   <link rel="stylesheet" href="/mobile-compat.css">
   <link rel="stylesheet" href="/legal-pages.css">
   <style>
-    .auth-gate { margin: 0; padding: 1rem 1.1rem; border: 1px solid #dbe3ee; border-radius: 12px; background: #fff; box-shadow: 0 6px 20px rgba(2,6,23,.06); }
-    .auth-gate h2 { margin-top: 0; }
-    .auth-gate .legal-signin { display: inline-flex; margin-top: .35rem; border: 0; cursor: pointer; }
     .policy-note { padding: 1rem 1.1rem; border-left: 4px solid #0284c7; border-radius: 8px; background: #f4f9ff; }
     .policy-note p:last-child { margin-bottom: 0; }
-    #feesContent[hidden], #authGate[hidden] { display: none; }
-    .legal-signout { border: 0; cursor: pointer; }
-
-    /* Dark appearance: keep the sign-in gate and subsection callout on the shared dark palette. */
-    html[data-appearance="dark"] .auth-gate,
+    /* Dark appearance: keep the subsection callout on the shared dark palette. */
     html[data-appearance="dark"] .policy-note {
       background: #111827 !important;
       background-image: none !important;
@@ -30,9 +23,6 @@
     html[data-appearance="dark"] .policy-note {
       border-left: 4px solid #3b82f6 !important;
     }
-    html[data-appearance="dark"] .auth-gate h1,
-    html[data-appearance="dark"] .auth-gate h2,
-    html[data-appearance="dark"] .auth-gate p,
     html[data-appearance="dark"] .policy-note p,
     html[data-appearance="dark"] .policy-note strong {
       color: #f3f4f6 !important;
@@ -54,13 +44,7 @@
   </header>
 
   <main class="legal-main" role="main">
-    <section class="auth-gate" id="authGate" aria-live="polite">
-      <h1>Member sign-in required</h1>
-      <p>This policy page is restricted to authenticated Firebase members. Please sign in to view the IB Fees &amp; Listing Access Policy.</p>
-      <a class="legal-signin" href="/login.html?next=%2Fibfees.html">Continue to Sign In</a>
-    </section>
-
-    <div id="feesContent" hidden>
+    <div id="feesContent">
       <h1>IB Fees &amp; Listing Access Policy</h1>
       <p class="lead">Effective Date: April 2026</p>
       <p class="lead">Last Updated: 9 October 2026</p>
@@ -192,57 +176,6 @@
     <p style="margin:0">&copy; 2026 Impact in Business Recruitment Group Limited. All rights reserved.</p>
   </footer>
 
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script defer src="/firebase-config.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var authGate = document.getElementById('authGate');
-      var feesContent = document.getElementById('feesContent');
-      var authAction = document.getElementById('authAction');
-
-      function showSignedOut() {
-        authGate.hidden = false;
-        feesContent.hidden = true;
-        authAction.textContent = 'Sign in';
-        authAction.href = '/login.html?next=%2Fibfees.html';
-        authAction.removeAttribute('role');
-        authAction.classList.remove('legal-signout');
-      }
-
-      function showSignedIn() {
-        authGate.hidden = true;
-        feesContent.hidden = false;
-        authAction.textContent = 'Sign out';
-        authAction.href = '#';
-        authAction.setAttribute('role', 'button');
-        authAction.classList.add('legal-signout');
-      }
-
-      try {
-        if (!window.firebase || !window.firebaseConfig) throw new Error('Firebase configuration unavailable');
-        if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
-        var auth = firebase.auth();
-
-        authAction.addEventListener('click', function (event) {
-          if (authAction.classList.contains('legal-signout')) {
-            event.preventDefault();
-            auth.signOut();
-          }
-        });
-
-        auth.onAuthStateChanged(function (user) {
-          if (user) showSignedIn();
-          else showSignedOut();
-        }, function () {
-          showSignedOut();
-        });
-      } catch (error) {
-        console.error('Unable to determine authentication state:', error);
-        showSignedOut();
-      }
-    });
-  </script>
   <script src="/hamlet-workspace.js?v=20261013-11"></script>
   <script src="/hamlet-background.js?v=20261013-1"></script>
 </body>

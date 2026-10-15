@@ -335,3 +335,29 @@ nav.workspace-nav .workspace-nav-link[aria-current="page"],
     bottom: auto !important;
   }
 }
+
+/* Enforce one consistent sky-blue text colour across every Hamlet menu item,
+   regardless of authentication state, current page, hover or focus. */
+.hamlet-primary-nav .hamlet-nav-link,
+.hamlet-primary-nav a.hamlet-nav-link,
+.hamlet-primary-nav .hamlet-nav-child,
+.hamlet-primary-nav .hamlet-nav-group > summary,
+nav.workspace-nav .workspace-nav-link,
+nav.workspace-nav .hamlet-nav-child,
+.sidebar-menu-shell .sidebar-menu-link {
+  color: #7dd3fc !important;
+}
+.hamlet-primary-nav .hamlet-nav-link:hover,
+.hamlet-primary-nav .hamlet-nav-link:focus-visible,
+.hamlet-primary-nav .hamlet-nav-link[aria-current="page"],
+.hamlet-primary-nav .hamlet-nav-group[open] > summary,
+.hamlet-primary-nav .hamlet-nav-child:hover,
+.hamlet-primary-nav .hamlet-nav-child:focus-visible,
+.hamlet-primary-nav .hamlet-nav-child[aria-current="page"],
+nav.workspace-nav .workspace-nav-link:hover,
+nav.workspace-nav .workspace-nav-link:focus-visible,
+nav.workspace-nav .workspace-nav-link[aria-current="page"],
+.sidebar-menu-shell .sidebar-menu-link:hover,
+.sidebar-menu-shell .sidebar-menu-link:focus-visible {
+  color: #7dd3fc !important;
+}

@@ -2,10 +2,18 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Server-enforced administrator identity. Keep this UID aligned with the
+    // dedicated email/password account checked by /app/hamlet/admin.html.
+    function isSuperAdmin() {
+      return request.auth != null
+        && request.auth.uid == '6epDJRISlBbRPWKosDZZWuiGQzK2';
+    }
+
     match /publicProfiles/{userId} {
       // Members must always be able to read their own saved profile for authenticated headers/settings, even when their profile is not public.
-      allow read: if request.auth != null
-        && (request.auth.uid == userId || resource.data.isPublic == true);
+      allow read: if isSuperAdmin()
+        || (request.auth != null
+          && (request.auth.uid == userId || resource.data.isPublic == true));
 
       // Clients cannot claim successful Onfido verification. A trusted server
       // using the Admin SDK must set onfidoVerified after verification.

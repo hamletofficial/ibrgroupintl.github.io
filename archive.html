@@ -361,10 +361,19 @@
           if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
           auth = firebase.auth();
           auth.onAuthStateChanged(function(user) {
-            if (user) loadArchive();
-            else window.location.href = "/login.html?next=%2Farchive.html";
+            if (user) {
+              loadArchive();
+            } else {
+              window.location.replace("/login.html?next=%2Farchive.html");
+            }
+          }, function(error) {
+            console.error("Archive authentication state failed:", error);
+            showStatus("We could not verify your sign-in. Please reload the archive and try again.", true);
           });
-        } catch (error) { showStatus(error.message || "Unable to initialize authentication.",true); }
+        } catch (error) {
+          console.error("Archive authentication initialization failed:", error);
+          showStatus(error && error.message ? error.message : "Unable to initialize authentication. Please reload the page.", true);
+        }
       }
       refreshBtn.addEventListener("click",loadArchive);
       deleteBtn.addEventListener("click",deleteSelected);

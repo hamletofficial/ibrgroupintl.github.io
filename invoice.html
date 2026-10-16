@@ -399,6 +399,11 @@
       });
     });
   </script>
+  <script>
+    // This page intentionally omits the shared Deals/Properties/etc. navigation.
+    // Set the workspace guard before loading the shared script so it cannot inject that bar here.
+    window.__hamletWorkspaceUX = true;
+  </script>
   <script src="/hamlet-workspace.js?v=20261016-4"></script>
   <script src="/hamlet-background.js?v=20261013-1"></script>
 </body>

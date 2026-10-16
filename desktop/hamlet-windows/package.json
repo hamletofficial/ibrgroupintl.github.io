@@ -1,6 +1,6 @@
 {
   "name": "hamlet-windows",
-  "version": "0.1.0",
+  "version": "1.04.0",
   "description": "Hamlet commercial property platform for Windows",
   "private": true,
   "main": "main.cjs",

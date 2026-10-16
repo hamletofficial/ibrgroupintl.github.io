@@ -4,18 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       tag_name:
-        description: "Release tag, for example v0.1.0"
+        description: "Existing Windows beta tag to build and publish"
         required: true
-        default: "v0.1.0"
+        default: "hamlet-windows-v0.1.0-beta.1"
         type: string
-      prerelease:
-        description: "Reserved for future stable-release support; this workflow currently publishes prereleases only"
-        required: true
-        default: true
-        type: boolean
   push:
     tags:
-      - "v*"
+      - "hamlet-windows-v*"
 
 permissions:
   contents: write
@@ -68,27 +63,14 @@ jobs:
           Write-Host "Size: $($installer.Length) bytes"
           Write-Host "SHA-256: $hash"
 
-      - name: Prepare release notes
-        shell: pwsh
-        run: |
-          @"
-          # hamlet for Windows 0.1.0
-
-          - Windows desktop installer with native Windows notification support.
-          - Security and syntax tests run before packaging.
-          - Installer SHA-256 checksum is attached as SHA256SUMS.txt.
-
-          Install by downloading hamlet-Setup-0.1.0.exe, running it, and following the Windows installer prompts.
-          "@ | Set-Content -Path "release-notes.md" -Encoding utf8
-
       - name: Publish GitHub prerelease and attach installer
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
-          name: hamlet for Windows ${{ github.event.inputs.tag_name || github.ref_name }}
-          body_path: release-notes.md
+          name: hamlet for Windows — Beta 1
+          body_path: desktop/hamlet-windows/RELEASE-NOTES.md
           prerelease: true
-          generate_release_notes: true
+          generate_release_notes: false
           fail_on_unmatched_files: true
           files: |
             desktop/hamlet-windows/release/*.exe

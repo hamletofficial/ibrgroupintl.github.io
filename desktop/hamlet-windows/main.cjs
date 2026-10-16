@@ -100,6 +100,8 @@ function createWindow() {
   return win;
 }
 
+ipcMain.handle("hamlet:version", () => app.getVersion());
+
 ipcMain.handle("hamlet:notify", (_event, payload) => {
   if (!payload || typeof payload !== "object") return false;
   const title = typeof payload.title === "string" ? payload.title.slice(0, 100) : "hamlet";

@@ -1,40 +1,8 @@
 const { app, BrowserWindow, ipcMain, Notification, shell } = require("electron");
 const path = require("node:path");
+const { isTrustedAppUrl, isTrustedAuthUrl } = require("./security.cjs");
 
 const APP_URL = "https://www.hamlet-ai.co.uk/";
-const APP_HOSTS = new Set([
-  "www.hamlet-ai.co.uk",
-  "hamlet-ai.co.uk"
-]);
-const AUTH_HOSTS = new Set([
-  "wale-491805.firebaseapp.com",
-  "wale-491805.web.app",
-  "accounts.google.com",
-  "www.facebook.com",
-  "www.linkedin.com",
-  "linkedin.com",
-  "appleid.apple.com",
-  "x.com",
-  "twitter.com"
-]);
-
-function isTrustedAppUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" && (APP_HOSTS.has(url.hostname) || url.hostname.endsWith(".hamlet-ai.co.uk"));
-  } catch {
-    return false;
-  }
-}
-
-function isTrustedAuthUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" && (APP_HOSTS.has(url.hostname) || AUTH_HOSTS.has(url.hostname) || url.hostname.endsWith(".firebaseapp.com") || url.hostname.endsWith(".google.com"));
-  } catch {
-    return false;
-  }
-}
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -102,7 +70,8 @@ function createWindow() {
 
 ipcMain.handle("hamlet:version", () => app.getVersion());
 
-ipcMain.handle("hamlet:notify", (_event, payload) => {
+ipcMain.handle("hamlet:notify", (event, payload) => {
+  if (!isTrustedAppUrl(event.senderFrame?.url || "")) return false;
   if (!payload || typeof payload !== "object") return false;
   const title = typeof payload.title === "string" ? payload.title.slice(0, 100) : "hamlet";
   const body = typeof payload.body === "string" ? payload.body.slice(0, 300) : "";

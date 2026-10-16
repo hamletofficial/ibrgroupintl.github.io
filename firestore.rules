@@ -285,7 +285,10 @@ service cloud.firestore {
 
     // Hamlet deal records are private to the signed-in broker who owns them.
     match /hamletDeals/{dealId} {
-      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      // The designated super-admin may inspect deal authorship for platform auditing.
+      // All other authenticated members can read only their own private deal records.
+      allow read: if isSuperAdmin()
+        || (request.auth != null && resource.data.uid == request.auth.uid);
 
       allow create: if request.auth != null
         && request.resource.data.keys().hasAll([

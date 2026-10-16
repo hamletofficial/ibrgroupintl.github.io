@@ -1,0 +1,95 @@
+name: Publish Hamlet for Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Release tag, for example v0.1.0"
+        required: true
+        default: "v0.1.0"
+        type: string
+      prerelease:
+        description: "Mark this release as a prerelease"
+        required: true
+        default: true
+        type: boolean
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hamlet-windows-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag_name || github.ref }}
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install desktop dependencies
+        working-directory: desktop/hamlet-windows
+        run: npm install
+
+      - name: Run desktop security and syntax tests
+        working-directory: desktop/hamlet-windows
+        run: npm run check
+
+      - name: Build Windows installer
+        working-directory: desktop/hamlet-windows
+        run: npm run pack:win
+
+      - name: Validate installer and calculate SHA-256
+        shell: pwsh
+        working-directory: desktop/hamlet-windows
+        run: |
+          $installers = @(Get-ChildItem -Path "release" -Filter "*.exe" -File)
+          if ($installers.Count -ne 1) {
+            throw "Expected exactly one Windows installer; found $($installers.Count)."
+          }
+          $installer = $installers[0]
+          if ($installer.Length -lt 1MB) {
+            throw "Installer is unexpectedly small ($($installer.Length) bytes); refusing to publish."
+          }
+          $hash = (Get-FileHash -Path $installer.FullName -Algorithm SHA256).Hash
+          "$hash  $($installer.Name)" | Set-Content -Path "release/SHA256SUMS.txt" -Encoding ascii
+          Write-Host "Installer: $($installer.Name)"
+          Write-Host "Size: $($installer.Length) bytes"
+          Write-Host "SHA-256: $hash"
+
+      - name: Prepare release notes
+        shell: pwsh
+        run: |
+          @"
+          # hamlet for Windows 0.1.0
+
+          - Windows desktop installer with native Windows notification support.
+          - Security and syntax tests run before packaging.
+          - Installer SHA-256 checksum is attached as SHA256SUMS.txt.
+
+          Install by downloading hamlet-Setup-0.1.0.exe, running it, and following the Windows installer prompts.
+          "@ | Set-Content -Path "release-notes.md" -Encoding utf8
+
+      - name: Publish GitHub release and attach installer
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
+          name: hamlet for Windows ${{ github.event.inputs.tag_name || github.ref_name }}
+          body_path: release-notes.md
+          prerelease: ${{ inputs.prerelease || false }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            desktop/hamlet-windows/release/*.exe
+            desktop/hamlet-windows/release/SHA256SUMS.txt

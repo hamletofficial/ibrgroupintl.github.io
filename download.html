@@ -31,24 +31,26 @@
     <p>Use Hamlet in a Windows-friendly desktop application, with desktop features designed to complement the Hamlet workspace.</p>
     <section class="panel notice" aria-labelledby="download-title">
       <h2 id="download-title">Official release download</h2>
-      <p>Download the installer from the official GitHub Releases page. Only use a release that includes its published SHA-256 checksum and release notes. If no installer is listed yet, the next public package has not been published.</p>
-      <a class="button" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases" rel="noopener noreferrer">View official releases</a>
-      <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io" rel="noopener noreferrer">Source repository</a>
+      <p>Hamlet v1.04 is the current stable Windows release. Download the installer directly from the official release assets, and keep the matching SHA-256 file so you can verify the download before running it.</p>
+      <a class="button" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04/hamlet-Setup-1.4.0.exe" rel="noopener noreferrer">Download Hamlet v1.04 for Windows (.exe · 93.5 MB)</a>
+      <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04/SHA256SUMS.txt" rel="noopener noreferrer">Download SHA-256 checksum</a>
+      <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/tag/v1.04" rel="noopener noreferrer">Release notes and assets</a>
     </section>
     <section class="panel" aria-labelledby="install-title">
       <h2 id="install-title">Installation instructions</h2>
       <ol>
-        <li>Download the Windows installer from an official release.</li>
-        <li>Check the release notes and compare the installer’s SHA-256 hash with the checksum published for that exact release.</li>
-        <li>Run the installer and review any Windows security or publisher prompts before proceeding.</li>
+        <li>Download <code>hamlet-Setup-1.4.0.exe</code> using the official v1.04 download link above.</li>
+        <li>Download <code>SHA256SUMS.txt</code> from the same release.</li>
+        <li>In PowerShell, run <code>Get-FileHash .\hamlet-Setup-1.4.0.exe -Algorithm SHA256</code> from the folder containing the installer. Compare the resulting hash with the entry for that exact filename in <code>SHA256SUMS.txt</code>. The values must match exactly.</li>
+        <li>If the checksum does not match, do not run the installer; delete it and download it again from the official release.</li>
+        <li>Run the installer and review any Windows security or publisher prompts before proceeding. Do not bypass a warning if you cannot establish that the file is authentic.</li>
         <li>Open Hamlet for Windows and sign in using your usual Hamlet account.</li>
-        <li>Keep the installer and checksum for your records until the application has been verified on your device.</li>
       </ol>
     </section>
     <section class="panel" aria-labelledby="security-title">
       <h2 id="security-title">Security and updates</h2>
       <p>Publisher code signing and secure automatic updates are planned improvements. Until a release explicitly confirms signing, do not assume the installer is code-signed. Never bypass a Windows security warning solely because a file is labelled Hamlet.</p>
-      <p>Future releases should publish the version number, release notes, SHA-256 checksum and signing status together. Automatic updates should validate signed update metadata and package integrity before installation.</p>
+      <p>This installer is distributed with a SHA-256 checksum, but checksum verification alone does not establish publisher identity. Publisher code signing and secure automatic updates remain planned improvements. Check the release page for the latest stable version and its matching checksum before installing an update.</p>
     </section>
     <section class="panel" aria-labelledby="help-title">
       <h2 id="help-title">Need help?</h2>

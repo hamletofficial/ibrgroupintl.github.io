@@ -1,30 +1,42 @@
-# hamlet for Windows 0.1.0 — Beta 1
+# Hamlet v1.04 — Windows desktop build
 
-## What’s included
+Hamlet v1.04 brings the Windows desktop application into the platform's unified version numbering. This release candidate is intended for validation before publication.
 
-- A dedicated Windows desktop application that opens the live Hamlet platform.
-- Hamlet-branded Windows installer with Start menu and desktop shortcuts.
-- Native Windows notification support for Hamlet critical-path reminders, with browser notifications as a fallback.
-- Electron security controls including context isolation, sandboxing, disabled Node.js integration and HTTPS navigation restrictions.
-- Automated syntax, security and packaging checks before publication.
-- A SHA-256 checksum file published alongside the installer so the downloaded package can be verified.
+## Windows application
 
-## Download and install
+- Dedicated Windows desktop window for the live Hamlet platform.
+- Hamlet-branded installer with Start menu and desktop shortcuts.
+- Native Windows notifications for critical-path reminders, with browser notifications as a fallback.
+- Electron security controls: context isolation, sandboxing, disabled Node.js integration and HTTPS navigation restrictions.
+- Automated syntax, security and packaging checks.
+- SHA-256 checksum generated for the installer.
 
-1. Download `hamlet-Setup-0.1.0.exe` and `SHA256SUMS.txt` from the Assets section of this release.
-2. In PowerShell, run `Get-FileHash .\hamlet-Setup-0.1.0.exe -Algorithm SHA256`.
-3. Compare the displayed hash with the installer entry in `SHA256SUMS.txt`. Do not install if they differ.
-4. Run the installer and review any Windows security or publisher prompts before proceeding.
-5. Launch Hamlet for Windows and sign in with your usual Hamlet account.
+## Install and verify
 
-## Beta limitations and security
+The expected installer filename is `hamlet-Setup-1.04.0.exe`.
 
-- This is a beta release; verify installation, sign-in, notifications, upgrade and uninstall behaviour on your own Windows device.
-- Native reminders are currently page-driven. The Hamlet pipeline must be running for reminder checks; reminders are not scheduled while the application is fully closed.
-- The installer is not yet code-signed. Do not bypass Windows security warnings simply because the file is labelled Hamlet.
-- Secure automatic updates are not yet configured. Install future versions only from the official Hamlet GitHub Releases page and verify each release's checksum.
-- A successful automated build does not replace real-device acceptance testing with your account and enabled sign-in providers.
+After the build artifact is available, download both the installer and `SHA256SUMS.txt`. In PowerShell, run:
 
-## Feedback
+```powershell
+Get-FileHash .\hamlet-Setup-1.04.0.exe -Algorithm SHA256
+Get-Content .\SHA256SUMS.txt
+```
 
-For installation or usage assistance, visit the [Hamlet Support Centre](https://support.hamlet-ai.co.uk/).
+Compare the computed hash with the installer entry in the checksum file. Do not install if they differ.
+
+## Validation required before publication
+
+- Run the automated syntax and security test suite.
+- Build the installer on a Windows runner and verify its size and SHA-256 checksum.
+- Install on Windows 10/11 and test launch, sign-in, sign-out, notifications, shortcuts, upgrade and uninstall.
+- Verify enabled identity-provider sign-in with real accounts.
+- Confirm the published checksum matches the exact installer offered for download.
+
+## Known limitations
+
+- Critical-path reminder checks are page-driven. The pipeline page must be running; reminders are not scheduled while the application is fully closed.
+- The installer is not yet code-signed.
+- Secure automatic updates are not yet configured.
+- Automated CI checks do not replace real-device acceptance testing.
+
+For assistance, visit the [Hamlet Support Centre](https://support.hamlet-ai.co.uk/).

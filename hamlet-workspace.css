@@ -361,3 +361,17 @@ nav.workspace-nav .workspace-nav-link[aria-current="page"],
 .sidebar-menu-shell .sidebar-menu-link:focus-visible {
   color: #7dd3fc !important;
 }
+
+/* Search sits on a dedicated row below the menu and stays right-aligned. */
+.hamlet-global-search-row{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  width:100%;
+  min-width:0;
+  margin:6px 0 12px;
+}
+.hamlet-global-search-row .hamlet-global-search{
+  flex:0 0 auto;
+  margin-left:auto;
+}

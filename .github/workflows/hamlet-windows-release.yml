@@ -9,7 +9,7 @@ on:
         default: "v0.1.0"
         type: string
       prerelease:
-        description: "Mark this release as a prerelease"
+        description: "Reserved for future stable-release support; this workflow currently publishes prereleases only"
         required: true
         default: true
         type: boolean
@@ -81,13 +81,13 @@ jobs:
           Install by downloading hamlet-Setup-0.1.0.exe, running it, and following the Windows installer prompts.
           "@ | Set-Content -Path "release-notes.md" -Encoding utf8
 
-      - name: Publish GitHub release and attach installer
+      - name: Publish GitHub prerelease and attach installer
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
           name: hamlet for Windows ${{ github.event.inputs.tag_name || github.ref_name }}
           body_path: release-notes.md
-          prerelease: ${{ inputs.prerelease || false }}
+          prerelease: true
           generate_release_notes: true
           fail_on_unmatched_files: true
           files: |

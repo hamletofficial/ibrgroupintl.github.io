@@ -8,7 +8,8 @@
     "start": "electron .",
     "pack:win": "electron-builder --win nsis",
     "pack:dir": "electron-builder --dir",
-    "check": "node --check main.cjs && node --check preload.cjs"
+    "check": "node --check main.cjs && node --check preload.cjs && node --check security.cjs && node --test",
+    "test": "node --test"
   },
   "devDependencies": {
     "electron": "^39.0.0",

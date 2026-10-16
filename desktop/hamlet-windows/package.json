@@ -24,6 +24,7 @@
     "files": [
       "main.cjs",
       "preload.cjs",
+      "security.cjs",
       "package.json"
     ],
     "win": {

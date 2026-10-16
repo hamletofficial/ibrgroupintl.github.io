@@ -122,9 +122,6 @@
     .page-wrapper { display:flex; flex-direction:column; padding-top:74px; }
     .resource-nav { position:fixed!important; top:0; left:0; right:0; width:100%; z-index:1200!important; padding:1rem 0!important; background:#092a4b!important; border-bottom:1px solid #092a4b!important; backdrop-filter:none!important; }
     .resource-nav .container-nav { min-height:0; }
-    #topNavMenu.sidebar-menu-shell { top:88px!important; z-index:1300!important; max-height:none; overflow:visible; }
-    body.has-sidebar main,
-    body.has-sidebar .payment-footer { margin-left:0!important; }
     html, body { overflow-x:hidden; }
     main { flex:1 0 auto; display:flex; align-items:center; padding:clamp(24px,4vh,48px) 0; }
     main > .payment-container { width:min(1120px,calc(100% - 2rem)); margin-inline:auto; }
@@ -133,7 +130,7 @@
     @media(max-width:980px) {
       .page-wrapper { padding-top:62px; }
       .resource-nav { padding:.65rem 0!important; }
-      #topNavMenu.sidebar-menu-shell { top:72px!important; left:12px!important; right:12px!important; width:auto!important; max-height:calc(100vh - 84px); overflow-y:auto; }
+
     }
     @media(max-width:640px) {
       .page-wrapper { padding-top:62px; }
@@ -326,29 +323,13 @@
             <span class="auth-profile-name" data-auth-name></span>
           </div>
           
+          <a class="btn btn-outline" href="/members.html" id="backToMembersBtn" style="display:none">Back to Members Area</a>
           <a class="btn btn-outline nav-login" href="/login.html?next=%2Finvoice.html" id="signInLink">Sign In</a>
           <button class="btn btn-outline" id="signOutBtn" type="button" style="display:none">Sign Out</button>
         </div>
       </div>
     </header>
 
-
-  <nav id="topNavMenu" class="sidebar-menu-shell" aria-hidden="true"></nav>
-  <script>
-    window.addEventListener('DOMContentLoaded', function () {
-      function updateSidebarVisibility() {
-        var sidebar = document.getElementById('topNavMenu');
-        if (!sidebar) return;
-        var visible = document.body.classList.contains('has-sidebar');
-        sidebar.hidden = !visible;
-        sidebar.setAttribute('aria-hidden', visible ? 'false' : 'true');
-        sidebar.style.display = visible ? 'block' : 'none';
-      }
-      updateSidebarVisibility();
-      var observer = new MutationObserver(updateSidebarVisibility);
-      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-    });
-  </script>
 
   <main>
 	<div class="payment-container">
@@ -400,12 +381,13 @@
 		firebase.auth().onAuthStateChanged(async function (user) {
 		  var isAuthenticated = !!user;
           var signInLink = document.getElementById("signInLink");
+          var backToMembersBtn = document.getElementById("backToMembersBtn");
           if (signInLink) signInLink.style.display = isAuthenticated ? "none" : "inline-flex";
+          if (backToMembersBtn) backToMembersBtn.style.display = isAuthenticated ? "inline-flex" : "none";
           signOutBtn.style.display = isAuthenticated ? "inline-flex" : "none";
 		  var paymentContent = document.getElementById('invoicePaymentContent');
 		  var authPrompt = document.getElementById('invoiceAuthPrompt');
 		  var stripeContainer = document.getElementById('stripePricingTableContainer');
-		  document.body.classList.toggle('has-sidebar', isAuthenticated);
 		  if (paymentContent) paymentContent.hidden = !isAuthenticated;
 		  if (authPrompt) authPrompt.hidden = isAuthenticated;
 

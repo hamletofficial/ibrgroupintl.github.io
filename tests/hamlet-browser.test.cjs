@@ -108,6 +108,13 @@ test('signed-in broker can save a deal, save a search and upload a transaction d
     await page.route('**/firebase-config.js', route => route.fulfill({status: 200, contentType: 'application/javascript', body: mockFirebase}));
     await page.goto(origin + '/app/hamlet/index.html', {waitUntil: 'domcontentloaded'});
     await page.waitForFunction(() => document.querySelector('#syncLabel')?.textContent === 'Synced workspace', null, {timeout: 10000});
+    // The authenticated first-run product tour intentionally overlays the workspace.
+    // Dismiss it in this workflow test so the test can exercise the underlying controls.
+    const tourOverlay = page.locator('#hamletTourOverlay');
+    if (await tourOverlay.isVisible().catch(() => false)) {
+      await tourOverlay.getByRole('button', {name: 'Skip tour'}).click();
+      await tourOverlay.waitFor({state: 'hidden'});
+    }
     assert.equal(await page.locator('#hamletAdvancedTools').isVisible(), true);
 
     await page.locator('#workspaceSearchInput').fill('Baker Street');

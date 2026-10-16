@@ -1,0 +1,63 @@
+# hamlet for Windows
+
+This folder contains the Electron desktop application for Hamlet. The installer workflow runs on pushes to the desktop development branch and can also be started manually from GitHub Actions. The desktop build is separate from the GitHub Pages deployment.
+
+## Current functionality
+
+- Opens the live Hamlet platform in a dedicated Windows desktop window.
+- Uses Electron context isolation, sandboxing, disabled Node.js integration and HTTPS navigation controls.
+- Routes ordinary HTTPS links to the default browser and permits only the configured authentication hosts in app popups.
+- Exposes a narrowly scoped `window.hamletDesktop.notify({ title, body })` bridge for native desktop notifications.
+- Connects the Hamlet deal pipeline's critical-path reminder checks to native notifications, with browser notifications as a fallback.
+- Generates a Hamlet-branded `.ico` at build time and builds an NSIS installer with Start menu and desktop shortcuts.
+
+## Local build (Windows 10/11)
+
+From this directory, in PowerShell:
+
+```powershell
+npm install
+npm run check
+npm start
+npm run pack:win
+```
+
+A successful Windows package build should produce `release/hamlet-Setup-0.1.0.exe`.
+
+## Automated validation
+
+The GitHub Actions workflow `.github/workflows/hamlet-windows-build.yml` uses Node.js 24 on a Windows runner and:
+
+1. Runs JavaScript syntax checks and the desktop security unit tests.
+2. Builds the NSIS Windows installer.
+3. Requires exactly one non-empty installer larger than 1 MB.
+4. Calculates a SHA-256 checksum and includes it beside the installer.
+5. Uploads the installer and checksum as the `hamlet-windows-installer` workflow artifact for 14 days.
+
+The website's browser end-to-end test runs in the repository's smoke-test workflow. It uses a mocked Firebase environment to exercise the deal pipeline, workspace search, deal calculator, saved searches and transaction-document upload. It does not use production credentials or establish that real identity-provider login works in Electron.
+
+## Manual Windows acceptance test before release
+
+After downloading the workflow artifact, extract it and verify the installer checksum using PowerShell:
+
+```powershell
+Get-FileHash .\\hamlet-Setup-0.1.0.exe -Algorithm SHA256
+Get-Content .\\SHA256SUMS.txt
+```
+
+Compare the hash with the entry for the installer in `SHA256SUMS.txt`. Then install on a supported Windows 10/11 machine and verify:
+
+- The installer completes and creates the expected Start menu and desktop shortcuts.
+- The app opens the correct Hamlet domain and can be closed and relaunched.
+- Firebase sign-in, sign-out and each enabled provider are tested with real accounts; authentication callback handling may need provider-specific adjustments.
+- The notification-enable action produces a native Windows notification when notifications are allowed.
+- A test critical-path reminder is shown in the configured lead-time window and is not duplicated on the same day.
+- Windows notification permissions, Focus/Do Not Disturb, app restart, upgrade and uninstall behaviour are checked.
+
+A green CI build validates the package process, not every interactive Windows behaviour. The installer still requires the manual acceptance checks above before public release.
+
+## Release and security notes
+
+- Reminder checks are currently page-driven: the pipeline page must be running. Native notifications are not scheduled while the application is fully closed.
+- Releases are not yet code-signed and an automatic secure update mechanism is not yet configured.
+- Never include Firebase Admin credentials, service-account keys or other privileged secrets in the desktop package. Backend authorisation must remain enforced by the service.

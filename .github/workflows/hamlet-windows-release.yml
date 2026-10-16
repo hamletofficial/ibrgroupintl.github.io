@@ -46,8 +46,8 @@ jobs:
         shell: pwsh
         run: |
           $version = (node -p "require('./package.json').version").Trim()
-          if ($version -ne "1.04.0") {
-            throw "Expected Windows package version 1.04.0, found $version."
+          if ($version -ne "1.4.0") {
+            throw "Expected Windows package version 1.4.0, found $version."
           }
 
       - name: Build Windows installer
@@ -63,7 +63,7 @@ jobs:
             throw "Expected exactly one Windows installer; found $($installers.Count)."
           }
           $installer = $installers[0]
-          if ($installer.Name -ne "hamlet-Setup-1.04.0.exe") {
+          if ($installer.Name -ne "hamlet-Setup-1.4.0.exe") {
             throw "Unexpected installer filename: $($installer.Name)"
           }
           if ($installer.Length -lt 1MB) {
@@ -85,5 +85,5 @@ jobs:
           generate_release_notes: false
           fail_on_unmatched_files: true
           files: |
-            desktop/hamlet-windows/release/hamlet-Setup-1.04.0.exe
+            desktop/hamlet-windows/release/hamlet-Setup-1.4.0.exe
             desktop/hamlet-windows/release/SHA256SUMS.txt

@@ -9,7 +9,8 @@
     "pack:win": "electron-builder --win nsis",
     "pack:dir": "electron-builder --dir",
     "check": "node --check main.cjs && node --check preload.cjs && node --check security.cjs && node --test",
-    "test": "node --test"
+    "test": "node --test",
+    "prepack:win": "node generate-icon.cjs"
   },
   "devDependencies": {
     "electron": "^39.0.0",
@@ -25,7 +26,8 @@
       "main.cjs",
       "preload.cjs",
       "security.cjs",
-      "package.json"
+      "package.json",
+      "icon.ico"
     ],
     "win": {
       "target": [
@@ -36,7 +38,8 @@
           ]
         }
       ],
-      "artifactName": "hamlet-Setup-${version}.${ext}"
+      "artifactName": "hamlet-Setup-${version}.${ext}",
+      "icon": "icon.ico"
     },
     "nsis": {
       "oneClick": false,

@@ -7,6 +7,7 @@ on:
       - feature/hamlet-windows-desktop
     paths:
       - "desktop/hamlet-windows/**"
+      - "app/hamlet/index.html"
       - ".github/workflows/hamlet-windows-build.yml"
 
 concurrency:

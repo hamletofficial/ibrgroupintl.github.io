@@ -10,7 +10,7 @@ on:
       - ".github/workflows/hamlet-windows-build.yml"
 
 concurrency:
-  group: hamlet-windows-\${{ github.ref }}
+  group: hamlet-windows-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:

@@ -8,6 +8,7 @@ This folder contains the initial Electron desktop application scaffold. It is de
 - Uses Electron context isolation, sandboxing, disabled Node.js integration and HTTPS navigation controls.
 - Routes ordinary HTTPS links to the default browser.
 - Provides a narrowly scoped `window.hamletDesktop.notify({ title, body })` bridge for Windows notifications.
+- Generates a simple Hamlet-branded `.ico` at build time without an additional image dependency.
 - Defines an NSIS installer build that creates Start menu and desktop shortcuts.
 
 ## Requirements
@@ -27,7 +28,7 @@ npm start
 npm run pack:win
 ```
 
-The installer should be produced in `release/hamlet-Setup-0.1.0.exe` after a successful Windows build.
+The build generates `icon.ico` and should produce `release/hamlet-Setup-0.1.0.exe` after a successful Windows build.
 
 ## Important release work still required
 

@@ -1,0 +1,47 @@
+{
+  "name": "hamlet-windows",
+  "version": "0.1.0",
+  "description": "Hamlet commercial property platform for Windows",
+  "private": true,
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "pack:win": "electron-builder --win nsis",
+    "pack:dir": "electron-builder --dir",
+    "check": "node --check main.cjs && node --check preload.cjs"
+  },
+  "devDependencies": {
+    "electron": "^39.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "co.uk.hamletai.desktop",
+    "productName": "hamlet",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "hamlet-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "hamlet"
+    }
+  }
+}

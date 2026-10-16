@@ -49,7 +49,19 @@ function buildNav(){
    if(existingLink)return;
    var a=make('a','workspace-nav-link');a.href=r.href;a.appendChild(document.createTextNode(r.icon+' '+r.short));if(r.paths.indexOf(currentPath())!==-1){a.setAttribute('aria-current','page');a.title=r.label}if(r.external){a.target='_blank';a.rel='noopener noreferrer'}existing.appendChild(a)
   });
-  if(!existing.querySelector('.hamlet-global-search')){var b=make('button','hamlet-global-search','Search Hamlet');b.type='button';b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-label','Search Hamlet (Ctrl or Command + K)');var k=make('kbd','','Ctrl K');b.appendChild(k);b.addEventListener('click',openPalette);existing.appendChild(b)}
+  /* Keep the global search on its own row below the workspace links to avoid
+     horizontal overflow while keeping it aligned to the right. */
+  var searchRow=existing.parentNode&&existing.parentNode.querySelector(':scope > .hamlet-global-search-row');
+  if(!searchRow){
+   searchRow=make('div','hamlet-global-search-row');
+   if(existing.parentNode)existing.parentNode.insertBefore(searchRow,existing.nextSibling);
+  }
+  var searchButton=searchRow.querySelector('.hamlet-global-search');
+  if(!searchButton){
+   searchButton=make('button','hamlet-global-search','Search Hamlet');searchButton.type='button';
+   searchButton.setAttribute('aria-haspopup','dialog');searchButton.setAttribute('aria-label','Search Hamlet (Ctrl or Command + K)');
+   var keyLabel=make('kbd','','Ctrl K');searchButton.appendChild(keyLabel);searchButton.addEventListener('click',openPalette);searchRow.appendChild(searchButton);
+  }
   return;
  }
  if(document.querySelector('.hamlet-primary-nav'))return;

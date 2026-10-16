@@ -11,7 +11,7 @@
 
 ## Download and install
 
-1. Download `hamlet-Setup-0.1.0.exe` and `SHA256SUMS.txt) from the Assets section of this release.
+1. Download `hamlet-Setup-0.1.0.exe` and `SHA256SUMS.txt` from the Assets section of this release.
 2. In PowerShell, run `Get-FileHash .\hamlet-Setup-0.1.0.exe -Algorithm SHA256`.
 3. Compare the displayed hash with the installer entry in `SHA256SUMS.txt`. Do not install if they differ.
 4. Run the installer and review any Windows security or publisher prompts before proceeding.

@@ -100,7 +100,7 @@
     .resource-nav { position:fixed!important; top:0; left:0; right:0; width:100%; z-index:1200!important; padding:1rem 0!important; background:#092a4b!important; border-bottom:1px solid #092a4b!important; backdrop-filter:none!important; }
     .resource-nav .container-nav { min-height:0; }
     html, body { overflow-x:clip!important; }
-    #topNavMenu, .sidebar-menu-shell { display:none!important; visibility:hidden!important; max-height:0!important; overflow:hidden!important; }
+    #topNavMenu, .sidebar-menu-shell, nav[aria-label="Main navigation"], nav[aria-label="Primary navigation"], .main-menu, .main-nav, .site-nav, .top-nav, .navbar { display:none!important; visibility:hidden!important; max-height:0!important; height:0!important; min-height:0!important; overflow:hidden!important; margin:0!important; padding:0!important; border:0!important; }
     .container-nav { width:100%; min-width:0; }
     .user-menu { flex-wrap:wrap; min-width:0; }
     .user-menu > * { flex-shrink:0; }
@@ -391,6 +391,14 @@
 	});
   </script>
   </div>
+  <script>
+    // Invoice page uses a compact header, not the shared secondary navigation.
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('#topNavMenu, .sidebar-menu-shell, nav[aria-label="Main navigation"], nav[aria-label="Primary navigation"], .main-menu, .main-nav, .site-nav, .top-nav, .navbar').forEach(function (menu) {
+        if (!menu.closest('.payment-footer')) menu.remove();
+      });
+    });
+  </script>
   <script src="/hamlet-workspace.js?v=20261016-4"></script>
   <script src="/hamlet-background.js?v=20261013-1"></script>
 </body>

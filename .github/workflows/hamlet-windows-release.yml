@@ -1,26 +1,26 @@
-name: Publish Hamlet for Windows
+name: Build and publish Hamlet v1.04 for Windows
 
 on:
   workflow_dispatch:
     inputs:
       tag_name:
-        description: "Existing Windows beta tag to build and publish"
+        description: "Release tag to build and publish"
         required: true
-        default: "hamlet-windows-v0.1.0-beta.1"
+        default: "v1.04"
         type: string
   push:
     tags:
-      - "hamlet-windows-v*"
+      - "v1.04"
 
 permissions:
   contents: write
 
 concurrency:
-  group: hamlet-windows-release-${{ github.ref }}
+  group: hamlet-v1-04-windows-release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  build-and-publish:
+  build-test-and-publish:
     runs-on: windows-latest
     steps:
       - name: Check out source
@@ -32,14 +32,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: npm
+          cache-dependency-path: desktop/hamlet-windows/package-lock.json
 
       - name: Install desktop dependencies
         working-directory: desktop/hamlet-windows
-        run: npm install
+        run: npm ci
 
-      - name: Run desktop security and syntax tests
+      - name: Run desktop syntax, security and unit tests
         working-directory: desktop/hamlet-windows
         run: npm run check
+
+      - name: Verify unified version number
+        working-directory: desktop/hamlet-windows
+        shell: pwsh
+        run: |
+          $version = (node -p "require('./package.json').version").Trim()
+          if ($version -ne "1.04.0") {
+            throw "Expected Windows package version 1.04.0, found $version."
+          }
 
       - name: Build Windows installer
         working-directory: desktop/hamlet-windows
@@ -54,6 +65,9 @@ jobs:
             throw "Expected exactly one Windows installer; found $($installers.Count)."
           }
           $installer = $installers[0]
+          if ($installer.Name -ne "hamlet-Setup-1.04.0.exe") {
+            throw "Unexpected installer filename: $($installer.Name)"
+          }
           if ($installer.Length -lt 1MB) {
             throw "Installer is unexpectedly small ($($installer.Length) bytes); refusing to publish."
           }
@@ -63,15 +77,15 @@ jobs:
           Write-Host "Size: $($installer.Length) bytes"
           Write-Host "SHA-256: $hash"
 
-      - name: Publish GitHub prerelease and attach installer
+      - name: Publish Hamlet v1.04 Windows prerelease
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
-          name: hamlet for Windows — Beta 1
+          name: Hamlet v1.04 — Windows
           body_path: desktop/hamlet-windows/RELEASE-NOTES.md
           prerelease: true
           generate_release_notes: false
           fail_on_unmatched_files: true
           files: |
-            desktop/hamlet-windows/release/*.exe
+            desktop/hamlet-windows/release/hamlet-Setup-1.04.0.exe
             desktop/hamlet-windows/release/SHA256SUMS.txt

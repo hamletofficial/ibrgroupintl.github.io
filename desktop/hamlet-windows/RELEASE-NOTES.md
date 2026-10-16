@@ -13,12 +13,12 @@ Hamlet v1.04 brings the Windows desktop application into the platform's unified 
 
 ## Install and verify
 
-The expected installer filename is `hamlet-Setup-1.04.0.exe`.
+The expected installer filename is `hamlet-Setup-1.4.0.exe`.
 
 After the build artifact is available, download both the installer and `SHA256SUMS.txt`. In PowerShell, run:
 
 ```powershell
-Get-FileHash .\hamlet-Setup-1.04.0.exe -Algorithm SHA256
+Get-FileHash .\hamlet-Setup-1.4.0.exe -Algorithm SHA256
 Get-Content .\SHA256SUMS.txt
 ```
 

@@ -99,7 +99,7 @@
 
     body.has-sidebar main,
     body.has-sidebar .payment-footer {
-      margin-left: 260px;
+      margin-left: 0;
     }
 
     @media (max-width: 980px) {
@@ -122,7 +122,10 @@
     .page-wrapper { display:flex; flex-direction:column; padding-top:74px; }
     .resource-nav { position:fixed!important; top:0; left:0; right:0; width:100%; z-index:1200!important; padding:1rem 0!important; background:#092a4b!important; border-bottom:1px solid #092a4b!important; backdrop-filter:none!important; }
     .resource-nav .container-nav { min-height:0; }
-    #topNavMenu.sidebar-menu-shell { top:88px!important; z-index:950!important; max-height:calc(100vh - 104px); overflow-y:auto; }
+    #topNavMenu.sidebar-menu-shell { top:88px!important; z-index:1300!important; max-height:none; overflow:visible; }
+    body.has-sidebar main,
+    body.has-sidebar .payment-footer { margin-left:0!important; }
+    html, body { overflow-x:hidden; }
     main { flex:1 0 auto; display:flex; align-items:center; padding:clamp(24px,4vh,48px) 0; }
     main > .payment-container { width:min(1120px,calc(100% - 2rem)); margin-inline:auto; }
     .payment-card,.auth-prompt-card { width:100%; max-width:900px; margin:0 auto; }
@@ -130,7 +133,7 @@
     @media(max-width:980px) {
       .page-wrapper { padding-top:62px; }
       .resource-nav { padding:.65rem 0!important; }
-      #topNavMenu.sidebar-menu-shell { top:auto!important; max-height:none; overflow:visible; }
+      #topNavMenu.sidebar-menu-shell { top:72px!important; left:12px!important; right:12px!important; width:auto!important; max-height:calc(100vh - 84px); overflow-y:auto; }
     }
     @media(max-width:640px) {
       .page-wrapper { padding-top:62px; }
@@ -330,13 +333,16 @@
     </header>
 
 
-  <nav id="topNavMenu" aria-hidden="true" hidden></nav>
+  <nav id="topNavMenu" class="sidebar-menu-shell" aria-hidden="true"></nav>
   <script>
     window.addEventListener('DOMContentLoaded', function () {
       function updateSidebarVisibility() {
         var sidebar = document.getElementById('topNavMenu');
         if (!sidebar) return;
-        sidebar.style.display = document.body.classList.contains('has-sidebar') ? 'block' : 'none';
+        var visible = document.body.classList.contains('has-sidebar');
+        sidebar.hidden = !visible;
+        sidebar.setAttribute('aria-hidden', visible ? 'false' : 'true');
+        sidebar.style.display = visible ? 'block' : 'none';
       }
       updateSidebarVisibility();
       var observer = new MutationObserver(updateSidebarVisibility);
@@ -364,10 +370,6 @@
 
   <footer class="payment-footer" role="contentinfo">
 	<div class="payment-container">
-	  <div id="cookieConsentBar" class="cookie-bar">
-		<div>This website uses cookies to improve your experience. <a href="/cookies.html">Cookie Policy</a> <span aria-hidden="true">|</span> <a href="/privacy.html">Privacy Policy</a></div>
-		<div class="cookie-actions"><button id="cookieDeclineBtn" type="button">Decline</button><button id="cookieAcceptBtn" type="button">Accept</button></div>
-	  </div>
 	  <nav class="footer-links" aria-label="Footer">
 		<a href="/terms.html">Terms</a>
 		<a href="/privacy.html">Privacy</a>
@@ -377,25 +379,6 @@
 	</div>
   </footer>
   <script>
-	(function () {
-	  var cookieName = 'ibr_cookie_consent_v1';
-	  var bar = document.getElementById('cookieConsentBar');
-	  function saveCookie(value) {
-		document.cookie = cookieName + '=' + value + ';path=/;max-age=31536000;SameSite=Lax';
-		document.documentElement.classList.add('has-cookie-consent');
-	  }
-	  function hasCookie(name) {
-		return document.cookie.split(';').some(function (cookie) {
-		  cookie = cookie.trim();
-		  return cookie.indexOf(name + '=') === 0 && cookie.length > name.length + 1;
-		});
-	  }
-	  if (hasCookie(cookieName)) { if (bar) bar.style.display = 'none'; } else {
-		document.getElementById('cookieAcceptBtn').addEventListener('click', function () { saveCookie('accepted'); bar.style.display = 'none'; });
-		document.getElementById('cookieDeclineBtn').addEventListener('click', function () { saveCookie('declined'); bar.style.display = 'none'; });
-	  }
-	})();
-
 	window.addEventListener('DOMContentLoaded', function () {
 	  var signOutBtn = document.getElementById('signOutBtn');
 

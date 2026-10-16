@@ -1,6 +1,6 @@
 # hamlet for Windows
 
-This folder contains the Electron desktop application for Hamlet. The installer workflow runs on pushes to the desktop development branch and can also be started manually from GitHub Actions. The desktop build is separate from the GitHub Pages deployment.
+This folder contains the Electron desktop application for Hamlet. The unified v1.04 Windows release workflow runs automated checks and packages the installer on a Windows runner before publishing the Windows prerelease. The desktop build is separate from the GitHub Pages deployment.
 
 ## Current functionality
 
@@ -22,11 +22,11 @@ npm start
 npm run pack:win
 ```
 
-A successful Windows package build should produce `release/hamlet-Setup-0.1.0.exe`.
+A successful Windows package build should produce `release/hamlet-Setup-1.04.0.exe`.
 
 ## Automated validation
 
-The GitHub Actions workflow `.github/workflows/hamlet-windows-build.yml` uses Node.js 24 on a Windows runner and:
+The GitHub Actions workflow `.github/workflows/hamlet-windows-release.yml` uses Node.js 24 on a Windows runner and:
 
 1. Runs JavaScript syntax checks and the desktop security unit tests.
 2. Builds the NSIS Windows installer.
@@ -41,7 +41,7 @@ The website's browser end-to-end test runs in the repository's smoke-test workfl
 After downloading the workflow artifact, extract it and verify the installer checksum using PowerShell:
 
 ```powershell
-Get-FileHash .\\hamlet-Setup-0.1.0.exe -Algorithm SHA256
+Get-FileHash .\\hamlet-Setup-1.04.0.exe -Algorithm SHA256
 Get-Content .\\SHA256SUMS.txt
 ```
 

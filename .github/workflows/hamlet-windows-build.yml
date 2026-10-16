@@ -9,6 +9,10 @@ on:
       - "desktop/hamlet-windows/**"
       - ".github/workflows/hamlet-windows-build.yml"
 
+concurrency:
+  group: hamlet-windows-\${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 const {getFirestore} = require("firebase-admin/firestore");
 const {defineSecret} = require("firebase-functions/params");
 const {HttpsError, onCall} = require("firebase-functions/v2/https");
-const {onDocumentCreated, onDocumentWritten} = require("firebase-functions/v2/firestore");
+const {onDocumentCreated, onDocumentWrittenWithAuthContext} = require("firebase-functions/v2/firestore");
 const {onSchedule} = require("firebase-functions/v2/scheduler");
 
 const postmarkOutboundToken = defineSecret("POSTMARK_OUTBOUND_TOKEN");
@@ -561,68 +561,113 @@ function sendHamletReminderEmail(recipients, reminder, deal, dueDate, brokerEmai
  * using the source document's update time; clients cannot create, edit or
  * delete history entries directly.
  */
-exports.recordHamletDealHistory = onDocumentWritten({
-  document: "hamletDeals/{dealId}",
-  region: "us-central1",
-  timeoutSeconds: 60,
-  memory: "256MiB",
-  retry: true,
-}, async function(event) {
+async function resolveHamletAuditActor(event, fallbackUid) {
+  const actorUid = String(event.authId || fallbackUid || "").slice(0, 128);
+  let actorName = "";
+  let actorEmail = "";
+  if (actorUid) {
+    try {
+      const user = await admin.auth().getUser(actorUid);
+      actorName = String(user.displayName || "").slice(0, 160);
+      actorEmail = String(user.email || "").slice(0, 254);
+    } catch (err) {
+      // Deleted or unavailable Auth users must not prevent the audit event.
+    }
+    if (!actorName || !actorEmail) {
+      try {
+        const snap = await getFirestore(admin.app()).collection("publicProfiles").doc(actorUid).get();
+        const profile = snap.exists ? (snap.data() || {}) : {};
+        if (!actorName) actorName = profileNameForAudit(profile);
+        if (!actorEmail) actorEmail = String(profile.email || profile.emailAddress || "");
+      } catch (err) {
+        console.warn("Could not resolve Hamlet audit actor profile:", actorUid, err && err.message);
+      }
+    }
+  }
+  return {actorUid: actorUid, actorName: String(actorName || "").slice(0,160), actorEmail: String(actorEmail || "").slice(0,254), actorType: String(event.authType || "unknown").slice(0,40)};
+}
+function profileNameForAudit(profile) {
+  const first = profile.firstName || profile.firstname || profile.first_name || profile.givenName || "";
+  const last = profile.lastName || profile.lastname || profile.last_name || profile.familyName || "";
+  return (String(first) + " " + String(last)).trim() || profile.displayName || profile.name || profile.fullName || "";
+}
+function hamletAuditEventId(prefix, recordId, event) {
   const change = event.data;
-  if (!change) return;
-  const beforeExists = change.before.exists;
-  const afterExists = change.after.exists;
-  if (!beforeExists && !afterExists) return;
-  const before = beforeExists ? (change.before.data() || {}) : {};
-  const after = afterExists ? (change.after.data() || {}) : {};
-  const ownerUid = String((afterExists ? after.uid : before.uid) || "");
-  const dealId = String(event.params.dealId || "");
-  if (!ownerUid || !dealId) return;
-  const tracked = ["name", "property", "type", "value", "stage", "owner", "client", "notes", "propertyResourceId", "contactUid"];
-  const changedFields = beforeExists && afterExists ?
-    tracked.filter(function(key) { return String(before[key] == null ? "" : before[key]) !== String(after[key] == null ? "" : after[key]); }) :
-    tracked.filter(function(key) { return (afterExists ? after[key] : before[key]) !== undefined; });
-  if (beforeExists && afterExists && !changedFields.length) return;
-  const eventType = !beforeExists ? "created" : !afterExists ? "deleted" :
-    String(before.stage || "") !== String(after.stage || "") ? "stage_changed" : "updated";
-  const stageFrom = String(before.stage || "").slice(0, 100);
-  const stageTo = String(after.stage || "").slice(0, 100);
-  const dealName = String((afterExists ? after.name : before.name) || dealId).slice(0, 100);
-  const summary = eventType === "created" ? "Transaction created" :
-    eventType === "deleted" ? "Transaction deleted" :
-    eventType === "stage_changed" ? "Pipeline stage changed from " + stageFrom + " to " + stageTo :
-    "Transaction updated: " + changedFields.join(", ");
+  const snap = change && (change.after && change.after.exists ? change.after : change.before);
+  const sourceTime = snap && snap.updateTime;
+  const raw = event.id || (sourceTime && sourceTime.seconds !== undefined ? String(sourceTime.seconds) + "_" + String(sourceTime.nanoseconds || 0) : String(Date.now()));
+  return prefix + "_" + String(recordId).replace(/[^a-zA-Z0-9_-]/g, "_").slice(0,80) + "_" + String(raw).replace(/[^a-zA-Z0-9_-]/g, "_").slice(0,100);
+}
+async function writeHamletAuditEvent(collection, prefix, recordId, ownerUid, title, eventType, summary, changedFields, event, extra) {
   try { admin.app(); } catch (err) { admin.initializeApp(); }
-  const db = getFirestore(admin.app());
-  const sourceTime = (afterExists ? change.after.updateTime : change.before.updateTime);
-  // CloudEvent IDs stay stable across retries and differ for a deletion even
-  // when it immediately follows the last update to the same deal.
-  const rawSuffix = event.id || (sourceTime && sourceTime.seconds !== undefined ?
-    String(sourceTime.seconds) + "_" + String(sourceTime.nanoseconds || 0) : String(Date.now()));
-  const suffix = String(rawSuffix).replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 100);
-  const safeId = dealId.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 100);
-  const historyId = "evt_" + safeId + "_" + suffix;
+  const actor = await resolveHamletAuditActor(event, ownerUid);
+  const eventId = hamletAuditEventId(prefix, recordId, event);
+  const record = Object.assign({
+    id: eventId, uid: ownerUid, actorUid: actor.actorUid, actorName: actor.actorName,
+    actorEmail: actor.actorEmail, actorType: actor.actorType,
+    recordId: String(recordId).slice(0,200), title: String(title || recordId).slice(0,160),
+    eventType: eventType, summary: String(summary || eventType).slice(0,240),
+    changedFields: changedFields.slice(0,25), createdAt: admin.firestore.FieldValue.serverTimestamp()
+  }, extra || {});
   try {
-    await db.collection("hamletDealEvents").doc(historyId).create({
-      id: historyId,
-      uid: ownerUid,
-      dealId: dealId.slice(0, 200),
-      dealName: dealName,
-      eventType: eventType,
-      stageFrom: stageFrom,
-      stageTo: stageTo,
-      summary: summary.slice(0, 240),
-      changedFields: changedFields.slice(0, 12),
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
+    await getFirestore(admin.app()).collection(collection).doc(eventId).create(record);
   } catch (err) {
     if (err && (err.code === 6 || err.code === "already-exists")) {
-      console.log("Hamlet history event already recorded:", historyId);
+      console.log("Hamlet audit event already recorded:", eventId);
       return;
     }
-    console.error("Unable to record Hamlet deal history:", historyId, err);
+    console.error("Unable to record Hamlet audit event:", eventId, err);
     throw err;
   }
+}
+
+/** Immutable server-authored history for transaction creation, edits and deletion. */
+exports.recordHamletDealHistory = onDocumentWrittenWithAuthContext({
+  document: "hamletDeals/{dealId}", region: "us-central1", timeoutSeconds: 60, memory: "256MiB", retry: true
+}, async function(event) {
+  const change = event.data;
+  if (!change || (!change.before.exists && !change.after.exists)) return;
+  const before = change.before.exists ? (change.before.data() || {}) : {};
+  const after = change.after.exists ? (change.after.data() || {}) : {};
+  const ownerUid = String((change.after.exists ? after.uid : before.uid) || "");
+  const dealId = String(event.params.dealId || "");
+  if (!ownerUid || !dealId) return;
+  const tracked = ["name","property","type","value","stage","owner","client","notes","propertyResourceId","contactUid"];
+  const changed = change.before.exists && change.after.exists ?
+    tracked.filter(k => JSON.stringify(before[k] == null ? null : before[k]) !== JSON.stringify(after[k] == null ? null : after[k])) :
+    tracked.filter(k => (change.after.exists ? after[k] : before[k]) !== undefined);
+  if (change.before.exists && change.after.exists && !changed.length) return;
+  const type = !change.before.exists ? "created" : !change.after.exists ? "deleted" : (String(before.stage || "") !== String(after.stage || "") ? "stage_changed" : "updated");
+  const title = String((change.after.exists ? after.name || after.property : before.name || before.property) || dealId);
+  const summary = type === "created" ? "Deal created" : type === "deleted" ? "Deal deleted" : type === "stage_changed" ? "Pipeline stage changed from " + String(before.stage || "unspecified") + " to " + String(after.stage || "unspecified") : "Deal updated: " + changed.join(", ");
+  await writeHamletAuditEvent("hamletDealEvents", "deal_evt", dealId, ownerUid, title, type, summary, changed, event, {
+    dealId: dealId.slice(0,200), stageFrom: String(before.stage || "").slice(0,100), stageTo: String(after.stage || "").slice(0,100)
+  });
+});
+
+/** Immutable server-authored history for commercial property listing changes. */
+exports.recordHamletPropertyHistory = onDocumentWrittenWithAuthContext({
+  document: "commercialProperties/{propertyId}", region: "us-central1", timeoutSeconds: 60, memory: "256MiB", retry: true
+}, async function(event) {
+  const change = event.data;
+  if (!change || (!change.before.exists && !change.after.exists)) return;
+  const before = change.before.exists ? (change.before.data() || {}) : {};
+  const after = change.after.exists ? (change.after.data() || {}) : {};
+  const ownerUid = String((change.after.exists ? after.ownerUid || after.uid : before.ownerUid || before.uid) || "");
+  const propertyId = String(event.params.propertyId || "");
+  if (!ownerUid || !propertyId) {
+    console.warn("Skipping property audit event without owner UID or property ID:", propertyId);
+    return;
+  }
+  const tracked = ["propertyName","name","propertyType","address","postcode","availability","size","askingRent","status","description","propertyUrl","contactName","contactEmail","sustainabilityStandard","sustainabilityStatus","certificationClass","certificateReference","certifier","certificationDate","certificateUrl","sustainabilityNotes"];
+  const changed = change.before.exists && change.after.exists ?
+    tracked.filter(k => JSON.stringify(before[k] == null ? null : before[k]) !== JSON.stringify(after[k] == null ? null : after[k])) :
+    tracked.filter(k => (change.after.exists ? after[k] : before[k]) !== undefined);
+  if (change.before.exists && change.after.exists && !changed.length) return;
+  const type = !change.before.exists ? "created" : !change.after.exists ? "deleted" : "updated";
+  const title = String((change.after.exists ? after.propertyName || after.name || after.address : before.propertyName || before.name || before.address) || propertyId);
+  const summary = type === "created" ? "Property listing created" : type === "deleted" ? "Property listing deleted" : "Property listing updated: " + changed.join(", ");
+  await writeHamletAuditEvent("hamletPropertyEvents", "property_evt", propertyId, ownerUid, title, type, summary, changed, event, {propertyId: propertyId.slice(0,200)});
 });
 
 exports.sendHamletCriticalPathReminders = onSchedule({

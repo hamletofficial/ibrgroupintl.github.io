@@ -32,6 +32,7 @@
     .dash-card{border:1px solid var(--line);border-radius:14px;background:#fff;padding:1.2rem;box-shadow:0 6px 20px rgba(2,6,23,.06);text-align:left}
     .dash-card h2{margin:.2rem 0 .4rem;color:var(--ink);font-size:1rem}.dash-card p{margin:0 0 1rem;color:var(--muted);line-height:1.45;font-size:.9rem}
     .dash-icon{font-size:1.45rem}.btn{cursor:pointer}
+    .residential-card{border-top:4px solid #0f766e}.residential-card .dash-icon{color:#0f766e}.residential-card h2{color:#115e59}
     .panel{border:1px solid var(--line);border-radius:14px;background:#fff;padding:1.4rem;box-shadow:0 6px 20px rgba(2,6,23,.06);margin-bottom:1rem}
     .panel h2{margin:0 0 .35rem;color:var(--ink);font-size:1.2rem}.panel-intro{margin:0 0 1rem;color:var(--muted)}
     .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
@@ -84,6 +85,8 @@
         <article class="dash-card"><div class="dash-icon">🔎</div><h2>Explore Advertised Properties</h2><p>Review commercial opportunities already held in your broker workspace and identify properties that may warrant further engagement.</p><a class="btn btn-outline" href="/app/public/live.html">Live Properties</a></article>
         <article class="dash-card"><div class="dash-icon">🏢</div><h2>Advertise a New Property</h2><p>Create a structured record for a newly listed commercial property that needs to be leased, while helping you identify another broker who may have a buyer or tenant for the opportunity.</p><button class="btn btn-primary" type="button" id="newPropertyBtn">Advertise New Property</button></article>
         <article class="dash-card"><div class="dash-icon">📁</div><h2>My Property Resources</h2><p>Review and manage the commercial property resources attached to your authenticated Firebase profile, including removing entries submitted in error.</p><a class="btn btn-outline" href="/app/public/resources.html">Manage My Resources</a></article>
+        <article class="dash-card residential-card"><div class="dash-icon">🏡</div><h2>Residential Property Listings</h2><p>Browse residential properties submitted to Hamlet’s shared residential property collection.</p><a class="btn btn-primary" href="/app/public/residential.html">View All Residential Properties</a></article>
+        <article class="dash-card residential-card"><div class="dash-icon">🗝️</div><h2>Residential Resources</h2><p>Create, publish, update or remove residential property submissions linked to your member account.</p><a class="btn btn-outline" href="/app/public/resi-resources.html">Manage Residential Resources</a></article>
       </section>
 
       <section class="panel" id="propertyFormPanel" hidden>

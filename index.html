@@ -118,7 +118,7 @@
           <p>hamlet is a commercial leasing workspace focused on sustainable properties that meet applicable energy-efficiency standards and hold valid <strong>Passivhaus</strong> or <strong>EnerPHit</strong> certification. Discover relevant opportunities, manage leasing activity and coordinate professional relationships in one connected environment.</p>
           <div class="actions">
             <a class="button primary" href="/download.html">Download Hamlet for Windows</a>
-            <a class="button" href="/members.html">Explore member services</a>
+            <button class="button" type="button" id="view-sustainable-properties">View sustainable properties</button>
             <a class="button" href="#modules">Browse the modules ↓</a>
           </div>
         </div>
@@ -253,5 +253,13 @@
       </nav>
     </div>
   </footer>
+<script>
+  (function () {
+    var button = document.getElementById('view-sustainable-properties');
+    if (button) button.addEventListener('click', function () {
+      window.location.assign('/portfolio.html');
+    });
+  })();
+</script>
 </body>
 </html>

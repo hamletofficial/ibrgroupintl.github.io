@@ -21,6 +21,17 @@ var palette=null,paletteInput=null,paletteLinks=[],paletteRouteSelect=null,palet
 function currentPath(){return (location.pathname||'/').replace(/\/$/,'')||'/'}
 function withQuery(href,q){if(!q)return href;return href+(href.indexOf('?')>=0?'&':'?')+'q='+encodeURIComponent(q)}
 function make(tag,cls,text){var node=document.createElement(tag);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node}
+function ensureDashboardContactsSeparator(nav){
+ if(!nav)return;
+ var dashboard=nav.querySelector('a[href="/app/public/dashboard.html"]');
+ var contacts=nav.querySelector('a[href="/directory.html"]');
+ if(!dashboard||!contacts)return;
+ var existing=nav.querySelector('.hamlet-dashboard-contacts-separator');
+ if(existing)existing.remove();
+ var separator=make('span','hamlet-dashboard-contacts-separator','|');
+ separator.setAttribute('aria-hidden','true');
+ dashboard.insertAdjacentElement('afterend',separator);
+}
 function buildNav(){
  var existing=document.querySelector('nav.workspace-nav');
  if(existing){
@@ -47,6 +58,7 @@ function buildNav(){
    if(existingLink)return;
    var a=make('a','workspace-nav-link');a.href=r.href;a.appendChild(document.createTextNode(r.icon+' '+r.short));if(r.paths.indexOf(currentPath())!==-1){a.setAttribute('aria-current','page');a.title=r.label}if(r.external){a.target='_blank';a.rel='noopener noreferrer'}existing.appendChild(a)
   });
+  ensureDashboardContactsSeparator(existing);
   /* Keep the global search on its own row below the workspace links to avoid
      horizontal overflow while keeping it aligned to the right. */
   var searchRow=existing.parentNode&&existing.parentNode.querySelector(':scope > .hamlet-global-search-row');
@@ -75,6 +87,7 @@ function buildNav(){
    if(r.external){a.target='_blank';a.rel='noopener noreferrer'}
    nav.appendChild(a);
  });
+ ensureDashboardContactsSeparator(nav);
  var search=make('button','hamlet-global-search','Search Hamlet');search.type='button';search.setAttribute('aria-haspopup','dialog');search.setAttribute('aria-label','Search Hamlet (Ctrl or Command + K)');var key=make('kbd','','Ctrl K');search.appendChild(key);search.addEventListener('click',openPalette);nav.appendChild(search);
  if(header&&header.parentNode)header.parentNode.insertBefore(nav,header.nextSibling);else{var wrapper=document.querySelector('.page-wrapper')||document.body;wrapper.insertBefore(nav,wrapper.firstChild)}
 }

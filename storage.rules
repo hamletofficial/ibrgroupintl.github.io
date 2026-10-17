@@ -18,7 +18,7 @@ service firebase.storage {
       allow delete: if request.auth != null && request.auth.uid == userId;
     }
 
-    // corresponding Firestore directMessages record.
+    // Message files are accessible only to authenticated participants in the corresponding Firestore directMessages record.
     match /messageAttachments/{messageId}/{fileId}/{fileName} {
       function messageDoc() {
         return firestore.get(/databases/(default)/documents/directMessages/$(messageId));

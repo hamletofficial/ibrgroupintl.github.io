@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#071D4A">
-  <meta name="description" content="Explore current commercial property submissions on Hamlet, prioritising energy-efficiency and Passivhaus or EnerPHit sustainability credentials.">
+  <meta name="description" content="Explore current commercial leasing opportunities submitted to Hamlet, with energy-efficiency standards and Passivhaus or EnerPHit credentials clearly presented.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Commercial Property Portfolio | hamlet">
-  <meta property="og:description" content="Public view of current commercial property submissions on Hamlet, with sustainability credentials clearly prioritised.">
+  <meta property="og:description" content="Browse current commercial leasing opportunities on Hamlet. Sustainability information is displayed prominently, with certification claims identified as submitted listing information.">
   <meta property="og:url" content="https://hamlet-ai.co.uk/portfolio.html">
   <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/theme.css">
@@ -87,8 +87,8 @@
     <section class="hero" aria-labelledby="pageTitle">
       <p class="eyebrow">Open commercial property record</p>
       <h1 id="pageTitle">Commercial Property Portfolio</h1>
-      <p>Explore current commercial property submissions made to hamlet by authenticated members. This public portfolio is viewable without a Hamlet account. Energy-efficiency and sustainability credentials are prioritised on every record so that certification claims are immediately visible.</p>
-      <div class="hero-points"><span>Public view · no sign-in required</span><span>Live submissions</span><span>Passivhaus / EnerPHit credentials prioritised</span></div>
+      <p>Browse live commercial property opportunities submitted by authenticated hamlet members. The portfolio is publicly viewable without signing in and is designed to support broker-to-broker discovery and deal progression. Where supplied, energy-efficiency information and Passivhaus or EnerPHit credentials are displayed prominently. Listing details and certification evidence are supplied by members and should be checked independently before reliance.</p>
+      <div class="hero-points"><span>Public view · no sign-in required</span><span>Live submissions</span><span>Energy efficiency · Passivhaus · EnerPHit</span></div>
     </section>
     <section class="toolbar" aria-label="Search and filter portfolio">
       <label class="field">Search properties<input id="search" type="search" placeholder="Name, location, credentials, terms…" autocomplete="off"></label>
@@ -101,7 +101,7 @@
   </main>
   <footer class="footer">
     <div class="footer-links"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/cookies.html">Cookies</a><a href="/contact.html">Contact</a></div>
-    <div>© 2026 Impact in Business Recruitment Group Limited. All rights reserved.</div>
+    <div>hamlet is operated by Impact in Business Recruitment Group Limited.</div>
   </footer>
 </div>
 <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -129,14 +129,14 @@
     var standard=String(p.sustainabilityStandard||'').trim();
     var status=String(p.sustainabilityStatus||'Not provided').trim();
     var certificate=safeUrl(p.certificateUrl);
-    var content=standard?esc(standard):'Sustainability credentials not supplied';
+    var content=standard?esc(standard):'Sustainability information not supplied';
     var details=[];
     if(p.certificationClass)details.push('<span><strong>Class / method:</strong> '+esc(p.certificationClass)+'</span>');
     if(p.certificateReference)details.push('<span><strong>Certificate reference:</strong> '+esc(p.certificateReference)+'</span>');
     if(p.certifier)details.push('<span><strong>Certifier:</strong> '+esc(p.certifier)+'</span>');
     if(p.certificationDate)details.push('<span><strong>Certification date:</strong> '+esc(p.certificationDate)+'</span>');
     if(certificate)details.push('<span><a href="'+esc(certificate)+'" target="_blank" rel="noopener noreferrer">View certificate / evidence ↗</a></span>');
-    return '<section class="sustainability" aria-label="Sustainability credentials"><p class="sustainability-label">✦ Sustainability credentials</p><h3>'+content+'</h3><span class="credential-status">'+esc(status)+'</span>'+(details.length?'<div class="credential-details">'+details.join('')+'</div>':'')+(p.sustainabilityNotes?'<p class="credential-note">'+esc(p.sustainabilityNotes)+'</p>':'')+'</section>';
+    return '<section class="sustainability" aria-label="Sustainability credentials"><p class="sustainability-label">✦ Energy efficiency &amp; sustainability</p><h3>'+content+'</h3><span class="credential-status">'+esc(status)+'</span>'+(details.length?'<div class="credential-details">'+details.join('')+'</div>':'')+(p.sustainabilityNotes?'<p class="credential-note">'+esc(p.sustainabilityNotes)+'</p>':'')+'</section>';
   }
   function renderCard(item){
     var p=item.data||{};
@@ -166,7 +166,7 @@
   }
   search.addEventListener('input',applyFilters);typeFilter.addEventListener('change',applyFilters);availabilityFilter.addEventListener('change',applyFilters);sort.addEventListener('change',applyFilters);
   function showError(){
-    list.innerHTML='<div class="empty">The public portfolio could not load the live property records. The public read permission for the commercialProperties collection must be enabled in Firebase Firestore Rules. Please try again later.</div>';
+    list.innerHTML='<div class="empty">The public portfolio could not load the live commercial property records. Please try again later. If the issue persists, the site administrator should check the public read rules for the commercialProperties collection.</div>';
     count.textContent='Portfolio data unavailable';
   }
   function init(){

@@ -62,3 +62,15 @@ Then open `http://localhost:8080/`. Features that depend on Firebase, remote ass
 - Root-level pages are published through GitHub Pages on the configured custom domain.
 - Changes to Firebase Authentication integrations, Firestore rules, Storage rules, or Cloud Functions may require a separate Firebase deployment; a GitHub Pages commit alone does not deploy those backend changes.
 - After deployment, test the live listings page, deal pipeline sign-in redirect, member directory shortcut, and relevant authenticated workflows.
+
+
+## Dark-theme standard
+
+Hamlet is a **dark-only** experience. All new HTML pages must load the shared theme stylesheet and the dark-theme initializer in the document head:
+
+```html
+<link rel="stylesheet" href="/theme.css">
+<script src="/theme.js"></script>
+```
+
+Keep page-specific surfaces, text, form controls, dialogs, and responsive states readable against the dark palette. Do not add a light-mode toggle, light-theme preference, or light-only page styling. The shared `theme.js` enforces `data-appearance="dark"`; `theme.css` supplies the common dark surfaces, contrast, and control styling. When adding a new page, verify that it remains dark on first load, on mobile, and after authentication state changes.

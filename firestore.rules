@@ -135,7 +135,9 @@ service cloud.firestore {
         && request.resource.data.ownerUid == request.auth.uid
         && exists(/databases/$(database)/documents/publicProfiles/$(request.auth.uid))
         && get(/databases/$(database)/documents/publicProfiles/$(request.auth.uid)).data.onfidoVerified == true;
-      allow read: if request.auth != null;
+      // Current commercial property submissions are intentionally public on /portfolio.html.
+      // Public visitors can view listings without a Firebase sign-in.
+      allow read: if true;
       allow update: if request.auth != null
         && resource.data.ownerUid == request.auth.uid
         && request.resource.data.ownerUid == request.auth.uid

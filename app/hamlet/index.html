@@ -125,6 +125,7 @@ button:disabled{opacity:.6;cursor:wait}.stat{background:linear-gradient(135deg,#
 
 <script>document.documentElement.classList.add('hamlet-auth-pending');</script>
   <link rel="stylesheet" href="/hamlet-workspace.css?v=20261016-4">
+  <link rel="stylesheet" href="/app-page-transition.css">
 </head>
 <body>
 <div id="hamletAuthGate" role="status" aria-live="polite"><div class="hamlet-gate-card"><div class="hamlet-gate-mark">H</div><h1>Secure Hamlet workspace</h1><p id="hamletAuthMessage">Checking your Firebase sign-in…</p><div class="hamlet-gate-spinner" aria-hidden="true"></div></div></div>
@@ -425,5 +426,6 @@ loadLocal();renderAll();if(document.readyState==='loading')document.addEventList
 </script>
   <script src="/hamlet-workspace.js?v=20261016-4"></script>
   <script src="/app/hamlet/product-tour.js?v=20261014-1"></script>
+  <script src="/app-page-transition.js" defer></script>
 </body>
 </html>

@@ -359,3 +359,26 @@ nav.workspace-nav .workspace-nav-link[aria-current="page"],
   flex:0 0 auto;
   margin-left:auto;
 }
+
+/* Root-level repository links are white; preserve the established colours for /app/ destinations. */
+.sidebar-menu-shell .sidebar-menu-link[href^="/"]:not([href^="/app/"]),
+.hamlet-primary-nav .hamlet-nav-link[href^="/"]:not([href^="/app/"]),
+.hamlet-primary-nav .hamlet-nav-child[href^="/"]:not([href^="/app/"]),
+nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"]),
+nav.workspace-nav .hamlet-nav-child[href^="/"]:not([href^="/app/"]) {
+  color: #FFF !important;
+}
+.sidebar-menu-shell .sidebar-menu-link[href^="/"]:not([href^="/app/"]):hover,
+.sidebar-menu-shell .sidebar-menu-link[href^="/"]:not([href^="/app/"]):focus-visible,
+.sidebar-menu-shell .sidebar-menu-link[href^="/"]:not([href^="/app/"])[aria-current="page"],
+.hamlet-primary-nav .hamlet-nav-link[href^="/"]:not([href^="/app/"]):hover,
+.hamlet-primary-nav .hamlet-nav-link[href^="/"]:not([href^="/app/"]):focus-visible,
+.hamlet-primary-nav .hamlet-nav-link[href^="/"]:not([href^="/app/"])[aria-current="page"],
+.hamlet-primary-nav .hamlet-nav-child[href^="/"]:not([href^="/app/"]):hover,
+.hamlet-primary-nav .hamlet-nav-child[href^="/"]:not([href^="/app/"]):focus-visible,
+.hamlet-primary-nav .hamlet-nav-child[href^="/"]:not([href^="/app/"])[aria-current="page"],
+nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"]):hover,
+nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"]):focus-visible,
+nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"])[aria-current="page"] {
+  color: #FFF !important;
+}

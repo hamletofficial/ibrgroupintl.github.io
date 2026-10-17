@@ -382,17 +382,3 @@ nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"]):focus-visi
 nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"])[aria-current="page"] {
   color: #FFF !important;
 }
-
-
-/* Visual pipe separating Dashboard from Contacts in the shared header navigation. */
-.hamlet-dashboard-contacts-separator {
- display: inline-flex;
- align-items: center;
- justify-content: center;
- flex: 0 0 auto;
- margin: 0 2px;
- color: #fff;
- font: 600 13px/1 'DM Sans','Open Sans',Arial,sans-serif;
- opacity: .8;
- user-select: none;
-}

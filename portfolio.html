@@ -8,7 +8,8 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Commercial Property Portfolio | hamlet">
   <meta property="og:description" content="Browse current commercial leasing opportunities on Hamlet. Sustainability information is displayed prominently, with certification claims identified as submitted listing information.">
-  <meta property="og:url" content="https://hamlet-ai.co.uk/portfolio.html">
+  <meta property="og:url" content="https://www.hamlet-ai.co.uk/portfolio.html">
+  <link rel="canonical" href="https://www.hamlet-ai.co.uk/portfolio.html">
   <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/theme.css">
   <link rel="stylesheet" href="/mobile-compat.css">
@@ -52,6 +53,8 @@
     .credential-details{display:flex;gap:.5rem 1rem;flex-wrap:wrap;margin-top:.65rem;color:#e2e8f0;font-size:.83rem}
     .credential-details span strong{color:#fff}
     .credential-note{margin:.6rem 0 0;color:#d1fae5;font-size:.87rem;white-space:pre-wrap;overflow-wrap:anywhere}
+    .listing-disclaimer{margin:1rem 0 0;padding:.9rem 1rem;border:1px solid #374151;border-left:3px solid #93c5fd;border-radius:10px;background:rgba(17,24,39,.82);color:#cbd5e1;font-size:.86rem}
+    .listing-disclaimer strong{color:#fff}
     .property-body{padding:1.1rem 1.2rem 1.2rem}
     .meta-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.85rem}
     .meta-item{min-width:0;padding:.7rem .75rem;border:1px solid #374151;border-radius:10px;background:#0b1120}
@@ -90,6 +93,7 @@
       <p>Browse live commercial property opportunities submitted by authenticated hamlet members. The portfolio is publicly viewable without signing in and is designed to support broker-to-broker discovery and deal progression. Where supplied, energy-efficiency information and Passivhaus or EnerPHit credentials are displayed prominently. Listing details and certification evidence are supplied by members and should be checked independently before reliance.</p>
       <div class="hero-points"><span>Public view · no sign-in required</span><span>Live submissions</span><span>Energy efficiency · Passivhaus · EnerPHit</span></div>
     </section>
+    <p class="listing-disclaimer"><strong>Due diligence:</strong> Listings and sustainability details are supplied by members and may change. A stated standard or “Certified” status is not independently validated by this public page. Confirm current availability, title, lease terms, energy-performance documentation and certification directly with the relevant broker or issuing body before making a decision.</p>
     <section class="toolbar" aria-label="Search and filter portfolio">
       <label class="field">Search properties<input id="search" type="search" placeholder="Name, location, credentials, terms…" autocomplete="off"></label>
       <label class="field">Property type<select id="typeFilter"><option value="">All types</option></select></label>
@@ -124,7 +128,7 @@
   function dateText(value){var ms=dateMillis(value);return ms?new Date(ms).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}):'Not provided';}
   function safeUrl(value){if(typeof value!=='string')return '';try{var u=new URL(value);return (u.protocol==='https:'||u.protocol==='http:')?u.href:'';}catch(e){return '';}}
   function validEmail(value){return typeof value==='string'&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())?value.trim():'';}
-  function sustainabilityRank(p){var standard=String(p.sustainabilityStandard||'').toLowerCase(),status=String(p.sustainabilityStatus||'').toLowerCase();var certified=status==='certified'||status.indexOf('certified')>=0;var named=standard.indexOf('passivhaus')>=0||standard.indexOf('enerphit')>=0;return (certified?4:0)+(named?2:0)+(standard?1:0);}
+  function sustainabilityRank(p){var standard=String(p.sustainabilityStandard||'').toLowerCase(),status=String(p.sustainabilityStatus||'').toLowerCase();var certified=status==='certified';var named=standard.indexOf('passivhaus')>=0||standard.indexOf('enerphit')>=0;return (certified?4:0)+(named?2:0)+(standard?1:0);}
   function credentialMarkup(p){
     var standard=String(p.sustainabilityStandard||'').trim();
     var status=String(p.sustainabilityStatus||'Not provided').trim();

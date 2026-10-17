@@ -762,3 +762,28 @@ html[data-appearance="dark"] .sidebar-menu-link:focus-visible { background:#1d4e
 
 body.has-sidebar #protected-content,
 body.has-sidebar #dashboard { margin-left:0 !important; }
+
+/* Root-level repository destinations in navigation use white labels.
+   Nested application routes (deals, properties, listings, dashboard) keep their existing colours. */
+html[data-appearance="dark"] .sidebar-menu-shell .sidebar-menu-link[href^="/"]:not([href^="/app/"]),
+html[data-appearance="dark"] .sidebar-menu-shell .sidebar-menu-link:not([href^="/app/"]):not([href^="app/"]),
+html[data-appearance="dark"] .hamlet-primary-nav .hamlet-nav-link[href^="/"]:not([href^="/app/"]),
+html[data-appearance="dark"] .hamlet-primary-nav .hamlet-nav-child[href^="/"]:not([href^="/app/"]),
+html[data-appearance="dark"] nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"]),
+html[data-appearance="dark"] nav.workspace-nav .hamlet-nav-child[href^="/"]:not([href^="/app/"]) {
+  color: #FFF !important;
+}
+html[data-appearance="dark"] .sidebar-menu-shell .sidebar-menu-link[href^="/"]:not([href^="/app/"]):hover,
+html[data-appearance="dark"] .sidebar-menu-shell .sidebar-menu-link[href^="/"]:not([href^="/app/"]):focus-visible,
+html[data-appearance="dark"] .sidebar-menu-shell .sidebar-menu-link[href^="/"]:not([href^="/app/"])[aria-current="page"],
+html[data-appearance="dark"] .hamlet-primary-nav .hamlet-nav-link[href^="/"]:not([href^="/app/"]):hover,
+html[data-appearance="dark"] .hamlet-primary-nav .hamlet-nav-link[href^="/"]:not([href^="/app/"]):focus-visible,
+html[data-appearance="dark"] .hamlet-primary-nav .hamlet-nav-link[href^="/"]:not([href^="/app/"])[aria-current="page"],
+html[data-appearance="dark"] .hamlet-primary-nav .hamlet-nav-child[href^="/"]:not([href^="/app/"]):hover,
+html[data-appearance="dark"] .hamlet-primary-nav .hamlet-nav-child[href^="/"]:not([href^="/app/"]):focus-visible,
+html[data-appearance="dark"] .hamlet-primary-nav .hamlet-nav-child[href^="/"]:not([href^="/app/"])[aria-current="page"],
+html[data-appearance="dark"] nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"]):hover,
+html[data-appearance="dark"] nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"]):focus-visible,
+html[data-appearance="dark"] nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"])[aria-current="page"] {
+  color: #FFF !important;
+}

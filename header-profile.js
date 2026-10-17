@@ -62,57 +62,10 @@
     return firestoreSdkPromise;
   }
 
-  function ensureHeaderIdentity(chip) {
-    var nameEl = chip.querySelector('[data-auth-name]');
-    if (!nameEl) return { nameEl: null, badge: null };
-
-    if (nameEl.tagName.toLowerCase() !== 'a') {
-      var link = document.createElement('a');
-      link.className = nameEl.className || 'auth-profile-name';
-      link.setAttribute('data-auth-name', '');
-      link.href = '/editprofile.html';
-      link.textContent = nameEl.textContent || '';
-      nameEl.parentNode.replaceChild(link, nameEl);
-      nameEl = link;
-    } else {
-      nameEl.href = '/editprofile.html';
-    }
-    nameEl.classList.add('auth-profile-name-link');
-
-    var badge = chip.querySelector('[data-auth-verified-badge]');
-    if (!badge) {
-      badge = document.createElement('span');
-      badge.className = 'auth-profile-verified-badge';
-      badge.setAttribute('data-auth-verified-badge', '');
-      badge.setAttribute('role', 'img');
-      badge.setAttribute('aria-label', 'Entrust identity verified');
-      badge.title = 'Entrust identity verified';
-      badge.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="verified-rosette" d="M12 1.5l2.1 1.7 2.7-.2 1.1 2.5 2.5 1.1-.2 2.7 1.7 2.1-1.7 2.1.2 2.7-2.5 1.1-1.1 2.5-2.7-.2-2.1 1.7-2.1-1.7-2.7.2-1.1-2.5-2.5-1.1.2-2.7L2.1 12l1.7-2.1-.2-2.7 2.5-1.1 1.1-2.5 2.7.2z"/><path class="verified-check" d="M7.4 12.2l3 3 6.4-6.4"/></svg>';
-      nameEl.insertAdjacentElement('afterend', badge);
-    }
-
-    return { nameEl: nameEl, badge: badge };
-  }
-
-  function ensureHeaderIdentityStyles() {
-    if (document.getElementById('ibr-header-identity-styles')) return;
-    var style = document.createElement('style');
-    style.id = 'ibr-header-identity-styles';
-    style.textContent = [
-      '.auth-profile-chip .auth-profile-name-link, .auth-profile-chip .auth-profile-name-link:hover, .auth-profile-chip .auth-profile-name-link:focus, .auth-profile-chip .auth-profile-name-link:focus-visible { color: inherit; text-decoration: none !important; }',
-      '.auth-profile-chip .auth-profile-name-link { cursor: pointer; }',
-      '.auth-profile-verified-badge { display: inline-flex; width: 17px; height: 17px; flex: 0 0 17px; align-items: center; justify-content: center; margin-inline-start: 5px; vertical-align: middle; }',
-      '.auth-profile-verified-badge svg { display: block; width: 100%; height: 100%; }',
-      '.auth-profile-verified-badge .verified-rosette { fill: #1d9bf0; }',
-      '.auth-profile-verified-badge .verified-check { fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }'
-    ].join('\n');
-    document.head.appendChild(style);
-  }
-
   function updateProfile(user) {
     stopProfileListeners();
     activeUid = user ? user.uid : null;
-    ensureHeaderIdentityStyles();\n    var chips = document.querySelectorAll('[data-auth-profile]');
+    var chips = document.querySelectorAll('[data-auth-profile]');
 
     chips.forEach(function (chip) {
       var nameEl = chip.querySelector('[data-auth-name]');
@@ -151,11 +104,9 @@
           || String(data.photoURL || data.photoUrl || data.photoURLData || user.photoURL || '').trim();
 
         document.querySelectorAll('[data-auth-profile]').forEach(function (chip) {
-          var identity = ensureHeaderIdentity(chip);
-          var nameEl = identity.nameEl;
+          var nameEl = chip.querySelector('[data-auth-name]');
           var photoEl = chip.querySelector('[data-auth-photo]');
           if (nameEl) nameEl.textContent = savedName;
-          if (identity.badge) identity.badge.hidden = data.onfidoVerified !== true;
           if (photoEl) {
             photoEl.alt = savedName + ' profile photo';
             photoEl.onerror = function () { photoEl.onerror = null; setFallbackPhoto(photoEl); };

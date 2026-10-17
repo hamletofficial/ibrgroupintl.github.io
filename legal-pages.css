@@ -144,3 +144,10 @@ body.legal-page *::after {
     max-width: calc(100% - 6.75rem);
   }
 }
+
+/* Legal pages keep the brand/sign-in header clean; suppress the shared workspace navigation. */
+body.legal-page > .hamlet-primary-nav,
+body.legal-page nav.workspace-nav,
+body.legal-page .hamlet-global-search-row {
+  display: none !important;
+}

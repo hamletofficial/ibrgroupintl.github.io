@@ -562,7 +562,7 @@ function sendHamletReminderEmail(recipients, reminder, deal, dueDate, brokerEmai
  * delete history entries directly.
  */
 async function resolveHamletAuditActor(event, fallbackUid) {
-  const actorUid = String(event.authId || fallbackUid || "").slice(0, 128);
+  const actorUid = String(event.authId || "").slice(0, 128);
   let actorName = "";
   let actorEmail = "";
   if (actorUid) {

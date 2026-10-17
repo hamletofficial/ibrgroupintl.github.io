@@ -25,7 +25,7 @@ body{margin:0;font-family:'Open Sans',Arial,sans-serif;color:#0f172a;background-
 .panel{border:1px solid var(--line);border-radius:14px;background:#fff;padding:1.4rem;box-shadow:0 6px 20px rgba(2,6,23,.06);margin-top:1rem}
 .panel h2{margin:0 0 .35rem;color:var(--ink);font-size:1.2rem}.panel-intro{margin:0 0 1rem;color:var(--muted)}
 .notice{padding:.9rem 1rem;border-left:4px solid var(--blue);background:#f3f9fd;color:#28506c;border-radius:8px;margin-bottom:1rem;font-size:.88rem;line-height:1.5}
-.resource-list{display:grid;gap:.8rem}.property-card{border:1px solid var(--line);border-radius:12px;padding:1rem;background:#fbfdff}
+.resource-list{display:grid;gap:.8rem}.property-photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.6rem;margin:.8rem 0}.property-photo-grid img{display:block;width:100%;height:110px;object-fit:cover;border-radius:9px;border:1px solid var(--line)}.property-card{border:1px solid var(--line);border-radius:12px;padding:1rem;background:#fbfdff}
 .property-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}.property-card h3{margin:0;color:var(--ink);font-size:1rem}
 .badge{display:inline-flex;padding:.3rem .55rem;border-radius:999px;background:#e8f5ec;color:var(--green);font-size:.75rem;font-weight:800}
 .resource-tools{display:grid;grid-template-columns:minmax(220px,2fr) repeat(3,minmax(130px,1fr));gap:.8rem;padding:1rem;margin:1rem 0 1.1rem;border:1px solid var(--line);border-radius:12px;background:#f8fafc}
@@ -138,6 +138,7 @@ resourceList.innerHTML='';
 filtered.forEach(function(item){
 const p=item.data,card=document.createElement('article');card.className='property-card';card.id='property-'+item.id;card.dataset.propertyId=item.id;
 card.innerHTML='<div class="property-head"><h3>'+esc(p.propertyName||'Commercial Property')+'</h3><span class="badge">'+esc(p.status||'Active')+'</span></div>'+
+(Array.isArray(p.photoUrls)&&p.photoUrls.length?'<div class="property-photo-grid">'+p.photoUrls.slice(0,6).map(function(url,i){return /^https:\/\//i.test(url)?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer"><img src="'+esc(url)+'" alt="'+esc(p.propertyName||'Property')+' photo '+(i+1)+'" loading="lazy"></a>':''}).join('')+'</div>':'')+
 '<div class="property-meta"><div><strong>Type</strong>'+esc(p.propertyType||'—')+'</div><div><strong>Location</strong>'+esc(p.address||'—')+(p.postcode?' · '+esc(p.postcode):'')+'</div><div><strong>Availability</strong>'+esc(p.availability||'—')+'</div><div><strong>Size</strong>'+esc(p.size||'—')+'</div></div>'+
 '<div class="property-description">'+esc(p.description||'No description provided.')+'</div>'+
 (p.sustainabilityStandard?'<div class="property-description" style="margin-top:.7rem;padding:.7rem;border:1px solid #b8d7c3;border-radius:9px;background:#f0fdf4;color:#14532d"><strong>Sustainability credentials:</strong> '+esc(p.sustainabilityStandard)+' · '+esc(p.sustainabilityStatus||'Not certified')+(p.certificationClass?' · '+esc(p.certificationClass):'')+(p.certificateReference?' · Ref '+esc(p.certificateReference):'')+(p.certifier?' · '+esc(p.certifier):'')+(p.certificateUrl&&/^(https?:\/\/)/i.test(p.certificateUrl)?' · <a href="'+esc(p.certificateUrl)+'" target="_blank" rel="noopener noreferrer">View evidence ↗</a>':'')+'</div>':'')+

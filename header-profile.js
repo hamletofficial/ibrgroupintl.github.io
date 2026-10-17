@@ -105,7 +105,7 @@
       '.auth-profile-verified-badge svg { display: block; width: 100%; height: 100%; }',
       '.auth-profile-verified-badge .verified-rosette { fill: #1d9bf0; }',
       '.auth-profile-verified-badge .verified-check { fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }'
-    ].join('\\n');
+    ].join('\n');
     document.head.appendChild(style);
   }
 

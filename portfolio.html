@@ -84,7 +84,13 @@
     @media(max-width:850px){.toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.meta-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:520px){.header-row{width:calc(100% - 1.2rem);min-height:62px}.brand{font-size:1.25rem}.header-actions{gap:.4rem}.button{padding:.52rem .65rem;font-size:.82rem}main{width:calc(100% - 1.2rem);margin-top:1rem}.toolbar{grid-template-columns:1fr}.property-top{flex-direction:column;gap:.55rem}.meta-grid{grid-template-columns:1fr}.property-body,.property-top,.sustainability{padding:1rem}.count{grid-column:auto}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  </style>
+  
+/* hamlet-accessibility-pass: keyboard focus, touch targets and motion preferences */
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #60a5fa!important;outline-offset:3px!important;scroll-margin-block:6rem}
+button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed;opacity:.7}
+.property-actions a,.toolbar button,.toolbar select,.toolbar input{min-height:42px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
 <div class="page-wrapper">
@@ -111,7 +117,7 @@
       <label class="field">Sort by<select id="sort"><option value="newest">Recently added</option><option value="name">Property name A–Z</option><option value="location">Location A–Z</option><option value="sustainability">Sustainability credentials first</option></select></label>
       <div class="count" id="count" role="status" aria-live="polite">Loading current submissions…</div>
     </section>
-    <section id="portfolioList" class="list" aria-label="This member’s public commercial property listings"><div class="empty">Loading portfolio…</div></section>
+    <section id="portfolioList" class="list" aria-label="This member’s public commercial property listings" aria-live="polite" aria-busy="true"><div class="empty">Loading portfolio…</div></section>
   </main>
   <footer class="footer">
     <div class="footer-links"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/cookies.html">Cookies</a><a href="/contact.html">Contact</a></div>
@@ -183,6 +189,7 @@
     availabilityFilter.innerHTML='<option value="">All availability</option>'+availabilities.map(function(x){return '<option value="'+esc(x)+'">'+esc(x)+'</option>';}).join('');
   }
   function applyFilters(){
+    list.setAttribute('aria-busy','false');
     var query=search.value.trim().toLocaleLowerCase(),type=typeFilter.value,availability=availabilityFilter.value;
     var matches=records.filter(function(item){var p=item.data||{};var blob=[p.propertyName,p.propertyType,p.address,p.postcode,p.availability,p.size,p.bedrooms,p.askingPrice,p.tenure,p.description,p.status,p.askingRent,p.contactName,p.contactEmail,p.sustainabilityStandard,p.sustainabilityStatus,p.certificationClass,p.certificateReference,p.certifier,p.certificationDate,p.sustainabilityNotes].join(' ').toLocaleLowerCase();return(!query||blob.includes(query))&&(!type||((item.data._category==='residential'?'Residential · ':'')+String(p.propertyType||'').trim())===type)&&(!availability||String(p.availability||'').trim()===availability);});
     matches.sort(function(a,b){if(sort.value==='name')return String(a.data.propertyName||'').localeCompare(String(b.data.propertyName||''));if(sort.value==='location')return String(a.data.address||'').localeCompare(String(b.data.address||''));if(sort.value==='sustainability')return sustainabilityRank(b.data)-sustainabilityRank(a.data)||dateMillis(b.data.createdAt)-dateMillis(a.data.createdAt);return dateMillis(b.data.createdAt)-dateMillis(a.data.createdAt);});
@@ -191,6 +198,7 @@
   }
   search.addEventListener('input',applyFilters);typeFilter.addEventListener('change',applyFilters);availabilityFilter.addEventListener('change',applyFilters);sort.addEventListener('change',applyFilters);
   function showError(){
+    list.setAttribute('aria-busy','false');
     list.innerHTML='<div class="empty">This member’s public portfolio could not be loaded. Please check the portfolio link and try again later.</div>';
     count.textContent='Portfolio unavailable';
   }

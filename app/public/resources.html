@@ -156,16 +156,18 @@ const docs=Array.from(s.docs).sort(function(a,b){const at=a.data().createdAt?.to
 // Preserve existing listings by migrating only a whitelisted public projection.
 // Never copy ownerEmail or any other private account metadata to publicProperties.
 const publicKeys=['ownerUid','ownerName','propertyName','propertyType','address','postcode','availability','size','askingRent','contactName','contactEmail','propertyUrl','status','description','sustainabilityStandard','sustainabilityStatus','certificationClass','certificateReference','certifier','certificationDate','certificateUrl','sustainabilityNotes','photoUrls','createdAt'];
-const pending=[];let migrations=0;
-for(const doc of docs){
- const source=doc.data()||{},publicRef=db.collection('publicProperties').doc(doc.id);
- const publicSnap=await publicRef.get();
- if(publicSnap.exists)continue;
- const projection={};publicKeys.forEach(function(key){if(Object.prototype.hasOwnProperty.call(source,key))projection[key]=source[key]});
- projection.ownerUid=currentUser.uid;projection.photoUrls=Array.isArray(source.photoUrls)?source.photoUrls.slice(0,6):[];projection.createdAt=source.createdAt||firebase.firestore.FieldValue.serverTimestamp();projection.updatedAt=firebase.firestore.FieldValue.serverTimestamp();
- pending.push({ref:publicRef,data:projection});migrations++;
-}
-for(let i=0;i<pending.length;i+=400){const batch=db.batch();pending.slice(i,i+400).forEach(function(item){batch.set(item.ref,item.data)});await batch.commit();}
+try {
+ const pending=[];
+ for(const doc of docs){
+  const source=doc.data()||{},publicRef=db.collection('publicProperties').doc(doc.id);
+  const publicSnap=await publicRef.get();
+  if(publicSnap.exists)continue;
+  const projection={};publicKeys.forEach(function(key){if(Object.prototype.hasOwnProperty.call(source,key))projection[key]=source[key]});
+  projection.ownerUid=currentUser.uid;projection.photoUrls=Array.isArray(source.photoUrls)?source.photoUrls.slice(0,6):[];projection.createdAt=source.createdAt||firebase.firestore.FieldValue.serverTimestamp();projection.updatedAt=firebase.firestore.FieldValue.serverTimestamp();
+  pending.push({ref:publicRef,data:projection});
+ }
+ for(let i=0;i<pending.length;i+=400){const batch=db.batch();pending.slice(i,i+400).forEach(function(item){batch.set(item.ref,item.data)});await batch.commit();}
+} catch(migrationError) { console.warn('Legacy property projection migration could not complete; retaining the owner resource view.',migrationError); }
 renderResources(docs);
 resourceStatus.textContent=docs.length?docs.length+' resource'+(docs.length===1?'':'s')+' available.':'No property resources found.';
 }catch(e){console.error(e);resourceList.innerHTML='<div class="empty">Your property resources could not be loaded. Please refresh and try again.</div>';resourceStatus.textContent='There was a problem reading your property resources.';resourceStatus.className='status error'}

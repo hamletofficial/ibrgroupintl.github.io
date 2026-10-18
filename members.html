@@ -136,6 +136,47 @@
     }
   </style>
   <link rel="stylesheet" href="/hamlet-workspace.css?v=20261015-3">
+
+<style id="hamlet-members-dark-surface-ux">
+/* Keep the members area aligned with Hamlet's dark workspace without obscuring particles.js. */
+#membersShell > .panel.members-welcome,
+#membersShell .member-guide-card {
+  background: #111827 !important;
+  border-color: #374151 !important;
+  color: #f3f4f6 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18) !important;
+}
+#membersShell .members-welcome .panel-head,
+#membersShell .members-welcome .panel-body {
+  background: transparent !important;
+  color: #f3f4f6 !important;
+}
+#membersShell .members-welcome h1,
+#membersShell .member-guide-card h2,
+#membersShell .member-commercial-links h3 {
+  color: #f3f4f6 !important;
+}
+#membersShell .welcome-lead,
+#membersShell .members-welcome .muted,
+#membersShell .member-guide-card p,
+#membersShell .member-guide-card ol {
+  color: #cbd5e1 !important;
+}
+#membersShell .member-guide-card a { color: #93c5fd !important; }
+#membersShell .guide-number {
+  background: #172338 !important;
+  color: #bfdbfe !important;
+  border: 1px solid #334155;
+}
+#membersShell .security-note {
+  background: #172338 !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+#membersShell .security-note strong,
+#membersShell .security-note p { color: #e2e8f0 !important; }
+#membersShell .member-commercial-links { border-top-color: #374151 !important; }
+</style>
 </head>
 <body class="auth-pending">
   <div id="particles-js" aria-hidden="true"></div>

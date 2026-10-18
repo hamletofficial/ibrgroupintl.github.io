@@ -182,7 +182,7 @@ const ref=db.collection('commercialProperties').doc(id);
 const snap=await ref.get();
 if(!snap.exists)throw new Error('Resource no longer exists');
 if(snap.data().ownerUid!==currentUser.uid)throw new Error('You are not authorised to delete this resource');
-const batch=db.batch();batch.delete(ref);batch.delete(db.collection('publicProperties').doc(id));await batch.commit();
+const publicRef=db.collection('publicProperties').doc(id),publicSnap=await publicRef.get(),batch=db.batch();batch.delete(ref);if(publicSnap.exists)batch.delete(publicRef);await batch.commit();
 resourceStatus.textContent='Resource deleted successfully. It has been removed from Firestore and will no longer appear in Live Listings.';resourceStatus.className='status success';
 await loadResources();
 }catch(e){console.error(e);button.disabled=false;resourceStatus.textContent='The resource could not be deleted. Please refresh and try again.';resourceStatus.className='status error'}

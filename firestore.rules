@@ -231,7 +231,7 @@ service cloud.firestore {
       function publicResidentialKeysAllowed() {
         return request.resource.data.keys().hasOnly([
           'ownerUid','ownerName','propertyName','propertyType','address','postcode',
-          'bedrooms','askingPrice','availability','tenure','propertyUrl','status','description','createdAt','updatedAt'
+          'bedrooms','askingPrice','availability','tenure','propertyUrl','status','description','photoUrls','createdAt','updatedAt'
         ]);
       }
       function verifiedResidentialOwner() {
@@ -248,13 +248,17 @@ service cloud.firestore {
         && request.resource.data.propertyName.size() <= 180
         && request.resource.data.status in ['Published', 'Under Offer', 'Sold / Let']
         && request.resource.data.createdAt == request.time
-        && request.resource.data.updatedAt == request.time;
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.photoUrls is list
+        && request.resource.data.photoUrls.size() <= 6;
       allow update: if verifiedResidentialOwner()
         && resource.data.ownerUid == request.auth.uid
         && publicResidentialKeysAllowed()
         && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.status in ['Published', 'Under Offer', 'Sold / Let']
-        && request.resource.data.updatedAt == request.time;
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.photoUrls is list
+        && request.resource.data.photoUrls.size() <= 6;
       allow delete: if request.auth != null && resource.data.ownerUid == request.auth.uid;
     }
 

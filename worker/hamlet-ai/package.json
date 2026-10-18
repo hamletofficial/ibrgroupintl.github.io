@@ -8,9 +8,7 @@
     "check": "node --check src/index.js"
   },
   "dependencies": {
-    "jose": "^6.1.0"
-  },
-  "devDependencies": {
-    "wrangler": "^4.61.1"
+    "jose": "^6.1.0",
+    "wrangler": "4.151.1"
   }
 }

@@ -1,0 +1,113 @@
+[debug] [2026-10-18T11:05:04.013Z] ----------------------------------------------------------------------
+[debug] [2026-10-18T11:05:04.152Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions:recordHamletResidentialPropertyHistory,firestore:rules
+[debug] [2026-10-18T11:05:04.154Z] CLI Version:   15.15.0
+[debug] [2026-10-18T11:05:04.157Z] Platform:      win32
+[debug] [2026-10-18T11:05:04.160Z] Node Version:  v24.21.0
+[debug] [2026-10-18T11:05:04.161Z] Time:          Sun Oct 18 2026 12:05:04 GMT+0100 (British Summer Time)
+[debug] [2026-10-18T11:05:04.162Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-10-18T11:05:26.273Z] Field "/functions" in "firebase.json" is possibly invalid: must be object
+[debug] [2026-10-18T11:05:26.274Z] Field "/functions" in "firebase.json" is possibly invalid: must be object
+[debug] [2026-10-18T11:05:26.275Z] Object "/functions/0" in "firebase.json" has unknown property: {"additionalProperty":"platform"}
+[debug] [2026-10-18T11:05:26.275Z] Object "/functions/0" in "firebase.json" is missing required property: {"missingProperty":"remoteSource"}
+[debug] [2026-10-18T11:05:26.275Z] Field "/functions/0" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2026-10-18T11:05:26.275Z] Field "/functions" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2026-10-18T11:05:26.342Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-10-18T11:05:26.348Z] > authorizing via signed-in user (uk-hr-enquiries@ibrecruitment.com)
+[debug] [2026-10-18T11:05:26.349Z] [iam] checking project wale-491805 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]
+[debug] [2026-10-18T11:05:26.360Z] Checked if tokens are valid: false, expires at: 1792313939469
+[debug] [2026-10-18T11:05:26.361Z] Checked if tokens are valid: false, expires at: 1792313939469
+[debug] [2026-10-18T11:05:26.362Z] > refreshing access token with scopes: []
+[debug] [2026-10-18T11:05:26.394Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-10-18T11:05:26.394Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-10-18T11:05:27.157Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-10-18T11:05:27.157Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-10-18T11:05:27.208Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions [none]
+[debug] [2026-10-18T11:05:27.209Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions  x-goog-user-project=wale-491805
+[debug] [2026-10-18T11:05:27.209Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[debug] [2026-10-18T11:05:28.119Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions 200
+[debug] [2026-10-18T11:05:28.120Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[debug] [2026-10-18T11:05:28.121Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:28.121Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:28.122Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/wale-491805/serviceAccounts/wale-491805@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2026-10-18T11:05:28.122Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/wale-491805/serviceAccounts/wale-491805@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2026-10-18T11:05:28.618Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/wale-491805/serviceAccounts/wale-491805@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2026-10-18T11:05:28.619Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/wale-491805/serviceAccounts/wale-491805@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'wale-491805'...
+[info] 
+[info] i  deploying firestore, functions 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2026-10-18T11:05:28.670Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:28.670Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:28.671Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/wale-491805/databases/(default) [none]
+[debug] [2026-10-18T11:05:29.670Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/wale-491805/databases/(default) 200
+[debug] [2026-10-18T11:05:29.670Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/wale-491805/databases/(default) {"name":"projects/wale-491805/databases/(default)","uid":"89109a56-c856-4078-9720-4f23b8542a20","createTime":"2026-10-01T22:58:29.576247Z","updateTime":"2026-10-01T22:58:29.576247Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2026-10-18T10:05:29.660081Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"ILeB5YC2w5cDMOC3xrDImpcD"}
+[info] i  firestore: reading indexes from firestore.indexes.json... 
+[info] i  cloud.firestore: checking firestore.rules for compilation errors... 
+[debug] [2026-10-18T11:05:29.688Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:29.689Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:29.690Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/wale-491805:test [none]
+[debug] [2026-10-18T11:05:29.690Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/wale-491805:test [omitted]
+[debug] [2026-10-18T11:05:30.665Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/wale-491805:test 200
+[debug] [2026-10-18T11:05:30.665Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/wale-491805:test {}
+[info] +  cloud.firestore: rules file firestore.rules compiled successfully 
+[debug] [2026-10-18T11:05:30.674Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:30.675Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:30.675Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805 [none]
+[debug] [2026-10-18T11:05:30.863Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805 200
+[debug] [2026-10-18T11:05:30.863Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/wale-491805 {"projectNumber":"753131375199","projectId":"wale-491805","lifecycleState":"ACTIVE","name":"wale-491805","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-10-01T22:37:54.330Z"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2026-10-18T11:05:30.897Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:30.897Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:30.898Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/wale-491805/adminSdkConfig [none]
+[debug] [2026-10-18T11:05:31.955Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/wale-491805/adminSdkConfig 200
+[debug] [2026-10-18T11:05:31.956Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/wale-491805/adminSdkConfig {"projectId":"wale-491805","databaseURL":"https://wale-491805-default-rtdb.firebaseio.com","storageBucket":"wale-491805.firebasestorage.app"}
+[debug] [2026-10-18T11:05:31.958Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:31.958Z] Checked if tokens are valid: true, expires at: 1792325126158
+[debug] [2026-10-18T11:05:31.959Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/wale-491805/configs [none]
+[debug] [2026-10-18T11:05:32.634Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/wale-491805/configs 200
+[debug] [2026-10-18T11:05:32.635Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/wale-491805/configs {}
+[debug] [2026-10-18T11:05:32.737Z] Validating nodejs source
+[debug] [2026-10-18T11:05:42.853Z] checkFunctionsSDKVersion was unable to fetch information from NPM Error: spawnSync C:\WINDOWS\system32\cmd.exe ETIMEDOUT
+    at Object.spawnSync (node:internal/child_process:1160:20)
+    at Object.spawnSync (node:child_process:928:24)
+    at spawn.spawnSync [as sync] (C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\cross-spawn\index.js:26:23)
+    at Object.getLatestSDKVersion (C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\runtimes\node\versioning.js:55:25)
+    at Object.checkFunctionsSDKVersion (C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\runtimes\node\versioning.js:74:32)
+    at Delegate.validate (C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\runtimes\node\index.js:88:20)
+    at loadCodebases (C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\prepare.js:372:31)
+    at async prepare (C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\prepare.js:73:24)
+    at async chain (C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\index.js:45:9)
+    at async deploy (C:\Users\44746\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\index.js:124:9)
+[debug] [2026-10-18T11:05:42.856Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "24"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.4.1"
+  },
+  "private": true
+}
+[debug] [2026-10-18T11:05:42.858Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2026-10-18T11:05:42.878Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-10-18T11:05:43.227Z] Found firebase-functions binary at 'C:\Users\44746\AppData\Local\Microsoft\WindowsApps\wget\repo\premo\new\ibrgroupintl.github.io\functions\node_modules\.bin\firebase-functions'

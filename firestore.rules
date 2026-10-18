@@ -172,12 +172,21 @@ service cloud.firestore {
 
       allow read: if true;
 
+      // New submissions use server timestamps. Existing owner-held submissions
+      // may be safely projected during migration while preserving their original date.
       allow create: if verifiedListingOwner()
         && publicListingKeysAreAllowed()
         && request.resource.data.propertyName is string
         && request.resource.data.propertyName.size() >= 1
         && request.resource.data.propertyName.size() <= 180
-        && request.resource.data.createdAt == request.time
+        && (
+          request.resource.data.createdAt == request.time
+          || (
+            exists(/databases/$(database)/documents/commercialProperties/$(propertyId))
+            && get(/databases/$(database)/documents/commercialProperties/$(propertyId)).data.ownerUid == request.auth.uid
+            && request.resource.data.createdAt == get(/databases/$(database)/documents/commercialProperties/$(propertyId)).data.createdAt
+          )
+        )
         && request.resource.data.updatedAt == request.time
         && request.resource.data.photoUrls is list
         && request.resource.data.photoUrls.size() <= 6;

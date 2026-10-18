@@ -7,7 +7,7 @@
   <meta name="description" content="View an individual Hamlet member’s public commercial property portfolio, with listing photographs and sustainability information.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Member Property Portfolio | hamlet">
-  <meta property="og:description" content="View commercial properties published by an individual Hamlet member. Listing and certification details are supplied by members.">
+  <meta property="og:description" content="View commercial and residential properties published by an individual Hamlet member. Listing details are supplied by members.">
   <meta property="og:url" content="https://www.hamlet-ai.co.uk/portfolio.html">
   <link rel="canonical" href="https://www.hamlet-ai.co.uk/portfolio.html">
   <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
@@ -147,6 +147,12 @@
   }
   function renderCard(item){
     var p=item.data||{};
+    if(p._category==='residential'){
+      var resUrl=safeUrl(p.propertyUrl),resLoc=[p.address,p.postcode].filter(Boolean).join(' · ')||'Not provided';
+      var resFields=[['Property type',p.propertyType],['Location',resLoc],['Bedrooms',p.bedrooms==null?'Not provided':p.bedrooms],['Asking price',p.askingPrice],['Tenure',p.tenure],['Availability',p.availability],['Date submitted',dateText(p.createdAt)]];
+      var resMeta=resFields.map(function(field){return '<div class="meta-item"><strong>'+esc(field[0])+'</strong><span>'+esc(field[1]||'Not provided')+'</span></div>';}).join('');
+      return '<article class="property-card"><header class="property-top"><h2>'+esc(p.propertyName||'Residential property')+'</h2><span class="status-badge">'+esc(p.status||'Published')+'</span></header><div class="property-body"><div class="meta-grid">'+resMeta+'</div>'+(p.description?'<p class="description"><span class="description-label">Property description</span>'+esc(p.description)+'</p>':'')+(resUrl?'<div class="property-actions"><a href="'+esc(resUrl)+'" target="_blank" rel="noopener noreferrer">Property details ↗</a></div>':'')+'</div></article>';
+    }
     var external=safeUrl(p.propertyUrl);
     var email=validEmail(p.contactEmail);
     var location=[p.address,p.postcode].filter(Boolean).join(' · ')||'Not provided';
@@ -161,14 +167,14 @@
     return '<article class="property-card"><header class="property-top"><h2>'+esc(p.propertyName||'Commercial property')+'</h2><span class="status-badge">'+esc(p.status||'Active')+'</span></header>'+photoMarkup+credentialMarkup(p)+'<div class="property-body"><div class="meta-grid">'+meta+'</div>'+(p.description?'<p class="description"><span class="description-label">Property description</span>'+esc(p.description)+'</p>':'')+((p.contactName||email)?'<div class="contact-strip"><strong>Broker contact</strong>'+(p.contactName?'<span>'+esc(p.contactName)+'</span>':'')+(email?'<a href="mailto:'+encodeURIComponent(email)+'">'+esc(email)+'</a>':'')+'</div>':'')+(actions?'<div class="property-actions">'+actions+'</div>':'')+'</div></article>';
   }
   function populateFilters(){
-    var types=[...new Set(records.map(function(x){return String(x.data.propertyType||'').trim();}).filter(Boolean))].sort();
+    var types=[...new Set(records.map(function(x){return (x.data._category==='residential'?'Residential · ':'')+String(x.data.propertyType||'').trim();}).filter(Boolean))].sort();
     var availabilities=[...new Set(records.map(function(x){return String(x.data.availability||'').trim();}).filter(Boolean))].sort();
     typeFilter.innerHTML='<option value="">All types</option>'+types.map(function(x){return '<option value="'+esc(x)+'">'+esc(x)+'</option>';}).join('');
     availabilityFilter.innerHTML='<option value="">All availability</option>'+availabilities.map(function(x){return '<option value="'+esc(x)+'">'+esc(x)+'</option>';}).join('');
   }
   function applyFilters(){
     var query=search.value.trim().toLocaleLowerCase(),type=typeFilter.value,availability=availabilityFilter.value;
-    var matches=records.filter(function(item){var p=item.data||{};var blob=[p.propertyName,p.propertyType,p.address,p.postcode,p.availability,p.size,p.description,p.status,p.askingRent,p.contactName,p.contactEmail,p.sustainabilityStandard,p.sustainabilityStatus,p.certificationClass,p.certificateReference,p.certifier,p.certificationDate,p.sustainabilityNotes].join(' ').toLocaleLowerCase();return(!query||blob.includes(query))&&(!type||String(p.propertyType||'').trim()===type)&&(!availability||String(p.availability||'').trim()===availability);});
+    var matches=records.filter(function(item){var p=item.data||{};var blob=[p.propertyName,p.propertyType,p.address,p.postcode,p.availability,p.size,p.bedrooms,p.askingPrice,p.tenure,p.description,p.status,p.askingRent,p.contactName,p.contactEmail,p.sustainabilityStandard,p.sustainabilityStatus,p.certificationClass,p.certificateReference,p.certifier,p.certificationDate,p.sustainabilityNotes].join(' ').toLocaleLowerCase();return(!query||blob.includes(query))&&(!type||((item.data._category==='residential'?'Residential · ':'')+String(p.propertyType||'').trim())===type)&&(!availability||String(p.availability||'').trim()===availability);});
     matches.sort(function(a,b){if(sort.value==='name')return String(a.data.propertyName||'').localeCompare(String(b.data.propertyName||''));if(sort.value==='location')return String(a.data.address||'').localeCompare(String(b.data.address||''));if(sort.value==='sustainability')return sustainabilityRank(b.data)-sustainabilityRank(a.data)||dateMillis(b.data.createdAt)-dateMillis(a.data.createdAt);return dateMillis(b.data.createdAt)-dateMillis(a.data.createdAt);});
     list.innerHTML=matches.length?matches.map(renderCard).join(''):(records.length?'<div class="empty">No properties match these filters.</div>':'<div class="empty">This member has not published any property listings yet.</div>');
     count.textContent='Showing '+matches.length+' of '+records.length+' properties';
@@ -194,11 +200,12 @@
     try{
       if(!window.firebase||!window.firebaseConfig)throw new Error('Firebase configuration unavailable');
       if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);
-      firebase.firestore().collection('publicProperties').where('ownerUid','==',portfolioUid).get().then(function(snapshot){
-        records=snapshot.docs.map(function(doc){return{id:doc.id,data:doc.data()||{}};});
+      var db=firebase.firestore();Promise.all([db.collection('publicProperties').where('ownerUid','==',portfolioUid).get(),db.collection('publicResidentialProperties').where('ownerUid','==',portfolioUid).get()]).then(function(snapshots){
+        records=snapshots[0].docs.map(function(doc){return{id:'commercial-'+doc.id,data:Object.assign({},doc.data()||{},{_category:'commercial'})};}).concat(snapshots[1].docs.map(function(doc){return{id:'residential-'+doc.id,data:Object.assign({},doc.data()||{},{_category:'residential'})};}));
         records.sort(function(a,b){return dateMillis(b.data.createdAt)-dateMillis(a.data.createdAt);});
         var ownerName=records.map(function(item){return String(item.data.ownerName||'').trim();}).find(Boolean);
         if(ownerName){document.getElementById('pageTitle').textContent=ownerName+' — Property Portfolio';document.title=ownerName+' — Property Portfolio | hamlet';}
+        document.getElementById('portfolioIntro').textContent='Public commercial and residential listings published by this Hamlet member. Private drafts and other members’ submissions are not shown.';
         populateFilters();applyFilters();
       }).catch(function(error){console.error('Member portfolio read failed:',error);showError();});
     }catch(error){console.error('Portfolio initialisation failed:',error);showError();}

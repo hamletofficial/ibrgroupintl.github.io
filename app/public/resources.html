@@ -153,6 +153,19 @@ resourceStatus.textContent='Loading…';resourceStatus.className='status';
 try{
 const s=await db.collection('commercialProperties').where('ownerUid','==',currentUser.uid).get();
 const docs=Array.from(s.docs).sort(function(a,b){const at=a.data().createdAt?.toMillis?.()||0,bt=b.data().createdAt?.toMillis?.()||0;return bt-at});
+// Preserve existing listings by migrating only a whitelisted public projection.
+// Never copy ownerEmail or any other private account metadata to publicProperties.
+const publicKeys=['ownerUid','ownerName','propertyName','propertyType','address','postcode','availability','size','askingRent','contactName','contactEmail','propertyUrl','status','description','sustainabilityStandard','sustainabilityStatus','certificationClass','certificateReference','certifier','certificationDate','certificateUrl','sustainabilityNotes','photoUrls','createdAt'];
+const batch=db.batch();let migrations=0;
+for(const doc of docs){
+ const source=doc.data()||{},publicRef=db.collection('publicProperties').doc(doc.id);
+ const publicSnap=await publicRef.get();
+ if(publicSnap.exists)continue;
+ const projection={};publicKeys.forEach(function(key){if(Object.prototype.hasOwnProperty.call(source,key))projection[key]=source[key]});
+ projection.ownerUid=currentUser.uid;projection.createdAt=source.createdAt||firebase.firestore.FieldValue.serverTimestamp();projection.updatedAt=firebase.firestore.FieldValue.serverTimestamp();
+ batch.set(publicRef,projection);migrations++;
+}
+if(migrations)await batch.commit();
 renderResources(docs);
 resourceStatus.textContent=docs.length?docs.length+' resource'+(docs.length===1?'':'s')+' available.':'No property resources found.';
 }catch(e){console.error(e);resourceList.innerHTML='<div class="empty">Your property resources could not be loaded. Please refresh and try again.</div>';resourceStatus.textContent='There was a problem reading your property resources.';resourceStatus.className='status error'}

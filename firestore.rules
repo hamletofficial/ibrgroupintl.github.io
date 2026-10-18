@@ -128,21 +128,68 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    // Private commercial-property source records may contain account metadata.
+    // They are never publicly readable; public visitors use the whitelisted
+    // publicProperties projection below.
     match /commercialProperties/{propertyId} {
-      // Only members whose publicProfiles record confirms completed identity verification
-      // may publish a commercial property listing.
+      allow read: if request.auth != null
+        && (isSuperAdmin() || resource.data.ownerUid == request.auth.uid);
+
       allow create: if request.auth != null
         && request.resource.data.ownerUid == request.auth.uid
         && exists(/databases/$(database)/documents/publicProfiles/$(request.auth.uid))
         && get(/databases/$(database)/documents/publicProfiles/$(request.auth.uid)).data.onfidoVerified == true;
-      // Current commercial property submissions are intentionally public on /portfolio.html.
-      // Public visitors can view listings without a Firebase sign-in.
-      allow read: if true;
+
       allow update: if request.auth != null
         && resource.data.ownerUid == request.auth.uid
         && request.resource.data.ownerUid == request.auth.uid
         && exists(/databases/$(database)/documents/publicProfiles/$(request.auth.uid))
         && get(/databases/$(database)/documents/publicProfiles/$(request.auth.uid)).data.onfidoVerified == true;
+
+      allow delete: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid;
+    }
+
+    // Public projection: only approved listing fields are stored here. Never
+    // copy ownerEmail or other private account metadata into this collection.
+    match /publicProperties/{propertyId} {
+      function publicListingKeysAreAllowed() {
+        return request.resource.data.keys().hasOnly([
+          'ownerUid','ownerName','propertyName','propertyType','address','postcode',
+          'availability','size','askingRent','contactName','contactEmail','propertyUrl',
+          'status','description','sustainabilityStandard','sustainabilityStatus',
+          'certificationClass','certificateReference','certifier','certificationDate',
+          'certificateUrl','sustainabilityNotes','photoUrls','createdAt','updatedAt'
+        ]);
+      }
+
+      function verifiedListingOwner() {
+        return request.auth != null
+          && request.resource.data.ownerUid == request.auth.uid
+          && exists(/databases/$(database)/documents/publicProfiles/$(request.auth.uid))
+          && get(/databases/$(database)/documents/publicProfiles/$(request.auth.uid)).data.onfidoVerified == true;
+      }
+
+      allow read: if true;
+
+      allow create: if verifiedListingOwner()
+        && publicListingKeysAreAllowed()
+        && request.resource.data.propertyName is string
+        && request.resource.data.propertyName.size() >= 1
+        && request.resource.data.propertyName.size() <= 180
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.photoUrls is list
+        && request.resource.data.photoUrls.size() <= 6;
+
+      allow update: if verifiedListingOwner()
+        && resource.data.ownerUid == request.auth.uid
+        && publicListingKeysAreAllowed()
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.photoUrls is list
+        && request.resource.data.photoUrls.size() <= 6;
+
       allow delete: if request.auth != null
         && resource.data.ownerUid == request.auth.uid;
     }

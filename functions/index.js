@@ -670,6 +670,31 @@ exports.recordHamletPropertyHistory = onDocumentWrittenWithAuthContext({
   await writeHamletAuditEvent("hamletPropertyEvents", "property_evt", propertyId, ownerUid, title, type, summary, changed, event, {propertyId: propertyId.slice(0,200)});
 });
 
+/** Immutable server-authored history for residential property listing changes. */
+exports.recordHamletResidentialPropertyHistory = onDocumentWrittenWithAuthContext({
+  document: "residentialProperties/{propertyId}", region: "us-central1", timeoutSeconds: 60, memory: "256MiB", retry: true
+}, async function(event) {
+  const change = event.data;
+  if (!change || (!change.before.exists && !change.after.exists)) return;
+  const before = change.before.exists ? (change.before.data() || {}) : {};
+  const after = change.after.exists ? (change.after.data() || {}) : {};
+  const ownerUid = String((change.after.exists ? after.ownerUid || after.createdByUid || after.uid : before.ownerUid || before.createdByUid || before.uid) || "");
+  const propertyId = String(event.params.propertyId || "");
+  if (!ownerUid || !propertyId) {
+    console.warn("Skipping residential property audit event without owner UID or property ID:", propertyId);
+    return;
+  }
+  const tracked = ["ownerUid","createdByUid","propertyName","name","propertyType","address","postcode","bedrooms","askingPrice","availability","tenure","propertyUrl","status","description","photoUrls","ownerName"];
+  const changed = change.before.exists && change.after.exists ?
+    tracked.filter(k => JSON.stringify(before[k] == null ? null : before[k]) !== JSON.stringify(after[k] == null ? null : after[k])) :
+    tracked.filter(k => (change.after.exists ? after[k] : before[k]) !== undefined);
+  if (change.before.exists && change.after.exists && !changed.length) return;
+  const type = !change.before.exists ? "created" : !change.after.exists ? "deleted" : "updated";
+  const title = String((change.after.exists ? after.propertyName || after.name || after.address : before.propertyName || before.name || before.address) || propertyId);
+  const summary = type === "created" ? "Residential property listing created" : type === "deleted" ? "Residential property listing deleted" : "Residential property listing updated: " + changed.join(", ");
+  await writeHamletAuditEvent("hamletResidentialPropertyEvents", "residential_property_evt", propertyId, ownerUid, title, type, summary, changed, event, {propertyId: propertyId.slice(0,200), resourceType: "residential"});
+});
+
 exports.sendHamletCriticalPathReminders = onSchedule({
   schedule: "0 8 * * *",
   timeZone: "Europe/London",

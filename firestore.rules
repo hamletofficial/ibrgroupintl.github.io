@@ -592,6 +592,14 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    match /hamletResidentialPropertyEvents/{eventId} {
+      allow read: if request.auth != null
+        && (request.auth.token.email == 'uk-hr-enquiries@ibrecruitment.com'
+          && request.auth.token.email_verified == true
+          || resource.data.uid == request.auth.uid);
+      allow create, update, delete: if false;
+    }
+
     // Private transaction document metadata. Binary files live in a matching
     // owner-scoped Storage path and are separately protected by storage.rules.
     match /hamletDocuments/{documentId} {

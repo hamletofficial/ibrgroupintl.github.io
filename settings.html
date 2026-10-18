@@ -195,6 +195,15 @@
           <button class="btn btn-outline" id="incognitoBtn" type="button" aria-pressed="false">Go Incognito</button>
         </div>
         <div id="incognitoStatus" class="status-note" role="status" aria-live="polite"></div>
+        <div style="height:1px;background:#eef2f7;margin:1rem 0;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+          <div>
+            <div style="font-weight:700;color:#0f2f4f;">Public Profile</div>
+            <div class="status-note" style="margin-top:.25rem;">Choose whether your profile appears to other members in the Member Directory.</div>
+          </div>
+          <button class="btn btn-outline" id="profileVisibilityBtn" type="button" aria-pressed="false">Make Profile Public</button>
+        </div>
+        <div id="profileVisibilityStatus" class="status-note" role="status" aria-live="polite"></div>
       </section>
       <div style="margin:1.25rem auto 0;max-width:520px;text-align:right;font-weight:700;">
         <div>Danger Zone</div>
@@ -403,6 +412,20 @@
           const savedPhoto = profileData.imageDataUrl || '';
           settingsPhotoPreview.src = typeof savedPhoto === 'string' && savedPhoto ? savedPhoto : '/assets/images/dark-hamlet.png';
           settingsPhotoPreview.onerror = function () { settingsPhotoPreview.onerror = null; settingsPhotoPreview.src = '/assets/images/dark-hamlet.png'; };
+          const isPublicProfile = profileSnapshot.exists && profileData.isPublic === true;
+          const profileVisibilityBtn = document.getElementById('profileVisibilityBtn');
+          const profileVisibilityStatus = document.getElementById('profileVisibilityStatus');
+          if (profileVisibilityBtn) {
+            profileVisibilityBtn.setAttribute('aria-pressed', String(isPublicProfile));
+            profileVisibilityBtn.textContent = isPublicProfile ? 'Make Profile Private' : 'Make Profile Public';
+            profileVisibilityBtn.style.background = isPublicProfile ? '#092a4b' : '';
+            profileVisibilityBtn.style.color = isPublicProfile ? '#ffffff' : '';
+          }
+          if (profileVisibilityStatus) {
+            profileVisibilityStatus.textContent = isPublicProfile
+              ? 'Your profile is public and may appear in the Member Directory.'
+              : 'Your profile is private and will not appear in the Member Directory.';
+          }
           const incognito = profileSnapshot.exists && profileData.incognito === true;
           if (incognitoBtn) {
             incognitoBtn.setAttribute('aria-pressed', String(incognito));
@@ -713,6 +736,65 @@
           }
         });
       }
+      const profileVisibilityBtn = document.getElementById('profileVisibilityBtn');
+      const profileVisibilityStatus = document.getElementById('profileVisibilityStatus');
+      if (profileVisibilityBtn) {
+        profileVisibilityBtn.addEventListener('click', async function () {
+          const user = auth.currentUser;
+          if (!user) {
+            alert('Please sign in first.');
+            return;
+          }
+          const currentlyPublic = profileVisibilityBtn.getAttribute('aria-pressed') === 'true';
+          profileVisibilityBtn.disabled = true;
+          if (profileVisibilityStatus) {
+            profileVisibilityStatus.style.color = '';
+            profileVisibilityStatus.textContent = 'Updating profile visibility…';
+          }
+          try {
+            const profileResult = window.ibrProfileService
+              ? await window.ibrProfileService.getProfile(user.uid)
+              : await firebase.firestore().collection('publicProfiles').doc(user.uid).get().then(function (snapshot) {
+                  return { exists: snapshot.exists, data: snapshot.exists ? (snapshot.data() || {}) : {} };
+                });
+            if (!profileResult.exists) {
+              if (profileVisibilityStatus) {
+                profileVisibilityStatus.style.color = '#b45309';
+                profileVisibilityStatus.textContent = 'Please visit Edit Profile and save your profile before changing its visibility.';
+                profileVisibilityStatus.setAttribute('role', 'alert');
+              }
+              return;
+            }
+            const nextIsPublic = !currentlyPublic;
+            if (window.ibrProfileService) {
+              await window.ibrProfileService.updateProfile(user.uid, { isPublic: nextIsPublic });
+            } else {
+              await firebase.firestore().collection('publicProfiles').doc(user.uid).update({ isPublic: nextIsPublic });
+            }
+            profileVisibilityBtn.setAttribute('aria-pressed', String(nextIsPublic));
+            profileVisibilityBtn.textContent = nextIsPublic ? 'Make Profile Private' : 'Make Profile Public';
+            profileVisibilityBtn.style.background = nextIsPublic ? '#092a4b' : '';
+            profileVisibilityBtn.style.color = nextIsPublic ? '#ffffff' : '';
+            if (profileVisibilityStatus) {
+              profileVisibilityStatus.style.color = '';
+              profileVisibilityStatus.setAttribute('role', 'status');
+              profileVisibilityStatus.textContent = nextIsPublic
+                ? 'Your profile is public and may appear in the Member Directory.'
+                : 'Your profile is private and will not appear in the Member Directory.';
+            }
+          } catch (error) {
+            console.error('Unable to update profile visibility:', error);
+            if (profileVisibilityStatus) {
+              profileVisibilityStatus.style.color = '#b91c1c';
+              profileVisibilityStatus.setAttribute('role', 'alert');
+              profileVisibilityStatus.textContent = 'Unable to update profile visibility. Please try again shortly.';
+            }
+          } finally {
+            profileVisibilityBtn.disabled = false;
+          }
+        });
+      }
+
       if (deleteAccountBtn) {
         deleteAccountBtn.addEventListener('click', async function () {
           const user = auth.currentUser;

@@ -15,13 +15,13 @@ A separate Cloudflare Worker gateway for Hamlet's opt-in AI drafting tools. It i
 
 ## Configure and test before deployment
 
-1. Install Node.js and dependencies: `npm install`.
+1. Use a supported Node.js version and install dependencies from this directory with `npm install`. Wrangler `4.151.1` is pinned as a production dependency so it is available in deployment environments that omit development dependencies.
 2. In the Cloudflare account that will host the Worker, create the secret without committing it:
    `npx wrangler secret put ANTHROPIC_API_KEY`
 3. Confirm the Cloudflare account, billing controls and desired Worker name before deploying.
 4. Add a Cloudflare rate-limiting rule for `POST /v1/assist` (per IP and, where available, per authenticated user) and configure spending alerts at the Anthropic account.
 5. Run `npm run check` and `npm run dev`. Test missing/invalid Firebase tokens, blocked origins, both task types, oversized requests, and provider failures.
-6. Deploy only after those tests and review: `npm run deploy`.
+6. Deploy only after those tests and review, from this directory, using `npm run deploy` (equivalent to `wrangler deploy` using the installed package).
 7. After deployment, configure the resulting Worker URL in Hamlet's frontend and integrate a user-approved UI. The URL is not yet connected to Hamlet.
 
 ## Request format

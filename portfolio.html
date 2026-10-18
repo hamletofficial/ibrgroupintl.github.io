@@ -194,7 +194,7 @@
     try{
       if(!window.firebase||!window.firebaseConfig)throw new Error('Firebase configuration unavailable');
       if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);
-      firebase.firestore().collection('commercialProperties').where('ownerUid','==',portfolioUid).get().then(function(snapshot){
+      firebase.firestore().collection('publicProperties').where('ownerUid','==',portfolioUid).get().then(function(snapshot){
         records=snapshot.docs.map(function(doc){return{id:doc.id,data:doc.data()||{}};});
         records.sort(function(a,b){return dateMillis(b.data.createdAt)-dateMillis(a.data.createdAt);});
         var ownerName=records.map(function(item){return String(item.data.ownerName||'').trim();}).find(Boolean);

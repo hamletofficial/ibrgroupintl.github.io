@@ -81,6 +81,43 @@
 :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #60a5fa!important;outline-offset:3px!important;scroll-margin-block:6rem}
 #listingList .card-actions .btn,#listingFilters button,#listingFilters select,#listingFilters input{min-height:42px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* hamlet-active-listings-light-mode: active submissions should read as light cards to other members */
+.property-card[data-status="active"]{
+  background:#ffffff!important;
+  border-color:#d1d5db!important;
+  color:#1f2937!important;
+  box-shadow:0 8px 24px rgba(15,23,42,.09)!important;
+}
+.property-card[data-status="active"] .property-head h3{color:#111827!important}
+.property-card[data-status="active"] .badge{
+  background:#dcfce7!important;
+  color:#166534!important;
+  border-color:#bbf7d0!important;
+}
+.property-card[data-status="active"] .property-meta{color:#475569!important}
+.property-card[data-status="active"] .property-meta>div{
+  background:#f8fafc!important;
+  border-color:#e2e8f0!important;
+  color:#475569!important;
+}
+.property-card[data-status="active"] .property-meta strong{color:#1d4ed8!important}
+.property-card[data-status="active"] .property-description{color:#374151!important}
+.property-card[data-status="active"] .property-link,
+.property-card[data-status="active"] .property-description a{color:#1d4ed8!important}
+.property-card[data-status="active"] .property-sustainability{
+  background:#f0fdf4!important;
+  border-color:#bbf7d0!important;
+  color:#166534!important;
+}
+.property-card[data-status="active"] .property-sustainability strong{color:#14532d!important}
+.property-card[data-status="active"] .property-sustainability a{color:#1d4ed8!important}
+.property-card[data-status="active"] .card-actions .btn{
+  color:#1d4ed8;
+  border-color:#93c5fd;
+}
+.property-card[data-status="active"] .card-actions .btn:hover{background:#eff6ff}
+
 </style>
   <link rel="stylesheet" href="/hamlet-workspace.css?v=20261015-2">
   <link rel="stylesheet" href="/app-page-transition.css">

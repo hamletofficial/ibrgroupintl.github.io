@@ -220,7 +220,8 @@ service cloud.firestore {
       allow update: if request.auth != null
         && resource.data.ownerUid == request.auth.uid
         && request.resource.data.ownerUid == request.auth.uid
-        && request.resource.data.createdByUid == resource.data.createdByUid;
+        && ((!('createdByUid' in resource.data) && !('createdByUid' in request.resource.data))
+          || request.resource.data.createdByUid == resource.data.createdByUid);
       allow delete: if request.auth != null
         && resource.data.ownerUid == request.auth.uid;
     }

@@ -55,6 +55,14 @@
     .credential-details{display:flex;gap:.5rem 1rem;flex-wrap:wrap;margin-top:.65rem;color:#e2e8f0;font-size:.83rem}
     .credential-details span strong{color:#fff}
     .credential-note{margin:.6rem 0 0;color:#d1fae5;font-size:.87rem;white-space:pre-wrap;overflow-wrap:anywhere}
+
+    /* Responsive property imagery, metadata and evidence notes for narrow screens. */
+    .property-photo-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));}
+    .property-photo-grid img{width:100%;height:clamp(120px,18vw,175px);object-fit:cover;}
+    .credential-disclaimer{margin:.75rem 0 0;padding:.65rem .75rem;border:1px solid #475569;border-radius:9px;background:rgba(11,17,32,.55);color:#cbd5e1;font-size:.8rem;line-height:1.5;}
+    .credential-disclaimer strong{color:#f8fafc;}
+    @media(max-width:800px){.meta-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.property-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    @media(max-width:520px){.property-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;padding: .75rem .75rem 0;}.property-photo-grid img{height:120px;}.property-body{padding:.9rem;}.meta-grid{gap:.5rem;}.meta-item{padding:.6rem;}.property-top{padding:.9rem;}.credential-disclaimer{font-size:.78rem;}}
     .listing-disclaimer{margin:1rem 0 0;padding:.9rem 1rem;border:1px solid #374151;border-left:3px solid #93c5fd;border-radius:10px;background:rgba(17,24,39,.82);color:#cbd5e1;font-size:.86rem}
     .listing-disclaimer strong{color:#fff}
     .property-body{padding:1.1rem 1.2rem 1.2rem}
@@ -143,7 +151,7 @@
     if(p.certifier)details.push('<span><strong>Certifier:</strong> '+esc(p.certifier)+'</span>');
     if(p.certificationDate)details.push('<span><strong>Certification date:</strong> '+esc(p.certificationDate)+'</span>');
     if(certificate)details.push('<span><a href="'+esc(certificate)+'" target="_blank" rel="noopener noreferrer">View certificate / evidence ↗</a></span>');
-    return '<section class="sustainability" aria-label="Sustainability credentials"><p class="sustainability-label">✦ Energy efficiency &amp; sustainability</p><h3>'+content+'</h3><span class="credential-status">'+esc(status)+'</span>'+(details.length?'<div class="credential-details">'+details.join('')+'</div>':'')+(p.sustainabilityNotes?'<p class="credential-note">'+esc(p.sustainabilityNotes)+'</p>':'')+'</section>';
+    return '<section class="sustainability" aria-label="Sustainability credentials"><p class="sustainability-label">✦ Energy efficiency &amp; sustainability</p><h3>'+content+'</h3><span class="credential-status">'+esc(status)+'</span>'+(details.length?'<div class="credential-details">'+details.join('')+'</div>':'')+(p.sustainabilityNotes?'<p class="credential-note">'+esc(p.sustainabilityNotes)+'</p>':'')+'<p class="credential-disclaimer"><strong>Evidence note:</strong> Listing details and sustainability claims are supplied by the member. Displayed information is not independently verified by hamlet; check linked certificate evidence and issuer details before relying on a claim.</p></section>';
   }
   function renderCard(item){
     var p=item.data||{};

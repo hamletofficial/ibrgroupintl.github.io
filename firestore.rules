@@ -27,7 +27,7 @@ service cloud.firestore {
       // the identity-verification flag.
       allow update: if request.auth != null
         && request.auth.uid == userId
-        && request.resource.data.isPublic == true
+        && request.resource.data.isPublic is bool
         && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['onfidoVerified']);
 
       allow delete: if request.auth != null && request.auth.uid == userId;

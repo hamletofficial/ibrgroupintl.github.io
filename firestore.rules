@@ -225,6 +225,38 @@ service cloud.firestore {
         && resource.data.ownerUid == request.auth.uid;
     }
 
+    // Public residential listing projection. Private source records remain in residentialProperties.
+    match /publicResidentialProperties/{propertyId} {
+      function publicResidentialKeysAllowed() {
+        return request.resource.data.keys().hasOnly([
+          'ownerUid','ownerName','propertyName','propertyType','address','postcode',
+          'bedrooms','askingPrice','availability','tenure','propertyUrl','status','description','createdAt','updatedAt'
+        ]);
+      }
+      function verifiedResidentialOwner() {
+        return request.auth != null
+          && request.resource.data.ownerUid == request.auth.uid
+          && exists(/databases/$(database)/documents/publicProfiles/$(request.auth.uid))
+          && get(/databases/$(database)/documents/publicProfiles/$(request.auth.uid)).data.onfidoVerified == true;
+      }
+      allow read: if true;
+      allow create: if verifiedResidentialOwner()
+        && publicResidentialKeysAllowed()
+        && request.resource.data.propertyName is string
+        && request.resource.data.propertyName.size() >= 1
+        && request.resource.data.propertyName.size() <= 180
+        && request.resource.data.status in ['Published', 'Under Offer', 'Sold / Let']
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+      allow update: if verifiedResidentialOwner()
+        && resource.data.ownerUid == request.auth.uid
+        && publicResidentialKeysAllowed()
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.status in ['Published', 'Under Offer', 'Sold / Let']
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if request.auth != null && resource.data.ownerUid == request.auth.uid;
+    }
+
     match /brokerReviews/{reviewId} {
       allow read: if request.auth != null;
       allow create: if request.auth != null

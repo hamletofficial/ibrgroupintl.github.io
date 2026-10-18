@@ -48,6 +48,13 @@
     @media(max-width:520px){.dashboard{grid-template-columns:1fr}.residential-dashboard-grid{grid-template-columns:1fr}.dashboard-section-label{grid-column:1}.hero-message-btn{width:100%}.resource-shell{padding:0 .65rem}.hero,.panel{padding:1.1rem}.property-meta{grid-template-columns:1fr}}
   /* Dark transparent header override */
 .resource-nav{background:rgba(15,43,110,.88)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+
+/* hamlet-dashboard-accessibility-pass: keyboard access and touch-friendly form controls */
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #0284c7!important;outline-offset:3px!important;scroll-margin-block:6rem}
+.field input,.field select,.field textarea,.form-actions .btn,.hero-message-btn{min-height:42px}
+.photo-preview-grid a,.resource-photo-grid a{display:block;min-width:0}
+@media(max-width:650px){.form-grid{grid-template-columns:minmax(0,1fr)}.form-actions{align-items:stretch}.form-actions .btn{width:100%;min-height:44px}.resource-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
   <link rel="stylesheet" href="/hamlet-workspace.css?v=20261015-4">
   <link rel="stylesheet" href="/app-page-transition.css">
@@ -125,7 +132,7 @@
       <section class="panel" id="resourcesPanel">
         <h2 id="resourcesTitle">My Property Resources</h2>
         <p class="panel-intro">Listings connected to your authenticated member profile.</p>
-        <div class="resource-list" id="resourceList"><div class="empty">Loading your property resources…</div></div>
+        <div class="resource-list" id="resourceList" aria-live="polite" aria-busy="true"><div class="empty">Loading your property resources…</div></div>
       </section>
     </main>
   </div>
@@ -151,6 +158,7 @@
         loadResources();
       }
       function renderResources(snapshot){
+        resourceList.setAttribute('aria-busy','false');
         if(snapshot.empty){resourceList.innerHTML='<div class="empty">You have not added any commercial property resources yet. Use “Advertise New Property” to create your first listing.</div>';return;}
         resourceList.innerHTML='';
         snapshot.forEach(function(doc){
@@ -163,6 +171,7 @@
         });
       }
       async function loadResources(){
+        resourceList.setAttribute('aria-busy','true');
         try{
           const myPortfolioLink=document.getElementById('myPublicPortfolioLink');if(myPortfolioLink)myPortfolioLink.href='/portfolio.html?uid='+encodeURIComponent(currentUser.uid);const myResidentialPortfolioLink=document.getElementById('myResidentialPortfolioLink');if(myResidentialPortfolioLink)myResidentialPortfolioLink.href='/portfolio.html?uid='+encodeURIComponent(currentUser.uid);const copyPortfolioBtn=document.getElementById('copyPortfolioLinkBtn');if(copyPortfolioBtn)copyPortfolioBtn.addEventListener('click',async function(){const status=document.getElementById('portfolioLinkStatus'),url=window.location.origin+'/portfolio.html?uid='+encodeURIComponent(currentUser.uid);try{await navigator.clipboard.writeText(url);status.textContent='Your public portfolio link has been copied.';}catch(e){status.textContent='Your public portfolio link: '+url;}});const snap=await db.collection('commercialProperties').where('ownerUid','==',currentUser.uid).get();
           // Migrate older owner-held submissions into the public-safe projection
@@ -176,7 +185,7 @@
           renderResources(snap);
         }catch(error){
           console.error(error);
-          resourceList.innerHTML='<div class="empty">Your property resources could not be loaded. Check your Firebase Firestore permissions and try again.</div>';
+          resourceList.setAttribute('aria-busy','false');resourceList.innerHTML='<div class="empty">Your property resources could not be loaded. Check your Firebase Firestore permissions and try again.</div>';
         }
       }
       document.getElementById('newPropertyBtn').addEventListener('click',function(){propertyFormPanel.hidden=false;propertyFormPanel.scrollIntoView({behavior:'smooth',block:'start'});});

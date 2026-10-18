@@ -160,9 +160,11 @@
           // Migrate older owner-held submissions into the public-safe projection
           // when the broker opens their workspace. Private ownerEmail is excluded.
           const publicKeys=['ownerUid','ownerName','propertyName','propertyType','address','postcode','availability','size','askingRent','contactName','contactEmail','propertyUrl','status','description','sustainabilityStandard','sustainabilityStatus','certificationClass','certificateReference','certifier','certificationDate','certificateUrl','sustainabilityNotes','photoUrls','createdAt'];
-          const pending=[];snap.docs.forEach(function(doc){const source=doc.data()||{};pending.push((async function(){const ref=db.collection('publicProperties').doc(doc.id),existing=await ref.get();if(existing.exists)return;const projection={};publicKeys.forEach(function(key){if(Object.prototype.hasOwnProperty.call(source,key))projection[key]=source[key]});projection.ownerUid=currentUser.uid;projection.photoUrls=Array.isArray(source.photoUrls)?source.photoUrls.slice(0,6):[];projection.createdAt=source.createdAt||firebase.firestore.FieldValue.serverTimestamp();projection.updatedAt=firebase.firestore.FieldValue.serverTimestamp();return{ref:ref,data:projection}})())});
-          const migrated=(await Promise.all(pending)).filter(Boolean);
-          for(let i=0;i<migrated.length;i+=400){const batch=db.batch();migrated.slice(i,i+400).forEach(function(item){batch.set(item.ref,item.data)});await batch.commit()}
+          try {
+            const pending=[];snap.docs.forEach(function(doc){const source=doc.data()||{};pending.push((async function(){const ref=db.collection('publicProperties').doc(doc.id),existing=await ref.get();if(existing.exists)return;const projection={};publicKeys.forEach(function(key){if(Object.prototype.hasOwnProperty.call(source,key))projection[key]=source[key]});projection.ownerUid=currentUser.uid;projection.photoUrls=Array.isArray(source.photoUrls)?source.photoUrls.slice(0,6):[];projection.createdAt=source.createdAt||firebase.firestore.FieldValue.serverTimestamp();projection.updatedAt=firebase.firestore.FieldValue.serverTimestamp();return{ref:ref,data:projection}})())});
+            const migrated=(await Promise.all(pending)).filter(Boolean);
+            for(let i=0;i<migrated.length;i+=400){const batch=db.batch();migrated.slice(i,i+400).forEach(function(item){batch.set(item.ref,item.data)});await batch.commit()}
+          } catch(migrationError) { console.warn('Legacy property projection migration could not complete; retaining the owner workspace view.',migrationError); }
           renderResources(snap);
         }catch(error){
           console.error(error);

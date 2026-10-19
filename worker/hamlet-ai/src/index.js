@@ -175,7 +175,21 @@ export default {
       });
 
       if (!response.ok) {
-        console.error("Anthropic request failed", { status: response.status, uid: identity.sub });
+        let providerType = "unknown";
+        let providerMessage = "No provider error message.";
+        try {
+          const errorBody = await response.json();
+          providerType = getText(errorBody?.error?.type, 80) || providerType;
+          providerMessage = getText(errorBody?.error?.message, 300) || providerMessage;
+        } catch {
+          // Do not log raw provider response bodies.
+        }
+        console.error("Anthropic request failed", {
+          status: response.status,
+          providerType,
+          providerMessage,
+          uid: identity.sub
+        });
         return json({ error: "The AI service could not complete the request. Please try again later." }, 502, origin);
       }
 

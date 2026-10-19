@@ -39,8 +39,20 @@ window.addEventListener("load",function(){
  let auth=null,user=null;
  const endpoint=window.HAMLET_AI_ENDPOINT||"";
  function setStatus(s){status.textContent=s}
- function selectTask(value){task.value=value; $("requestTitle").scrollIntoView({behavior:"smooth",block:"start"});message.focus()}
+ function selectTask(value,focus=true){
+   task.value=value;
+   message.placeholder=value==="listing_assistant"
+     ?"For example: Draft a concise commercial property listing using only the verified facts in the notes below. Flag any missing particulars as questions."
+     :"For example: Review these deal notes, identify the main unknowns and risks, and recommend the next three actions.";
+   if(!message.value.trim()) message.value=value==="listing_assistant"
+     ?"Draft a clear commercial property listing from the supplied facts. Use headings and concise marketing copy. List missing or unverified particulars separately; do not infer sustainability credentials."
+     :"Review the supplied deal notes. Summarise the current position, identify missing information and possible critical-path risks, then recommend the next three actions. State assumptions and unknowns.";
+   if(focus){$("requestTitle").scrollIntoView({behavior:"smooth",block:"start"});message.focus()}
+ }
  document.querySelectorAll("[data-task]").forEach(b=>b.addEventListener("click",()=>selectTask(b.dataset.task)));
+ const requestedTask=new URLSearchParams(window.location.search).get("task");
+ if(requestedTask==="deal_copilot"||requestedTask==="listing_assistant")selectTask(requestedTask,false);
+ task.addEventListener("change",()=>selectTask(task.value,false));
  $("clear").addEventListener("click",()=>{message.value="";context.value="";output.textContent="";copy.disabled=true;setStatus(user?"Ready.":"Sign in required.");});
  authBtn.addEventListener("click",async()=>{if(user){await auth.signOut();return}location.href="/login.html"});
  if(!window.firebase||!window.firebaseConfig){setStatus("Firebase configuration unavailable.");authBtn.textContent="Sign in";return}

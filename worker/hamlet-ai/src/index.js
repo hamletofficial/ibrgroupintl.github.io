@@ -185,40 +185,22 @@ export default {
       });
 
       if (!response.ok) {
-        // Read the upstream body once and log only bounded diagnostic fields, never request content or credentials.
-        let rawBody = "";
+        // Inspect structured error metadata only; never log provider response bodies or prompts.
         let payload = null;
         try {
-          rawBody = await response.text();
-          try {
-            payload = JSON.parse(rawBody);
-          } catch {
-            payload = null;
-          }
+          payload = await response.json();
         } catch {
-          // Some upstream failures do not expose a readable body.
+          // Non-JSON upstream failures are represented by status and content type below.
         }
         const upstreamError = payload && typeof payload.error === "object" && payload.error
           ? payload.error
           : {};
-        const rawMessage = typeof upstreamError.message === "string"
-          ? upstreamError.message
-          : typeof payload?.error === "string"
-            ? payload.error
-            : typeof payload?.message === "string"
-              ? payload.message
-              : "";
-        const safeBodyPreview = (rawMessage || (!payload ? rawBody : ""))
-          .replace(/sk-[A-Za-z0-9_-]+/g, "[REDACTED_KEY]")
-          .replace(/Bearer\\s+\\S+/gi, "Bearer [REDACTED]")
-          .slice(0, 500);
         console.error("OpenAI request failed", {
           status: response.status,
           contentType: response.headers.get("content-type"),
           providerType: typeof upstreamError.type === "string" ? upstreamError.type.slice(0, 120) : null,
           providerCode: typeof upstreamError.code === "string" ? upstreamError.code.slice(0, 120) : null,
           providerParam: typeof upstreamError.param === "string" ? upstreamError.param.slice(0, 120) : null,
-          providerMessage: safeBodyPreview || null,
           uid: identity.sub
         });
         return json({ error: "The AI service could not complete the request. Please try again later." }, 502, origin);

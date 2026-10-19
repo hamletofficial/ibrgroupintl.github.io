@@ -1,4 +1,4 @@
-name = "hamlet-ai-gateway"
+name = "hamlet-ai-gateway-staging"
 main = "src/index.js"
 compatibility_date = "2026-10-19"
 workers_dev = true

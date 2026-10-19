@@ -1,7 +1,7 @@
 import { createRemoteJWKSet, jwtVerify } from "jose";
 
 const PROJECT_ID = "wale-491805";
-const MODEL = "gpt-4.1-mini";
+const MODEL = "gpt-6.1-sol";
 const MAX_MESSAGE_CHARS = 4000;
 const MAX_CONTEXT_CHARS = 8000;
 const ALLOWED_ORIGINS = new Set([
@@ -185,22 +185,40 @@ export default {
       });
 
       if (!response.ok) {
-        // Read only structured provider error fields for diagnostics. Do not log credentials or user content.
-        let providerError = {};
+        // Read the upstream body once and log only bounded diagnostic fields, never request content or credentials.
+        let rawBody = "";
+        let payload = null;
         try {
-          const payload = await response.json();
-          if (payload && typeof payload.error === "object" && payload.error) {
-            providerError = payload.error;
+          rawBody = await response.text();
+          try {
+            payload = JSON.parse(rawBody);
+          } catch {
+            payload = null;
           }
         } catch {
-          // Some upstream failures do not return JSON.
+          // Some upstream failures do not expose a readable body.
         }
+        const upstreamError = payload && typeof payload.error === "object" && payload.error
+          ? payload.error
+          : {};
+        const rawMessage = typeof upstreamError.message === "string"
+          ? upstreamError.message
+          : typeof payload?.error === "string"
+            ? payload.error
+            : typeof payload?.message === "string"
+              ? payload.message
+              : "";
+        const safeBodyPreview = (rawMessage || (!payload ? rawBody : ""))
+          .replace(/sk-[A-Za-z0-9_-]+/g, "[REDACTED_KEY]")
+          .replace(/Bearer\\s+\\S+/gi, "Bearer [REDACTED]")
+          .slice(0, 500);
         console.error("OpenAI request failed", {
           status: response.status,
-          providerType: typeof providerError.type === "string" ? providerError.type.slice(0, 120) : null,
-          providerCode: typeof providerError.code === "string" ? providerError.code.slice(0, 120) : null,
-          providerParam: typeof providerError.param === "string" ? providerError.param.slice(0, 120) : null,
-          providerMessage: typeof providerError.message === "string" ? providerError.message.slice(0, 500) : null,
+          contentType: response.headers.get("content-type"),
+          providerType: typeof upstreamError.type === "string" ? upstreamError.type.slice(0, 120) : null,
+          providerCode: typeof upstreamError.code === "string" ? upstreamError.code.slice(0, 120) : null,
+          providerParam: typeof upstreamError.param === "string" ? upstreamError.param.slice(0, 120) : null,
+          providerMessage: safeBodyPreview || null,
           uid: identity.sub
         });
         return json({ error: "The AI service could not complete the request. Please try again later." }, 502, origin);

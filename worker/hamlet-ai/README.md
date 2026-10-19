@@ -2,27 +2,35 @@
 
 A separate Cloudflare Worker gateway for Hamlet's opt-in AI drafting tools. It is intentionally not wired into the UI or deployed by this change.
 
+## AI provider
+
+- Uses the OpenAI Responses API at `https://api.openai.com/v1/responses`.
+- Default model: `gpt-4.1-mini`, configurable with the non-secret `AI_MODEL` Worker variable.
+- Requires an OpenAI API key stored as the Cloudflare Worker secret `OPENAI_API_KEY`. A ChatGPT subscription does not include API credits; API usage is billed separately through the OpenAI API platform.
+
 ## Security properties
 
 - Requires a Firebase Authentication ID token in `Authorization: Bearer <token>`.
 - Verifies token signature, issuer and audience against Firebase Secure Token public keys for project `wale-491805`.
 - Restricts browser origins to `https://hamlet-ai.co.uk` and `https://www.hamlet-ai.co.uk`.
 - Accepts only `deal_copilot` and `listing_assistant` tasks.
-- Limits prompt and context lengths; caps generation at 900 tokens.
+- Limits prompt and context lengths; caps generation at 900 output tokens.
+- Sends `store: false` to the Responses API.
 - Does not query Firestore or accept record IDs as authority. The client must only send information the signed-in user is already entitled to access.
 - AI responses are drafts only; no write/publish/transaction actions are implemented.
-- API failures do not return provider error details to clients.
+- Provider failures return generic error messages to clients and do not log provider response bodies.
 
 ## Configure and test before deployment
 
 1. Use a supported Node.js version and install dependencies from this directory with `npm install`. Wrangler `4.151.1` is pinned as a production dependency so it is available in deployment environments that omit development dependencies.
-2. In the Cloudflare account that will host the Worker, create the secret without committing it:
-   `npx wrangler secret put ANTHROPIC_API_KEY`
-3. Confirm the Cloudflare account, billing controls and desired Worker name before deploying.
-4. Add a Cloudflare rate-limiting rule for `POST /v1/assist` (per IP and, where available, per authenticated user) and configure spending alerts at the Anthropic account.
-5. Run `npm run check` and `npm run dev`. Test missing/invalid Firebase tokens, blocked origins, both task types, oversized requests, and provider failures.
-6. Deploy only after those tests and review, from this directory, using `npm run deploy` (equivalent to `wrangler deploy` using the installed package).
-7. After deployment, configure the resulting Worker URL in Hamlet's frontend and integrate a user-approved UI. The URL is not yet connected to Hamlet.
+2. Create an API key in the [OpenAI API platform](https://platform.openai.com/api-keys). API billing and usage limits are managed separately from ChatGPT subscriptions.
+3. In the Cloudflare account that will host the Worker, create the secret without committing it:
+   `npx wrangler secret put OPENAI_API_KEY`
+4. Confirm the Cloudflare account, API billing/usage limits and desired Worker name before deploying.
+5. Add a Cloudflare rate-limiting rule for `POST /v1/assist` (per IP and, where available, per authenticated user) and configure OpenAI API usage alerts/limits.
+6. Run `npm run check` and `npm run dev`. Test missing/invalid Firebase tokens, blocked origins, both task types, oversized requests, and provider failures.
+7. Deploy only after those tests and review, from this directory, using `npm run deploy` (equivalent to `wrangler deploy` using the installed package).
+8. After deployment, configure the resulting Worker URL in Hamlet's frontend and integrate a user-approved UI. The URL is not yet connected to Hamlet.
 
 ## Request format
 
@@ -34,8 +42,8 @@ A separate Cloudflare Worker gateway for Hamlet's opt-in AI drafting tools. It i
 }
 ```
 
-Send the Firebase ID token in the Authorization header. Never send the Anthropic API key to the browser.
+Send the Firebase ID token in the Authorization header. Never send the OpenAI API key to the browser.
 
 ## Data handling
 
-Only include the minimum context needed for the current request. Do not send identity documents, payment data, special-category personal data, or third-party contact details unless a separately approved data-protection assessment explicitly permits it. The Worker does not persist prompts or responses; operational error logs contain only status and the authenticated UID.
+Only include the minimum context needed for the current request. Do not send identity documents, payment data, special-category personal data, or third-party contact details unless a separately approved data-protection assessment explicitly permits it. The Worker does not persist prompts or responses; operational error logs contain only status and the authenticated UID. OpenAI API data handling is subject to the account's applicable API data controls and terms.

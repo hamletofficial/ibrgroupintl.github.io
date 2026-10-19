@@ -6,3 +6,5 @@ workers_dev = true
 [vars]
 FIREBASE_PROJECT_ID = "wale-491805"
 AI_MODEL = "gpt-6.1-sol"
+
+[previews]

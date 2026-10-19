@@ -67,15 +67,19 @@ window.addEventListener("load",function(){
  let auth=null,user=null;
  const endpoint=window.HAMLET_AI_ENDPOINT||"";
  function setStatus(s){status.textContent=s}
+ let lastDefaultMessage="";
  function selectTask(value,focus=true){
    task.value=value;
    $("listingFields").hidden=value!=="listing_assistant"; $("dealFields").hidden=value!=="deal_copilot";
    message.placeholder=value==="listing_assistant"
      ?"For example: Draft a concise commercial property listing using only the verified facts in the notes below. Flag any missing particulars as questions."
-     :"For example: Review these deal notes, identify the main unknowns and risks, and recommend the next three actions.";
-   if(!message.value.trim()) message.value=value==="listing_assistant"
-     ?"Draft a clear commercial property listing from the supplied facts. Use headings and concise marketing copy. List missing or unverified particulars separately; do not infer sustainability credentials."
-     :"Review the supplied deal notes. Summarise the current position, identify missing information and possible critical-path risks, then recommend the next three actions. State assumptions and unknowns.";
+     :"For example: Review these notes and suggest the next three actions.";
+   if(!message.value.trim()||message.value===lastDefaultMessage){
+     message.value=value==="listing_assistant"
+       ?"Draft a clear commercial property listing from the supplied facts. Use headings and concise marketing copy. List missing or unverified particulars separately; do not infer sustainability credentials."
+       :"Review the supplied deal notes. Summarise the current position, identify missing information and possible critical-path risks, then recommend the next three actions. State assumptions and unknowns.";
+     lastDefaultMessage=message.value;
+   }
    if(focus){$("requestTitle").scrollIntoView({behavior:"smooth",block:"start"});message.focus()}
  }
  document.querySelectorAll("[data-task]").forEach(b=>b.addEventListener("click",()=>selectTask(b.dataset.task)));

@@ -5,7 +5,7 @@ A separate Cloudflare Worker gateway for Hamlet's opt-in AI drafting tools. It i
 ## AI provider
 
 - Uses the OpenAI Responses API at `https://api.openai.com/v1/responses`.
-- Default model: `gpt-4.1-mini`, configurable with the non-secret `AI_MODEL` Worker variable.
+- Default model: `gpt-6.1-sol`, configurable with the non-secret `AI_MODEL` Worker variable.
 - Requires an OpenAI API key stored as the Cloudflare Worker secret `OPENAI_API_KEY`. A ChatGPT subscription does not include API credits; API usage is billed separately through the OpenAI API platform.
 
 ## Security properties

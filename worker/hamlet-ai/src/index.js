@@ -196,13 +196,18 @@ export default {
           ? payload.error
           : {};
         console.error("OpenAI request failed", {
-          status: response.status,
-          contentType: response.headers.get("content-type"),
-          providerType: typeof upstreamError.type === "string" ? upstreamError.type.slice(0, 120) : null,
-          providerCode: typeof upstreamError.code === "string" ? upstreamError.code.slice(0, 120) : null,
-          providerParam: typeof upstreamError.param === "string" ? upstreamError.param.slice(0, 120) : null,
-          uid: identity.sub
-        });
+  status: response.status,
+  contentType: response.headers.get("content-type"),
+  requestId: response.headers.get("x-request-id"),
+  providerType: typeof upstreamError.type === "string"
+    ? upstreamError.type.slice(0, 120) : null,
+  providerCode: typeof upstreamError.code === "string"
+    ? upstreamError.code.slice(0, 120) : null,
+  providerParam: typeof upstreamError.param === "string"
+    ? upstreamError.param.slice(0, 120) : null,
+  providerMessage: typeof upstreamError.message === "string"
+    ? upstreamError.message.slice(0, 250) : null
+});
         return json({ error: "The AI service could not complete the request. Please try again later." }, 502, origin);
       }
 

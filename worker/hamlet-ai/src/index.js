@@ -66,6 +66,42 @@ async function verifyFirebaseToken(request) {
   return payload;
 }
 
+async function readJsonLimited(request, maxBytes) {
+  if (!request.body) throw new Error("invalid_json");
+
+  const reader = request.body.getReader();
+  const chunks = [];
+  let total = 0;
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > maxBytes) {
+        await reader.cancel();
+        throw new Error("request_too_large");
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+
+  try {
+    return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+  } catch {
+    throw new Error("invalid_json");
+  }
+}
+
 function getText(value, maxLength) {
   return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
 }
@@ -96,10 +132,15 @@ export default {
 
     let body;
     try {
-      const length = Number(request.headers.get("Content-Length") || "0");
-      if (length > 20000) return json({ error: "Request too large." }, 413, origin);
-      body = await request.json();
-    } catch {
+      const lengthHeader = request.headers.get("Content-Length");
+      if (lengthHeader && Number(lengthHeader) > 20000) {
+        return json({ error: "Request too large." }, 413, origin);
+      }
+      body = await readJsonLimited(request, 20000);
+    } catch (error) {
+      if (error?.message === "request_too_large") {
+        return json({ error: "Request too large." }, 413, origin);
+      }
       return json({ error: "Provide a valid JSON request." }, 400, origin);
     }
 

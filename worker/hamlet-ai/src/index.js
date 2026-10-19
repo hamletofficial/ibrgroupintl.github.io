@@ -185,8 +185,22 @@ export default {
       });
 
       if (!response.ok) {
+        // Read only structured provider error fields for diagnostics. Do not log credentials or user content.
+        let providerError = {};
+        try {
+          const payload = await response.json();
+          if (payload && typeof payload.error === "object" && payload.error) {
+            providerError = payload.error;
+          }
+        } catch {
+          // Some upstream failures do not return JSON.
+        }
         console.error("OpenAI request failed", {
           status: response.status,
+          providerType: typeof providerError.type === "string" ? providerError.type.slice(0, 120) : null,
+          providerCode: typeof providerError.code === "string" ? providerError.code.slice(0, 120) : null,
+          providerParam: typeof providerError.param === "string" ? providerError.param.slice(0, 120) : null,
+          providerMessage: typeof providerError.message === "string" ? providerError.message.slice(0, 500) : null,
           uid: identity.sub
         });
         return json({ error: "The AI service could not complete the request. Please try again later." }, 502, origin);

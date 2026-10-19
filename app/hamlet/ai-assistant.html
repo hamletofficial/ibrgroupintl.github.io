@@ -65,7 +65,7 @@
 window.addEventListener("load",function(){
  const $=id=>document.getElementById(id), task=$("task"), message=$("message"), context=$("context"), run=$("run"), status=$("status"), output=$("output"), copy=$("copy"), authBtn=$("authBtn");
  let auth=null,user=null;
- const endpoint=window.HAMLET_AI_ENDPOINT||"";
+ const endpoint=window.HAMLET_AI_ENDPOINT||"https://hamlet-ai-gateway-staging.alfred-mayaki.workers.dev/v1/assist";
  function setStatus(s){status.textContent=s}
  let lastDefaultMessage="";
  function selectTask(value,focus=true){

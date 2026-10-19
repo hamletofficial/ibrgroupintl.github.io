@@ -27,7 +27,35 @@
 <h2 id="requestTitle">Your request</h2>
 <label class="field" for="task">Assistant</label><select id="task"><option value="deal_copilot">Deal Copilot</option><option value="listing_assistant">Listing Assistant</option></select>
 <label class="field" for="message">Question or instruction</label><textarea id="message" maxlength="4000" placeholder="For example: Review these notes and suggest the next three actions."></textarea><p class="hint">Maximum 4,000 characters. Avoid including personal or confidential information.</p>
-<label class="field" for="context">Relevant notes (optional)</label><textarea id="context" maxlength="8000" placeholder="Paste only the specific notes you are authorised to share with this AI request."></textarea><p class="hint">Maximum 8,000 characters. Notes are sent to the configured AI provider to generate your response.</p>
+<section class="panel" id="listingFields" hidden>
+<h2>Property particulars</h2><p class="hint">Enter only known facts. Leave unknown fields blank; the assistant will flag missing information rather than invent it.</p>
+<div class="grid">
+<div><label class="field" for="pName">Property / building name</label><input id="pName" maxlength="180" placeholder="Verified property name"></div>
+<div><label class="field" for="pType">Property type</label><select id="pType"><option value="">Not specified</option><option>Office</option><option>Industrial / logistics</option><option>Retail</option><option>Mixed use</option><option>Other commercial</option></select></div>
+<div><label class="field" for="pLocation">Location / postcode</label><input id="pLocation" maxlength="240" placeholder="Town, district or postcode"></div>
+<div><label class="field" for="pAvailability">Availability</label><input id="pAvailability" maxlength="120" placeholder="Only if confirmed"></div>
+<div><label class="field" for="pArea">Floor area and units</label><input id="pArea" maxlength="120" placeholder="e.g. 12,500 sq ft"></div>
+<div><label class="field" for="pRent">Rent / asking price / terms</label><input id="pRent" maxlength="180" placeholder="Verified commercial terms"></div>
+<div><label class="field" for="pEpc">EPC / energy rating</label><input id="pEpc" maxlength="100" placeholder="Rating and evidence status"></div>
+<div><label class="field" for="pStandard">Sustainability standard</label><select id="pStandard"><option value="">Not specified</option><option>Passivhaus</option><option>EnerPHit</option><option>Passivhaus and EnerPHit</option><option>Other</option></select></div>
+<div><label class="field" for="pCertStatus">Certification status</label><select id="pCertStatus"><option value="">Not specified</option><option>Certified — evidence available</option><option>Evidence pending</option><option>In progress</option><option>Not certified</option></select></div>
+<div><label class="field" for="pCertEvidence">Certificate / register reference</label><input id="pCertEvidence" maxlength="220" placeholder="Reference or evidence URL"></div>
+<div class="full"><label class="field" for="pFeatures">Verified features and transport links</label><textarea id="pFeatures" maxlength="2000" placeholder="Only substantiated features, access, amenities and transport links"></textarea></div>
+<div class="full"><label class="field" for="pAudience">Target occupier / key proposition</label><input id="pAudience" maxlength="500" placeholder="Optional, evidence-based positioning"></div>
+</div></section>
+<section class="panel" id="dealFields" hidden>
+<h2>Deal critical path</h2><p class="hint">Add the current pipeline stage and known dates. These details are advisory inputs only; no reminders or records are changed.</p>
+<div class="grid">
+<div><label class="field" for="dStage">Pipeline stage</label><select id="dStage"><option value="">Not specified</option><option>LOI Issued</option><option>Due Diligence</option><option>Under Contract</option><option>Closed</option></select></div>
+<div><label class="field" for="dType">Transaction type</label><select id="dType"><option value="">Not specified</option><option>Lease</option><option>Purchase</option><option>Sale</option><option>Other</option></select></div>
+<div><label class="field" for="dTarget">Target completion / execution date</label><input id="dTarget" type="date"></div>
+<div><label class="field" for="dEnv">Environmental review due date</label><input id="dEnv" type="date"></div>
+<div><label class="field" for="dOption">Lease option / break / expiry date</label><input id="dOption" type="date"></div>
+<div><label class="field" for="dNext">Next scheduled milestone</label><input id="dNext" maxlength="220" placeholder="Milestone and owner if known"></div>
+<div class="full"><label class="field" for="dBlocker">Current blocker / dependency</label><textarea id="dBlocker" maxlength="1500" placeholder="What is outstanding, who owns it, and any known dependency"></textarea></div>
+<div class="full"><label class="field" for="dCommercial">Commercial / legal points requiring confirmation</label><textarea id="dCommercial" maxlength="1500" placeholder="LOI conditions, due diligence, contract, lease execution, commission or payout dependencies"></textarea></div>
+</div></section>
+<label class="field" for="context">Additional notes (optional)</label><textarea id="context" maxlength="8000" placeholder="Paste only the specific notes you are authorised to share with this AI request."></textarea><p class="hint">Maximum 8,000 characters. Notes are sent to the configured AI provider to generate your response.</p>
 <div class="actions"><button class="btn primary" id="run" type="button" disabled>Generate draft</button><button class="btn" id="clear" type="button">Clear</button><span class="status" id="status" role="status" aria-live="polite">Checking Firebase sign-in…</span></div>
 </section>
 <section class="panel"><h2>Draft response</h2><div class="output" id="output" aria-live="polite"></div><div class="actions"><button class="btn" id="copy" type="button" disabled>Copy draft</button></div></section>
@@ -41,6 +69,7 @@ window.addEventListener("load",function(){
  function setStatus(s){status.textContent=s}
  function selectTask(value,focus=true){
    task.value=value;
+   $("listingFields").hidden=value!=="listing_assistant"; $("dealFields").hidden=value!=="deal_copilot";
    message.placeholder=value==="listing_assistant"
      ?"For example: Draft a concise commercial property listing using only the verified facts in the notes below. Flag any missing particulars as questions."
      :"For example: Review these deal notes, identify the main unknowns and risks, and recommend the next three actions.";
@@ -57,6 +86,20 @@ window.addEventListener("load",function(){
  authBtn.addEventListener("click",async()=>{if(user){await auth.signOut();return}location.href="/login.html"});
  if(!window.firebase||!window.firebaseConfig){setStatus("Firebase configuration unavailable.");authBtn.textContent="Sign in";return}
  try{if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);auth=firebase.auth();auth.onAuthStateChanged(u=>{user=u;run.disabled=!u;authBtn.textContent=u?"Sign out":"Sign in";setStatus(u?"Signed in. AI requests are not linked to Firestore records.":"Please sign in to use the assistant.");});}catch(e){setStatus("Could not initialise Firebase sign-in.");return}
+ function structuredContext(){
+   const ids=task.value==="listing_assistant"
+     ? [["Property name","pName"],["Property type","pType"],["Location","pLocation"],["Availability","pAvailability"],["Floor area","pArea"],["Rent / price / terms","pRent"],["EPC / energy rating","pEpc"],["Sustainability standard","pStandard"],["Certification status","pCertStatus"],["Certificate reference / evidence","pCertEvidence"],["Verified features / transport","pFeatures"],["Target occupier / proposition","pAudience"]]
+     : [["Pipeline stage","dStage"],["Transaction type","dType"],["Target completion / execution date","dTarget"],["Environmental review due date","dEnv"],["Lease option / break / expiry date","dOption"],["Next scheduled milestone","dNext"],["Current blocker / dependency","dBlocker"],["Commercial / legal points to confirm","dCommercial"]];
+   const lines=ids.map(([label,id])=>[label,$(id).value.trim()]).filter(([,value])=>value).map(([label,value])=>label+": "+value);
+   if(task.value==="deal_copilot"){
+     const today=new Date(); today.setHours(0,0,0,0);
+     for(const [label,id] of [["Environmental review due date","dEnv"],["Lease option / break / expiry date","dOption"],["Target completion / execution date","dTarget"]]){
+       const raw=$(id).value;if(!raw)continue;const date=new Date(raw+"T00:00:00");const days=Math.round((date-today)/86400000);
+       lines.push(label+" timing relative to today's browser date: "+(days<0?Math.abs(days)+" day(s) overdue":days+" day(s) away")+" (date: "+raw+")");
+     }
+   }
+   return lines.length?"Structured "+(task.value==="listing_assistant"?"property particulars":"deal critical-path inputs")+":\\n"+lines.join("\\n"):"";
+ }
  run.addEventListener("click",async()=>{
    if(!user){setStatus("Please sign in first.");return}
    if(!endpoint){setStatus("Gateway URL not configured. The AI request has not been sent.");return}
@@ -64,7 +107,7 @@ window.addEventListener("load",function(){
    run.disabled=true;copy.disabled=true;output.textContent="";setStatus("Generating draft…");
    try{
      const token=await user.getIdToken();
-     const response=await fetch(endpoint,{method:"POST",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({task:task.value,message:message.value.trim(),context:context.value.trim()})});
+     const response=await fetch(endpoint,{method:"POST",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({task:task.value,message:message.value.trim(),context:[context.value.trim(),structuredContext()].filter(Boolean).join("\\n\\n")})});
      const data=await response.json().catch(()=>({}));
      if(!response.ok)throw new Error(data.error||"Request failed ("+response.status+").");
      output.textContent=String(data.reply||"No draft was returned.");copy.disabled=!output.textContent;setStatus("Draft generated. Verify all facts before use.");

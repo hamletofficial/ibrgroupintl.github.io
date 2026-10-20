@@ -1,7 +1,7 @@
 import { createRemoteJWKSet, jwtVerify } from "jose";
 
 const PROJECT_ID = "wale-491805";
-const MODEL = "gpt-5.2-chat-latest";
+const MODEL = "gpt-5.2-pro";
 const MAX_MESSAGE_CHARS = 4000;
 const MAX_CONTEXT_CHARS = 8000;
 const ALLOWED_ORIGINS = new Set([

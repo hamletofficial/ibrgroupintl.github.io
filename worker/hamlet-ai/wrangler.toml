@@ -5,4 +5,4 @@ workers_dev = true
 
 [vars]
 FIREBASE_PROJECT_ID = "wale-491805"
-AI_MODEL = "gpt-5.2-chat-latest"
+AI_MODEL = "gpt-5.2-pro"

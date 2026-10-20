@@ -15,7 +15,8 @@
 </head>
 <body>
 <header class="top"><a class="brand" href="/app/hamlet/">hamlet</a><div class="toplinks"><a class="btn" href="/app/hamlet/">My Pipeline</a><a class="btn" href="/app/public/live.html">Live Properties</a><button class="btn" id="authBtn" type="button">Checking sign-in…</button></div></header>
-<main class="wrap">
+<section id="loginGate" class="wrap" hidden><section class="panel" style="max-width:560px;margin:48px auto;text-align:center"><div class="eyebrow">Secure Hamlet workspace</div><h1>Sign in required</h1><p>Sign in with your Hamlet account to access the AI Assistant. The assistant workspace remains hidden until Firebase confirms your authenticated session.</p><div class="actions" style="justify-content:center"><a class="btn primary" id="loginRedirect" href="/login.html?redirect=%2Fapp%2Fhamlet%2Fai-assistant.html">Sign in to Hamlet</a><a class="btn" href="/app/hamlet/">Back to My Pipeline</a></div><p class="hint" id="gateStatus" role="status" aria-live="polite">Checking Firebase authentication…</p></section></section>
+<main class="wrap" id="assistantWorkspace" hidden>
 <div class="eyebrow">Hamlet workspace tools</div><h1>AI Assistant</h1>
 <p class="intro">Create a structured deal review or draft commercial property listing copy from information you are authorised to use. AI output is advisory draft material only; check every fact before relying on it or publishing it.</p>
 <div class="notice"><strong>Privacy:</strong> Only paste the minimum information needed. Do not include identity documents, payment details, sensitive personal data, or confidential third-party details. This assistant does not automatically read your Firestore records or change/publish anything.</div>
@@ -87,9 +88,9 @@ window.addEventListener("load",function(){
  if(requestedTask==="deal_copilot"||requestedTask==="listing_assistant")selectTask(requestedTask,false);
  task.addEventListener("change",()=>selectTask(task.value,false));
  $("clear").addEventListener("click",()=>{message.value="";context.value="";output.textContent="";copy.disabled=true;setStatus(user?"Ready.":"Sign in required.");});
- authBtn.addEventListener("click",async()=>{if(user){await auth.signOut();return}location.href="/login.html"});
+ authBtn.addEventListener("click",async()=>{if(user){try{await auth.signOut();}catch(e){setStatus("Could not sign out. Please try again.");}}else{location.href="/login.html?redirect="+encodeURIComponent("/app/hamlet/ai-assistant.html");}});
  if(!window.firebase||!window.firebaseConfig){setStatus("Firebase configuration unavailable.");authBtn.textContent="Sign in";return}
- try{if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);auth=firebase.auth();auth.onAuthStateChanged(u=>{user=u;run.disabled=!u;authBtn.textContent=u?"Sign out":"Sign in";setStatus(u?"Signed in. AI requests are not linked to Firestore records.":"Please sign in to use the assistant.");});}catch(e){setStatus("Could not initialise Firebase sign-in.");return}
+ try{if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);auth=firebase.auth();auth.onAuthStateChanged(u=>{user=u;run.disabled=!u;authBtn.textContent=u?"Sign out":"Sign in";const gate=$("loginGate"),workspace=$("assistantWorkspace");if(gate)gate.hidden=!!u;if(workspace)workspace.hidden=!u;const gateStatus=$("gateStatus");if(gateStatus)gateStatus.textContent=u?"Authenticated. Opening your workspace…":"Please sign in to use the assistant.";setStatus(u?"Signed in. AI requests are not linked to Firestore records.":"Please sign in to use the assistant.");});}catch(e){setStatus("Could not initialise Firebase sign-in.");return}
  function structuredContext(){
    const ids=task.value==="listing_assistant"
      ? [["Property name","pName"],["Property type","pType"],["Location","pLocation"],["Availability","pAvailability"],["Floor area","pArea"],["Rent / price / terms","pRent"],["EPC / energy rating","pEpc"],["Sustainability standard","pStandard"],["Certification status","pCertStatus"],["Certificate reference / evidence","pCertEvidence"],["Verified features / transport","pFeatures"],["Target occupier / proposition","pAudience"]]

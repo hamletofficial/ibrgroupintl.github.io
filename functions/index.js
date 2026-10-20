@@ -855,3 +855,6 @@ exports.getSuperAdminAccountMetrics = onCall({
     throw new HttpsError("internal", "Firebase Authentication metrics are temporarily unavailable.");
   }
 });
+
+// Register the broker rankings Firestore trigger.
+Object.assign(exports, require("./hamlet-rankings"));

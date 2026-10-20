@@ -137,6 +137,14 @@
     .btn-outline{background:transparent;border:1px solid var(--rc-border, var(--border));color:var(--rc-text-dim, var(--muted))}
     .btn-outline:hover{border-color:#0284c7;color:#0f3d63;background:rgba(2,132,199,0.06)}
     .note{font-size:0.84rem;color:var(--rc-text-dim, var(--muted));text-align:center;line-height:1.5;margin-top:16px}
+    .admin-panel-entry{display:flex;justify-content:center;width:100%;margin:17px auto 0}
+    .admin-panel-login{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:42px;width:280px;max-width:100%;padding:0 14px;border:1px solid rgba(226,232,240,.72);border-radius:8px;background:rgba(7,17,31,.72);color:#fff!important;font-size:.86rem;font-weight:700;letter-spacing:.01em;text-decoration:none!important;box-shadow:0 3px 12px rgba(0,0,0,.2);transition:background .18s ease,border-color .18s ease,transform .18s ease}
+    .admin-panel-login:hover,.admin-panel-login:focus-visible{background:rgba(29,78,216,.88);border-color:#bfdbfe;color:#fff!important;outline:none}
+    .admin-panel-login:focus-visible{outline:2px solid #bfdbfe;outline-offset:3px}
+    .admin-panel-login:active{transform:translateY(1px)}
+    .admin-panel-icon,.admin-panel-arrow{flex:0 0 auto}
+    .admin-panel-login span{flex:1;text-align:center}
+
     #error{color:#b00020;font-size:0.92rem;display:none;margin:8px 0 12px;padding:10px 12px;background:rgba(176,0,32,0.08);border:1px solid rgba(176,0,32,0.2);border-radius:8px}
     .login-page .container{display:flex;flex-direction:column;align-items:center;justify-content:center}
     /* Match the root pages: keep the Hamlet wordmark anchored to the left of the header. */
@@ -410,6 +418,7 @@
       .login-page .card .linkedin-btn,
       .login-page .card .x-btn,
       .login-page .card .apple-btn,
+      .login-page .card .microsoft-btn,
       .login-page .card .portal-return-btn {
         width: 280px;
         max-width: 100%;
@@ -528,6 +537,18 @@
     }
     .apple-btn:hover { background: #f8fafc; border-color: #000; }
     .apple-btn:active { background: #f1f5f9; }
+    .microsoft-btn {
+      display:inline-flex;align-items:center;justify-content:center;gap:12px;
+      padding:0 12px;min-height:48px;border-radius:8px;border:1px solid #d0d7de;
+      background:#fff;color:#000000;font-family:Arial,sans-serif;font-size:14px;
+      font-weight:600;cursor:pointer;width:100%;box-shadow:0 1px 2px rgba(15,23,42,.08);
+    }
+    .microsoft-btn:hover { background:#f8fafc;border-color:#9fb8d2; }
+    .microsoft-btn:active { background:#f1f5f9; }
+    .login-page .card .microsoft-btn,
+    .login-page .card .microsoft-btn .microsoft-btn-text { color:#000000 !important; }
+    .microsoft-btn-icon { position:absolute;left:12px;top:50%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;width:18px;height:18px; }
+    .microsoft-btn-text { flex:1;text-align:center; }
     .apple-btn-icon {
       position: absolute;
       left: 12px;
@@ -551,6 +572,7 @@
     .linkedin-btn,
     .x-btn,
     .apple-btn,
+    .microsoft-btn,
     .portal-return-btn {
       transition: filter 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
     }
@@ -559,6 +581,7 @@
     .linkedin-btn:hover,
     .x-btn:hover,
     .apple-btn:hover,
+    .microsoft-btn:hover,
     .portal-return-btn:hover {
       filter: brightness(0.96);
       box-shadow: 0 2px 6px rgba(0,0,0,0.12);
@@ -653,7 +676,7 @@
   <main class="login-main">
     <div class="card" role="main" aria-labelledby="signin-title">
     <h1 id="signin-title">Secure Login</h1>
-    <p class="lead">Sign in with Facebook, Google, LinkedIn, X or Apple.</p>
+    <p class="lead">Sign in with Facebook, Google, LinkedIn, X, Apple or Microsoft.</p>
     <div id="error" role="alert"></div>
     <div id="userStatus" class="user-status">
       <div class="user-info">
@@ -666,6 +689,15 @@
       <button id="signOutBtn" class="sign-out-btn">Sign Out</button>
     </div>
     <div id="signInActions" class="actions">
+      <button id="microsoftBtn" class="microsoft-btn" type="button" style="position:relative">
+        <span class="microsoft-btn-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 18 18" role="img" aria-label="Microsoft">
+            <rect x="1" y="1" width="7" height="7" fill="#f25022"/><rect x="10" y="1" width="7" height="7" fill="#7fba00"/>
+            <rect x="1" y="10" width="7" height="7" fill="#00a4ef"/><rect x="10" y="10" width="7" height="7" fill="#ffb900"/>
+          </svg>
+        </span>
+        <span class="microsoft-btn-text">Sign in with Microsoft</span>
+      </button>
       <button id="facebookBtn" class="facebook-btn" type="button">
         <span class="facebook-btn-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.099 4.388 23.093 10.125 24v-8.437H7.078v-3.49h3.047V9.413c0-3.017 1.792-4.686 4.533-4.686 1.313 0 2.686.236 2.686.236v2.982h-1.515c-1.491 0-1.954.93-1.954 1.884v2.262h3.328l-.532 3.49h-2.796V24C19.612 23.093 24 18.099 24 12.073z"/></svg>
@@ -696,6 +728,7 @@
         </span>
         <span class="google-btn-text">Sign in with Apple</span>
       </button>
+
       <a class="btn btn-outline portal-return-btn" href="/index.html">Back to Home</a>
     </div>
     <div id="mfaModal" class="mfa-modal" hidden role="dialog" aria-modal="true" aria-labelledby="mfaModalTitle">
@@ -708,7 +741,7 @@
         <button id="mfaLoginBtn" class="btn btn-primary" type="button">Verify &amp; Continue</button>
       </div>
     </div>
-    <p class="note"><a href="/app/hamlet/admin.html">Operated and managed by IBR</a>.</p>
+    <div class="admin-panel-entry"><a class="admin-panel-login" href="/app/hamlet/admin.html" aria-label="Admin Panel Login"><svg class="admin-panel-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/></svg><span>Admin Panel Login</span><svg class="admin-panel-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a></div>
     <div class="meta-links" style="margin-top:12px"></div>
     </div>
   </main>
@@ -758,6 +791,7 @@
         var linkedinBtn = document.getElementById('linkedinBtn');
         var xBtn = document.getElementById('xBtn');
         var appleBtn = document.getElementById('appleBtn');
+        var microsoftBtn = document.getElementById('microsoftBtn');
         var signOutBtn = document.getElementById('signOutBtn');
         var errEl = document.getElementById('error');
         var userStatus = document.getElementById('userStatus');
@@ -846,6 +880,7 @@
             'facebook.com': 'Facebook',
             'twitter.com': 'X',
             'apple.com': 'Apple',
+            'microsoft.com': 'Microsoft',
             'oidc.linkedin-secure-login': 'LinkedIn',
             'password': 'Email and password',
             'phone': 'Phone'
@@ -1074,6 +1109,11 @@
           provider.addScope('name');
           return signInWithProvider(provider);
         }
+        function signInWithMicrosoft() {
+          var provider = new firebase.auth.OAuthProvider('microsoft.com');
+          provider.setCustomParameters({ prompt: 'select_account' });
+          return signInWithProvider(provider);
+        }
         function signInWithX() {
           rememberNext();
           if (errEl) errEl.style.display = 'none';
@@ -1135,11 +1175,13 @@
         else if (requestedProvider === 'linkedin' && linkedinBtn) linkedinBtn.click();
         else if (requestedProvider === 'x' && xBtn) xBtn.click();
         else if (requestedProvider === 'apple' && appleBtn) appleBtn.click();
+        else if (requestedProvider === 'microsoft' && microsoftBtn) microsoftBtn.click();
         if (facebookBtn) facebookBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithFacebook(); });
         if (googleBtn) googleBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithGoogle(); });
         if (linkedinBtn) linkedinBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithLinkedIn(); });
         if (xBtn) xBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithX(); });
         if (appleBtn) appleBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithApple(); });
+        if (microsoftBtn) microsoftBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithMicrosoft(); });
         if (signOutBtn) signOutBtn.addEventListener('click', function (event) { event.preventDefault(); signOut(); });
       });
     })();

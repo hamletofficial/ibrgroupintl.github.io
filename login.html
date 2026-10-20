@@ -819,12 +819,12 @@
             var safe = safeNext(next);
             if (safe) return safe;
           } catch (error) {}
-          return '/members.html';
+          return '/app/public/dashboard.html';
         }
         function rememberNext() {
           try {
             var requested = new URLSearchParams(window.location.search).get('next');
-            sessionStorage.setItem('post_login_next', safeNext(requested) || '/members.html');
+            sessionStorage.setItem('post_login_next', safeNext(requested) || '/app/public/dashboard.html');
           } catch (error) {}
         }
         function showUserStatus(user) {
@@ -844,14 +844,14 @@
           signInActions.style.display = 'flex';
         }
         function beginAuthTransition(target) {
-          try { sessionStorage.setItem('ibr_auth_transition', target || '/members.html'); } catch (error) {}
+          try { sessionStorage.setItem('ibr_auth_transition', target || '/app/public/dashboard.html'); } catch (error) {}
           document.documentElement.classList.add('auth-arriving');
           var overlay = document.querySelector('.page-transition-overlay');
           if (!overlay) {
             overlay = document.createElement('div');
             overlay.className = 'page-transition-overlay';
             overlay.setAttribute('aria-hidden', 'true');
-            overlay.innerHTML = '<div class="page-transition-card" role="status" aria-live="polite"><span class="page-transition-spinner" aria-hidden="true"></span><span class="page-transition-label">Opening Members Area…</span></div>';
+            overlay.innerHTML = '<div class="page-transition-card" role="status" aria-live="polite"><span class="page-transition-spinner" aria-hidden="true"></span><span class="page-transition-label">Opening Hamlet Dashboard…</span></div>';
             document.body.appendChild(overlay);
           }
           var label = overlay.querySelector('.page-transition-label');

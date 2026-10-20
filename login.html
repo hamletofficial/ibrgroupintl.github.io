@@ -137,6 +137,14 @@
     .btn-outline{background:transparent;border:1px solid var(--rc-border, var(--border));color:var(--rc-text-dim, var(--muted))}
     .btn-outline:hover{border-color:#0284c7;color:#0f3d63;background:rgba(2,132,199,0.06)}
     .note{font-size:0.84rem;color:var(--rc-text-dim, var(--muted));text-align:center;line-height:1.5;margin-top:16px}
+    .admin-panel-entry{display:flex;justify-content:center;width:100%;margin:17px auto 0}
+    .admin-panel-login{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:42px;width:280px;max-width:100%;padding:0 14px;border:1px solid rgba(226,232,240,.72);border-radius:8px;background:rgba(7,17,31,.72);color:#fff!important;font-size:.86rem;font-weight:700;letter-spacing:.01em;text-decoration:none!important;box-shadow:0 3px 12px rgba(0,0,0,.2);transition:background .18s ease,border-color .18s ease,transform .18s ease}
+    .admin-panel-login:hover,.admin-panel-login:focus-visible{background:rgba(29,78,216,.88);border-color:#bfdbfe;color:#fff!important;outline:none}
+    .admin-panel-login:focus-visible{outline:2px solid #bfdbfe;outline-offset:3px}
+    .admin-panel-login:active{transform:translateY(1px)}
+    .admin-panel-icon,.admin-panel-arrow{flex:0 0 auto}
+    .admin-panel-login span{flex:1;text-align:center}
+
     #error{color:#b00020;font-size:0.92rem;display:none;margin:8px 0 12px;padding:10px 12px;background:rgba(176,0,32,0.08);border:1px solid rgba(176,0,32,0.2);border-radius:8px}
     .login-page .container{display:flex;flex-direction:column;align-items:center;justify-content:center}
     /* Match the root pages: keep the Hamlet wordmark anchored to the left of the header. */
@@ -732,7 +740,7 @@
         <button id="mfaLoginBtn" class="btn btn-primary" type="button">Verify &amp; Continue</button>
       </div>
     </div>
-    <p class="note"><a href="/app/hamlet/admin.html">Operated and managed by IBR</a>.</p>
+    <div class="admin-panel-entry"><a class="admin-panel-login" href="/app/hamlet/admin.html" aria-label="Admin Panel Login"><svg class="admin-panel-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/></svg><span>Admin Panel Login</span><svg class="admin-panel-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a></div>
     <div class="meta-links" style="margin-top:12px"></div>
     </div>
   </main>

@@ -1,0 +1,8 @@
+name = "hamlet-ai-gateway-staging"
+main = "src/index.js"
+compatibility_date = "2026-10-19"
+workers_dev = true
+
+[vars]
+FIREBASE_PROJECT_ID = "wale-491805"
+AI_MODEL = "gpt-5.2-chat-latest"

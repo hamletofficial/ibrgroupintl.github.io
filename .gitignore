@@ -19,3 +19,7 @@ yarn-error.log*
 Thumbs.db
 
 success.html
+
+# Cloudflare Wrangler local state and generated bundles
+.wrangler/
+**/.wrangler/

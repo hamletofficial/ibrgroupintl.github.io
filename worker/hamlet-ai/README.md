@@ -1,18 +1,18 @@
 # Hamlet AI Gateway
 
-A separate Cloudflare Worker gateway for Hamlet's opt-in AI drafting tools. It is intentionally not wired into the UI or deployed by this change.
+A separate Cloudflare Worker gateway for Hamlet's opt-in AI drafting tools. The frontend is connected through the Deal Copilot panel in the pipeline, the Listing Studio panel in Live Properties, and the standalone assistant page at `/app/hamlet/ai-assistant.html`. This configuration targets the staging Worker; it does not itself deploy the Worker.
 
 ## AI provider
 
 - Uses the OpenAI Responses API at `https://api.openai.com/v1/responses`.
-- Default model: `gpt-6.1-sol`, configurable with the non-secret `AI_MODEL` Worker variable.
+- Default model: `gpt-5.2-chat-latest`, matching the staging implementation currently verified end-to-end. The non-secret `AI_MODEL` Worker variable can override it., configurable with the non-secret `AI_MODEL` Worker variable.
 - Requires an OpenAI API key stored as the Cloudflare Worker secret `OPENAI_API_KEY`. A ChatGPT subscription does not include API credits; API usage is billed separately through the OpenAI API platform.
 
 ## Security properties
 
 - Requires a Firebase Authentication ID token in `Authorization: Bearer <token>`.
 - Verifies token signature, issuer and audience against Firebase Secure Token public keys for project `wale-491805`.
-- Restricts browser origins to `https://hamlet-ai.co.uk` and `https://www.hamlet-ai.co.uk`.
+- Restricts browser requests to the configured origin `https://www.hamlet-ai.co.uk`.
 - Accepts only `deal_copilot` and `listing_assistant` tasks.
 - Limits prompt and context lengths; caps generation at 900 output tokens.
 - Sends `store: false` to the Responses API.
@@ -30,7 +30,7 @@ A separate Cloudflare Worker gateway for Hamlet's opt-in AI drafting tools. It i
 5. Add a Cloudflare rate-limiting rule for `POST /v1/assist` (per IP and, where available, per authenticated user) and configure OpenAI API usage alerts/limits.
 6. Run `npm run check` and `npm run dev`. Test missing/invalid Firebase tokens, blocked origins, both task types, oversized requests, and provider failures.
 7. Deploy only after those tests and review, from this directory, using `npm run deploy` (equivalent to `wrangler deploy` using the installed package).
-8. After deployment, configure the resulting Worker URL in Hamlet's frontend and integrate a user-approved UI. The URL is not yet connected to Hamlet.
+8. After deployment, configure the resulting Worker URL in Hamlet's frontend and integrate a user-approved UI. The embedded and standalone frontends submit Firebase ID tokens and request bodies to the configured gateway URL. Test both tasks after any gateway code or model configuration change.
 
 ## Request format
 
@@ -46,4 +46,4 @@ Send the Firebase ID token in the Authorization header. Never send the OpenAI AP
 
 ## Data handling
 
-Only include the minimum context needed for the current request. Do not send identity documents, payment data, special-category personal data, or third-party contact details unless a separately approved data-protection assessment explicitly permits it. The Worker does not persist prompts or responses; operational error logs contain only status and the authenticated UID. OpenAI API data handling is subject to the account's applicable API data controls and terms.
+Only include the minimum context needed for the current request. Do not send identity documents, payment data, special-category personal data, or third-party contact details unless a separately approved data-protection assessment explicitly permits it. The Worker sends `store: false` to the Responses API and does not write prompts or responses to Hamlet records. Provider response bodies and prompt text are not logged; upstream status/metadata may be logged for diagnostics. OpenAI API data handling is subject to the account's applicable API data controls and terms.

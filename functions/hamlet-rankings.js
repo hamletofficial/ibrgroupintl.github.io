@@ -1,0 +1,1 @@
+/* Hamlet broker rankings aggregation trigger. See updateBrokerRankingAggregates in index.js. */

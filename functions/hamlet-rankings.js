@@ -55,3 +55,46 @@ const updateBrokerRankingAggregates = onDocumentWritten({
 });
 
 module.exports = {updateBrokerRankingAggregates};
+
+
+// Reconcile profile visibility changes. Ignore aggregate-only writes to avoid a loop.
+const syncBrokerRankingVisibility = onDocumentWritten({
+  document: "publicProfiles/{userId}",
+  region: "us-central1",
+  timeoutSeconds: 120,
+  memory: "256MiB",
+}, async (event) => {
+  const before = event.data?.before?.exists ? event.data.before.data() : null;
+  const after = event.data?.after?.exists ? event.data.after.data() : null;
+  if (!before || !after || before.isPublic === after.isPublic) return;
+  if (!admin.apps.length) admin.initializeApp();
+  const db = getFirestore(admin.app());
+  const uid = event.params.userId;
+  const profileRef = db.collection("publicProfiles").doc(uid);
+  if (after.isPublic !== true) {
+    await profileRef.set({
+      closedDealCount: FieldValue.delete(),
+      closedDealValueTotal: FieldValue.delete(),
+      averageClosedDealValue: FieldValue.delete(),
+      rankingsUpdatedAt: FieldValue.delete(),
+    }, {merge: true});
+    return;
+  }
+  const dealsSnap = await db.collection("hamletDeals").where("uid", "==", uid).get();
+  const closed = dealsSnap.docs.filter((doc) => {
+    const d = doc.data() || {};
+    return d.uid === uid && d.stage === "Closed" && d.demo !== true &&
+      typeof d.value === "number" && Number.isFinite(d.value) &&
+      d.value > 0 && d.value <= 1e12;
+  });
+  const closedDealCount = closed.length;
+  const closedDealValueTotal = closed.reduce((sum, doc) => sum + doc.data().value, 0);
+  await profileRef.set({
+    closedDealCount,
+    closedDealValueTotal,
+    averageClosedDealValue: closedDealCount ? closedDealValueTotal / closedDealCount : 0,
+    rankingsUpdatedAt: FieldValue.serverTimestamp(),
+  }, {merge: true});
+});
+
+module.exports = {updateBrokerRankingAggregates, syncBrokerRankingVisibility};

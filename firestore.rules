@@ -21,14 +21,15 @@ service cloud.firestore {
         && request.auth.uid == userId
         && request.resource.data.isPublic == true
         && (!('onfidoVerified' in request.resource.data)
-          || request.resource.data.onfidoVerified == false);
+          || request.resource.data.onfidoVerified == false)
+        && !request.resource.data.keys().hasAny(['closedDealCount','closedDealValueTotal','averageClosedDealValue','rankingsUpdatedAt']);
 
       // Clients may edit other profile fields, but cannot add, change, or remove
       // the identity-verification flag.
       allow update: if request.auth != null
         && request.auth.uid == userId
         && request.resource.data.isPublic is bool
-        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['onfidoVerified']);
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['onfidoVerified','closedDealCount','closedDealValueTotal','averageClosedDealValue','rankingsUpdatedAt']);
 
       allow delete: if request.auth != null && request.auth.uid == userId;
     }

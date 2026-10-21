@@ -283,14 +283,14 @@ exports.retryPressCommunicationEmail = onSchedule({
 
 function sendDirectMessageNotification(recipientEmail, recipientName) {
   const safeName = String(recipientName || "there").replace(/[\r\n]+/g, " ").slice(0, 120);
-  const messageUrl = "https://uk.ibrecruitment.com/messages.html";
-  const text = "Hello " + safeName + ",\n\nYou have received a new direct message on the IBR broker community platform. Sign in to read and reply:\n" + messageUrl + "\n\nFor your privacy, the message content is not included in this email.";
+  const messageUrl = "https://hamlet-ai.co.uk/messages.html";
+  const text = "Hello " + safeName + ",\n\nYou have received a new direct message on Hamlet. Sign in to read and reply:\n" + messageUrl + "\n\nFor your privacy, the message content is not included in this email.";
   const payload = JSON.stringify({
     From: "admin-messages@ibrecruitment.com",
     To: recipientEmail,
-    Subject: "You have a new message on IBR",
+    Subject: "You have a new message on Hamlet",
     TextBody: text,
-    HtmlBody: "<p>Hello " + escapeHtml(safeName) + ",</p><p>You have received a new direct message on the IBR broker community platform. Sign in to read and reply:</p><p><a href=\"" + messageUrl + "\">Open your IBR inbox</a></p><p>For your privacy, the message content is not included in this email.</p>",
+    HtmlBody: "<p>Hello " + escapeHtml(safeName) + ",</p><p>You have received a new direct message on Hamlet. Sign in to read and reply:</p><p><a href=\"" + messageUrl + "\">Open your Hamlet inbox</a></p><p>For your privacy, the message content is not included in this email.</p>",
     MessageStream: "outbound",
   });
   return new Promise(function(resolve, reject) {

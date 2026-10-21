@@ -14,4 +14,4 @@ window.linkedinClientId = "78e83w1spj610a";
 
 // Set this to the public Web Push certificate key from Firebase Console > Project Settings > Cloud Messaging.
 // Do not put a service-account credential or private key here.
-window.firebaseMessagingVapidKey = window.firebaseMessagingVapidKey || "";
+window.firebaseMessagingVapidKey = window.firebaseMessagingVapidKey || "BPWBggtpi8y_teO3-zlLOotKkmOJcTy7S99lP3l0W6EtwgGLZ_KcAeQRr2KBdrFrtSp7HO2yP0n3gEAnOOzBGCo";

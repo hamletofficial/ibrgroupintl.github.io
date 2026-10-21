@@ -382,3 +382,28 @@ nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"]):focus-visi
 nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"])[aria-current="page"] {
   color: #FFF !important;
 }
+
+
+/* UX housekeeping — consistent touch targets, visible keyboard focus, and predictable horizontal navigation. */
+.hamlet-primary-nav .hamlet-nav-link,
+.hamlet-primary-nav .hamlet-nav-group > summary,
+nav.workspace-nav .workspace-nav-link {
+  min-height: 44px;
+}
+.hamlet-primary-nav .hamlet-nav-link:focus-visible,
+.hamlet-primary-nav .hamlet-nav-group > summary:focus-visible,
+.hamlet-primary-nav .hamlet-nav-child:focus-visible,
+nav.workspace-nav .workspace-nav-link:focus-visible,
+nav.workspace-nav .hamlet-nav-child:focus-visible {
+  outline: 2px solid #93c5fd !important;
+  outline-offset: 2px;
+}
+.hamlet-primary-nav,
+nav.workspace-nav {
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.hamlet-primary-nav > .hamlet-nav-link,
+nav.workspace-nav > .workspace-nav-link {
+  scroll-snap-align: start;
+}

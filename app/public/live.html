@@ -35,26 +35,26 @@
 @media(max-width:520px){.listing-filters{grid-template-columns:1fr}.listing-tools-actions{align-items:stretch;flex-direction:column}.listing-tools-actions input,.listing-tools-actions select,.listing-tools-actions .btn{width:100%;max-width:none}.listing-tools-actions #listingResultCount{margin-right:0}}
 .resource-list{display:grid;gap:.8rem}.property-photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:.6rem;margin:.8rem 0}.property-photo-grid img{display:block;width:100%;height:125px;object-fit:cover;border-radius:9px;border:1px solid var(--line)}.property-card{border:1px solid var(--line);border-radius:12px;padding:1rem;background:#fbfdff}
 
-/* Property-card visual alignment with Hamlet's dark portfolio and workspace surfaces. */
-.property-card{background:rgba(17,24,39,.96);border-color:#374151;color:#f3f4f6;box-shadow:0 10px 28px rgba(0,0,0,.2);min-width:0}
+/* Property cards use the light listing palette; no dark workspace surfaces here. */
+.property-card{background:#fff;border-color:#d1d5db;color:#1f2937;box-shadow:0 8px 24px rgba(15,23,42,.09);min-width:0}
 .property-head{min-width:0;flex-wrap:wrap}
-.property-card h3{color:#f9fafb;overflow-wrap:anywhere}
-.property-meta{grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;color:#cbd5e1}
-.property-meta>div{min-width:0;padding:.65rem .7rem;border:1px solid #374151;border-radius:9px;background:#0b1120;overflow-wrap:anywhere}
-.property-meta strong{color:#93c5fd}
-.property-description{color:#d1d5db;overflow-wrap:anywhere}
+.property-card h3{color:#111827;overflow-wrap:anywhere}
+.property-meta{grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;color:#475569}
+.property-meta>div{min-width:0;padding:.65rem .7rem;border:1px solid #e2e8f0;border-radius:9px;background:#f8fafc;overflow-wrap:anywhere}
+.property-meta strong{color:#1d4ed8}
+.property-description{color:#374151;overflow-wrap:anywhere}
 .property-photo-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));}
-.property-photo-grid a{display:block;min-width:0;overflow:hidden;border-radius:10px;border:1px solid #374151}
+.property-photo-grid a{display:block;min-width:0;overflow:hidden;border-radius:10px;border:1px solid #e2e8f0}
 .property-photo-grid img{width:100%;height:clamp(125px,18vw,185px);object-fit:cover;display:block}
-.property-card .badge{background:#172b25;color:#bbf7d0;border:1px solid #35634e}
-.property-card .property-link{color:#93c5fd}
+.property-card .badge{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.property-card .property-link{color:#1d4ed8}
 .property-card .card-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}
 .property-card .card-actions .btn{width:auto;max-width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere}
-.property-card .property-sustainability{margin-top:.8rem;padding:.8rem;border:1px solid #365a51;border-radius:10px;background:#10251f;color:#d1fae5}
-.property-card .property-sustainability strong{color:#f0fdf4}
-.property-card .property-sustainability a{color:#a7f3d0}
-.empty{background:rgba(17,24,39,.9);border-color:#475569;color:#cbd5e1}
-#listingStatus.error{color:#fecaca}
+.property-card .property-sustainability{margin-top:.8rem;padding:.8rem;border:1px solid #bbf7d0;border-radius:10px;background:#f0fdf4;color:#166534}
+.property-card .property-sustainability strong{color:#14532d}
+.property-card .property-sustainability a{color:#1d4ed8}
+.empty{background:#f8fafc;border-color:#d1d5db;color:#475569}
+#listingStatus.error{color:#b91c1c}
 @media(max-width:800px){.property-meta{grid-template-columns:repeat(2,minmax(0,1fr))}.property-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.property-meta{grid-template-columns:1fr}.property-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}.property-photo-grid img{height:120px}.property-card{padding:.85rem}.property-card .card-actions{display:grid;grid-template-columns:1fr}.property-card .card-actions .btn{width:100%;min-height:42px}.property-head{gap:.65rem}}
 

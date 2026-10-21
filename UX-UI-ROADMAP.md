@@ -28,6 +28,13 @@ Static source review of the homepage, members area, member property portfolio, a
 - Establish baseline measures for property submission completion, deal update time, abandoned forms, data completeness, and deadline follow-through.
 - Prioritise further work using observed friction rather than adding dashboard metrics that do not change a member's next action.
 
+## Housekeeping progress — 21 October 2026
+
+- **Completed:** Broker Rankings now uses Hamlet's dark workspace palette for the page canvas, panels, filters, ranking cards, empty states and footer. Keyboard focus and reduced-motion styles were added.
+- **Completed:** Members Area guidance cards, authentication shell, security note and sidebar menu now follow the dark palette. Focus visibility and reduced-motion support were added. The floating shortcut remains labelled **Open Broker Rankings** and points to `/rankings.html`.
+- **Reviewed:** Live Commercial Property Listings responsive rules and focus/reduced-motion support. Active property cards and the broker review panel intentionally retain their light surfaces; they were left unchanged to avoid undoing prior presentation decisions.
+- **Not yet verified:** Live browser rendering, end-to-end keyboard/screen-reader behaviour, mobile device testing, and post-deployment checks. These should be treated as outstanding rather than assumed successful.
+
 ## Incremental delivery plan
 
 1. **Consistency pass:** correct the members-area card palette and typography while keeping particles visible and controls legible.

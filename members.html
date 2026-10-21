@@ -97,6 +97,56 @@
         backdrop-filter: none !important;
       }
     }
+
+    /* UX housekeeping: align member guidance surfaces with Hamlet's dark workspace. */
+    :root { color-scheme: dark; --muted: #cbd5e1; }
+    html { background: #0b1120; }
+    body { color: #f3f4f6; }
+    .auth-shell,
+    .member-guide-card {
+      background: #111827;
+      color: #f3f4f6;
+      border-color: #374151;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .2);
+    }
+    .auth-shell h1,
+    .member-guide-card h2,
+    .member-commercial-links h3 { color: #f3f4f6; }
+    .welcome-lead,
+    .member-guide-card p,
+    .member-guide-card ol { color: #cbd5e1; }
+    .security-note {
+      background: #172338;
+      border-color: #334155;
+      color: #e2e8f0;
+    }
+    .security-note strong { color: #f3f4f6; }
+    .security-note p { color: #cbd5e1; }
+    .guide-number { background: #1f2937; color: #93c5fd; }
+    .member-guide-card a { color: #93c5fd; }
+    .guide-action.btn-outline {
+      color: #bfdbfe !important;
+      background: #172338 !important;
+      border-color: #64748b !important;
+    }
+    .member-commercial-links { border-top-color: #374151; }
+    .member-directory-card { border-color: #16a34a; }
+    .sidebar-menu-shell { background: #111827; border-color: #374151; }
+    .sidebar-menu-link { color: #e5e7eb; }
+    .sidebar-menu-link:hover,
+    .sidebar-menu-link:focus-visible { background: #1f2937; color: #fff; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
   </style>
 
   <link rel="stylesheet" href="/theme.css">

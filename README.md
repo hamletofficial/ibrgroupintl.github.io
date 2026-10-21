@@ -3,10 +3,18 @@
 **Hamlet** is a commercial property CRM and broker-community platform developed by Impact in Business Recruitment Group Limited. Built around the principle **“less fragmentation, more connected deals,”** Hamlet brings property opportunities, deal progression, professional relationships and broker communications into a more connected workspace. Its tools include live property listings, a deal pipeline with critical-path deadlines, member profiles and directory, social updates, and direct messaging—helping brokers organise information and maintain momentum from opportunity to transaction.
 
 - **Production site:** [https://hamlet-ai.co.uk](https://hamlet-ai.co.uk)
-- **Repository:** [ibrgroupintl/ibrgroupintl.github.io](https://github.com/ibrgroupintl/ibrgroupintl.github.io)
+- **Repository:** [ibrgroupintl/ibrgroupintl.github.io](https://github.com/hamletofficial/ibrgroupintl.github.io)
 - **Primary app:** Hamlet
 - **Authentication:** Firebase Authentication
 - **Data services:** Firebase / Firestore (and Firebase Storage where configured)
+
+## Homepage and GitHub commit announcement
+
+The public homepage is `/index.html`. Its royal-blue header uses the shared navigation links **How it works**, **Contact sales** (links to `/contact.html`), and **Log in** (links to `/login.html`). The header uses sticky positioning so it remains at the top while scrolling.
+
+A white announcement bar sits immediately below the header. Its contents are centrally aligned and it retrieves the latest commit on the repository's `main` branch through the GitHub REST API. The bar displays the commit subject line, commit timestamp, short SHA, and a link to the corresponding commit. It checks for updates on page load and every five minutes, so commits pushed to `main` are reflected automatically without a separate manual edit to the announcement text. If the API is unavailable, the bar falls back to a link to the commit history.
+
+The announcement displays the latest commit's subject line as written in GitHub; it does not generate an independent summary of the full diff. Use clear, concise commit messages to make the public update useful. Because the bar reads the latest commit on `main`, it reflects commits by any contributor to that branch, not only commits made by a particular person.
 
 ## Core capabilities
 
@@ -50,7 +58,7 @@ Check the relevant page and its imported scripts/styles before changing behaviou
 From a local clone, start a simple static server at the repository root:
 
 ```bash
-git clone https://github.com/ibrgroupintl/ibrgroupintl.github.io.git
+git clone https://github.com/hamletofficial/ibrgroupintl.github.io.git
 cd ibrgroupintl.github.io
 python -m http.server 8080
 ```

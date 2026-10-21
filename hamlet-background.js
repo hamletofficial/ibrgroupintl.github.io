@@ -1,15 +1,15 @@
-/* Shared animated Hamlet network background for non-landing pages. */
+/* Shared animated Hamlet network background. */
 (function(){
   'use strict';
   var path=(location.pathname||'/').replace(/\/$/,'')||'/';
-  if(path==='/'||path==='/index.html'||path==='/app/hamlet'||path==='/app/hamlet/index.html'||path==='/members.html'||path.indexOf('/app/public/')===0)return;
+  if(path==='/app/hamlet'||path==='/app/hamlet/index.html'||path==='/members.html'||path.indexOf('/app/public/')===0)return;
   if(document.getElementById('hamlet-particles-background'))return;
   var style=document.createElement('style');
   style.id='hamlet-particles-background-style';
   style.textContent='html{min-height:100%;background:transparent!important}body{position:relative;isolation:isolate;background:transparent!important}#hamlet-particles-background{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden;background:transparent}#hamlet-particles-background canvas{display:block;width:100%;height:100%}body>*:not(#hamlet-particles-background):not(.hamlet-search-overlay){position:relative;z-index:1}body>.page-wrapper,body>main,body>.container,body>.team-container,body>.site-content,body>.page-content,body>.app-shell,body>.content-wrapper,body>.directory-shell,body .page-wrapper,body .team-container,body .site-content,body .page-content,body .app-shell,body .content-wrapper,html[data-appearance="dark"] body:has(.directory-shell) .page-wrapper{background:transparent!important;background-color:transparent!important;background-image:none!important}';
   (document.head||document.documentElement).appendChild(style);
   var layer=document.createElement('div');
-  layer.id='hamlet-particles-background';layer.setAttribute('aria-hidden','true');
+  layer.id='hamlet-particles-background';layer.setAttribute('aria-hidden','true');layer.style.background='#0b1120';
   function start(){
     if(!document.body)return;
     document.body.insertBefore(layer,document.body.firstChild);

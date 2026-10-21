@@ -90,6 +90,47 @@
 button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed;opacity:.7}
 .property-actions a,.toolbar button,.toolbar select,.toolbar input{min-height:42px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* UX housekeeping: keyboard focus, touch targets and resilient narrow-screen filtering. */
+.toolbar input:focus-visible,
+.toolbar select:focus-visible,
+.property-actions a:focus-visible,
+.header-actions a:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+.toolbar input,
+.toolbar select,
+.property-actions a,
+.header-actions a {
+  min-height: 44px;
+}
+.count {
+  line-height: 1.55;
+}
+.property-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+.property-actions a {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+#portfolioList[aria-busy="true"] .empty {
+  line-height: 1.6;
+}
+@media(max-width:520px) {
+  .toolbar { gap: .8rem; }
+  .toolbar .field { min-width: 0; }
+  .count { padding-top: .25rem; }
+  .property-actions a { width: 100%; justify-content: center; text-align: center; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .property-photo-grid img { transition: none !important; }
+}
+
 </style>
 </head>
 <body>

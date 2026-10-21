@@ -48,8 +48,7 @@ Static source review of the homepage, members area, member property portfolio, a
 
 ## Incremental delivery plan
 
-1. **Dashboard/workflow pass:** improve prioritisation of next actions and critical dates after confirming the current Firestore data and UI paths.
-2. **Verification pass:** inspect diffs, validate HTML/CSS structure, and run available repository checks; manually verify deployed pages where browser access is available.
+1. **Verification pass:** inspect diffs, validate HTML/CSS structure, and run available repository checks; manually verify deployed pages where browser access is available.
 
 ## Safety boundaries
 

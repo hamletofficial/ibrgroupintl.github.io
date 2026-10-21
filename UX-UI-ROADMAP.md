@@ -43,6 +43,7 @@ Static source review of the homepage, members area, member property portfolio, a
 - **Completed:** Shared navigation now has 44px minimum targets, explicit keyboard-focus outlines and touch-friendly horizontal scrolling.
 - **Completed:** Deal Pipeline source review. Existing mobile list layout, authentication guard, deadline logic and deal persistence were preserved.
 - **Completed:** Property experience styling pass on live listings and public member portfolios. Added clear keyboard focus, minimum touch targets and more consistent loading/error text treatment without changing listing data, filters, Firestore queries, or sustainability claims.
+- **Completed:** Dashboard/workflow pass: each item in the Next Actions panel now has a **Review** control that scrolls to and keyboard-focuses its corresponding critical-path reminder. Responsive styling keeps the action usable on narrow screens; reduced-motion preferences are respected. Deal/reminder records, due-date calculations, authentication and persistence are unchanged.
 - **Not yet verified:** Live browser rendering, end-to-end keyboard/screen-reader behaviour, mobile device testing and post-deployment checks remain outstanding.
 
 ## Incremental delivery plan

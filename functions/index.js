@@ -318,6 +318,98 @@ function sendDirectMessageNotification(recipientEmail, recipientName) {
   });
 }
 
+exports.notifyDirectMessagePushRecipient = onDocumentCreated({
+  document: "directMessages/{messageId}",
+  region: "us-central1",
+  timeoutSeconds: 30,
+  memory: "256MiB",
+}, async function(event) {
+  const snap = event.data;
+  if (!snap) return;
+  const message = snap.data() || {};
+  const recipientUid = message.recipientUid;
+  const senderUid = message.senderUid;
+  if (typeof recipientUid !== "string" || !recipientUid || recipientUid === senderUid) return;
+
+  try {
+    try { admin.app(); } catch (err) { admin.initializeApp(); }
+    const db = getFirestore(admin.app());
+    const recipientRef = db.collection("publicProfiles").doc(recipientUid);
+    const profileSnap = await recipientRef.get();
+    const profile = profileSnap.exists ? (profileSnap.data() || {}) : {};
+    const recipientName = [profile.firstName, profile.lastName]
+      .filter(function(part) { return typeof part === "string" && part.trim(); })
+      .join(" ").trim() || "there";
+    const senderName = String(message.senderName || "A Hamlet member").replace(/[\\r\\n]+/g, " ").slice(0, 120);
+    const tokensSnap = await db.collection("userPushTokens").doc(recipientUid).collection("tokens").get();
+    if (tokensSnap.empty) {
+      console.log("No push tokens registered for direct-message recipient:", recipientUid);
+      return;
+    }
+
+    const tokens = [];
+    const tokenDocs = [];
+    tokensSnap.forEach(function(doc) {
+      const data = doc.data() || {};
+      if (typeof data.token === "string" && data.token.trim()) {
+        tokens.push(data.token.trim());
+        tokenDocs.push(doc.ref);
+      }
+    });
+    if (!tokens.length) return;
+
+    const result = await admin.messaging().sendEachForMulticast({
+      tokens: tokens,
+      notification: {
+        title: "New message on Hamlet",
+        body: senderName + " sent you a message.",
+      },
+      data: {
+        type: "direct_message",
+        messageId: snap.id,
+        url: "https://hamlet-ai.co.uk/messages.html",
+      },
+      webpush: {
+        fcmOptions: { link: "https://hamlet-ai.co.uk/messages.html" },
+        notification: {
+          icon: "https://hamlet-ai.co.uk/assets/images/favicon.ico",
+          badge: "https://hamlet-ai.co.uk/assets/images/favicon.ico",
+          tag: "hamlet-direct-message-" + snap.id,
+          renotify: true,
+        },
+      },
+    });
+
+    const cleanup = [];
+    result.responses.forEach(function(response, index) {
+      if (!response.success && response.error &&
+          ["messaging/invalid-registration-token", "messaging/registration-token-not-registered"].includes(response.error.code)) {
+        cleanup.push(tokenDocs[index].delete().catch(function(err) {
+          console.warn("Unable to remove invalid push token:", err);
+        }));
+      }
+    });
+    await Promise.all(cleanup);
+    await snap.ref.set({
+      pushNotificationStatus: result.successCount ? "sent" : "failed",
+      pushNotificationSentAt: result.successCount ? admin.firestore.FieldValue.serverTimestamp() : admin.firestore.FieldValue.delete(),
+      pushNotificationSuccessCount: result.successCount,
+      pushNotificationFailureCount: result.failureCount,
+    }, { merge: true });
+    console.log("Direct-message push notification result:", snap.id, result.successCount, "sent;", result.failureCount, "failed");
+  } catch (err) {
+    console.error("Unable to send direct-message push notification:", snap.id, err);
+    try {
+      await snap.ref.set({
+        pushNotificationStatus: "failed",
+        pushNotificationError: String(err && err.message || err).slice(0, 500),
+      }, { merge: true });
+    } catch (updateErr) {
+      console.error("Unable to record direct-message push failure:", snap.id, updateErr);
+    }
+  }
+});
+
 exports.notifyDirectMessageRecipient = onDocumentCreated({
   document: "directMessages/{messageId}",
   region: "us-central1",

@@ -34,6 +34,18 @@ service cloud.firestore {
       allow delete: if request.auth != null && request.auth.uid == userId;
     }
 
+    // Browser push tokens are private to the signed-in account that registered them.
+    match /userPushTokens/{userId}/tokens/{tokenId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create, update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.token is string
+        && request.resource.data.token.size() > 20
+        && request.resource.data.token.size() <= 4096
+        && request.resource.data.platform == 'web';
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
     match /directMessages/{messageId} {
       allow read: if request.auth != null
         && request.auth.uid in resource.data.participants;

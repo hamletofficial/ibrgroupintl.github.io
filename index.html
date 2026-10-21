@@ -23,6 +23,11 @@
     a:focus-visible,button:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
     .container{width:min(1120px,calc(100% - 2rem));margin-inline:auto}
     .site-header{position:sticky;top:0;z-index:20;background:#071d4a;border-bottom:1px solid #374151}
+    .github-update-bar{display:flex;align-items:center;gap:.65rem;min-height:44px;padding:.55rem max(1rem,calc((100% - 1120px)/2));background:#fff;color:#111827;border-bottom:1px solid #d1d5db;font-size:.86rem;line-height:1.4}
+    .github-update-label{flex:0 0 auto;font-weight:800;white-space:nowrap}
+    .github-update-message{min-width:0;overflow-wrap:anywhere}
+    .github-update-link{flex:0 0 auto;color:#1d4ed8;font-weight:700;white-space:nowrap}
+    @media(max-width:560px){.github-update-bar{align-items:flex-start;flex-wrap:wrap;gap:.25rem .55rem;padding:.6rem 1rem}.github-update-label{white-space:normal}}
     .header-row{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
     .brand{font-size:1.35rem;font-weight:800;letter-spacing:-.04em;text-decoration:none;color:#fff}
     .brand span{color:#bfdbfe}
@@ -115,6 +120,12 @@
       </nav>
     </div>
   </header>
+
+  <aside class="github-update-bar" aria-label="Latest GitHub status update" aria-live="polite">
+    <span class="github-update-label">Latest GitHub update:</span>
+    <span class="github-update-message" id="github-update-message">Checking the latest commit on main…</span>
+    <a class="github-update-link" id="github-update-link" href="https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main" target="_blank" rel="noopener noreferrer">View commit history</a>
+  </aside>
 
   <main>
     <section class="hero">
@@ -294,6 +305,32 @@
     </div>
   </footer>
 
+  <script>
+    (() => {
+      const messageEl = document.getElementById('github-update-message');
+      const linkEl = document.getElementById('github-update-link');
+      const endpoint = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/commits/main';
+      async function refreshGitHubUpdate() {
+        try {
+          const response = await fetch(endpoint, { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' });
+          if (!response.ok) throw new Error('GitHub API returned ' + response.status);
+          const commit = await response.json();
+          const subject = (commit.commit.message || 'Repository update').split('\\n')[0].trim();
+          const date = commit.commit.author && commit.commit.author.date ? new Date(commit.commit.author.date) : null;
+          const dateText = date && !Number.isNaN(date.getTime()) ? ' · ' + date.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : '';
+          messageEl.textContent = subject + dateText + ' · ' + commit.sha.slice(0, 7);
+          linkEl.href = commit.html_url;
+          linkEl.textContent = 'View commit';
+        } catch (error) {
+          if (messageEl.textContent.startsWith('Checking')) messageEl.textContent = 'Latest commit details are temporarily unavailable.';
+          linkEl.href = 'https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main';
+          linkEl.textContent = 'View commit history';
+        }
+      }
+      refreshGitHubUpdate();
+      window.setInterval(refreshGitHubUpdate, 300000);
+    })();
+  </script>
   <script src="/hamlet-background.js?v=20261021-2"></script>
 </body>
 </html>

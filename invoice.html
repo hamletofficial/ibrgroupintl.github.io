@@ -261,6 +261,16 @@
       padding-bottom:clamp(28px,4vw,40px) !important;
       margin-bottom:12px;
     }
+    /* Remove the horizontal divider beneath the embedded Start Trial pricing option. */
+    #stripePricingTableContainer {
+      border-bottom:0 !important;
+      box-shadow:none !important;
+    }
+    #stripePricingTableContainer stripe-pricing-table {
+      display:block;
+      border-bottom:0 !important;
+      box-shadow:none !important;
+    }
     .payment-card {
       transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
     }

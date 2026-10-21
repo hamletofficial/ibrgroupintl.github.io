@@ -907,6 +907,56 @@ exports.sendHamletCriticalPathReminders = onSchedule({
 });
 
 
+
+exports.getSuperAdminAccounts = onCall({
+  region: "us-central1",
+  timeoutSeconds: 120,
+  memory: "256MiB",
+}, async (request) => {
+  const allowedUid = "6epDJRISlBbRPWKosDZZWuiGQzK2";
+  const allowedEmail = "uk-hr-enquiries@ibrecruitment.com";
+  const user = request.auth;
+  const token = user && user.token;
+  if (!user || !token) {
+    throw new HttpsError("unauthenticated", "Sign in to view Firebase accounts.");
+  }
+  if (user.uid !== allowedUid ||
+      String(token.email || "").trim().toLowerCase() !== allowedEmail ||
+      token.email_verified !== true ||
+      !token.firebase ||
+      token.firebase.sign_in_provider !== "password") {
+    throw new HttpsError("permission-denied", "Only the verified designated Super Administrator may retrieve Firebase accounts.");
+  }
+  const suppliedToken = request.data && request.data.pageToken;
+  if (suppliedToken !== undefined && suppliedToken !== null &&
+      (typeof suppliedToken !== "string" || suppliedToken.length > 4096)) {
+    throw new HttpsError("invalid-argument", "The account page token is invalid.");
+  }
+  try {
+    try { admin.app(); } catch (initializationError) { admin.initializeApp(); }
+    const page = await admin.auth().listUsers(1000, suppliedToken || undefined);
+    const accounts = page.users.map((account) => ({
+      uid: account.uid,
+      displayName: account.displayName || "",
+      email: account.email || "",
+      emailVerified: account.emailVerified === true,
+      disabled: account.disabled === true,
+      createdAt: account.metadata && account.metadata.creationTime ? account.metadata.creationTime : null,
+      lastSignIn: account.metadata && account.metadata.lastSignInTime ? account.metadata.lastSignInTime : null,
+      providers: Array.from(new Set((account.providerData || []).map((provider) => provider.providerId).filter(Boolean))),
+    }));
+    return {
+      accounts,
+      nextPageToken: page.pageToken || null,
+      source: "firebase-authentication",
+      generatedAt: new Date().toISOString(),
+    };
+  } catch (error) {
+    console.error("Unable to retrieve administrator Firebase account directory:", error);
+    throw new HttpsError("internal", "Firebase Authentication accounts are temporarily unavailable.");
+  }
+});
+
 exports.getSuperAdminAccountMetrics = onCall({
   region: "us-central1",
   timeoutSeconds: 120,

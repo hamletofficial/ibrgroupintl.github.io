@@ -42,7 +42,30 @@
     .status{margin:.8rem 0 0;color:var(--muted);font-size:.88rem;line-height:1.5}.status.error{color:#b91c1c}.status.success{color:var(--green)}
     .resource-footer{border-top:1px solid var(--line);padding:22px 1rem 30px;text-align:center;color:var(--muted);font-size:.82rem}.resource-footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-bottom:8px}.resource-footer a{color:var(--muted);text-decoration:none}.resource-footer a:hover{color:var(--blue);text-decoration:underline}
     @media(max-width:650px){.topbar{align-items:flex-start;flex-direction:column}.topbar-actions{width:100%}.rank-card{grid-template-columns:44px minmax(0,1fr);gap:.7rem}.rank-number{width:40px;height:40px}.rank-score{grid-column:2;text-align:left}.rank-score strong{white-space:normal}.hero,.panel{padding:1.1rem}}
-  </style>
+  
+    /* Housekeeping: align rankings with Hamlet's dark workspace and keep controls readable. */
+    :root{color-scheme:dark;--ink:#f3f4f6;--muted:#cbd5e1;--line:#374151;--green:#86efac}
+    body{color:#f3f4f6;background:#0b1120}
+    .page-wrapper{background:#0b1120;box-shadow:none}
+    .auth-shell,.panel{background:#111827;border-color:#374151;color:#f3f4f6;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+    .auth-shell h1,.panel h2,.broker-name,.rank-score strong{color:#f3f4f6}
+    .auth-shell p,.panel-intro,.broker-meta,.rank-score span,.status,.resource-footer{color:#cbd5e1}
+    .notice{background:#172338;border-left-color:#60a5fa;color:#e2e8f0}
+    .rank-tools input,.rank-tools select{background:#111827;color:#f3f4f6;border-color:#4b5563}
+    .rank-tools input::placeholder{color:#9ca3af}
+    .rank-card{background:#111827;border-color:#374151}
+    .rank-number{background:#172338;color:#bfdbfe}
+    .rank-card:nth-child(1) .rank-number{background:#493d19;color:#fde68a}
+    .rank-card:nth-child(2) .rank-number{background:#303946;color:#e2e8f0}
+    .rank-card:nth-child(3) .rank-number{background:#4a3022;color:#fed7aa}
+    .empty{border-color:#4b5563;color:#cbd5e1}
+    .status.error{color:#fca5a5}.status.success{color:#86efac}
+    .resource-footer{border-top-color:#374151}
+    .resource-footer a{color:#bfdbfe}
+    .resource-footer a:hover{color:#fff}
+    .rank-tools input:focus-visible,.rank-tools select:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
 <div class="page-wrapper">

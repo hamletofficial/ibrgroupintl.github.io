@@ -55,6 +55,9 @@
       '.hamlet-ai-field label{font-size:12px;font-weight:800;color:#173b5d}' +
       '.hamlet-ai-assistant[data-variant="pipeline"] .hamlet-ai-field label{color:#dbeafe}' +
       '.hamlet-ai-field textarea{width:100%;min-height:118px;resize:vertical;padding:11px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a;font:inherit;font-size:13px;line-height:1.5;outline:none}' +
+      '.hamlet-ai-assistant[data-variant="pipeline"] .hamlet-ai-field textarea{background:#0b1120;border-color:#354b68;color:#edf3fc;caret-color:#93c5fd}' +
+      '.hamlet-ai-assistant[data-variant="pipeline"] .hamlet-ai-field textarea:focus{border-color:#68a6ff;box-shadow:0 0 0 3px rgba(104,166,255,.18)}' +
+      '.hamlet-ai-assistant[data-variant="pipeline"] .hamlet-ai-field textarea::placeholder{color:#8195b2;opacity:1}' +
       '.hamlet-ai-field textarea:focus{border-color:#0284c7;box-shadow:0 0 0 3px rgba(2,132,199,.14)}' +
       '.hamlet-ai-field textarea::placeholder{color:#64748b}' +
       '.hamlet-ai-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}' +
@@ -187,8 +190,7 @@
     contextInput.value = button.dataset.hamletAiSource === 'deal'
       ? buildContextFromDeal(card)
       : buildContextFromListing(card);
-    messageInput.value = defaultPrompt;
-    setStatus('Visible card details loaded. Review the context before submitting.', '');
+    setStatus('Visible card details loaded. Add your instruction or use the suggestion in the prompt field.', '');
     output.hidden = true;
     panel.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     contextInput.focus({ preventScroll: true });
@@ -275,7 +277,7 @@
     output = document.getElementById('hamletAiOutput');
     outputText = document.getElementById('hamletAiOutputText');
     modelNode = document.getElementById('hamletAiModel');
-    messageInput.value = defaultPrompt;
+    messageInput.placeholder = defaultPrompt;
     form.addEventListener('submit', submitAssistant);
     document.addEventListener('click', function (event) {
       var button = event.target.closest('.hamlet-ai-context-button');

@@ -144,6 +144,48 @@
 #reviewPanel .review-status.error{color:#b91c1c!important}
 #reviewPanel .review-status.success{color:#166534!important}
 
+
+
+/* UX housekeeping: strengthen focus visibility and touch usability without changing the established light listing cards. */
+#listingSearch:focus-visible,
+.listing-filters select:focus-visible,
+.listing-tools-actions input:focus-visible,
+.listing-tools-actions select:focus-visible,
+.listing-tools-actions button:focus-visible,
+.property-card a:focus-visible,
+#reviewPanel button:focus-visible,
+#reviewPanel input:focus-visible,
+#reviewPanel textarea:focus-visible,
+#reviewPanel a:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.listing-filters select,
+.listing-tools-actions button,
+.listing-tools-actions select,
+.listing-tools-actions input,
+.property-card .card-actions .btn {
+  min-height: 44px;
+}
+#listingResultCount {
+  font-weight: 700;
+  line-height: 1.5;
+}
+#listingList[aria-busy="true"] .empty,
+#reviewList .empty {
+  padding: 1.1rem;
+  line-height: 1.6;
+}
+#listingStatus.error,
+.status.error,
+#reviewPanel .review-status.error {
+  color: #b91c1c !important;
+  font-weight: 700;
+}
+@media(prefers-reduced-motion:reduce) {
+  .property-photo-grid img { transition: none !important; }
+}
+
 </style>
   <link rel="stylesheet" href="/hamlet-workspace.css?v=20261015-2">
   <link rel="stylesheet" href="/app-page-transition.css">

@@ -1,6 +1,6 @@
 # Hamlet UX/UI Improvement Roadmap
 
-Reviewed against the current `main` branch on 18 October 2026.
+Reviewed against the current `main` branch on 21 October 2026.
 
 ## Audit scope
 
@@ -35,13 +35,20 @@ Static source review of the homepage, members area, member property portfolio, a
 - **Reviewed:** Live Commercial Property Listings responsive rules and focus/reduced-motion support. Active property cards and the broker review panel intentionally retain their light surfaces; they were left unchanged to avoid undoing prior presentation decisions.
 - **Not yet verified:** Live browser rendering, end-to-end keyboard/screen-reader behaviour, mobile device testing, and post-deployment checks. These should be treated as outstanding rather than assumed successful.
 
+## Housekeeping progress — 21 October 2026
+
+- **Completed:** Broker Rankings dark palette and accessibility-focused styling.
+- **Completed:** Members Area guide cards, authentication shell, security note and sidebar now use the dark palette; the floating shortcut remains labelled **Open Broker Rankings** and links to `/rankings.html`.
+- **Reviewed:** Live Commercial Property Listings; active listing cards and the broker review panel intentionally retain their light surfaces.
+- **Completed:** Shared navigation now has 44px minimum targets, explicit keyboard-focus outlines and touch-friendly horizontal scrolling.
+- **Completed:** Deal Pipeline source review. Existing mobile list layout, authentication guard, deadline logic and deal persistence were preserved.
+- **Completed:** Property experience styling pass on live listings and public member portfolios. Added clear keyboard focus, minimum touch targets and more consistent loading/error text treatment without changing listing data, filters, Firestore queries, or sustainability claims.
+- **Not yet verified:** Live browser rendering, end-to-end keyboard/screen-reader behaviour, mobile device testing and post-deployment checks remain outstanding.
+
 ## Incremental delivery plan
 
-1. **Consistency pass:** correct the members-area card palette and typography while keeping particles visible and controls legible.
-2. **Mobile pipeline pass:** verify the list-view affordance and mobile board behaviour without changing deal-stage logic.
-3. **Property experience pass:** align cards, filters, loading/empty/error states, and sustainability-claim presentation across portfolio and live listings.
-4. **Dashboard/workflow pass:** improve prioritisation of next actions and critical dates after confirming the current Firestore data and UI paths.
-5. **Verification pass:** inspect diffs, validate HTML/CSS structure, and run available repository checks; manually verify deployed pages where browser access is available.
+1. **Dashboard/workflow pass:** improve prioritisation of next actions and critical dates after confirming the current Firestore data and UI paths.
+2. **Verification pass:** inspect diffs, validate HTML/CSS structure, and run available repository checks; manually verify deployed pages where browser access is available.
 
 ## Safety boundaries
 

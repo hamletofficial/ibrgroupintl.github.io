@@ -117,6 +117,17 @@
     @media(max-width:560px){.header-row{align-items:stretch;flex-direction:column;padding:.8rem 0}.brand{align-self:flex-start}.nav{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}.nav .button{width:100%;min-width:0;min-height:44px;padding:.62rem .45rem;text-align:center;white-space:normal;line-height:1.25}.nav .button:last-child{grid-column:1/-1}.grid,.ticks,.workflow,.capability-strip,.pricing-grid{grid-template-columns:1fr}.hero{padding-top:2.8rem}.hero-panel{padding:1rem}.product-preview{padding:0}.preview-body{padding:.7rem}.preview-top{padding:.75rem}.preview-columns{gap:.3rem}.preview-column{padding:.35rem}.preview-deal{padding:.38rem}.preview-column-title{font-size:.59rem}.preview-deal strong{font-size:.6rem}.preview-deal small{font-size:.56rem}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
   
+
+    .brand-image-section{padding:0 0 1.8rem}
+    .brand-image-frame{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(180px,28vw,340px);border:1px solid #365277;border-radius:18px;background:#101a2a;box-shadow:0 22px 55px #0005}
+    .brand-image-frame:after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(7,29,74,.92) 0%,rgba(7,29,74,.72) 42%,rgba(7,29,74,.12) 100%),linear-gradient(0deg,rgba(11,17,32,.4),transparent 60%);pointer-events:none}
+    .brand-image{display:block;width:100%;height:clamp(180px,28vw,340px);object-fit:cover;object-position:center 50%}
+    .brand-image-copy{position:absolute;z-index:2;left:clamp(1.1rem,4vw,3rem);top:50%;transform:translateY(-50%);max-width:min(560px,78%);pointer-events:none}
+    .brand-image-kicker{display:inline-block;margin-bottom:.65rem;color:#dbeafe;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .brand-image-copy h2{margin:0;color:#fff;font-size:clamp(1.45rem,3.5vw,2.7rem);line-height:1.12;letter-spacing:-.045em;text-wrap:balance}
+    .brand-image-copy p{max-width:52ch;margin:.75rem 0 0;color:#e5edf8;font-size:clamp(.88rem,1.5vw,1rem);line-height:1.55}
+    @media(max-width:560px){.brand-image-frame{border-radius:13px}.brand-image-frame:after{background:linear-gradient(90deg,rgba(7,29,74,.9),rgba(7,29,74,.52)),linear-gradient(0deg,rgba(11,17,32,.35),transparent)}.brand-image-copy{max-width:88%;left:1rem}.brand-image-copy p{margin-top:.45rem}}
+
     .github-update-bar{display:flex;align-items:center;justify-content:center;text-align:center;gap:.65rem;min-height:48px;padding:.6rem 1rem;background:#e5e7eb;color:#111827;border-bottom:1px solid #d1d5db;font-size:.86rem;line-height:1.4;flex-wrap:wrap}
     .github-update-label{flex:0 0 auto;font-weight:800;white-space:nowrap}
     .github-update-viewport{position:relative;min-width:0;max-width:min(700px,100%);flex:1 1 320px;overflow:hidden;text-align:left}
@@ -183,6 +194,19 @@
           </div>
           <p class="preview-caption">Illustrative preview only. The labels shown are examples, not live customer or transaction data.</p>
         </aside>
+      </div>
+    </section>
+
+    <section class="brand-image-section" aria-label="Hamlet's connected commercial property workspace">
+      <div class="container">
+        <div class="brand-image-frame">
+          <img class="brand-image" src="/assets/images/1600x533.jpg" alt="Hamlet's commercial property workspace visual" width="1600" height="533" fetchpriority="high" decoding="async">
+          <div class="brand-image-copy">
+            <span class="brand-image-kicker">Less fragmentation, more connected deals</span>
+            <h2>Keep property opportunities and deal progress in clearer view.</h2>
+            <p>A connected workspace for sustainable commercial leasing, from discovering opportunities to organising the next step.</p>
+          </div>
+        </div>
       </div>
     </section>
 

@@ -369,7 +369,24 @@
       background: #07111f url("/logistics.jpg") center center / cover no-repeat fixed !important;
       background-color: #07111f !important;
     }
-    body.login-page .portal-return-btn { color: #fff !important; }
+    body.login-page .portal-return-btn {
+      color: #FFF !important;
+      background: #2563EB !important;
+      border: 1px solid #2563EB !important;
+      transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+    body.login-page .portal-return-btn:hover,
+    body.login-page .portal-return-btn:focus-visible {
+      color: #FFF !important;
+      background: #2563EB !important;
+      border-color: #FFF !important;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, .28);
+      transform: translateY(-1px);
+    }
+    body.login-page .portal-return-btn:focus-visible {
+      outline: 2px solid #FFF;
+      outline-offset: 3px;
+    }
     body.login-page #signin-title {
       color: #fff !important;
       font-weight: 800 !important;
@@ -761,7 +778,7 @@
         <span class="chatgpt-btn-label">Sign in with ChatGPT</span>
       </button>
 
-      <a class="btn btn-outline portal-return-btn" href="/index.html">Back to Home</a>
+      <a class="btn btn-outline portal-return-btn" href="/index.html">Return to Homepage</a>
     </div>
     <div id="mfaModal" class="mfa-modal" hidden role="dialog" aria-modal="true" aria-labelledby="mfaModalTitle">
       <div class="mfa-modal-card">

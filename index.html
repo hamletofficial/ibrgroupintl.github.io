@@ -116,7 +116,18 @@
     @media(max-width:850px){.hero-grid,.usp,.launch-grid{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow{grid-template-columns:repeat(2,minmax(0,1fr))}.capability-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.pricing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:560px){.header-row{align-items:stretch;flex-direction:column;padding:.8rem 0}.brand{align-self:flex-start}.nav{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}.nav .button{width:100%;min-width:0;min-height:44px;padding:.62rem .45rem;text-align:center;white-space:normal;line-height:1.25}.nav .button:last-child{grid-column:1/-1}.grid,.ticks,.workflow,.capability-strip,.pricing-grid{grid-template-columns:1fr}.hero{padding-top:2.8rem}.hero-panel{padding:1rem}.product-preview{padding:0}.preview-body{padding:.7rem}.preview-top{padding:.75rem}.preview-columns{gap:.3rem}.preview-column{padding:.35rem}.preview-deal{padding:.38rem}.preview-column-title{font-size:.59rem}.preview-deal strong{font-size:.6rem}.preview-deal small{font-size:.56rem}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
-  </style>
+  
+    .github-update-bar{display:flex;align-items:center;justify-content:center;text-align:center;gap:.65rem;min-height:48px;padding:.6rem 1rem;background:#e5e7eb;color:#111827;border-bottom:1px solid #d1d5db;font-size:.86rem;line-height:1.4;flex-wrap:wrap}
+    .github-update-label{flex:0 0 auto;font-weight:800;white-space:nowrap}
+    .github-update-viewport{position:relative;min-width:0;max-width:min(700px,100%);flex:1 1 320px;overflow:hidden;text-align:left}
+    .github-update-slide{display:flex;align-items:center;gap:.55rem;min-width:0;transition:opacity .28s ease,transform .28s ease}
+    .github-update-message{min-width:0;overflow-wrap:anywhere}
+    .github-update-time{flex:0 0 auto;color:#4b5563;font-size:.78rem;white-space:nowrap}
+    .github-update-link{flex:0 0 auto;color:#1d4ed8;font-weight:750;white-space:nowrap}
+    .github-update-count{flex:0 0 auto;color:#4b5563;font-size:.78rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+    @media(max-width:620px){.github-update-bar{align-items:flex-start;justify-content:flex-start;gap:.25rem .55rem}.github-update-label{white-space:normal}.github-update-viewport{flex-basis:100%;max-width:100%}.github-update-slide{flex-wrap:wrap}.github-update-time{font-size:.75rem}}
+    @media(prefers-reduced-motion:reduce){.github-update-slide{transition:none}}
+\n  </style>
 </head>
 <body>
   <header class="site-header">
@@ -128,7 +139,18 @@
         <a class="button primary" id="homepage-auth-button" href="/login.html">Log in</a>
       </nav>
     </div>
-  </header><main>
+  </header>
+  <aside class="github-update-bar" aria-label="Latest repository commits">
+    <span class="github-update-label">Latest GitHub commits</span>
+    <div class="github-update-viewport" aria-live="polite" aria-atomic="true">
+      <div id="homepage-update-slide" class="github-update-slide">
+        <span id="homepage-update-message" class="github-update-message">Loading recent repository activity…</span>
+      </div>
+    </div>
+    <span id="homepage-update-count" class="github-update-count" aria-hidden="true"></span>
+    <a class="github-update-link" href="https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main/" target="_blank" rel="noopener noreferrer">All commits ↗</a>
+  </aside>
+  <main>
     <section class="hero">
       <div class="container hero-grid">
         <div>
@@ -359,6 +381,50 @@
       }
     })();
   </script>
-  <script src="/hamlet-background.js?v=20261021-2"></script>
+
+  <script>
+    (() => {
+      const message = document.getElementById('homepage-update-message');
+      const slide = document.getElementById('homepage-update-slide');
+      const count = document.getElementById('homepage-update-count');
+      if (!message || !slide || !count) return;
+      const api = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/commits?per_page=3';
+      let items = [], active = 0;
+      const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+      const relativeTime = value => {
+        const date = new Date(value);
+        if (!value || Number.isNaN(date.getTime())) return '';
+        const seconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+        if (seconds < 60) return 'just now';
+        if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+        if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+        return Math.floor(seconds / 86400) + 'd ago';
+      };
+      function render() {
+        if (!items.length) return;
+        const item = items[active];
+        const subject = (item.commit?.message || 'Repository update').split('\\n')[0];
+        slide.innerHTML = '<span class="github-update-message">' + escapeHtml(subject) + '</span>' +
+          '<span class="github-update-time">' + escapeHtml(relativeTime(item.commit?.author?.date || item.commit?.committer?.date)) + '</span>';
+        count.textContent = (active + 1) + ' / ' + items.length;
+      }
+      async function load() {
+        try {
+          const response = await fetch(api, {headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
+          if (!response.ok) throw new Error('GitHub API returned ' + response.status);
+          const data = await response.json();
+          if (!Array.isArray(data) || !data.length) throw new Error('No commits returned');
+          items = data.slice(0,3); active = 0; render();
+        } catch (error) {
+          message.textContent = 'Hamlet updates and releases are available on GitHub.';
+          count.textContent = '';
+        }
+      }
+      load();
+      window.setInterval(() => { if (items.length) { active = (active + 1) % items.length; render(); } }, 5000);
+      window.setInterval(load, 300000);
+    })();
+  </script>
+\n  <script src="/hamlet-background.js?v=20261021-2"></script>
 </body>
 </html>

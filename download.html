@@ -145,6 +145,32 @@
     (() => {
       const listEl = document.getElementById('release-list');
       const searchEl = document.getElementById('release-search');
+      const updateMessageEl = document.getElementById('github-update-message');
+      const updateLinkEl = document.getElementById('github-update-link');
+
+      async function refreshLatestCommit() {
+        try {
+          const response = await fetch('https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/commits/main', {
+            headers: { Accept: 'application/vnd.github+json' },
+            cache: 'no-store'
+          });
+          if (!response.ok) throw new Error('GitHub API returned ' + response.status);
+          const commit = await response.json();
+          const message = (commit.commit && commit.commit.message || 'Latest repository update').split('\\n')[0];
+          const dateValue = commit.commit && commit.commit.committer && commit.commit.committer.date;
+          const date = dateValue ? new Date(dateValue) : null;
+          const dateText = date && !Number.isNaN(date.getTime())
+            ? ' · ' + date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })
+            : '';
+          updateMessageEl.textContent = message + dateText;
+          updateLinkEl.href = commit.html_url || 'https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main';
+          updateLinkEl.textContent = 'View commit';
+        } catch (error) {
+          updateMessageEl.textContent = 'Latest repository update is temporarily unavailable.';
+          updateLinkEl.href = 'https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main';
+          updateLinkEl.textContent = 'View commit history';
+        }
+      }
       const api = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/releases?per_page=100';
       let releases = [];
 
@@ -217,6 +243,8 @@
       }
 
       searchEl.addEventListener('input', renderArchive);
+      refreshLatestCommit();
+      window.setInterval(refreshLatestCommit, 300000);
       loadArchive();
     })();
   </script></body>

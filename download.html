@@ -23,6 +23,39 @@
     .github-update-label{flex:0 0 auto;font-weight:800;white-space:nowrap}
     .github-update-message{min-width:0;overflow-wrap:anywhere}
     .github-update-link{flex:0 0 auto;color:#1d4ed8;font-weight:700;white-space:nowrap}
+
+    .hero{max-width:760px;margin-bottom:1.6rem}
+    .hero-copy{font-size:1.08rem;max-width:680px}
+    .release-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(250px,.65fr);gap:1rem;align-items:stretch}
+    .latest-card{border:1px solid #60a5fa;background:linear-gradient(145deg,#172554,#1f2937 75%);padding:clamp(1.25rem,3vw,2rem);border-radius:18px;position:relative;overflow:hidden}
+    .latest-card:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-90px;top:-105px;background:rgba(96,165,250,.12);pointer-events:none}
+    .pill{display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .65rem;border:1px solid #60a5fa;border-radius:999px;color:#dbeafe;font-size:.76rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+    .latest-card h2{font-size:1.55rem;margin:.9rem 0 .35rem}.version-meta{font-size:.9rem;color:#cbd5e1;margin:.3rem 0 1rem}
+    .release-stats{display:flex;gap:.6rem;flex-wrap:wrap;margin:1rem 0;color:#cbd5e1;font-size:.84rem}
+    .release-stats span{border:1px solid #475569;border-radius:8px;padding:.35rem .55rem}
+    .side-card{padding:1.3rem;border-radius:18px;border:1px solid var(--line);background:#111827;display:flex;flex-direction:column;justify-content:space-between}
+    .side-card h2{font-size:1.1rem}.side-card p{font-size:.92rem}
+    .archive-panel{padding:0;overflow:hidden}
+    .archive-head{padding:1.25rem 1.3rem;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+    .archive-head h2{margin:0}.archive-head p{margin:.35rem 0 0;font-size:.9rem}
+    .archive-tools{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+    .archive-search{background:#111827;color:var(--text);border:1px solid #4b5563;border-radius:8px;padding:.6rem .75rem;min-width:190px;font:inherit}
+    .release-list{display:flex;flex-direction:column}
+    .release-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center;padding:1.1rem 1.3rem;border-bottom:1px solid #374151}
+    .release-row:last-child{border-bottom:0}.release-row:hover{background:rgba(255,255,255,.025)}
+    .release-name{font-size:1rem;font-weight:800;color:#f9fafb;margin:0 0 .2rem;overflow-wrap:anywhere}
+    .release-detail{font-size:.84rem;color:#cbd5e1;margin:0;overflow-wrap:anywhere}
+    .release-actions{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:flex-end}
+    .mini-button{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;padding:.55rem .7rem;border:1px solid #64748b;text-decoration:none;color:#f9fafb;font-weight:750;font-size:.85rem;white-space:nowrap}
+    .mini-button.primary{background:#f9fafb;color:#111827;border-color:#f9fafb}
+    .release-row.latest{background:rgba(37,99,235,.08)}
+    .empty-state{padding:1.2rem;color:var(--muted);text-align:center}
+    .archive-note{font-size:.87rem}
+    .safety-note{display:flex;gap:.8rem;align-items:flex-start}
+    .safety-mark{flex:0 0 auto;width:2rem;height:2rem;border-radius:9px;display:grid;place-items:center;background:#1e3a8a;color:#dbeafe;font-weight:900}
+    .github-update-bar{background:#e5e7eb}
+    @media(max-width:720px){.release-layout{grid-template-columns:1fr}.release-row{grid-template-columns:1fr}.release-actions{justify-content:flex-start}.archive-head{align-items:stretch}.archive-tools{width:100%}.archive-search{flex:1;min-width:0;width:100%}}
+
     footer{border-top:1px solid var(--line);padding:1.5rem 0;color:var(--muted);font-size:.9rem}
     @media(max-width:520px){.head{align-items:flex-start;flex-direction:column;padding:.8rem 0}.back{margin-bottom:.2rem}.panel{padding:1rem}}
     @media(max-width:560px){.github-update-bar{align-items:flex-start;flex-wrap:wrap;gap:.25rem .55rem;padding:.6rem 1rem}.github-update-label{white-space:normal}}
@@ -36,30 +69,70 @@
     <a class="github-update-link" id="github-update-link" href="https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main" target="_blank" rel="noopener noreferrer">View commit history</a>
   </aside>
   <main class="wrap">
-    <span class="eyebrow">Desktop application</span>
-    <h1>Hamlet for Windows</h1>
-    <p>Use Hamlet as a Windows 10 or 11 desktop application, with desktop features designed to complement the Hamlet workspace.</p>
-    <section class="panel notice" aria-labelledby="download-title">
-      <h2 id="download-title">Official release download</h2>
-      <p>Hamlet v1.04.02 is the latest published Windows release. Download the installer directly from the official release assets, and keep the matching SHA-256 file so you can verify the download before running it.</p>
-      <a class="button" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04.02/hamlet-Setup-1.4.2.exe" rel="noopener noreferrer">Download Hamlet v1.04.02 for Windows (.exe)</a>
-      <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04.02/SHA256SUMS.txt" rel="noopener noreferrer">Download SHA-256 checksum</a>
-      <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/tag/v1.04.02" rel="noopener noreferrer">Release notes and assets</a>
+    <div class="hero">
+      <span class="eyebrow">Hamlet desktop · Windows 10 and 11</span>
+      <h1>Hamlet for Windows</h1>
+      <p class="hero-copy">Your desktop workspace, one reliable installer. Download the latest build, verify its checksum, or browse earlier releases in the official archive.</p>
+    </div>
+
+    <div class="release-layout">
+      <section class="latest-card" aria-labelledby="latest-title">
+        <span class="pill">Latest stable release</span>
+        <h2 id="latest-title">Hamlet v1.04.02</h2>
+        <p class="version-meta">Installer <code>hamlet-Setup-1.4.2.exe</code> · Published 22 October 2026</p>
+        <p>Recommended for new installations. Download the installer from GitHub and verify the SHA-256 checksum before running it.</p>
+        <div class="release-stats">
+          <span>Windows 10 / 11</span>
+          <span>~89.2 MiB installer</span>
+          <span>SHA-256 available</span>
+        </div>
+        <a class="button" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04.02/hamlet-Setup-1.4.2.exe">Download latest .exe</a>
+        <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04.02/SHA256SUMS.txt">SHA-256 checksum</a>
+        <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/tag/v1.04.02">Release notes</a>
+      </section>
+      <aside class="side-card">
+        <div>
+          <h2>Prefer an earlier version?</h2>
+          <p>The archive below links to installers attached to published GitHub releases. Older builds may not include the latest fixes and should generally be used only for compatibility or troubleshooting.</p>
+        </div>
+        <a class="button secondary" href="#release-archive">Browse download archive ↓</a>
+      </aside>
+    </div>
+
+    <section class="panel archive-panel" id="release-archive" aria-labelledby="archive-title">
+      <div class="archive-head">
+        <div>
+          <h2 id="archive-title">Download archive</h2>
+          <p>Published Windows installers, newest first. Downloads are served by GitHub Releases.</p>
+        </div>
+        <div class="archive-tools">
+          <label for="release-search" style="position:absolute;left:-9999px">Search releases</label>
+          <input id="release-search" class="archive-search" type="search" placeholder="Search versions…" autocomplete="off">
+          <a class="mini-button" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases">All GitHub releases ↗</a>
+        </div>
+      </div>
+      <div id="release-list" class="release-list" aria-live="polite">
+        <div class="empty-state">Loading published installer archive…</div>
+      </div>
     </section>
+
     <section class="panel" aria-labelledby="install-title">
-      <h2 id="install-title">Installation instructions</h2>
+      <h2 id="install-title">Install and verify</h2>
       <ol>
-        <li>Download <code>hamlet-Setup-1.4.2.exe</code> using the official v1.04.02 download link above.</li>
-        <li>Download <code>SHA256SUMS.txt</code> from the same release.</li>
-        <li>In PowerShell, run <code>Get-FileHash .\hamlet-Setup-1.4.2.exe -Algorithm SHA256</code> from the folder containing the installer. Compare the resulting hash with the entry for that exact filename in <code>SHA256SUMS.txt</code>. The values must match exactly.</li>
-        <li>If the checksum does not match, do not run the installer; delete it and download it again from the official release.</li>
-        <li>Run the installer and review any Windows security or publisher prompts before proceeding. Do not bypass a warning if you cannot establish that the file is authentic.</li>
-        <li>Open Hamlet for Windows and sign in using your usual Hamlet account.</li>
+        <li>Download the installer and the matching <code>SHA256SUMS.txt</code> file from the same release.</li>
+        <li>In PowerShell, run <code>Get-FileHash .\hamlet-Setup-1.4.2.exe -Algorithm SHA256</code> in the folder containing the latest installer. If using an older version, replace the filename with that version’s exact installer name.</li>
+        <li>Compare the computed hash with the entry for the same filename in <code>SHA256SUMS.txt</code>. The values must match exactly.</li>
+        <li>If the checksum does not match, do not run the installer. Delete it and download it again from the official GitHub release.</li>
+        <li>Review Windows security or publisher prompts before proceeding. Do not bypass a warning if you cannot establish that the file is authentic.</li>
       </ol>
     </section>
-    <section class="panel" aria-labelledby="security-title">
-      <h2 id="security-title">Security and updates</h2>
-      <p>The installer is distributed with a SHA-256 checksum. Checksum verification helps confirm file integrity, but it does not independently establish publisher identity. Publisher code signing and secure automatic updates remain planned improvements. Check the official release page for the latest version and its matching checksum before installing an update.</p>
+
+    <section class="panel safety-note" aria-labelledby="security-title">
+      <div class="safety-mark" aria-hidden="true">i</div>
+      <div>
+        <h2 id="security-title">Security and update guidance</h2>
+        <p class="archive-note">SHA-256 verification checks file integrity; it does not independently prove publisher identity. The Hamlet installer is not yet code-signed, and secure automatic updates remain planned. Check the release notes and checksum for the exact version before installing.</p>
+      </div>
     </section>
     <section class="panel" aria-labelledby="help-title">
       <h2 id="help-title">Need help?</h2>
@@ -70,43 +143,81 @@
   <footer><div class="wrap">© 2026 Impact in Business Recruitment Group Limited · hamlet</div></footer>
   <script>
     (() => {
-      const messageEl = document.getElementById('github-update-message');
-      const linkEl = document.getElementById('github-update-link');
-      const api = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/releases/latest';
+      const listEl = document.getElementById('release-list');
+      const searchEl = document.getElementById('release-search');
+      const api = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/releases?per_page=100';
+      let releases = [];
 
-      async function refreshGitHubRelease() {
+      const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[ch]));
+
+      function formatDate(value) {
+        if (!value) return 'Date unavailable';
+        const date = new Date(value);
+        return Number.isNaN(date.getTime())
+          ? 'Date unavailable'
+          : date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      function formatSize(bytes) {
+        if (!Number.isFinite(bytes) || bytes <= 0) return '';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MiB';
+      }
+
+      function renderArchive() {
+        const query = (searchEl.value || '').trim().toLowerCase();
+        const matches = releases.filter(release => {
+          const installer = (release.assets || []).find(asset => /^hamlet-Setup-.*\.exe$/i.test(asset.name));
+          return installer && [
+            release.name, release.tag_name, installer.name, release.published_at
+          ].some(value => String(value || '').toLowerCase().includes(query));
+        });
+
+        if (!matches.length) {
+          listEl.innerHTML = '<div class="empty-state">No published installer matches that search. Try a version number, or view all GitHub releases.</div>';
+          return;
+        }
+
+        listEl.innerHTML = matches.map((release, index) => {
+          const installer = (release.assets || []).find(asset => /^hamlet-Setup-.*\.exe$/i.test(asset.name));
+          const checksum = (release.assets || []).find(asset => asset.name === 'SHA256SUMS.txt');
+          const latest = index === 0 && !query;
+          const label = release.name || ('Hamlet ' + release.tag_name);
+          const details = [formatDate(release.published_at), installer.name, formatSize(installer.size)]
+            .filter(Boolean).join(' · ');
+          return '<article class="release-row' + (latest ? ' latest' : '') + '">' +
+            '<div><p class="release-name">' + esc(label) +
+            (latest ? ' <span class="pill" style="margin-left:.35rem;vertical-align:middle">Latest</span>' : '') +
+            '</p><p class="release-detail">' + esc(details) + '</p></div>' +
+            '<div class="release-actions">' +
+            '<a class="mini-button primary" href="' + esc(installer.browser_download_url) + '" rel="noopener noreferrer">Download .exe</a>' +
+            (checksum ? '<a class="mini-button" href="' + esc(checksum.browser_download_url) + '" rel="noopener noreferrer">SHA-256</a>' : '') +
+            '<a class="mini-button" href="' + esc(release.html_url) + '" rel="noopener noreferrer">Release details ↗</a>' +
+            '</div></article>';
+        }).join('');
+      }
+
+      async function loadArchive() {
         try {
           const response = await fetch(api, {
             headers: { Accept: 'application/vnd.github+json' },
             cache: 'no-store'
           });
           if (!response.ok) throw new Error('GitHub API returned ' + response.status);
-
-          const release = await response.json();
-          const published = release.published_at ? new Date(release.published_at) : null;
-          const dateText = published && !Number.isNaN(published.getTime())
-            ? ' · Published ' + published.toLocaleDateString(undefined, { dateStyle: 'medium' })
-            : '';
-          const assets = Array.isArray(release.assets) ? release.assets : [];
-          const installer = assets.find(asset => /^hamlet-Setup-.*\.exe$/i.test(asset.name));
-          const checksum = assets.find(asset => asset.name === 'SHA256SUMS.txt');
-          const assetText = installer
-            ? ' · Installer available' + (checksum ? ' with SHA-256 checksum' : '')
-            : '';
-          messageEl.textContent = (release.name || release.tag_name || 'Latest Hamlet release') +
-            dateText + assetText;
-          linkEl.href = release.html_url || 'https://github.com/hamletofficial/ibrgroupintl.github.io/releases';
-          linkEl.textContent = 'View release';
+          const data = await response.json();
+          releases = (Array.isArray(data) ? data : [])
+            .filter(release => !release.draft && Array.isArray(release.assets) &&
+              release.assets.some(asset => /^hamlet-Setup-.*\.exe$/i.test(asset.name)))
+            .sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
+          renderArchive();
         } catch (error) {
-          messageEl.textContent = 'Latest release details are temporarily unavailable.';
-          linkEl.href = 'https://github.com/hamletofficial/ibrgroupintl.github.io/releases';
-          linkEl.textContent = 'View all releases';
+          listEl.innerHTML = '<div class="empty-state">The installer archive could not be loaded from GitHub right now. You can still browse the <a href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases">official GitHub Releases page</a>.</div>';
         }
       }
 
-      refreshGitHubRelease();
-      window.setInterval(refreshGitHubRelease, 300000);
+      searchEl.addEventListener('input', renderArchive);
+      loadArchive();
     })();
-  </script>
-</body>
+  </script></body>
 </html>

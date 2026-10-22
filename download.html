@@ -19,11 +19,15 @@
     .panel{margin:1.3rem 0;padding:1.25rem;border:1px solid var(--line);border-radius:14px;background:var(--panel)}.notice{border-left:3px solid #93c5fd}
     .button{display:inline-flex;align-items:center;justify-content:center;padding:.75rem 1rem;border-radius:9px;background:#f9fafb;color:#111827;text-decoration:none;font-weight:800;margin:.25rem .35rem .25rem 0}.button.secondary{background:transparent;color:#f9fafb;border:1px solid #64748b}
     ol{padding-left:1.4rem}li{padding:.2rem 0}code{overflow-wrap:anywhere;color:#fff}
-    .github-update-bar{display:flex;align-items:center;justify-content:center;text-align:center;gap:.65rem;min-height:44px;padding:.55rem 1rem;background:#fff;color:#111827;border-bottom:1px solid #d1d5db;font-size:.86rem;line-height:1.4;flex-wrap:wrap}
+    .github-update-bar{display:flex;align-items:center;justify-content:center;text-align:center;gap:.65rem;min-height:48px;padding:.6rem 1rem;background:#e5e7eb;color:#111827;border-bottom:1px solid #d1d5db;font-size:.86rem;line-height:1.4;flex-wrap:wrap}
     .github-update-label{flex:0 0 auto;font-weight:800;white-space:nowrap}
+    .github-update-viewport{position:relative;min-width:0;max-width:min(700px,100%);flex:1 1 320px;overflow:hidden;text-align:left}
+    .github-update-slide{display:flex;align-items:center;gap:.55rem;min-width:0;opacity:1;transform:translateY(0);transition:opacity .28s ease,transform .28s ease}
+    .github-update-slide.is-leaving{opacity:0;transform:translateY(8px)}
     .github-update-message{min-width:0;overflow-wrap:anywhere}
-    .github-update-link{flex:0 0 auto;color:#1d4ed8;font-weight:700;white-space:nowrap}
-
+    .github-update-time{flex:0 0 auto;color:#4b5563;font-size:.78rem;white-space:nowrap}
+    .github-update-link{flex:0 0 auto;color:#1d4ed8;font-weight:750;white-space:nowrap}
+    .github-update-count{flex:0 0 auto;color:#4b5563;font-size:.78rem;font-variant-numeric:tabular-nums;white-space:nowrap}
     .hero{max-width:760px;margin-bottom:1.6rem}
     .hero-copy{font-size:1.08rem;max-width:680px}
     .release-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(250px,.65fr);gap:1rem;align-items:stretch}
@@ -53,20 +57,24 @@
     .archive-note{font-size:.87rem}
     .safety-note{display:flex;gap:.8rem;align-items:flex-start}
     .safety-mark{flex:0 0 auto;width:2rem;height:2rem;border-radius:9px;display:grid;place-items:center;background:#1e3a8a;color:#dbeafe;font-weight:900}
-    .github-update-bar{background:#e5e7eb}
     @media(max-width:720px){.release-layout{grid-template-columns:1fr}.release-row{grid-template-columns:1fr}.release-actions{justify-content:flex-start}.archive-head{align-items:stretch}.archive-tools{width:100%}.archive-search{flex:1;min-width:0;width:100%}}
-
     footer{border-top:1px solid var(--line);padding:1.5rem 0;color:var(--muted);font-size:.9rem}
+    @media(max-width:620px){.github-update-bar{align-items:flex-start;justify-content:flex-start;gap:.25rem .55rem}.github-update-label{white-space:normal}.github-update-viewport{flex-basis:100%;max-width:100%}.github-update-slide{flex-wrap:wrap}.github-update-time{font-size:.75rem}}
     @media(max-width:520px){.head{align-items:flex-start;flex-direction:column;padding:.8rem 0}.back{margin-bottom:.2rem}.panel{padding:1rem}}
-    @media(max-width:560px){.github-update-bar{align-items:flex-start;flex-wrap:wrap;gap:.25rem .55rem;padding:.6rem 1rem}.github-update-label{white-space:normal}}
+    @media(prefers-reduced-motion:reduce){.github-update-slide{transition:none}}
   </style>
 </head>
 <body>
   <header><div class="wrap head"><a class="brand" href="/index.html">hamlet <span style="color:#bfdbfe">by IBR</span></a><a class="back" href="/index.html">Back to Hamlet</a></div></header>
-  <aside class="github-update-bar" aria-label="Hamlet release archive">
-    <span class="github-update-label">Hamlet download archive:</span>
-    <span class="github-update-message">Browse published Windows installers and checksums.</span>
-    <a class="github-update-link" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases" target="_blank" rel="noopener noreferrer">View GitHub releases ↗</a>
+  <aside class="github-update-bar" aria-label="Latest repository commits">
+    <span class="github-update-label">Latest GitHub commits</span>
+    <div class="github-update-viewport" aria-live="polite" aria-atomic="true">
+      <div id="github-update-slide" class="github-update-slide">
+        <span id="github-update-message" class="github-update-message">Loading recent repository activity…</span>
+      </div>
+    </div>
+    <span id="github-update-count" class="github-update-count" aria-hidden="true"></span>
+    <a class="github-update-link" href="https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main/" target="_blank" rel="noopener noreferrer">All commits ↗</a>
   </aside>
   <main class="wrap">
     <div class="hero">
@@ -145,8 +153,16 @@
     (() => {
       const listEl = document.getElementById('release-list');
       const searchEl = document.getElementById('release-search');
-      const api = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/releases?per_page=100';
+      const commitsSlide = document.getElementById('github-update-slide');
+      const commitsMessage = document.getElementById('github-update-message');
+      const commitsCount = document.getElementById('github-update-count');
+      const commitsApi = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/commits?per_page=3';
+      const releasesApi = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/releases?per_page=100';
       let releases = [];
+      let commits = [];
+      let activeCommit = 0;
+      let rotationTimer = null;
+      let refreshTimer = null;
 
       const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -158,6 +174,68 @@
         return Number.isNaN(date.getTime())
           ? 'Date unavailable'
           : date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      function relativeTime(value) {
+        const date = new Date(value);
+        if (!value || Number.isNaN(date.getTime())) return 'Date unavailable';
+        const seconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+        if (seconds < 60) return 'just now';
+        if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+        if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+        if (seconds < 604800) return Math.floor(seconds / 86400) + 'd ago';
+        return formatDate(value);
+      }
+
+      function renderCommit(index, animate = true) {
+        if (!commits.length) return;
+        activeCommit = (index + commits.length) % commits.length;
+        const commit = commits[activeCommit];
+        const message = String(commit.commit?.message || 'Repository update').split('\n')[0];
+        const author = commit.commit?.author?.name || commit.author?.login || 'Contributor';
+        const when = commit.commit?.author?.date || commit.commit?.committer?.date;
+        const markup = '<span class="github-update-message">' + esc(message) + '</span>' +
+          '<span class="github-update-time">' + esc(author) + ' · ' + esc(relativeTime(when)) + '</span>' +
+          '<a class="github-update-link" href="' + esc(commit.html_url) + '" target="_blank" rel="noopener noreferrer">View commit ↗</a>';
+        const apply = () => {
+          commitsSlide.innerHTML = markup;
+          commitsCount.textContent = (activeCommit + 1) + ' / ' + commits.length;
+          commitsSlide.classList.remove('is-leaving');
+        };
+        if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          apply();
+          return;
+        }
+        commitsSlide.classList.add('is-leaving');
+        window.setTimeout(apply, 280);
+      }
+
+      function startRotation() {
+        if (rotationTimer) window.clearInterval(rotationTimer);
+        if (commits.length > 1) {
+          rotationTimer = window.setInterval(() => renderCommit(activeCommit + 1), 5000);
+        }
+      }
+
+      async function loadCommits() {
+        try {
+          const response = await fetch(commitsApi, {
+            headers: { Accept: 'application/vnd.github+json' },
+            cache: 'no-store'
+          });
+          if (!response.ok) throw new Error('GitHub API returned ' + response.status);
+          const data = await response.json();
+          if (!Array.isArray(data) || !data.length) throw new Error('No commits returned');
+          commits = data.slice(0, 3);
+          activeCommit = 0;
+          renderCommit(0, false);
+          startRotation();
+        } catch (error) {
+          if (!commits.length) {
+            commitsSlide.innerHTML = '<span id="github-update-message" class="github-update-message">Recent commits are temporarily unavailable.</span>';
+            commitsCount.textContent = '';
+          }
+        }
       }
 
       function formatSize(bytes) {
@@ -200,7 +278,7 @@
 
       async function loadArchive() {
         try {
-          const response = await fetch(api, {
+          const response = await fetch(releasesApi, {
             headers: { Accept: 'application/vnd.github+json' },
             cache: 'no-store'
           });
@@ -218,6 +296,13 @@
 
       searchEl.addEventListener('input', renderArchive);
       loadArchive();
+      loadCommits();
+      refreshTimer = window.setInterval(loadCommits, 5 * 60 * 1000);
+      window.addEventListener('pagehide', () => {
+        if (rotationTimer) window.clearInterval(rotationTimer);
+        if (refreshTimer) window.clearInterval(refreshTimer);
+      }, { once: true });
     })();
-  </script></body>
+  </script>
+</body>
 </html>

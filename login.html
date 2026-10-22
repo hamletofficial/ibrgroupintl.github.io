@@ -537,6 +537,28 @@
     }
     .apple-btn:hover { background: #f8fafc; border-color: #000; }
     .apple-btn:active { background: #f1f5f9; }
+    .chatgpt-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 48px;
+      padding: 0 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: #111827;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,.2);
+      transition: background .2s, border-color .2s, box-shadow .2s;
+    }
+    .chatgpt-btn:hover { background: #1f2937; border-color: #9ca3af; box-shadow: 0 4px 12px rgba(0,0,0,.18); }
+    .chatgpt-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    .chatgpt-btn-icon { display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; flex-shrink: 0; }
     .microsoft-btn {
       display:inline-flex;align-items:center;justify-content:center;gap:12px;
       padding:0 12px;min-height:48px;border-radius:8px;border:1px solid #d0d7de;
@@ -728,6 +750,12 @@
         </span>
         <span class="google-btn-text">Sign in with Apple</span>
       </button>
+      <button id="chatgptBtn" class="chatgpt-btn" type="button" aria-label="Sign in with ChatGPT">
+        <span class="chatgpt-btn-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2a4.1 4.1 0 0 0-3.95 3 4.1 4.1 0 0 0-3.4 6.1 4.1 4.1 0 0 0 2.1 5.7A4.1 4.1 0 0 0 12 20.8a4.1 4.1 0 0 0 3.95-3 4.1 4.1 0 0 0 3.4-6.1 4.1 4.1 0 0 0-2.1-5.7A4.1 4.1 0 0 0 12 3.2Z"/><path d="m8.05 6.2 7.9 4.5v4.5M4.65 12.3l7.35 4.2 4-2.3M8.05 17.9v-4.6l7.9-4.5"/></svg>
+        </span>
+        <span>Sign in with ChatGPT</span>
+      </button>
 
       <a class="btn btn-outline portal-return-btn" href="/index.html">Back to Home</a>
     </div>
@@ -792,6 +820,7 @@
         var xBtn = document.getElementById('xBtn');
         var appleBtn = document.getElementById('appleBtn');
         var microsoftBtn = document.getElementById('microsoftBtn');
+        var chatgptBtn = document.getElementById('chatgptBtn');
         var signOutBtn = document.getElementById('signOutBtn');
         var errEl = document.getElementById('error');
         var userStatus = document.getElementById('userStatus');
@@ -1182,6 +1211,7 @@
         if (xBtn) xBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithX(); });
         if (appleBtn) appleBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithApple(); });
         if (microsoftBtn) microsoftBtn.addEventListener('click', function (event) { event.preventDefault(); signInWithMicrosoft(); });
+        if (chatgptBtn) chatgptBtn.addEventListener('click', function (event) { event.preventDefault(); showError('ChatGPT sign-in is not yet available for Hamlet. OpenAI does not currently provide a Firebase-compatible sign-in provider for third-party websites.'); });
         if (signOutBtn) signOutBtn.addEventListener('click', function (event) { event.preventDefault(); signOut(); });
       });
     })();

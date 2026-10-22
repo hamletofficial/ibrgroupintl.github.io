@@ -52,7 +52,7 @@ jobs:
         run: |
           $version = (node -p "require('./package.json').version").Trim()
           if ($version -ne "1.4.2") {
-            throw "Expected Windows package version 1.4.0, found $version."
+            throw "Expected Windows package version 1.4.2, found $version."
           }
 
       - name: Build Windows installer
@@ -96,7 +96,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Publish Hamlet v1.04 Windows release
+      - name: Publish Hamlet v1.04.02 Windows release
         if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v1.04')
         uses: softprops/action-gh-release@v2
         with:

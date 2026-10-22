@@ -1,61 +1,54 @@
-# Hamlet — Connected Commercial Property Dealmaking
+# hamlet — connected property intelligence
 
-**Hamlet** is a commercial property CRM and broker-community platform developed by Impact in Business Recruitment Group Limited. Built around the principle **“less fragmentation, more connected deals,”** Hamlet brings property opportunities, deal progression, professional relationships and broker communications into a more connected workspace. Its tools include live property listings, a deal pipeline with critical-path deadlines, member profiles and directory, social updates, and direct messaging—helping brokers organise information and maintain momentum from opportunity to transaction.
+**hamlet** is a property-focused CRM and broker-community platform developed by Impact in Business Recruitment Group Limited (IBR). It brings property listings, deal progression, broker profiles, rankings and communications into a more connected workspace.
 
-- **Production site:** [https://hamlet-ai.co.uk](https://hamlet-ai.co.uk)
-- **Repository:** [ibrgroupintl/ibrgroupintl.github.io](https://github.com/hamletofficial/ibrgroupintl.github.io)
-- **Primary app:** Hamlet
-- **Authentication:** Firebase Authentication
-- **Data services:** Firebase / Firestore (and Firebase Storage where configured)
+**Live website:** https://hamlet-ai.co.uk  
+**Repository:** https://github.com/hamletofficial/ibrgroupintl.github.io  
+**Hosting:** GitHub Pages and Firebase services, depending on the feature  
+**Core principle:** *Less fragmentation, more connected deals.*
 
-## Homepage and GitHub commit announcement
+## What this repository contains
 
-The public homepage is `/index.html`. Its royal-blue header uses the shared navigation links **How it works**, **Contact sales** (links to `/contact.html`), and **Log in** (links to `/login.html`). The header uses sticky positioning so it remains at the top while scrolling.
+This repository contains the public website and much of the client-side Hamlet application, alongside Firebase configuration, security rules, backend functions, worker code, supporting documentation and desktop-app resources.
 
-A white announcement bar sits immediately below the header. Its contents are centrally aligned and it retrieves the latest commit on the repository's `main` branch through the GitHub REST API. The bar displays the commit subject line, commit timestamp, short SHA, and a link to the corresponding commit. It checks for updates on page load and every five minutes, so commits pushed to `main` are reflected automatically without a separate manual edit to the announcement text. If the API is unavailable, the bar falls back to a link to the commit history.
-
-The announcement displays the latest commit's subject line as written in GitHub; it does not generate an independent summary of the full diff. Use clear, concise commit messages to make the public update useful. Because the bar reads the latest commit on `main`, it reflects commits by any contributor to that branch, not only commits made by a particular person.
-
-## Core capabilities
-
-| Capability | Location | Purpose |
+| Area | Main paths | What they are for |
 |---|---|---|
-| Live property listings | `/app/public/live.html` | Browse and search commercial property listings available to the broker community |
-| Deal pipeline | `/app/hamlet/index.html` | Manage commercial real-estate deals and critical-path deadlines; switch between Kanban and list views, link owned property records and public member contacts, and export workspace CSV |
-| Member directory | `/directory.html` | Find community members and access the live properties shortcut |
-| Member hub | `/members.html` | Entry point for signed-in community tools |
-| Member profiles | `/profile.html`, `/editprofile.html` | View and manage member profile information |
-| Social feed | `/posts.html` | Share short community updates, media, likes, and replies |
-| Messaging | `/messages.html` | Send and manage member-to-member communications |
-| Resource management | `/app/public/resources.html` where available | Manage resources associated with property listings |
-| Account settings | `/settings.html` | Account preferences and security settings |
-| Sign-in | `/login.html` | Firebase-backed authentication |
+| Public website | Root-level `*.html` pages, `index.css`, `index.js` | Homepage, company information, sectors, fees, pricing, policies and contact |
+| Member community | `members.html`, `directory.html`, `profile.html`, `editprofile.html`, `posts.html`, `messages.html`, `settings.html` | Member profiles, directory, social updates, messaging and account settings |
+| Property and portfolio | `live.html`, `portfolio.html`, `app/public/` | Property listings and portfolio-related experiences |
+| Deal workspace | `app/hamlet/`, `hamlet-workspace.css`, `hamlet-workspace.js` | Deal pipeline, deal information and workspace interface |
+| Broker intelligence | `rankings.html`, `insights.html`, `hamlet-ai-assistants.js` | Broker rankings, insights and AI-assistant integration points |
+| Shared visual system | `theme.css`, `theme.js`, `mobile-compat.css`, `mobile-compat.js` | Shared dark theme and responsive compatibility |
+| Firebase configuration | `firebase-config.js`, `firebase.json`, `firestore.rules`, `firestore.indexes.json`, `storage.rules`, `database.rules.json` | Client configuration and backend service/rule definitions |
+| Backend functions | `functions/`, `sagat/`, `ryu/`, `ken/` | Firebase Cloud Functions codebases and their supporting files |
+| AI gateway and workers | `hamlet-ai-gateway/`, `worker/` | Worker-side integration code; check each directory's own configuration before deploying |
+| Desktop and supporting code | `desktop/`, `scripts/`, `src/`, `dataconnect/` | Desktop-related files, scripts and supporting application/data code |
+| Administration | `superuser/` | Super-user administration pages |
+| Documentation and tests | `docs/`, `tests/`, `SECURITY.md`, `PAGE-STANDARDS.md`, `PROFILE-SERVICE.md`, `UX-UI-ROADMAP.md` | Project guidance, security notes, standards, service documentation, roadmap and tests |
 
-## Hamlet entry points
+The repository evolves frequently. Treat these paths as a navigational overview rather than a complete specification; verify the current files and their imports before making changes.
 
-### Live property listings
+## Main product areas
 
-Open `/app/public/live.html` to access the commercial property listings experience. The page provides listing search and property details. The directory shortcut labelled **🏢 Open Hamlet Live Properties** should link to this route; keep its visible label, accessible `aria-label`, and destination consistent when changing it.
+- **Property listings and portfolios** — commercial property records and sustainability-related listing information, with residential functionality in the relevant pages and services.
+- **Deal pipeline** — track deal stages, associated records and key deadlines.
+- **Broker directory and profiles** — help members find and understand other brokers in the community.
+- **Broker rankings and insights** — present broker-level performance information where data is available.
+- **Community and messaging** — member posts, replies and direct communications.
+- **AI assistance** — AI-related entry points and gateway code are present; availability depends on the relevant service configuration.
+- **Account and administration tools** — sign-in, account settings and restricted administration experiences.
 
-### Deal pipeline
+Feature availability may depend on authentication, verification state, Firebase configuration, deployed functions and external service credentials.
 
-Open `/app/hamlet/index.html` for Hamlet’s commercial real-estate deal pipeline and critical-path deadline management. Brokers can switch between Kanban and list views, link deals to property records they own, and optionally connect a deal to a public member profile. Live listings include an **Add to Deal Pipeline** action that pre-fills a draft deal with property context for review. The page checks Firebase Authentication and preserves the requested destination through the `next` query parameter.
+## Technology and services
 
-## Repository layout
+The repository includes a largely static HTML/CSS/JavaScript website and uses Firebase services for features such as authentication, Firestore data and file storage. It also contains Firebase Cloud Functions, worker/gateway code, and desktop-related assets. Inspect the relevant subdirectory configuration to confirm the runtime, environment variables and deployment process for a specific component.
 
-- Root-level HTML, CSS, and JavaScript files provide the public site and broker-community features.
-- `app/public/` contains the live commercial property listings experience and related app assets.
-- `app/hamlet/` contains the deal pipeline interface.
-- `firebase-config.js` provides the Firebase configuration consumed by client pages.
-- `firestore.rules`, `firestore.indexes.json`, and Firebase configuration files govern the relevant backend setup.
-- `functions/` contains Cloud Functions for backend workflows.
-- `CNAME` configures the GitHub Pages custom domain.
+The presence of configuration files does not by itself confirm that every service or integration is deployed or enabled.
 
-Check the relevant page and its imported scripts/styles before changing behaviour. Authentication, Firestore rules, and Storage rules must agree: a client-side sign-in gate is not a substitute for server-side security rules.
+## Run a local preview
 
-## Local preview
-
-From a local clone, start a simple static server at the repository root:
+For a quick preview of static website pages, use Python's built-in HTTP server from the repository root:
 
 ```bash
 git clone https://github.com/hamletofficial/ibrgroupintl.github.io.git
@@ -63,22 +56,59 @@ cd ibrgroupintl.github.io
 python -m http.server 8080
 ```
 
-Then open `http://localhost:8080/`. Features that depend on Firebase, remote assets, authentication, or deployed backend services may require the configured live project and may not work fully in a local static preview.
+Open http://localhost:8080/ in your browser.
 
-## Deployment notes
+A static preview does **not** deploy backend services, and authenticated or data-driven workflows may not work locally without the correct Firebase project configuration, allowed domains, credentials and deployed backend services. Follow any component-specific README or configuration for functions, workers and desktop tooling.
 
-- Root-level pages are published through GitHub Pages on the configured custom domain.
-- Changes to Firebase Authentication integrations, Firestore rules, Storage rules, or Cloud Functions may require a separate Firebase deployment; a GitHub Pages commit alone does not deploy those backend changes.
-- After deployment, test the live listings page, deal pipeline sign-in redirect, member directory shortcut, and relevant authenticated workflows.
+## Deployment boundaries
 
+Do not assume one Git push deploys every part of Hamlet.
 
-## Dark-theme standard
+- **GitHub Pages:** publishes website content according to the repository's Pages settings and configured publishing source.
+- **Firebase:** the repository includes Firebase configuration for Hosting, Firestore, Storage, Realtime Database, Remote Config, Data Connect and multiple Functions codebases. Deploy only the service(s) intended for a change, using the Firebase project and CLI configuration verified for that environment.
+- **Workers / AI gateway:** inspect the relevant worker directory and deployment configuration. Keep API keys and other secrets in the provider's secret store or environment configuration, never in client-side files or committed source.
+- **Desktop application:** inspect `desktop/` and its release/build configuration before packaging or publishing a desktop release.
 
-Hamlet is a **dark-only** experience. All new HTML pages must load the shared theme stylesheet and the dark-theme initializer in the document head:
+Before deploying, confirm the target environment, inspect the proposed diff, and run the relevant checks. After deployment, verify the affected user journey in a browser and check logs or service status for any dependent backend.
+
+## Theme and page conventions
+
+Hamlet's shared visual system is dark by default. New or materially revised pages should use the shared styles and initializer where appropriate:
 
 ```html
 <link rel="stylesheet" href="/theme.css">
 <script src="/theme.js"></script>
 ```
 
-Keep page-specific surfaces, text, form controls, dialogs, and responsive states readable against the dark palette. Do not add a light-mode toggle, light-theme preference, or light-only page styling. The shared `theme.js` enforces `data-appearance="dark"`; `theme.css` supplies the common dark surfaces, contrast, and control styling. When adding a new page, verify that it remains dark on first load, on mobile, and after authentication state changes.
+Check the page's existing script-loading pattern before inserting or changing scripts. Preserve accessible focus states, readable contrast, mobile layouts and reduced-motion behaviour. Some pages also require page-specific styles or compatibility scripts; the shared theme is not a substitute for checking those dependencies.
+
+## Security and maintenance
+
+- **Treat client-side checks as user experience, not authorization.** Enforce access through Firebase Security Rules and trusted server-side code.
+- **Keep user data owner-scoped.** When changing property, profile, deal, document or mailbox features, review both the data model and the associated Firestore/Storage rules.
+- **Do not expose secrets.** Never commit API keys, service-account credentials, private tokens or deployment secrets. Public Firebase client configuration is not a replacement for security rules.
+- **Protect privileged operations.** Verify administrator identity and permissions in trusted rules or server-side code, not solely by hiding a page or button.
+- **Keep projections deliberate.** Public listing/profile data should contain only fields intended to be public; do not copy private account metadata into public records.
+- **Review related components together.** A feature can span an HTML page, shared JavaScript/CSS, Firestore rules, Storage paths, Cloud Functions and worker configuration.
+
+Read [SECURITY.md](SECURITY.md), [PAGE-STANDARDS.md](PAGE-STANDARDS.md) and [PROFILE-SERVICE.md](PROFILE-SERVICE.md) before making changes in their respective areas.
+
+## Contribution workflow
+
+1. Identify the page or service involved and trace the scripts, styles and data paths it uses.
+2. Make the smallest coherent change; avoid unrelated formatting or broad replacements.
+3. Review the diff and check for broken paths, duplicated event handlers, exposed secrets and inconsistent rules.
+4. Run the relevant available tests or validation commands.
+5. Test the affected flow on desktop and mobile, including signed-out and signed-in states where applicable.
+6. Deploy the relevant hosting/backend component and verify it in the target environment.
+
+Use concise commit messages that describe the user-visible change or technical fix. If the homepage's GitHub update announcement is enabled, its text is driven by the latest commit message on `main`, so the commit subject may be visible to site visitors.
+
+## Useful links
+
+- [Live website](https://hamlet-ai.co.uk)
+- [Source repository](https://github.com/hamletofficial/ibrgroupintl.github.io)
+- [Security guidance](SECURITY.md)
+- [Page standards](PAGE-STANDARDS.md)
+- [Profile service documentation](PROFILE-SERVICE.md)
+- [UX/UI roadmap](UX-UI-ROADMAP.md)

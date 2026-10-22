@@ -733,6 +733,15 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       overflow: visible;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    body.login-page .login-main > .card:hover,
+    body.login-page .login-main > .card:focus-within {
+      border-color: #C0C0C0 !important;
+      box-shadow: 0 24px 70px rgba(0,0,0,.34), 0 0 0 1px rgba(192,192,192,.32), inset 0 1px 0 rgba(255,255,255,.04) !important;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      body.login-page .login-main > .card { transition: none !important; }
     }
     body.login-page #signin-title {
       margin: 0 0 10px;

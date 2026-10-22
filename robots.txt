@@ -1,5 +1,5 @@
 User-agent: *
 Disallow: /*.html$
-Disallow: /app/hamlet/admin.html
+Disallow: /superuser/admin/admin.html
 
 Sitemap: https://premium.ibrecruitment.com/sitemap.xml

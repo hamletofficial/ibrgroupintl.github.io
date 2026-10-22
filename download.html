@@ -72,26 +72,40 @@
     (() => {
       const messageEl = document.getElementById('github-update-message');
       const linkEl = document.getElementById('github-update-link');
-      const endpoint = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/commits/main';
-      async function refreshGitHubUpdate() {
+      const api = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/releases/latest';
+
+      async function refreshGitHubRelease() {
         try {
-          const response = await fetch(endpoint, { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' });
+          const response = await fetch(api, {
+            headers: { Accept: 'application/vnd.github+json' },
+            cache: 'no-store'
+          });
           if (!response.ok) throw new Error('GitHub API returned ' + response.status);
-          const commit = await response.json();
-          const subject = (commit.commit.message || 'Repository update').split('\\n')[0].trim();
-          const date = commit.commit.author && commit.commit.author.date ? new Date(commit.commit.author.date) : null;
-          const dateText = date && !Number.isNaN(date.getTime()) ? ' · ' + date.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : '';
-          messageEl.textContent = subject + dateText + ' · ' + commit.sha.slice(0, 7);
-          linkEl.href = commit.html_url;
-          linkEl.textContent = 'View commit';
+
+          const release = await response.json();
+          const published = release.published_at ? new Date(release.published_at) : null;
+          const dateText = published && !Number.isNaN(published.getTime())
+            ? ' · Published ' + published.toLocaleDateString(undefined, { dateStyle: 'medium' })
+            : '';
+          const assets = Array.isArray(release.assets) ? release.assets : [];
+          const installer = assets.find(asset => /^hamlet-Setup-.*\.exe$/i.test(asset.name));
+          const checksum = assets.find(asset => asset.name === 'SHA256SUMS.txt');
+          const assetText = installer
+            ? ' · Installer available' + (checksum ? ' with SHA-256 checksum' : '')
+            : '';
+          messageEl.textContent = (release.name || release.tag_name || 'Latest Hamlet release') +
+            dateText + assetText;
+          linkEl.href = release.html_url || 'https://github.com/hamletofficial/ibrgroupintl.github.io/releases';
+          linkEl.textContent = 'View release';
         } catch (error) {
-          if (messageEl.textContent.startsWith('Checking')) messageEl.textContent = 'Latest commit details are temporarily unavailable.';
-          linkEl.href = 'https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main';
-          linkEl.textContent = 'View commit history';
+          messageEl.textContent = 'Latest release details are temporarily unavailable.';
+          linkEl.href = 'https://github.com/hamletofficial/ibrgroupintl.github.io/releases';
+          linkEl.textContent = 'View all releases';
         }
       }
-      refreshGitHubUpdate();
-      window.setInterval(refreshGitHubUpdate, 300000);
+
+      refreshGitHubRelease();
+      window.setInterval(refreshGitHubRelease, 300000);
     })();
   </script>
 </body>

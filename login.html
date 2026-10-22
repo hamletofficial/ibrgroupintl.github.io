@@ -165,6 +165,24 @@
       align-self: center !important;
       flex: 0 0 auto;
     }
+    body.login-page .resource-nav .hamlet-ai-logo {
+      display: block;
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      object-fit: contain;
+      border-radius: 9px;
+      border: 1px solid rgba(192,192,192,.72);
+      background: rgba(255,255,255,.96);
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+    @media (max-width: 360px) {
+      body.login-page .resource-nav .hamlet-ai-logo {
+        width: 30px;
+        height: 30px;
+        flex-basis: 30px;
+      }
+    }
     body.login-page .resource-nav .user-menu { margin-left: auto; }
     @media (max-width: 720px) {
       .login-page footer .container {
@@ -902,7 +920,7 @@
 <body class="login-page">
   <header class="resource-nav" role="banner">
     <div class="container container-nav">
-      <a class="logo" href="/index.html" aria-label="Hamlet home" style="display:flex;align-items:center;gap:12px;color:#fff!important;text-decoration:none;font-size:1.35rem;font-weight:800;letter-spacing:-.04em;line-height:1">hamlet</a>
+      <a class="logo" href="/index.html" aria-label="Hamlet home" style="display:flex;align-items:center;gap:10px;color:#fff!important;text-decoration:none;font-size:1.35rem;font-weight:800;letter-spacing:-.04em;line-height:1"><img class="hamlet-ai-logo" src="/assets/images/favicon.ico" alt="" width="34" height="34" decoding="async"><span>hamlet</span></a>
       <div class="user-menu">
         <div class="auth-profile-chip" data-auth-profile>
           <img class="auth-profile-photo" data-auth-photo src="/160.jpg" alt="Profile photo">

@@ -1,4 +1,5 @@
 const fs = require("node:fs");
+const path = require("node:path");
 const zlib = require("node:zlib");
 
 const SIZE = 256;
@@ -15,26 +16,46 @@ function setPixel(x, y, color) {
   pixels[i + 3] = color[3];
 }
 
-function fillRect(x1, y1, x2, y2, color) {
-  for (let y = y1; y < y2; y++) {
-    for (let x = x1; x < x2; x++) setPixel(x, y, color);
+// Prefer Hamlet's checked-in website favicon so the desktop icon follows
+// the same source of truth as the public site. Fall back to a crisp vector-like
+// mark if the favicon is absent or is not a usable PNG-backed ICO.
+function readPngFromIco(ico) {
+  if (!Buffer.isBuffer(ico) || ico.length < 22 ||
+      ico.readUInt16LE(0) !== 0 || ico.readUInt16LE(2) !== 1) return null;
+  const count = ico.readUInt16LE(4);
+  let best = null;
+  for (let i = 0; i < count; i++) {
+    const offset = 6 + i * 16;
+    if (offset + 16 > ico.length) break;
+    const size = ico.readUInt32LE(offset + 8);
+    const dataOffset = ico.readUInt32LE(offset + 12);
+    if (dataOffset + size > ico.length || size < 8) continue;
+    const image = ico.subarray(dataOffset, dataOffset + size);
+    if (image.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) {
+      const width = ico[offset] || 256;
+      const height = ico[offset + 1] || 256;
+      const score = Math.min(width, 256) * Math.min(height, 256);
+      if (!best || score > best.score) best = { image, score };
+    }
   }
+  return best?.image || null;
 }
 
-// Solid Hamlet navy field with a simple, high-contrast lowercase "h" mark.
-for (let y = 0; y < SIZE; y++) {
-  for (let x = 0; x < SIZE; x++) setPixel(x, y, navy);
-}
-fillRect(64, 48, 88, 208, white);
-fillRect(88, 112, 184, 136, white);
-fillRect(160, 112, 184, 208, white);
-
-// PNG RGBA image, using the standard no-filter scanline format.
-const scanlines = Buffer.alloc(SIZE * (SIZE * 4 + 1));
-for (let y = 0; y < SIZE; y++) {
-  const dst = y * (SIZE * 4 + 1);
-  scanlines[dst] = 0;
-  pixels.copy(scanlines, dst + 1, y * SIZE * 4, (y + 1) * SIZE * 4);
+function drawFallbackMark() {
+  // Solid royal-navy tile with a clean white lowercase "h".
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) setPixel(x, y, navy);
+  }
+  // Slightly rounded-looking, proportioned strokes at 256px scale.
+  for (let y = 46; y < 210; y++) {
+    for (let x = 62; x < 90; x++) setPixel(x, y, white);
+  }
+  for (let y = 110; y < 138; y++) {
+    for (let x = 88; x < 190; x++) setPixel(x, y, white);
+  }
+  for (let y = 110; y < 210; y++) {
+    for (let x = 162; x < 190; x++) setPixel(x, y, white);
+  }
 }
 
 function crc32(buffer) {
@@ -56,36 +77,54 @@ function pngChunk(type, data) {
   return Buffer.concat([length, typeBuffer, data, crc]);
 }
 
-const ihdr = Buffer.alloc(13);
-ihdr.writeUInt32BE(SIZE, 0);
-ihdr.writeUInt32BE(SIZE, 4);
-ihdr[8] = 8; // 8-bit channels
-ihdr[9] = 6; // RGBA
-ihdr[10] = 0;
-ihdr[11] = 0;
-ihdr[12] = 0;
+function createPngFromPixels() {
+  const scanlines = Buffer.alloc(SIZE * (SIZE * 4 + 1));
+  for (let y = 0; y < SIZE; y++) {
+    const dst = y * (SIZE * 4 + 1);
+    scanlines[dst] = 0; // PNG filter: none
+    pixels.copy(scanlines, dst + 1, y * SIZE * 4, (y + 1) * SIZE * 4);
+  }
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(SIZE, 0);
+  ihdr.writeUInt32BE(SIZE, 4);
+  ihdr[8] = 8;  // bit depth
+  ihdr[9] = 6;  // RGBA
+  return Buffer.concat([
+    Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    pngChunk("IHDR", ihdr),
+    pngChunk("IDAT", zlib.deflateSync(scanlines)),
+    pngChunk("IEND", Buffer.alloc(0))
+  ]);
+}
 
-const png = Buffer.concat([
-  Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
-  pngChunk("IHDR", ihdr),
-  pngChunk("IDAT", zlib.deflateSync(scanlines)),
-  pngChunk("IEND", Buffer.alloc(0))
-]);
+function createIco(png) {
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(0, 0);
+  header.writeUInt16LE(1, 2);
+  header.writeUInt16LE(1, 4);
+  const entry = Buffer.alloc(16);
+  entry[0] = 0; // 256px
+  entry[1] = 0; // 256px
+  entry.writeUInt16LE(1, 4);
+  entry.writeUInt16LE(32, 6);
+  entry.writeUInt32LE(png.length, 8);
+  entry.writeUInt32LE(22, 12);
+  return Buffer.concat([header, entry, png]);
+}
 
-// ICO container embedding the generated 256x256 PNG.
-const header = Buffer.alloc(6);
-header.writeUInt16LE(0, 0);
-header.writeUInt16LE(1, 2);
-header.writeUInt16LE(1, 4);
-const entry = Buffer.alloc(16);
-entry[0] = 0; // 256px
-entry[1] = 0; // 256px
-entry[2] = 0;
-entry[3] = 0;
-entry.writeUInt16LE(1, 4);
-entry.writeUInt16LE(32, 6);
-entry.writeUInt32LE(png.length, 8);
-entry.writeUInt32LE(22, 12);
+const faviconPath = path.resolve(__dirname, "../../assets/images/favicon.ico");
+let png = null;
+try {
+  png = readPngFromIco(fs.readFileSync(faviconPath));
+} catch {
+  // A source favicon is optional; the deterministic fallback remains available.
+}
 
-fs.writeFileSync("icon.ico", Buffer.concat([header, entry, png]));
-console.log("Generated Hamlet Windows icon: icon.ico");
+if (png) {
+  fs.writeFileSync("icon.ico", createIco(png));
+  console.log("Generated Hamlet Windows icon from assets/images/favicon.ico.");
+} else {
+  drawFallbackMark();
+  fs.writeFileSync("icon.ico", createIco(createPngFromPixels()));
+  console.log("Generated fallback Hamlet Windows icon.");
+}

@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/mobile-compat.css">
   <link rel="stylesheet" href="/login-mobile.css">
   <link rel="stylesheet" href="/page-transition.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <script>
     (function () {
       var show = false;
@@ -558,7 +559,9 @@
     }
     .chatgpt-btn:hover { background: #1f2937; border-color: #9ca3af; box-shadow: 0 4px 12px rgba(0,0,0,.18); }
     .chatgpt-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-    .chatgpt-btn-icon { display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; flex-shrink: 0; }
+    .chatgpt-btn { position: relative; }
+    .chatgpt-btn-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; flex-shrink: 0; font-size: 18px; line-height: 1; }
+    .chatgpt-btn-label { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); white-space: nowrap; text-align: center; }
     .microsoft-btn {
       display:inline-flex;align-items:center;justify-content:center;gap:12px;
       padding:0 12px;min-height:48px;border-radius:8px;border:1px solid #d0d7de;
@@ -752,9 +755,9 @@
       </button>
       <button id="chatgptBtn" class="chatgpt-btn" type="button" aria-label="Sign in with ChatGPT">
         <span class="chatgpt-btn-icon" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2a4.1 4.1 0 0 0-3.95 3 4.1 4.1 0 0 0-3.4 6.1 4.1 4.1 0 0 0 2.1 5.7A4.1 4.1 0 0 0 12 20.8a4.1 4.1 0 0 0 3.95-3 4.1 4.1 0 0 0 3.4-6.1 4.1 4.1 0 0 0-2.1-5.7A4.1 4.1 0 0 0 12 3.2Z"/><path d="m8.05 6.2 7.9 4.5v4.5M4.65 12.3l7.35 4.2 4-2.3M8.05 17.9v-4.6l7.9-4.5"/></svg>
+          <i class="fa-brands fa-openai" aria-hidden="true"></i>
         </span>
-        <span>Sign in with ChatGPT</span>
+        <span class="chatgpt-btn-label">Sign in with ChatGPT</span>
       </button>
 
       <a class="btn btn-outline portal-return-btn" href="/index.html">Back to Home</a>

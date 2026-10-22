@@ -739,27 +739,25 @@
       justify-content: center;
       overflow: visible;
     }
+    /* Keep the content layout, but remove the enclosing login-card treatment. */
     body.login-page .login-main > .card {
       width: min(100%, 420px) !important;
       max-width: 420px !important;
       min-width: 0;
-      padding: clamp(22px, 4vw, 32px);
-      border: 1px solid var(--login-border) !important;
-      border-radius: 20px !important;
-      background: var(--login-surface) !important;
-      box-shadow: 0 24px 70px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.04) !important;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      padding: 0;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       overflow: visible;
-      transition: border-color .2s ease, box-shadow .2s ease;
+      transition: none !important;
     }
     body.login-page .login-main > .card:hover,
     body.login-page .login-main > .card:focus-within {
-      border-color: #C0C0C0 !important;
-      box-shadow: 0 24px 70px rgba(0,0,0,.34), 0 0 0 1px rgba(192,192,192,.32), inset 0 1px 0 rgba(255,255,255,.04) !important;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      body.login-page .login-main > .card { transition: none !important; }
+      border-color: transparent !important;
+      box-shadow: none !important;
     }
     body.login-page #signin-title {
       margin: 0 0 10px;
@@ -897,7 +895,7 @@
       body.login-page .login-main > .card {
         width: min(100%, 420px) !important;
         max-width: 420px !important;
-        padding: 22px 18px;
+        padding: 0;
         overflow: visible;
       }
       body.login-page .resource-footer { margin-top: auto; }

@@ -126,7 +126,16 @@
     .brand-image-kicker{display:inline-block;margin-bottom:.65rem;color:#dbeafe;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
     .brand-image-copy h2{margin:0;color:#fff;font-size:clamp(1.45rem,3.5vw,2.7rem);line-height:1.12;letter-spacing:-.045em;text-wrap:balance}
     .brand-image-copy p{max-width:52ch;margin:.75rem 0 0;color:#e5edf8;font-size:clamp(.88rem,1.5vw,1rem);line-height:1.55}
-    @media(max-width:560px){.brand-image-frame{border-radius:13px}.brand-image-frame:after{background:linear-gradient(90deg,rgba(7,29,74,.9),rgba(7,29,74,.52)),linear-gradient(0deg,rgba(11,17,32,.35),transparent)}.brand-image-copy{max-width:88%;left:1rem}.brand-image-copy p{margin-top:.45rem}}
+    @media(max-width:560px){
+      .brand-image-section{padding-bottom:1.1rem}
+      .brand-image-frame{min-height:0;border-radius:13px}
+      .brand-image-frame:after{display:none}
+      .brand-image{height:clamp(125px,38vw,180px);object-fit:cover;object-position:center}
+      .brand-image-copy{position:relative;top:auto;left:auto;transform:none;max-width:none;padding:1rem;background:linear-gradient(135deg,#071d4a 0%,#102b5b 100%)}
+      .brand-image-kicker{font-size:.67rem;letter-spacing:.09em;margin-bottom:.45rem}
+      .brand-image-copy h2{font-size:clamp(1.25rem,5.5vw,1.65rem);line-height:1.18;letter-spacing:-.035em}
+      .brand-image-copy p{max-width:none;margin:.55rem 0 0;font-size:.9rem;line-height:1.5}
+    }
 
     .github-update-bar{display:flex;align-items:center;justify-content:center;text-align:center;gap:.65rem;min-height:48px;padding:.6rem 1rem;background:#e5e7eb;color:#111827;border-bottom:1px solid #d1d5db;font-size:.86rem;line-height:1.4;flex-wrap:wrap}
     .github-update-label{flex:0 0 auto;font-weight:800;white-space:nowrap}

@@ -33,7 +33,9 @@
     .header-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:74px}
     .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-weight:700}
     .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:10px 14px;text-decoration:none;font-weight:700;border:1px solid transparent;cursor:pointer}
-    .btn-ghost{color:#FFF;background:#071D4A;border-color:#071D4A}
+    .btn-ghost{color:#FFF;background:#071D4A;border:1px solid #071D4A;transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+    .btn-ghost:hover,.btn-ghost:focus-visible{color:#FFF;background:#071D4A;border-color:#FFF;box-shadow:0 0 0 2px rgba(7,29,74,.22);transform:translateY(-1px)}
+    .btn-ghost:focus-visible{outline:2px solid #071D4A;outline-offset:3px}
     .btn-primary{color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:0 10px 22px rgba(20,107,89,.22)}
     main{padding:54px 0 42px}
     .card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:30px}

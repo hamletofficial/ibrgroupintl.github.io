@@ -148,7 +148,7 @@
       </div>
     </div>
     <span id="homepage-update-count" class="github-update-count" aria-hidden="true"></span>
-    <a class="github-update-link" href="https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main/" target="_blank" rel="noopener noreferrer">All commits ↗</a>
+    <a class="github-update-link" href="https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main/" target="_blank" rel="noopener noreferrer">All commits</a>
   </aside>
   <main>
     <section class="hero">
@@ -415,7 +415,7 @@
         const when = commit.commit?.author?.date || commit.commit?.committer?.date;
         const markup = '<span class="github-update-message">' + esc(message) + '</span>' +
           '<span class="github-update-time">' + esc(author) + ' · ' + esc(relativeTime(when)) + '</span>' +
-          '<a class="github-update-link" href="' + esc(commit.html_url) + '" target="_blank" rel="noopener noreferrer">View commit ↗</a>';
+          '<a class="github-update-link" href="' + esc(commit.html_url) + '" target="_blank" rel="noopener noreferrer">View commit</a>';
         const apply = () => {
           commitsSlide.innerHTML = markup;
           commitsCount.textContent = (activeCommit + 1) + ' / ' + commits.length;

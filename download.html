@@ -31,15 +31,15 @@
     <p>Use Hamlet as a Windows 10 or 11 desktop application, with desktop features designed to complement the Hamlet workspace.</p>
     <section class="panel notice" aria-labelledby="download-title">
       <h2 id="download-title">Official release download</h2>
-      <p>Hamlet v1.04 is the current stable Windows release. Download the installer directly from the official release assets, and keep the matching SHA-256 file so you can verify the download before running it.</p>
-      <a class="button" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04/hamlet-Setup-1.4.0.exe" rel="noopener noreferrer">Download Hamlet v1.04 for Windows (.exe · 93.5 MB)</a>
-      <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04/SHA256SUMS.txt" rel="noopener noreferrer">Download SHA-256 checksum</a>
-      <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/tag/v1.04" rel="noopener noreferrer">Release notes and assets</a>
+      <p>Hamlet v1.04.02 is the latest published Windows release. Download the installer directly from the official release assets, and keep the matching SHA-256 file so you can verify the download before running it.</p>
+      <a class="button" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04.02/hamlet-Setup-1.4.2.exe" rel="noopener noreferrer">Download Hamlet v1.04.02 for Windows (.exe)</a>
+      <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04.02/SHA256SUMS.txt" rel="noopener noreferrer">Download SHA-256 checksum</a>
+      <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/tag/v1.04.02" rel="noopener noreferrer">Release notes and assets</a>
     </section>
     <section class="panel" aria-labelledby="install-title">
       <h2 id="install-title">Installation instructions</h2>
       <ol>
-        <li>Download <code>hamlet-Setup-1.4.0.exe</code> using the official v1.04 download link above.</li>
+        <li>Download <code>hamlet-Setup-1.4.2.exe</code> using the official v1.04 download link above.</li>
         <li>Download <code>SHA256SUMS.txt</code> from the same release.</li>
         <li>In PowerShell, run <code>Get-FileHash .\hamlet-Setup-1.4.0.exe -Algorithm SHA256</code> from the folder containing the installer. Compare the resulting hash with the entry for that exact filename in <code>SHA256SUMS.txt</code>. The values must match exactly.</li>
         <li>If the checksum does not match, do not run the installer; delete it and download it again from the official release.</li>
@@ -49,8 +49,7 @@
     </section>
     <section class="panel" aria-labelledby="security-title">
       <h2 id="security-title">Security and updates</h2>
-      <p>Publisher code signing and secure automatic updates are planned improvements. Until a release explicitly confirms signing, do not assume the installer is code-signed. Never bypass a Windows security warning solely because a file is labelled Hamlet.</p>
-      <p>This installer is distributed with a SHA-256 checksum, but checksum verification alone does not establish publisher identity. Publisher code signing and secure automatic updates remain planned improvements. Check the release page for the latest stable version and its matching checksum before installing an update.</p>
+      <p>The installer is distributed with a SHA-256 checksum. Checksum verification helps confirm file integrity, but it does not independently establish publisher identity. Publisher code signing and secure automatic updates remain planned improvements. Check the official release page for the latest version and its matching checksum before installing an update.</p>
     </section>
     <section class="panel" aria-labelledby="help-title">
       <h2 id="help-title">Need help?</h2>

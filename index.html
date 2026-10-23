@@ -516,7 +516,37 @@
     })();
   </script>
 
-  <script src="/site-search.js?v=20261023-1" defer></script>
+  <style>
+    /* Homepage search suggestions are portalled to body to escape header/hero stacking contexts. */
+    body > #site-search-results.site-search-results{position:fixed!important;z-index:2147483647!important;max-height:min(65vh,440px);overflow:auto;background:#111827!important;background-color:#111827!important;background-image:none!important;opacity:1!important;isolation:isolate;pointer-events:auto}
+  </style>
+  <script>
+    (() => {
+      const placeSuggestions = () => {
+        const input = document.getElementById('site-search-input');
+        const panel = document.getElementById('site-search-results');
+        if (!input || !panel) return;
+        if (panel.parentElement !== document.body) document.body.appendChild(panel);
+        const rect = input.closest('.site-search-form').getBoundingClientRect();
+        panel.style.left = rect.left + 'px';
+        panel.style.top = (rect.bottom + 8) + 'px';
+        panel.style.width = rect.width + 'px';
+        panel.style.right = 'auto';
+      };
+      document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('site-search-input');
+        const panel = document.getElementById('site-search-results');
+        if (!input || !panel) return;
+        placeSuggestions();
+        input.addEventListener('input', placeSuggestions);
+        input.addEventListener('focus', placeSuggestions);
+        window.addEventListener('resize', placeSuggestions, {passive:true});
+        window.addEventListener('scroll', placeSuggestions, {passive:true, capture:true});
+        if (window.ResizeObserver) new ResizeObserver(placeSuggestions).observe(input.closest('.site-search-form'));
+      }, {once:true});
+    })();
+  </script>
+  <script src="/site-search.js?v=20261023-2" defer></script>
   <script src="/hamlet-background.js?v=20261021-2"></script>
 </body>
 </html>

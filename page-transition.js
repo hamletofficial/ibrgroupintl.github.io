@@ -3,7 +3,6 @@
 
   const PROTECTED_PATHS = new Set([
     '/index.html',
-    '/members.html',
     '/messages.html',
     '/insights.html',
     '/requests.html',
@@ -21,7 +20,6 @@
 
   const PAGE_LABELS = {
     '/index.html': 'Members Area',
-    '/members.html': 'Members Area',
     '/messages.html': 'Messages Inbox',
     '/insights.html': 'Insights Archive',
     '/requests.html': 'Media Relations',

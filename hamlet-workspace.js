@@ -22,8 +22,8 @@ function make(tag,cls,text){var node=document.createElement(tag);if(cls)node.cla
 function buildNav(){
  /* Enforce shared-navigation exclusions on every page, including legacy page-specific headers. */
  document.querySelectorAll('nav a[href]').forEach(function(link){
-  var href=(link.getAttribute('href')||'').split(/[?#]/)[0].replace(/\\/$/,'').toLowerCase();
-  var label=(link.textContent||'').replace(/[\\s\\u00a0]+/g,' ').trim().toLowerCase();
+  var href=(link.getAttribute('href')||'').split(/[?#]/)[0].replace(/\/$/,'').toLowerCase();
+  var label=(link.textContent||'').replace(/[\s\u00a0]+/g,' ').trim().toLowerCase();
   if(href==='/invoice.html'||href==='/members.html'||label==='invoice'||label==='invoices'||label==='members area'){
    link.parentNode&&link.parentNode.removeChild(link);
   }

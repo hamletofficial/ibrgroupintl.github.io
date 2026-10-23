@@ -127,7 +127,7 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
     }
 
-    if (url.pathname !== "/v1/assist") return json({ error: "Not found." }, 404, origin);
+    if (url.pathname !== "/v1/assist" && url.pathname !== "/v1/login-notification") return json({ error: "Not found." }, 404, origin);
     if (request.method !== "POST") return json({ error: "Method not allowed." }, 405, origin);
     if (origin && !ALLOWED_ORIGINS.has(origin)) return json({ error: "Origin not allowed." }, 403, null);
     if (!env.OPENAI_API_KEY) return json({ error: "AI service is not configured." }, 503, origin);
@@ -137,6 +137,51 @@ export default {
       identity = await verifyFirebaseToken(request);
     } catch {
       return json({ error: "A valid Firebase sign-in is required." }, 401, origin);
+    }
+
+    if (url.pathname === "/v1/login-notification") {
+      if (identity.email_verified !== true || typeof identity.email !== "string" || !identity.email.trim()) {
+        return json({ error: "A verified Firebase email address is required." }, 403, origin);
+      }
+      if (!env.EMAIL || typeof env.EMAIL.send !== "function") {
+        return json({ error: "Cloudflare Email Service is not configured." }, 503, origin);
+      }
+      const fromEmail = typeof env.SMTP_FROM_EMAIL === "string" ? env.SMTP_FROM_EMAIL.trim() : "";
+      if (!fromEmail) return json({ error: "The sender address is not configured." }, 503, origin);
+      const recipient = identity.email.trim();
+      const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[char]);
+      const authTime = typeof identity.auth_time === "number" ? identity.auth_time : Math.floor(Date.now() / 1000);
+      const loginTime = new Date(authTime * 1000).toISOString();
+      const dashboardUrl = "https://www.hamlet-ai.co.uk/app/public/dashboard.html";
+      const html = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><title>Hamlet sign-in notification</title></head>
+<body style="margin:0;padding:0;background:#0b1120;font-family:Arial,Helvetica,sans-serif;color:#e5e7eb">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0">Your Hamlet sign-in was successful.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0b1120;padding:28px 12px"><tr><td align="center">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#111827;border:1px solid #263449;border-radius:14px;overflow:hidden">
+<tr><td align="center" style="padding:28px 24px;background:#071D4A"><div style="font-size:30px;font-weight:800;letter-spacing:-1px;color:#fff">hamlet</div><div style="margin-top:8px;font-size:13px;line-height:1.5;color:#dbeafe">Connected intelligence for commercial real estate</div></td></tr>
+<tr><td style="padding:32px 28px 12px"><div style="font-size:12px;font-weight:700;letter-spacing:1.4px;color:#93c5fd">ACCOUNT SECURITY</div><h1 style="margin:12px 0 14px;font-size:26px;line-height:1.25;color:#fff">Your sign-in was successful.</h1><p style="margin:0;font-size:16px;line-height:1.7;color:#d1d5db">A successful sign-in to your Hamlet account has been detected. Your workspace is ready whenever you are.</p></td></tr>
+<tr><td style="padding:16px 28px 8px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0b1120;border:1px solid #263449;border-radius:10px"><tr><td style="padding:18px 20px"><div style="font-size:14px;font-weight:700;color:#fff">Sign-in details</div><p style="margin:8px 0 0;font-size:14px;line-height:1.7;color:#cbd5e1">Time recorded: ${escapeHtml(loginTime)} (UTC)<br>Account: ${escapeHtml(recipient)}</p></td></tr></table></td></tr>
+<tr><td align="center" style="padding:24px 28px"><a href="${dashboardUrl}" style="display:inline-block;padding:14px 24px;background:#071D4A;border:1px solid #4169a8;border-radius:8px;color:#fff;text-decoration:none;font-size:15px;font-weight:700">Open Hamlet</a></td></tr>
+<tr><td style="padding:0 28px 28px"><p style="margin:0;font-size:13px;line-height:1.7;color:#9ca3af">If you did not sign in, please secure your account by reviewing your authentication credentials and recent account activity.</p></td></tr>
+<tr><td align="center" style="padding:18px 20px;border-top:1px solid #263449;background:#0b1120"><p style="margin:0;font-size:12px;line-height:1.7;color:#9ca3af">Impact in Business Recruitment Group Limited<br>Automated account notification · Please do not reply.</p></td></tr>
+</table></td></tr></table></body></html>`;
+      const textBody = "Hamlet sign-in notification\\n\\nYour sign-in was successful.\\nTime recorded: " + loginTime + " (UTC)\\nAccount: " + recipient + "\\n\\nOpen Hamlet: " + dashboardUrl + "\\n\\nIf you did not sign in, review your authentication credentials and recent account activity.";
+      try {
+        const result = await env.EMAIL.send({
+          from: { email: fromEmail, name: "Hamlet" },
+          to: recipient,
+          subject: "Hamlet sign-in notification",
+          html,
+          text: textBody
+        });
+        return json({ ok: true, messageId: result.messageId }, 200, origin);
+      } catch (error) {
+        console.error("Login notification email failed", { uid: identity.sub, code: error && error.code ? String(error.code) : "unknown" });
+        return json({ error: "The login notification could not be sent." }, 502, origin);
+      }
     }
 
     let body;

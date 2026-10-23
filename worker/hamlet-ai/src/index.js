@@ -130,7 +130,7 @@ export default {
     if (url.pathname !== "/v1/assist" && url.pathname !== "/v1/login-notification") return json({ error: "Not found." }, 404, origin);
     if (request.method !== "POST") return json({ error: "Method not allowed." }, 405, origin);
     if (origin && !ALLOWED_ORIGINS.has(origin)) return json({ error: "Origin not allowed." }, 403, null);
-    if (!env.OPENAI_API_KEY) return json({ error: "AI service is not configured." }, 503, origin);
+    if (url.pathname === "/v1/assist" && !env.OPENAI_API_KEY) return json({ error: "AI service is not configured." }, 503, origin);
 
     let identity;
     try {

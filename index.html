@@ -38,7 +38,8 @@
     .site-header .site-search-result strong{display:block;font-size:.88rem;line-height:1.35}
     .site-header .site-search-result small{display:block;margin-top:.18rem;color:#bfdbfe;font-size:.75rem;overflow-wrap:anywhere}
     .site-header .site-search-empty{padding:.75rem;color:#cbd5e1;font-size:.85rem}
-    .site-header{position:sticky;top:0;z-index:20;background:linear-gradient(115deg,#071d4a 0%,#0a245b 52%,#071d4a 100%);border-bottom:1px solid #374151}
+    /* Keep navigation menus above the announcement ticker and page content. */
+    .site-header{position:sticky;top:0;z-index:1000;isolation:isolate;background:linear-gradient(115deg,#071d4a 0%,#0a245b 52%,#071d4a 100%);border-bottom:1px solid #374151}
     .header-row{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
     .brand{font-size:1.35rem;font-weight:800;letter-spacing:-.04em;text-decoration:none;color:#fff}
     .brand span{color:#bfdbfe}
@@ -151,7 +152,7 @@
       .brand-image-copy p{max-width:none;margin:.55rem 0 0;font-size:.9rem;line-height:1.5}
     }
 
-    .github-update-bar{display:flex;align-items:center;justify-content:center;text-align:center;gap:.65rem;min-height:48px;padding:.6rem 1rem;background:#e5e7eb;color:#111827;border-bottom:1px solid #d1d5db;font-size:.86rem;line-height:1.4;flex-wrap:wrap}
+    .github-update-bar{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;gap:.65rem;min-height:48px;padding:.6rem 1rem;background:#e5e7eb;color:#111827;border-bottom:1px solid #d1d5db;font-size:.86rem;line-height:1.4;flex-wrap:wrap}
     .github-update-label{flex:0 0 auto;font-weight:800;white-space:nowrap}
     .github-update-viewport{position:relative;min-width:0;max-width:min(700px,100%);flex:1 1 320px;overflow:hidden;text-align:left}
     .github-update-slide{display:flex;align-items:center;gap:.55rem;min-width:0;transition:opacity .28s ease,transform .28s ease}

@@ -119,6 +119,27 @@
     }
   }
 
+  const categoryButtons = Array.from(document.querySelectorAll('.search-category'));
+  let selectedCategoryQuery = '';
+  categoryButtons.forEach(button => button.addEventListener('click', () => {
+    selectedCategoryQuery = button.dataset.query || '';
+    categoryButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+    if (selectedCategoryQuery) {
+      input.value = selectedCategoryQuery;
+      input.focus();
+      updateSuggestions();
+    } else {
+      input.value = '';
+      closeSuggestions();
+      input.focus();
+    }
+  }));
+  const mainSubmit = document.getElementById('search-main-submit');
+  if (mainSubmit) mainSubmit.addEventListener('click', () => {
+    if (input.value.trim().length < 2 && selectedCategoryQuery) input.value = selectedCategoryQuery;
+    form.requestSubmit();
+  });
+
   input.addEventListener('input', updateSuggestions);
   input.addEventListener('focus', () => { if (input.value.trim().length >= 2) updateSuggestions(); });
   document.addEventListener('click', event => {

@@ -123,14 +123,34 @@
     input.setAttribute('aria-expanded','false');
   }
 
-  async function updateSuggestions() {
+  async function updateSuggestions(attempt = 0) {
     const query = input.value.trim();
     if (query.length < 2) { closeSuggestions(); return; }
     try {
       await loadIndex();
+      // Ignore stale responses if the user has changed the query while loading.
+      if (input.value.trim() !== query) return;
       renderSuggestions(rankPages(query));
     } catch (error) {
-      renderSuggestions([], error.message);
+      if (attempt < 2) {
+        renderSuggestions([], 'Search is temporarily unavailable. Retrying…');
+        window.setTimeout(() => {
+          if (input.value.trim() === query) updateSuggestions(attempt + 1);
+        }, 900 * (attempt + 1));
+        return;
+      }
+      renderSuggestions([], error.message || 'Search is temporarily unavailable. Please try again shortly.');
+      if (suggestions) {
+        const retry = document.createElement('button');
+        retry.type = 'button';
+        retry.className = 'site-search-retry';
+        retry.textContent = 'Try again';
+        retry.addEventListener('click', () => {
+          indexPromise = null;
+          updateSuggestions();
+        });
+        suggestions.appendChild(retry);
+      }
     }
   }
 

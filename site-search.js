@@ -25,7 +25,15 @@
     if (!indexPromise) {
       indexPromise = fetch('/search-index.json', {cache:'no-cache'})
         .then(response => { if (!response.ok) throw new Error('Search index unavailable'); return response.json(); })
-        .then(data => { pages = Array.isArray(data) ? data : []; return pages; })
+        .then(data => {
+          // Exclude stale/generated records containing transient search UI status copy.
+          const index = Array.isArray(data) ? data : [];
+          pages = index.filter(page => {
+            const searchableText = [page.title, page.path, page.url, page.text].join(' ').toLocaleLowerCase();
+            return !/loading\\s+search\\s+index/.test(searchableText);
+          });
+          return pages;
+        })
         .catch(() => { indexPromise = null; throw new Error('Search is temporarily unavailable. Please try again shortly.'); });
     }
     return indexPromise;

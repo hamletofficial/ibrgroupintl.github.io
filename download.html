@@ -88,14 +88,14 @@
         <span class="pill">Latest stable release</span>
         <h2 id="latest-title">Hamlet v1.04.02</h2>
         <p class="version-meta">Installer <code>hamlet-Setup-1.4.2.exe</code> · Published 22 October 2026</p>
-        <p>Recommended for new installations. Download the installer from GitHub and verify the SHA-256 checksum before running it.</p>
+        <p>Recommended for new installations. Download the installer from Hamlet’s dedicated Cloudflare R2 distribution domain and verify the SHA-256 checksum before running it.</p>
         <div class="release-stats">
           <span>Windows 10 / 11</span>
           <span>~89.2 MiB installer</span>
           <span>SHA-256 available</span>
         </div>
-        <a class="button" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04.02/hamlet-Setup-1.4.2.exe">Download latest .exe</a>
-        <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/download/v1.04.02/SHA256SUMS.txt">SHA-256 checksum</a>
+        <a class="button" href="https://downloads.hamlet-ai.co.uk/v1.04.02/hamlet-Setup-1.4.2.exe">Download latest .exe</a>
+        <a class="button secondary" href="https://downloads.hamlet-ai.co.uk/v1.04.02/SHA256SUMS.txt">SHA-256 checksum</a>
         <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/tag/v1.04.02">Release notes</a>
       </section>
       <aside class="side-card">
@@ -111,7 +111,7 @@
       <div class="archive-head">
         <div>
           <h2 id="archive-title">Download archive</h2>
-          <p>Published Windows installers, newest first. Downloads are served by GitHub Releases.</p>
+          <p>Published Windows installers, newest first. Current R2-hosted releases use Hamlet’s dedicated download domain; older releases may remain on GitHub.</p>
         </div>
         <div class="archive-tools">
           <label for="release-search" style="position:absolute;left:-9999px">Search releases</label>
@@ -262,6 +262,18 @@
           const checksum = (release.assets || []).find(asset => asset.name === 'SHA256SUMS.txt');
           const latest = index === 0 && !query;
           const label = release.name || ('Hamlet ' + release.tag_name);
+          const tag = String(release.tag_name || '').toLowerCase();
+          const r2Release = {
+            'v1.04.02': 'v1.04.02',
+            'v1.04.0.2': 'v1.04.02',
+            'v1.04': 'v1.04'
+          }[tag] || null;
+          const installerUrl = r2Release
+            ? 'https://downloads.hamlet-ai.co.uk/' + r2Release + '/' + installer.name
+            : installer.browser_download_url;
+          const checksumUrl = r2Release && checksum
+            ? 'https://downloads.hamlet-ai.co.uk/' + r2Release + '/SHA256SUMS.txt'
+            : (checksum ? checksum.browser_download_url : '');
           const details = [formatDate(release.published_at), installer.name, formatSize(installer.size)]
             .filter(Boolean).join(' · ');
           return '<article class="release-row' + (latest ? ' latest' : '') + '">' +
@@ -269,8 +281,8 @@
             (latest ? ' <span class="pill" style="margin-left:.35rem;vertical-align:middle">Latest</span>' : '') +
             '</p><p class="release-detail">' + esc(details) + '</p></div>' +
             '<div class="release-actions">' +
-            '<a class="mini-button primary" href="' + esc(installer.browser_download_url) + '" rel="noopener noreferrer">Download .exe</a>' +
-            (checksum ? '<a class="mini-button" href="' + esc(checksum.browser_download_url) + '" rel="noopener noreferrer">SHA-256</a>' : '') +
+            '<a class="mini-button primary" href="' + esc(installerUrl) + '" rel="noopener noreferrer">Download .exe</a>' +
+            (checksumUrl ? '<a class="mini-button" href="' + esc(checksumUrl) + '" rel="noopener noreferrer">SHA-256</a>' : '') +
             '<a class="mini-button" href="' + esc(release.html_url) + '" rel="noopener noreferrer">Release details ↗</a>' +
             '</div></article>';
         }).join('');

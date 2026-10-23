@@ -30,7 +30,7 @@
           const index = Array.isArray(data) ? data : [];
           pages = index.filter(page => {
             const searchableText = [page.title, page.path, page.url, page.text].join(' ').toLocaleLowerCase();
-            return !/loading\\s+search\\s+index/.test(searchableText);
+            return !/loading\s+search\s+index/.test(searchableText);
           });
           return pages;
         })
@@ -50,10 +50,10 @@
 
   function areaMatches(page, area) {
     if (area === 'all') return true;
-    const path = normalise(page.path || page.url).replace(/^\\/+/, '');
-    if (area === 'workspace') return /^(app|workspace)(\\/|$)/.test(path) || /hamlet\\/(workspace|app)/.test(path);
-    if (area === 'support') return /(^|\\/)(support|docs|documentation)(\\/|$)/.test(path) || /support|documentation/.test(normalise(page.title));
-    return !/^(app|workspace|support|docs|documentation|superuser|admin|account|auth|login)(\\/|$)/.test(path);
+    const path = normalise(page.path || page.url).replace(/^\/+/, '');
+    if (area === 'workspace') return /^(app|workspace)(\/|$)/.test(path) || /hamlet\/(workspace|app)/.test(path);
+    if (area === 'support') return /(^|\/)(support|docs|documentation)(\/|$)/.test(path) || /support|documentation/.test(normalise(page.title));
+    return !/^(app|workspace|support|docs|documentation|superuser|admin|account|auth|login)(\/|$)/.test(path);
   }
 
   function rankPages(query, options = currentOptions()) {

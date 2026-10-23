@@ -21,6 +21,25 @@
     .head-row{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
     .brand{color:#fff;text-decoration:none;font-size:1.35rem;font-weight:850;letter-spacing:-.04em}
     .back{display:inline-flex;align-items:center;justify-content:center;padding:.55rem .8rem;border:1px solid #64748b;border-radius:8px;text-decoration:none;color:#fff;font-weight:700}
+    .site-head{position:sticky;top:0;z-index:1000;isolation:isolate;overflow:visible}
+    .head-row{overflow:visible}
+    .head-row>.site-search{display:block!important;visibility:visible!important;opacity:1!important;position:relative;z-index:10001;flex:1 1 380px;width:auto;max-width:500px;min-width:190px;margin:0}
+    .site-search-form{display:flex!important;visibility:visible!important;align-items:center;gap:.45rem;width:100%;min-height:44px;box-sizing:border-box;padding:.28rem .35rem .28rem .75rem;border:1px solid #8ba9d6;border-radius:11px;background:#0b1b3a!important;box-shadow:inset 0 1px 2px #02061735}
+    .site-search-input{display:block!important;visibility:visible!important;opacity:1!important;flex:1 1 auto;width:100%;min-width:0;min-height:34px;border:0!important;outline:0;background:transparent!important;color:#fff!important;font:inherit;font-size:.88rem}
+    .site-search-input::placeholder{color:#e2e8f0!important;opacity:1}
+    .site-search-submit{display:inline-flex!important;visibility:visible!important;align-items:center;justify-content:center;flex:0 0 auto;min-height:34px;padding:.38rem .65rem;border:0;border-radius:8px;background:#fff!important;color:#071d4a!important;font-size:.8rem;font-weight:800;cursor:pointer}
+    .site-search-icon{display:block!important;width:18px;height:18px;flex:0 0 auto;color:#bfdbfe}
+    .site-search-results{position:absolute;top:calc(100% + .5rem);left:0;right:0;z-index:2147483647;max-height:min(65vh,440px);overflow:auto;padding:.45rem;border:1px solid #48699e;border-radius:12px;background:#111827!important;background-color:#111827!important;background-image:none!important;color:#f8fafc;opacity:1!important;visibility:visible;isolation:isolate;box-shadow:0 16px 36px #020617b8;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    .site-search-results[hidden]{display:none!important}
+    .site-search-result{display:block;padding:.65rem .75rem;border-radius:8px;color:#fff;text-decoration:none}
+    .site-search-result:hover,.site-search-result:focus-visible{background:#1f2937;outline:2px solid #93c5fd;outline-offset:-2px}
+    .site-search-result strong{display:block;font-size:.9rem;line-height:1.4;margin:0 0 .55rem;padding:0 0 .48rem;border-bottom:1px solid #334765}
+    .site-search-result small{display:block;margin-top:0;padding-top:0;border-top:0;color:#bfdbfe;font-size:.75rem;line-height:1.5;overflow-wrap:anywhere}
+    .site-search-empty{padding:.75rem;color:#cbd5e1;font-size:.85rem}
+    .site-search-retry{display:inline-flex;align-items:center;justify-content:center;margin:0 .75rem .75rem;padding:.4rem .7rem;border:1px solid #64748b;border-radius:7px;background:#1f2937;color:#fff;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+    @media(max-width:850px){.head-row{flex-wrap:wrap}.head-row>.site-search{flex:1 1 240px;max-width:100%}}
+    @media(max-width:560px){.head-row{align-items:stretch;flex-direction:column;padding:.8rem 0;gap:.75rem}.brand{align-self:flex-start}.head-row>.site-search{display:block!important;width:100%;max-width:none;min-width:0;flex:0 0 auto}.site-search-form{min-height:46px}.site-search-submit{min-height:36px}.back{align-self:flex-start}}
+
     main{padding:clamp(2rem,6vw,4.5rem) 0}
     .eyebrow{display:inline-flex;padding:.3rem .65rem;border:1px solid #48618a;border-radius:999px;color:#bfdbfe;font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
     h1{font-size:clamp(2.3rem,6vw,4.3rem);line-height:1.04;letter-spacing:-.055em;margin:1rem 0}
@@ -55,6 +74,14 @@
   <header class="site-head">
     <div class="wrap head-row">
       <a class="brand" href="/index.html">hamlet <span style="color:#bfdbfe">by IBR</span></a>
+      <div class="site-search" role="search">
+        <form class="site-search-form" id="site-search-form" action="/search.html" method="get" autocomplete="off">
+          <svg class="site-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"></circle><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+          <input class="site-search-input" id="site-search-input" name="q" type="search" placeholder="Search all pages…" aria-label="Search all Hamlet pages" aria-controls="site-search-results" aria-expanded="false" minlength="2">
+          <button class="site-search-submit" type="submit">Search</button>
+        </form>
+        <div class="site-search-results" id="site-search-results" role="listbox" aria-label="Search suggestions" hidden></div>
+      </div>
       <a class="back" href="/index.html">Back to Hamlet</a>
     </div>
   </header>
@@ -140,5 +167,35 @@
     </section>
   </main>
   <footer><div class="wrap">© 2026 Impact in Business Recruitment Group Limited · hamlet</div></footer>
+  <script>
+    (() => {
+      const placeSuggestions = () => {
+        const input = document.getElementById('site-search-input');
+        const panel = document.getElementById('site-search-results');
+        if (!input || !panel) return;
+        if (panel.parentElement !== document.body) document.body.appendChild(panel);
+        const form = input.closest('.site-search-form');
+        if (!form) return;
+        const rect = form.getBoundingClientRect();
+        panel.style.left = rect.left + 'px';
+        panel.style.top = (rect.bottom + 8) + 'px';
+        panel.style.width = rect.width + 'px';
+        panel.style.right = 'auto';
+      };
+      document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('site-search-input');
+        const panel = document.getElementById('site-search-results');
+        if (!input || !panel) return;
+        placeSuggestions();
+        input.addEventListener('input', placeSuggestions);
+        input.addEventListener('focus', placeSuggestions);
+        window.addEventListener('resize', placeSuggestions, {passive:true});
+        window.addEventListener('scroll', placeSuggestions, {passive:true, capture:true});
+        if (window.ResizeObserver) new ResizeObserver(placeSuggestions).observe(input.closest('.site-search-form'));
+      }, {once:true});
+    })();
+  </script>
+  <script src="/site-search.js?v=20261023-2" defer></script>
+  <script src="/hamlet-background.js?v=20261021-2"></script>
 </body>
 </html>

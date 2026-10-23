@@ -17,17 +17,17 @@
     .search-brand{color:#fff;font-size:1.35rem;font-weight:850;letter-spacing:-.04em;text-decoration:none}
     .search-brand span{color:#bfdbfe;font-size:.78rem;letter-spacing:0}
     .search-home{color:#fff;text-decoration:none;font-weight:700;font-size:.9rem}
-    .search-main{width:min(900px,calc(100% - 2rem));margin:clamp(2rem,6vw,4.5rem) auto 4rem}
+    .search-main{width:min(960px,calc(100% - 2rem));margin:clamp(2rem,6vw,4.5rem) auto 4rem}\n    .search-hero{position:relative;overflow:hidden;padding:clamp(1.25rem,4vw,2.25rem);border:1px solid #263b5b;border-radius:22px;background:radial-gradient(ellipse at 100% 0%,#16336a66 0,transparent 45%),linear-gradient(145deg,#111827,#0d1628 78%);box-shadow:0 22px 55px #02061755}\n    .search-hero:before{content:"";position:absolute;top:0;left:1.5rem;right:1.5rem;height:2px;background:linear-gradient(90deg,transparent,#60a5fa,transparent);opacity:.8}\n    .search-hero>*{position:relative}\n    .search-description{max-width:650px;margin:.8rem 0 1.5rem;color:#cbd5e1}\n    .search-prompt{display:flex;align-items:center;gap:.5rem;margin-top:.8rem;color:#94a3b8;font-size:.8rem}\n    .search-prompt-dot{width:6px;height:6px;border-radius:50%;background:#60a5fa;box-shadow:0 0 12px #60a5fa}\n    .search-results-heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1.5rem}\n    .search-results-heading h2{margin:0;color:#f8fafc;font-size:1.05rem;letter-spacing:-.02em}\n    .search-results-heading p{margin:0;color:#94a3b8;font-size:.8rem}
     .search-eyebrow{margin:0 0 .4rem;color:#bfdbfe;font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
     h1{margin:0;color:#fff;font-size:clamp(2rem,5vw,3rem);letter-spacing:-.045em;line-height:1.1}
     .search-description{margin:.8rem 0 1.5rem;color:#cbd5e1}
     .site-search{position:relative;width:100%;max-width:720px}
-    .site-search-form{display:flex;align-items:center;gap:.55rem;padding:.35rem .4rem .35rem .9rem;border:1px solid #45618d;border-radius:12px;background:#111827}
+    .site-search-form{display:flex;align-items:center;gap:.65rem;padding:.45rem .45rem .45rem 1rem;border:1px solid #45618d;border-radius:14px;background:#080f1d;box-shadow:inset 0 1px 0 #ffffff08}
     .site-search-form:focus-within{border-color:#bfdbfe;box-shadow:0 0 0 3px #bfdbfe24}
     .site-search-icon{width:20px;height:20px;flex:0 0 auto;color:#bfdbfe}
     .site-search-input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#fff;font:inherit}
     .site-search-input::placeholder{color:#cbd5e1}
-    .site-search-submit{min-height:40px;padding:.5rem .9rem;border:0;border-radius:8px;background:#fff;color:#071d4a;font-weight:800;cursor:pointer}
+    .site-search-submit{min-height:44px;padding:.6rem 1.1rem;border:1px solid #93c5fd;border-radius:10px;background:#dbeafe;color:#071d4a;font-weight:850;cursor:pointer;transition:transform .15s ease,background .15s ease}\n    .site-search-submit:hover{background:#fff;transform:translateY(-1px)}\n    .site-search-submit:focus-visible,.advanced-reset:focus-visible{outline:2px solid #bfdbfe;outline-offset:3px}
     .site-search-results{position:absolute;top:calc(100% + .5rem);left:0;right:0;z-index:5;max-height:60vh;overflow:auto;padding:.35rem;border:1px solid #344b70;border-radius:12px;background:#111827;box-shadow:0 18px 40px #020617a8}
     .site-search-results[hidden]{display:none}
     .site-search-result{display:block;padding:.65rem .75rem;border-radius:8px;color:#fff;text-decoration:none}
@@ -47,9 +47,9 @@
     .advanced-check input{width:17px;height:17px;accent-color:#93c5fd}
     .advanced-actions{display:flex;justify-content:flex-end;gap:.6rem;grid-column:1/-1}
     .advanced-reset{padding:.55rem .8rem;border:1px solid #475569;border-radius:8px;background:transparent;color:#e2e8f0;font-weight:700;cursor:pointer}
-    .search-count{margin:1.5rem 0 .7rem;color:#cbd5e1;font-size:.9rem}
-    .search-page-result{display:block;margin:.65rem 0;padding:1rem 1.1rem;border:1px solid #334155;border-radius:12px;background:#111827;color:#fff;text-decoration:none;transition:border-color .15s ease,background .15s ease}
-    .search-page-result:hover,.search-page-result:focus-visible{border-color:#93c5fd;background:#172033;outline:2px solid #93c5fd;outline-offset:2px}
+    .search-count{margin:0;color:#cbd5e1;font-size:.9rem}
+    .search-page-result{display:block;margin:.7rem 0;padding:1.1rem 1.2rem;border:1px solid #263449;border-radius:14px;background:linear-gradient(135deg,#111827,#0f1726);color:#fff;text-decoration:none;transition:transform .15s ease,border-color .15s ease,background .15s ease}\n    .search-page-result:hover,.search-page-result:focus-visible{transform:translateY(-1px)}
+    .search-page-result:hover,.search-page-result:focus-visible{border-color:#60a5fa;background:#172033;outline:2px solid #93c5fd;outline-offset:2px}
     .search-page-result-title,.search-page-result-path,.search-page-result-excerpt{display:block}
     .search-page-result-title{font-weight:800;font-size:1.02rem}
     .search-page-result-path{margin:.12rem 0 .4rem;color:#bfdbfe;font-size:.78rem;overflow-wrap:anywhere}
@@ -115,6 +115,6 @@
     <p class="search-count" id="search-page-count" aria-live="polite">Loading search index…</p>
     <section id="search-page-results" aria-label="Search results"></section>
   </main>
-  <script src="/site-search.js?v=20261023-2" defer></script>
+  <script src="/site-search.js?v=20261023-3" defer></script>
 </body>
 </html>

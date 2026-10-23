@@ -45,7 +45,6 @@
     const path = normalise(page.path || page.url).replace(/^\\/+/, '');
     if (area === 'workspace') return /^(app|workspace)(\\/|$)/.test(path) || /hamlet\\/(workspace|app)/.test(path);
     if (area === 'support') return /(^|\\/)(support|docs|documentation)(\\/|$)/.test(path) || /support|documentation/.test(normalise(page.title));
-    if (area === 'account') return /(^|\\/)(superuser|admin|account|auth|login|members|profile)(\\/|$)/.test(path) || /admin|account|login|profile/.test(normalise(page.title));
     return !/^(app|workspace|support|docs|documentation|superuser|admin|account|auth|login)(\\/|$)/.test(path);
   }
 
@@ -136,7 +135,7 @@
     const query = params.get('q') || '';
     input.value = query;
     if (searchIn && ['all','title','content','path'].includes(params.get('in'))) searchIn.value = params.get('in');
-    if (searchArea && ['all','main','workspace','support','account'].includes(params.get('area'))) searchArea.value = params.get('area');
+    if (searchArea && ['all','main','workspace','support'].includes(params.get('area'))) searchArea.value = params.get('area');
     if (searchSort && ['relevance','title'].includes(params.get('sort'))) searchSort.value = params.get('sort');
     if (searchExact) searchExact.checked = params.get('exact') === '1';
     if (advancedSearch && (params.has('in') || params.has('area') || params.has('sort') || params.has('exact'))) advancedSearch.open = true;

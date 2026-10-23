@@ -288,7 +288,8 @@
         }).join('');
       }
 
-      async function loadArchive() {
+      async function loadArchive(attempt = 0) {
+        listEl.innerHTML = '<div class="empty-state">Loading published installer archive…</div>';
         try {
           const response = await fetch(releasesApi, {
             headers: { Accept: 'application/vnd.github+json' },
@@ -302,10 +303,18 @@
             .sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
           renderArchive();
         } catch (error) {
-          listEl.innerHTML = '<div class="empty-state">The installer archive could not be loaded from GitHub right now. You can still browse the <a href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases">official GitHub Releases page</a>.</div>';
+          if (attempt < 2) {
+            window.setTimeout(() => loadArchive(attempt + 1), 1200 * (attempt + 1));
+            listEl.innerHTML = '<div class="empty-state">The release archive is temporarily unavailable. Retrying…</div>';
+            return;
+          }
+          listEl.innerHTML = '<div class="empty-state">Search is temporarily unavailable because the installer archive could not be reached. <button type="button" class="mini-button" id="retry-archive" style="margin:.5rem">Try again</button><br><a href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases">Browse the official GitHub Releases page</a> instead.</div>';
         }
       }
 
+      listEl.addEventListener('click', event => {
+        if (event.target.closest('#retry-archive')) loadArchive();
+      });
       searchEl.addEventListener('input', renderArchive);
       loadArchive();
       loadCommits();

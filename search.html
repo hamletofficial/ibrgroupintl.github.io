@@ -35,6 +35,18 @@
     .site-search-result strong,.site-search-result small{display:block}
     .site-search-result small{color:#bfdbfe;font-size:.75rem}
     .site-search-empty{padding:.75rem;color:#cbd5e1}
+    .advanced-search{max-width:720px;margin-top:.8rem;border:1px solid #334155;border-radius:12px;background:#111827}
+    .advanced-search summary{padding:.8rem 1rem;color:#bfdbfe;font-weight:800;cursor:pointer}
+    .advanced-search[open] summary{border-bottom:1px solid #334155}
+    .advanced-search-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;padding:1rem}
+    .advanced-field{display:flex;flex-direction:column;gap:.35rem;min-width:0}
+    .advanced-field label,.advanced-field legend{color:#e2e8f0;font-size:.85rem;font-weight:700}
+    .advanced-field select{width:100%;min-height:42px;padding:.55rem .65rem;border:1px solid #475569;border-radius:8px;background:#0b1120;color:#fff;font:inherit}
+    .advanced-field select:focus-visible,.advanced-field input:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
+    .advanced-check{grid-column:1/-1;display:flex;align-items:center;gap:.6rem;color:#cbd5e1;font-size:.9rem}
+    .advanced-check input{width:17px;height:17px;accent-color:#93c5fd}
+    .advanced-actions{display:flex;justify-content:flex-end;gap:.6rem;grid-column:1/-1}
+    .advanced-reset{padding:.55rem .8rem;border:1px solid #475569;border-radius:8px;background:transparent;color:#e2e8f0;font-weight:700;cursor:pointer}
     .search-count{margin:1.5rem 0 .7rem;color:#cbd5e1;font-size:.9rem}
     .search-page-result{display:block;margin:.65rem 0;padding:1rem 1.1rem;border:1px solid #334155;border-radius:12px;background:#111827;color:#fff;text-decoration:none;transition:border-color .15s ease,background .15s ease}
     .search-page-result:hover,.search-page-result:focus-visible{border-color:#93c5fd;background:#172033;outline:2px solid #93c5fd;outline-offset:2px}
@@ -43,7 +55,7 @@
     .search-page-result-path{margin:.12rem 0 .4rem;color:#bfdbfe;font-size:.78rem;overflow-wrap:anywhere}
     .search-page-result-excerpt{color:#cbd5e1;font-size:.9rem;line-height:1.55}
     .search-page-empty{padding:1rem;border:1px solid #334155;border-radius:12px;color:#cbd5e1}
-    @media(max-width:560px){.search-header-inner{padding:.9rem 1rem}.search-main{width:calc(100% - 1.25rem);margin-top:2rem}.site-search-form{gap:.35rem;padding-left:.65rem}.site-search-submit{padding:.45rem .65rem}}
+    @media(max-width:560px){.search-header-inner{padding:.9rem 1rem}.search-main{width:calc(100% - 1.25rem);margin-top:2rem}.site-search-form{gap:.35rem;padding-left:.65rem}.site-search-submit{padding:.45rem .65rem}.advanced-search-fields{grid-template-columns:1fr}.advanced-check,.advanced-actions{grid-column:1}}
   </style>
 </head>
 <body>
@@ -65,6 +77,42 @@
       </form>
       <div class="site-search-results" id="site-search-results" role="listbox" aria-label="Search suggestions" hidden></div>
     </div>
+    <details class="advanced-search" id="advanced-search">
+      <summary>Advanced search options</summary>
+      <div class="advanced-search-fields">
+        <div class="advanced-field">
+          <label for="search-in">Search within</label>
+          <select id="search-in" name="in">
+            <option value="all">All page content</option>
+            <option value="title">Page titles only</option>
+            <option value="content">Visible page text</option>
+            <option value="path">Page URL / path</option>
+          </select>
+        </div>
+        <div class="advanced-field">
+          <label for="search-area">Website area</label>
+          <select id="search-area" name="area">
+            <option value="all">All areas</option>
+            <option value="main">Main website</option>
+            <option value="workspace">Hamlet workspace / app</option>
+            <option value="support">Support and documentation</option>
+            <option value="account">Accounts and administration</option>
+          </select>
+        </div>
+        <div class="advanced-field">
+          <label for="search-sort">Sort results by</label>
+          <select id="search-sort" name="sort">
+            <option value="relevance">Relevance (best match)</option>
+            <option value="title">Page title (A–Z)</option>
+          </select>
+        </div>
+        <label class="advanced-check"><input id="search-exact" type="checkbox" name="exact" value="1"> Match the exact phrase</label>
+        <div class="advanced-actions">
+          <button class="advanced-reset" id="search-reset" type="button">Reset options</button>
+          <button class="site-search-submit" id="advanced-apply" type="button">Apply options</button>
+        </div>
+      </div>
+    </details>
     <p class="search-count" id="search-page-count" aria-live="polite">Loading search index…</p>
     <section id="search-page-results" aria-label="Search results"></section>
   </main>

@@ -42,6 +42,8 @@ jobs:
           from pathlib import Path
 
           EXCLUDED = {'.git', '.vs', '.firebase', 'node_modules'}
+          EXCLUDED_DIRS = {'superuser', 'admin', 'account', 'accounts', 'auth', 'authentication'}
+          EXCLUDED_FILES = {'admin.html', 'login.html', 'editprofile.html', 'invoice.html'}
           class PageText(HTMLParser):
               def __init__(self):
                   super().__init__()
@@ -71,6 +73,10 @@ jobs:
           pages = []
           for path in sorted(Path('.').rglob('*.html')):
               if any(part in EXCLUDED for part in path.parts):
+                  continue
+              if any(part.lower() in EXCLUDED_DIRS for part in path.parts[:-1]):
+                  continue
+              if path.name.lower() in EXCLUDED_FILES:
                   continue
               if path.name.startswith('.'):
                   continue

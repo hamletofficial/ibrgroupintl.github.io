@@ -31,6 +31,70 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Build searchable page index
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import html
+          import json
+          import re
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          EXCLUDED = {'.git', '.vs', '.firebase', 'node_modules'}
+          class PageText(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.title = ''
+                  self.in_title = False
+                  self.skip = 0
+                  self.parts = []
+              def handle_starttag(self, tag, attrs):
+                  if tag in ('script', 'style', 'noscript', 'svg'):
+                      self.skip += 1
+                  if tag == 'title':
+                      self.in_title = True
+              def handle_endtag(self, tag):
+                  if tag in ('script', 'style', 'noscript', 'svg') and self.skip:
+                      self.skip -= 1
+                  if tag == 'title':
+                      self.in_title = False
+              def handle_data(self, data):
+                  value = ' '.join(data.split())
+                  if not value:
+                      return
+                  if self.in_title:
+                      self.title += (' ' if self.title else '') + value
+                  if not self.skip:
+                      self.parts.append(value)
+
+          pages = []
+          for path in sorted(Path('.').rglob('*.html')):
+              if any(part in EXCLUDED for part in path.parts):
+                  continue
+              if path.name.startswith('.'):
+                  continue
+              try:
+                  source = path.read_text(encoding='utf-8', errors='ignore')
+              except OSError:
+                  continue
+              parser = PageText()
+              try:
+                  parser.feed(source)
+              except Exception:
+                  pass
+              title = html.unescape(parser.title.strip()) or path.stem.replace('-', ' ').replace('_', ' ').title()
+              text = html.unescape(' '.join(parser.parts))
+              text = re.sub(r'\\s+', ' ', text).strip()
+              if not text:
+                  continue
+              relative = path.as_posix()
+              url = '/' if relative == 'index.html' else '/' + relative
+              pages.append({'title': title, 'url': url, 'path': relative, 'text': text[:18000]})
+
+          Path('search-index.json').write_text(json.dumps(pages, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+          print(f'Indexed {len(pages)} HTML pages into search-index.json')
+          PY
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

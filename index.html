@@ -25,6 +25,21 @@
     a{color:var(--link);text-underline-offset:3px}
     a:focus-visible,button:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
     .container{width:min(1120px,calc(100% - 2rem));margin-inline:auto}
+    .site-search{position:relative;flex:1;max-width:350px;min-width:170px}
+    .site-search-form{display:flex;align-items:center;gap:.45rem;width:100%;padding:.28rem .35rem .28rem .75rem;border:1px solid #45618d;border-radius:11px;background:#0b1b3a;box-shadow:inset 0 1px 2px #02061735}
+    .site-search-form:focus-within{border-color:#bfdbfe;box-shadow:0 0 0 3px #bfdbfe24}
+    .site-search-icon{width:18px;height:18px;flex:0 0 auto;color:#bfdbfe}
+    .site-search-input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#fff;font:inherit;font-size:.88rem}
+    .site-search-input::placeholder{color:#cbd5e1;opacity:.9}
+    .site-search-submit{flex:0 0 auto;min-height:34px;padding:.38rem .65rem;border:0;border-radius:8px;background:#fff;color:#071d4a;font-size:.8rem;font-weight:800;cursor:pointer}
+    .site-search-submit:hover{background:#dbeafe}
+    .site-search-results{position:absolute;top:calc(100% + .5rem);left:0;right:0;z-index:50;max-height:min(65vh,440px);overflow:auto;padding:.35rem;border:1px solid #344b70;border-radius:12px;background:#111827;box-shadow:0 18px 40px #020617a8}
+    .site-search-results[hidden]{display:none}
+    .site-search-result{display:block;padding:.65rem .75rem;border-radius:8px;color:#fff;text-decoration:none}
+    .site-search-result:hover,.site-search-result:focus-visible{background:#1f2937;outline:2px solid #93c5fd;outline-offset:-2px}
+    .site-search-result strong{display:block;font-size:.88rem;line-height:1.35}
+    .site-search-result small{display:block;margin-top:.18rem;color:#bfdbfe;font-size:.75rem;overflow-wrap:anywhere}
+    .site-search-empty{padding:.75rem;color:#cbd5e1;font-size:.85rem}
     .site-header{position:sticky;top:0;z-index:20;background:linear-gradient(115deg,#071d4a 0%,#0a245b 52%,#071d4a 100%);border-bottom:1px solid #374151}
     .header-row{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
     .brand{font-size:1.35rem;font-weight:800;letter-spacing:-.04em;text-decoration:none;color:#fff}
@@ -153,6 +168,14 @@
   <header class="site-header">
     <div class="container header-row">
       <a class="brand" href="/index.html" aria-label="hamlet home">hamlet <span>by IBR</span></a>
+      <div class="site-search" role="search">
+        <form class="site-search-form" id="site-search-form" action="/search.html" method="get" autocomplete="off">
+          <svg class="site-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"></circle><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+          <input class="site-search-input" id="site-search-input" name="q" type="search" placeholder="Search all pages…" aria-label="Search all Hamlet pages" aria-controls="site-search-results" aria-expanded="false" minlength="2">
+          <button class="site-search-submit" type="submit">Search</button>
+        </form>
+        <div class="site-search-results" id="site-search-results" role="listbox" aria-label="Search suggestions" hidden></div>
+      </div>
       <nav class="nav" aria-label="Main navigation">
         <a class="button" href="#how-to-use">How it works</a>
         <a class="button" href="/contact.html">Contact sales</a>
@@ -492,6 +515,7 @@
       }, {once:true});
     })();
   </script>
-\n  <script src="/hamlet-background.js?v=20261021-2"></script>
+\n  <script src="/site-search.js?v=20261023-1" defer></script>
+  <script src="/hamlet-background.js?v=20261021-2"></script>
 </body>
 </html>

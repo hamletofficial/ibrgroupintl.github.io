@@ -14,20 +14,14 @@ var routes=[
  {label:'Archive',short:'Archive',href:'/archive.html',icon:'▱',paths:['/archive.html'],desc:'Find saved and archived communications.'},
  {label:'Account Settings',short:'Settings',href:'/settings.html',icon:'⚙',paths:['/settings.html'],desc:'Manage your profile, privacy and security.',searchable:false},
  {label:'Edit Profile',short:'Edit Profile',href:'/editprofile.html',icon:'♙',paths:['/editprofile.html'],desc:'Update your member profile details.',searchable:false},
+ {label:'Invoices',short:'Invoices',href:'/invoice.html',icon:'▤',paths:['/invoice.html'],desc:'View subscription and payment options.',searchable:false},
+ {label:'Members Area',short:'Members',href:'/members.html',icon:'▣',paths:['/members.html'],desc:'Open member resources and account tools.'}
 ];
 var palette=null,paletteInput=null,paletteLinks=[],paletteRouteSelect=null,paletteStatus=null,lastFocus=null,previousBodyOverflow='';
 function currentPath(){return (location.pathname||'/').replace(/\/$/,'')||'/'}
 function withQuery(href,q){if(!q)return href;return href+(href.indexOf('?')>=0?'&':'?')+'q='+encodeURIComponent(q)}
 function make(tag,cls,text){var node=document.createElement(tag);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node}
 function buildNav(){
- /* Enforce shared-navigation exclusions on every page, including legacy page-specific headers. */
- document.querySelectorAll('nav a[href]').forEach(function(link){
-  var href=(link.getAttribute('href')||'').split(/[?#]/)[0].replace(/\/$/,'').toLowerCase();
-  var label=(link.textContent||'').replace(/[\s\u00a0]+/g,' ').trim().toLowerCase();
-  if(href==='/invoice.html'||href==='/members.html'||label==='invoice'||label==='invoices'||label==='members area'){
-   link.parentNode&&link.parentNode.removeChild(link);
-  }
- });
  var existing=document.querySelector('nav.workspace-nav');
  if(existing){
   /* Flatten previously grouped links so Edit Profile and Invoices remain visible
@@ -39,7 +33,7 @@ function buildNav(){
    });
    if(group.parentNode)group.parentNode.removeChild(group);
   });
-  routes.filter(function(r){return !r.parent}).forEach(function(r){
+  routes.filter(function(r){return !r.parent&&r.href!='/members.html'}).forEach(function(r){
    var children=routes.filter(function(child){return child.parent===r.short});
    var existingLink=existing.querySelector('a[href="'+r.href+'"]');
    if(children.length){

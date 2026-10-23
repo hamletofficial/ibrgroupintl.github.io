@@ -11,3 +11,4 @@ AI_MODEL = "gpt-5.2-pro"
 [[send_email]]
 name = "EMAIL"
 remote = true
+allowed_sender_addresses = ["no+reply@mail.hamlet-ai.co.uk"]

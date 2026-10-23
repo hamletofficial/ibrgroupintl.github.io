@@ -50,8 +50,8 @@ jobs:
                   self.title = ''
                   self.in_title = False
                   self.skip = 0
-                  self.transient_tags = []
-              self.parts = []
+                      self.transient_tags = []
+                  self.parts = []
               def handle_starttag(self, tag, attrs):
                   attrs = dict(attrs)
                   if tag in ('script', 'style', 'noscript', 'svg'):

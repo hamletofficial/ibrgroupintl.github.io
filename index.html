@@ -25,17 +25,15 @@
     a{color:var(--link);text-underline-offset:3px}
     a:focus-visible,button:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
     .container{width:min(1120px,calc(100% - 2rem));margin-inline:auto}
-    .site-header{position:sticky;top:0;z-index:20;background:linear-gradient(115deg,#071d4a 0%,#0a245b 52%,#071d4a 100%);border-bottom:1px solid #31466b;box-shadow:0 8px 24px #02061735}
-    .header-row{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:1.25rem}
-    .brand{display:inline-flex;align-items:baseline;gap:.42rem;font-size:1.55rem;font-weight:850;letter-spacing:-.055em;text-decoration:none;color:#fff;white-space:nowrap;line-height:1}
-    .brand span{color:#bfdbfe;font-size:.78rem;font-weight:750;letter-spacing:.015em}
-    .nav{display:flex;align-items:center;justify-content:flex-end;gap:.5rem;flex-wrap:wrap}
-    .nav .button{min-height:42px;padding:.62rem .9rem;border-color:#45618d;border-radius:10px;background:#0d2148;color:#fff;font-size:.88rem;transition:background-color .18s ease,border-color .18s ease,transform .18s ease,box-shadow .18s ease}
-    .nav .button:hover{border-color:#bfdbfe;background:#173565;box-shadow:0 5px 14px #02061735}
-    .nav .button:active{transform:translateY(1px)}
-    .nav .button.primary{background:#fff;color:#071d4a;border-color:#fff;box-shadow:0 4px 12px #02061725}
-    .nav .button.primary:hover{background:#dbeafe;border-color:#dbeafe}
-    .brand:focus-visible,.nav .button:focus-visible{outline:3px solid #bfdbfe;outline-offset:4px}
+    .site-header{position:sticky;top:0;z-index:20;background:linear-gradient(115deg,#071d4a 0%,#0a245b 52%,#071d4a 100%);border-bottom:1px solid #374151}
+    .header-row{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .brand{font-size:1.35rem;font-weight:800;letter-spacing:-.04em;text-decoration:none;color:#fff}
+    .brand span{color:#bfdbfe}
+    .nav{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+    .button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.68rem .95rem;border:1px solid #4b5563;border-radius:9px;background:#111827;color:#fff;text-decoration:none;font-weight:700;font-size:.92rem}
+    .button:hover{border-color:#93c5fd;background:#1f2937}
+    .button.primary{background:#fff;color:#111827;border-color:#fff}
+    .button.primary:hover{background:#e5e7eb}
     .hero{padding:clamp(3rem,8vw,6.2rem) 0 3rem}
     .hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr);gap:2rem;align-items:center}
     .eyebrow{display:inline-flex;padding:.32rem .7rem;border:1px solid #4b5563;border-radius:999px;color:#e5e7eb;font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
@@ -116,8 +114,7 @@
     .price-label{margin:0 0 .6rem;color:#bddcff;font-size:.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.price{margin:0;font-size:clamp(2rem,3.5vw,2.6rem);line-height:1.1;font-weight:850;letter-spacing:-.055em}.price span{color:#a8b8cf;font-size:.82rem;font-weight:650;letter-spacing:0}
     .price-description{flex:1;margin:.65rem 0 1rem;color:var(--muted);font-size:.9rem}.price-card .button{width:100%}.pricing-note{margin-top:1.1rem;padding:1rem 1.1rem;border:1px solid #33445d;border-left:3px solid #93c5fd;border-radius:10px;color:var(--muted);background:#101a2a;font-size:.87rem}.pricing-note strong{color:#fff}
     @media(max-width:850px){.hero-grid,.usp,.launch-grid{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow{grid-template-columns:repeat(2,minmax(0,1fr))}.capability-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.pricing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:850px){.header-row{min-height:68px;gap:.75rem}.brand{font-size:1.42rem}.nav{gap:.4rem}.nav .button{padding:.58rem .7rem;font-size:.83rem}}
-    @media(max-width:560px){.header-row{align-items:stretch;flex-direction:column;padding:.85rem 0 .8rem;gap:.8rem}.brand{align-self:flex-start;font-size:1.5rem}.brand span{font-size:.76rem}.nav{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}.nav .button{width:100%;min-width:0;min-height:44px;padding:.62rem .45rem;text-align:center;white-space:normal;line-height:1.2;font-size:.84rem}.nav .button:last-child{grid-column:1/-1}.grid,.ticks,.workflow,.capability-strip,.pricing-grid{grid-template-columns:1fr}.hero{padding-top:2.8rem}.hero-panel{padding:1rem}.product-preview{padding:0}.preview-body{padding:.7rem}.preview-top{padding:.75rem}.preview-columns{gap:.3rem}.preview-column{padding:.35rem}.preview-deal{padding:.38rem}.preview-column-title{font-size:.59rem}.preview-deal strong{font-size:.6rem}.preview-deal small{font-size:.56rem}}
+    @media(max-width:560px){.header-row{align-items:stretch;flex-direction:column;padding:.8rem 0}.brand{align-self:flex-start}.nav{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}.nav .button{width:100%;min-width:0;min-height:44px;padding:.62rem .45rem;text-align:center;white-space:normal;line-height:1.25}.nav .button:last-child{grid-column:1/-1}.grid,.ticks,.workflow,.capability-strip,.pricing-grid{grid-template-columns:1fr}.hero{padding-top:2.8rem}.hero-panel{padding:1rem}.product-preview{padding:0}.preview-body{padding:.7rem}.preview-top{padding:.75rem}.preview-columns{gap:.3rem}.preview-column{padding:.35rem}.preview-deal{padding:.38rem}.preview-column-title{font-size:.59rem}.preview-deal strong{font-size:.6rem}.preview-deal small{font-size:.56rem}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
   
 
@@ -157,7 +154,6 @@
     <div class="container header-row">
       <a class="brand" href="/index.html" aria-label="hamlet home">hamlet <span>by IBR</span></a>
       <nav class="nav" aria-label="Main navigation">
-        <a class="button" href="#modules">Explore modules</a>
         <a class="button" href="#how-to-use">How it works</a>
         <a class="button" href="/contact.html">Contact sales</a>
         <a class="button primary" id="homepage-auth-button" href="/login.html">Log in</a>

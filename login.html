@@ -1070,6 +1070,7 @@
           try {
             var requested = new URLSearchParams(window.location.search).get('next');
             sessionStorage.setItem('post_login_next', safeNext(requested) || '/app/public/dashboard.html');
+            sessionStorage.setItem('hamlet_login_notification_pending', '1');
           } catch (error) {}
         }
         function showUserStatus(user) {
@@ -1150,8 +1151,42 @@
             console.warn('Could not save sign-in method to public profile:', error);
           }
         }
+        function sendLoginNotificationOnce(user) {
+          var pending = false;
+          try {
+            pending = sessionStorage.getItem('hamlet_login_notification_pending') === '1';
+            if (!pending) return;
+            sessionStorage.removeItem('hamlet_login_notification_pending');
+          } catch (error) { return; }
+          if (!user || !user.email || !user.emailVerified) return;
+          user.getIdTokenResult().then(function (tokenResult) {
+            var authTime = tokenResult && tokenResult.claims && tokenResult.claims.auth_time;
+            if (!authTime) return;
+            var key = 'hamlet_login_email_sent_' + user.uid + '_' + authTime;
+            try {
+              if (localStorage.getItem(key)) return;
+              localStorage.setItem(key, '1');
+            } catch (error) { return; }
+            return user.getIdToken().then(function (token) {
+              return fetch('https://hamlet-ai-gateway-staging.alfred-mayaki.workers.dev/v1/login-notification', {
+                method: 'POST',
+                keepalive: true,
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: '{}'
+              }).then(function (response) {
+                if (!response.ok) {
+                  try { localStorage.removeItem(key); } catch (error) {}
+                  console.warn('Hamlet login notification was not sent:', response.status);
+                }
+              });
+            });
+          }).catch(function (error) {
+            console.warn('Hamlet login notification could not be requested:', error);
+          });
+        }
         function finishSignIn(user) {
           if (!user || !redirectSettled || redirectTimer) return;
+          sendLoginNotificationOnce(user);
           recordSignInMethod(user);
           showUserStatus(user);
           var target = postLoginPath();

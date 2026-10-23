@@ -28,9 +28,24 @@
         .then(data => {
           // Exclude stale/generated records containing transient search UI status copy.
           const index = Array.isArray(data) ? data : [];
+          // Defence in depth: never show Firebase-authenticated/private pages,
+          // even if an older or incorrectly generated index still contains them.
+          const privateFiles = new Set([
+            'archive.html', 'dashboard.html', 'live.html', 'portfolio.html',
+            'residential.html', 'resi-resources.html', 'resources.html', 'members.html',
+            'directory.html', 'profile.html', 'editprofile.html', 'posts.html',
+            'rankings.html', 'messages.html', 'requests.html', 'settings.html',
+            'admin.html', 'login.html', 'invoice.html', 'loggedout.html',
+            'callback.html', 'success.html'
+          ]);
+          const privateDirs = /^(?:app\/hamlet|app\/public|app\/functions\/public|functions\/public|public|superuser|account|accounts|auth|authentication)(?:\/|$)/i;
           pages = index.filter(page => {
             const searchableText = [page.title, page.path, page.url, page.text].join(' ').toLocaleLowerCase();
-            return !/loading\s+search\s+index/.test(searchableText);
+            const path = String(page.path || page.url || '').replace(/^\/+/, '');
+            const filename = path.split('/').pop().toLowerCase();
+            return !/loading\s+search\s+index/.test(searchableText)
+              && !privateFiles.has(filename)
+              && !privateDirs.test(path);
           });
           return pages;
         })

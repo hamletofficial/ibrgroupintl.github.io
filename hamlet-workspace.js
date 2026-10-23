@@ -15,7 +15,6 @@ var routes=[
  {label:'Account Settings',short:'Settings',href:'/settings.html',icon:'⚙',paths:['/settings.html'],desc:'Manage your profile, privacy and security.',searchable:false},
  {label:'Edit Profile',short:'Edit Profile',href:'/editprofile.html',icon:'♙',paths:['/editprofile.html'],desc:'Update your member profile details.',searchable:false},
  {label:'Invoices',short:'Invoices',href:'/invoice.html',icon:'▤',paths:['/invoice.html'],desc:'View subscription and payment options.',searchable:false},
- {label:'Members Area',short:'Members',href:'/members.html',icon:'▣',paths:['/members.html'],desc:'Open member resources and account tools.'}
 ];
 var palette=null,paletteInput=null,paletteLinks=[],paletteRouteSelect=null,paletteStatus=null,lastFocus=null,previousBodyOverflow='';
 function currentPath(){return (location.pathname||'/').replace(/\/$/,'')||'/'}
@@ -86,13 +85,11 @@ function buildPalette(){
  var close=make('button','hamlet-search-close','×');close.type='button';close.setAttribute('aria-label','Close search');close.addEventListener('click',closePalette);head.appendChild(close);dialog.appendChild(head);
  var form=make('form','hamlet-search-form');form.setAttribute('role','search');paletteInput=make('input','hamlet-search-input');paletteInput.type='search';paletteInput.maxLength=140;paletteInput.placeholder='Property, location, member, deal or post…';paletteInput.setAttribute('aria-label','Search term');form.appendChild(paletteInput);
  paletteRouteSelect=make('select','hamlet-search-route');paletteRouteSelect.setAttribute('aria-label','Choose where to search');var choose=make('option','','Choose workspace…');choose.value='';paletteRouteSelect.appendChild(choose);
- routes.filter(function(r){return r.href!=='/members.html'&&r.searchable!==false&&!r.parent}).forEach(function(r){var option=make('option','',r.label);option.value=r.href;paletteRouteSelect.appendChild(option)});
  var submit=make('button','hamlet-search-submit','Search');submit.type='submit';form.appendChild(paletteRouteSelect);form.appendChild(submit);dialog.appendChild(form);
  paletteStatus=make('div','hamlet-search-status');paletteStatus.setAttribute('role','status');paletteStatus.setAttribute('aria-live','polite');paletteStatus.hidden=true;dialog.appendChild(paletteStatus);
  form.addEventListener('submit',function(e){e.preventDefault();var q=paletteInput.value.trim(),target=paletteRouteSelect.value;if(!target){var path=currentPath(),current=routes.find(function(r){return r.paths.indexOf(path)!==-1});if(current&&current.href!='/messages.html'){target=current.href}else{paletteStatus.textContent='Choose a workspace below or select one from the destination menu.';paletteStatus.hidden=false;paletteRouteSelect.focus();return}}location.href=withQuery(target,q)});
  var caption=make('div','hamlet-search-caption','Choose where to search');dialog.appendChild(caption);
  var list=make('div','hamlet-search-destinations');
- routes.filter(function(r){return r.href!=='/members.html'&&r.searchable!==false&&!r.parent}).forEach(function(r){
    var a=make('a','hamlet-search-destination');a.href=r.href;a.dataset.base=r.href;
    var strong=make('strong','',r.label);var desc=make('span','',r.desc);a.appendChild(strong);a.appendChild(desc);
    a.addEventListener('click',function(e){var q=paletteInput.value.trim();paletteRouteSelect.value=r.href;paletteLinks.forEach(function(link){link.classList.toggle('is-selected',link===a);link.setAttribute('aria-current',link===a?'true':'false')});if(q){e.preventDefault();location.href=withQuery(r.href,q)}});

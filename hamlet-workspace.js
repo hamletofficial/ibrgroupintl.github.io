@@ -14,7 +14,6 @@ var routes=[
  {label:'Archive',short:'Archive',href:'/archive.html',icon:'▱',paths:['/archive.html'],desc:'Find saved and archived communications.'},
  {label:'Account Settings',short:'Settings',href:'/settings.html',icon:'⚙',paths:['/settings.html'],desc:'Manage your profile, privacy and security.',searchable:false},
  {label:'Edit Profile',short:'Edit Profile',href:'/editprofile.html',icon:'♙',paths:['/editprofile.html'],desc:'Update your member profile details.',searchable:false},
- {label:'Invoices',short:'Invoices',href:'/invoice.html',icon:'▤',paths:['/invoice.html'],desc:'View subscription and payment options.',searchable:false},
 ];
 var palette=null,paletteInput=null,paletteLinks=[],paletteRouteSelect=null,paletteStatus=null,lastFocus=null,previousBodyOverflow='';
 function currentPath(){return (location.pathname||'/').replace(/\/$/,'')||'/'}

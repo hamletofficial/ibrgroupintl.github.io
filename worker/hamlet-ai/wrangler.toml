@@ -7,7 +7,6 @@ workers_dev = true
 FIREBASE_PROJECT_ID = "wale-491805"
 AI_MODEL = "gpt-5.2-pro"
 
-SMTP_FROM_EMAIL = "no+reply@mail.hamlet-ai.co.uk"
 
 [[send_email]]
 name = "EMAIL"

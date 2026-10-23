@@ -6,6 +6,13 @@
   const pageResults = document.getElementById('search-page-results');
   const pageQuery = document.getElementById('search-page-query');
   const pageCount = document.getElementById('search-page-count');
+  const searchIn = document.getElementById('search-in');
+  const searchArea = document.getElementById('search-area');
+  const searchSort = document.getElementById('search-sort');
+  const searchExact = document.getElementById('search-exact');
+  const advancedSearch = document.getElementById('advanced-search');
+  const resetOptions = document.getElementById('search-reset');
+  const applyOptions = document.getElementById('advanced-apply');
   if (!form || !input) return;
 
   let pages = [];
@@ -24,23 +31,54 @@
     return indexPromise;
   }
 
-  function rankPages(query) {
+  function currentOptions() {
+    return {
+      in: searchIn ? searchIn.value : 'all',
+      area: searchArea ? searchArea.value : 'all',
+      sort: searchSort ? searchSort.value : 'relevance',
+      exact: Boolean(searchExact && searchExact.checked)
+    };
+  }
+
+  function areaMatches(page, area) {
+    if (area === 'all') return true;
+    const path = normalise(page.path || page.url).replace(/^\\/+/, '');
+    if (area === 'workspace') return /^(app|workspace)(\\/|$)/.test(path) || /hamlet\\/(workspace|app)/.test(path);
+    if (area === 'support') return /(^|\\/)(support|docs|documentation)(\\/|$)/.test(path) || /support|documentation/.test(normalise(page.title));
+    if (area === 'account') return /(^|\\/)(superuser|admin|account|auth|login|members|profile)(\\/|$)/.test(path) || /admin|account|login|profile/.test(normalise(page.title));
+    return !/^(app|workspace|support|docs|documentation|superuser|admin|account|auth|login)(\\/|$)/.test(path);
+  }
+
+  function rankPages(query, options = currentOptions()) {
     const terms = termsFor(query);
     if (!terms.length) return [];
+    const phrase = normalise(query).trim();
     return pages.map(page => {
+      if (!areaMatches(page, options.area)) return null;
       const title = normalise(page.title);
       const path = normalise(page.path || page.url);
       const text = normalise(page.text);
+      const searchable = options.in === 'title' ? title : options.in === 'content' ? text : options.in === 'path' ? path : title + ' ' + path + ' ' + text;
+      if (options.exact && !searchable.includes(phrase)) return null;
       let score = 0;
       for (const term of terms) {
-        if (title.includes(term)) score += title === term ? 16 : title.startsWith(term) ? 10 : 7;
-        if (path.includes(term)) score += 5;
-        if (text.includes(term)) score += 2;
-        else if (!title.includes(term) && !path.includes(term)) return null;
+        const titleHit = title.includes(term);
+        const pathHit = path.includes(term);
+        const textHit = text.includes(term);
+        const fieldHit = searchable.includes(term);
+        if (!fieldHit) return null;
+        if (options.in === 'all' || options.in === 'title') {
+          if (titleHit) score += title === term ? 16 : title.startsWith(term) ? 10 : 7;
+        }
+        if ((options.in === 'all' || options.in === 'path') && pathHit) score += 5;
+        if ((options.in === 'all' || options.in === 'content') && textHit) score += 2;
       }
       if (terms.length > 1 && terms.every(term => title.includes(term))) score += 6;
+      if (options.exact) score += 20;
       return {page, score};
-    }).filter(Boolean).sort((a,b) => b.score-a.score || a.page.title.localeCompare(b.page.title));
+    }).filter(Boolean).sort((a,b) => options.sort === 'title'
+      ? a.page.title.localeCompare(b.page.title)
+      : b.score-a.score || a.page.title.localeCompare(b.page.title));
   }
 
   function renderSuggestions(items, message) {
@@ -97,6 +135,11 @@
     const params = new URLSearchParams(window.location.search);
     const query = params.get('q') || '';
     input.value = query;
+    if (searchIn && ['all','title','content','path'].includes(params.get('in'))) searchIn.value = params.get('in');
+    if (searchArea && ['all','main','workspace','support','account'].includes(params.get('area'))) searchArea.value = params.get('area');
+    if (searchSort && ['relevance','title'].includes(params.get('sort'))) searchSort.value = params.get('sort');
+    if (searchExact) searchExact.checked = params.get('exact') === '1';
+    if (advancedSearch && (params.has('in') || params.has('area') || params.has('sort') || params.has('exact'))) advancedSearch.open = true;
     if (pageQuery) pageQuery.textContent = query ? 'Results for “' + query + '”' : 'Search all Hamlet pages';
     (async () => {
       if (query.trim().length < 2) {
@@ -106,8 +149,8 @@
       }
       try {
         await loadIndex();
-        const results = rankPages(query);
-        if (pageCount) pageCount.textContent = results.length + (results.length === 1 ? ' page found' : ' pages found');
+        const results = rankPages(query, currentOptions());
+        if (pageCount) pageCount.textContent = results.length + (results.length === 1 ? ' page found' : ' pages found') + (currentOptions().exact ? ' · exact phrase' : '');
         pageResults.innerHTML = results.length ? results.map(({page}) =>
           '<a class="search-page-result" href="' + escapeHtml(page.url) + '"><span class="search-page-result-title">' + escapeHtml(page.title) + '</span><span class="search-page-result-path">' + escapeHtml(page.path || page.url) + '</span><span class="search-page-result-excerpt">' + escapeHtml(makeExcerpt(page.text, termsFor(query))) + '</span></a>'
         ).join('') : '<p class="search-page-empty">No matching pages found. Try a different word or phrase.</p>';
@@ -117,6 +160,24 @@
       }
     })();
   }
+
+  function submitAdvancedSearch() {
+    const query = input.value.trim();
+    if (query.length < 2) { input.focus(); return; }
+    const options = currentOptions();
+    const params = new URLSearchParams({q:query, in:options.in, area:options.area, sort:options.sort});
+    if (options.exact) params.set('exact','1');
+    window.location.href = '/search.html?' + params.toString();
+  }
+
+  if (applyOptions) applyOptions.addEventListener('click', submitAdvancedSearch);
+  if (resetOptions) resetOptions.addEventListener('click', () => {
+    if (searchIn) searchIn.value = 'all';
+    if (searchArea) searchArea.value = 'all';
+    if (searchSort) searchSort.value = 'relevance';
+    if (searchExact) searchExact.checked = false;
+    if (advancedSearch) advancedSearch.open = true;
+  });
 
   function makeExcerpt(text, terms) {
     const source = String(text || '').replace(/\s+/g,' ').trim();

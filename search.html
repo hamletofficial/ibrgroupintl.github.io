@@ -18,30 +18,10 @@
     .search-brand span{color:#bfdbfe;font-size:.78rem;letter-spacing:0}
     .search-home{color:#fff;text-decoration:none;font-weight:700;font-size:.9rem}
     .search-main{width:min(960px,calc(100% - 2rem));margin:clamp(2rem,6vw,4.5rem) auto 4rem}
-    .search-hero{position:relative;overflow:hidden;padding:clamp(1.25rem,4vw,2.25rem);border:1px solid #263b5b;border-radius:30px;background:#0b1120;box-shadow:0 22px 55px #02061755}
+    .search-hero{position:relative;overflow:hidden;padding:clamp(1.25rem,4vw,2.25rem);border:1px solid #263b5b;border-radius:22px;background:radial-gradient(ellipse at 100% 0%,#16336a66 0,transparent 45%),linear-gradient(145deg,#111827,#0d1628 78%);box-shadow:0 22px 55px #02061755}
     .search-hero:before{content:"";position:absolute;top:0;left:1.5rem;right:1.5rem;height:2px;background:linear-gradient(90deg,transparent,#60a5fa,transparent);opacity:.8}
     .search-hero>*{position:relative}
     .search-description{max-width:650px;margin:.8rem 0 1.5rem;color:#cbd5e1}
-    .search-brandline{display:flex;align-items:center;gap:1rem;margin-bottom:1.6rem}
-    .search-brand-icon{display:grid;place-items:center;flex:0 0 70px;width:70px;height:70px;border-radius:20px;background:#071d4a;color:#fff}
-    .search-brand-icon svg{width:35px;height:35px}
-    .search-brandline h1{font-size:clamp(1.65rem,4vw,2.1rem);letter-spacing:-.035em}
-    .search-brandline .search-description{margin:.3rem 0 0;color:#aebbd0}
-    .search-controls{padding:1.15rem;border:1px solid #334155;border-radius:28px;background:#111827}
-    .site-search-form{border-radius:999px;background:#303744;border:1px solid transparent;box-shadow:none;padding:.45rem .55rem .45rem .95rem}
-    .site-search-form:focus-within{border-color:#93c5fd;box-shadow:0 0 0 3px #2563eb2a}
-    .site-search-input{padding:.35rem .15rem;font-size:1.02rem}
-    .site-search-input::placeholder{color:#a1a1aa}
-    .site-search-submit{min-height:46px;padding:.65rem 1.3rem;border:0;border-radius:999px;background:#f8fafc;color:#080d18;font-size:1rem;font-weight:800}
-    .site-search-submit:hover{background:#dbeafe}
-    .search-divider{height:1px;margin:1.2rem 0;border:0;background:#334155}
-    .search-categories{display:flex;flex-wrap:wrap;gap:.6rem}
-    .search-category{min-height:44px;padding:.55rem 1rem;border:1px solid transparent;border-radius:999px;background:#202938;color:#cbd5e1;font:inherit;font-size:.95rem;cursor:pointer}
-    .search-category[aria-pressed="true"]{background:#2453e6;color:#fff;font-weight:800}
-    .search-category:focus-visible{outline:2px solid #bfdbfe;outline-offset:3px}
-    .search-cta-row{margin-top:1rem}
-    .search-benefit{display:flex;align-items:center;gap:.6rem;margin:1.1rem 0 0 0;color:#aebbd0;font-size:.88rem}
-    .search-benefit svg{width:22px;height:22px;flex:0 0 auto;color:#6ee7b7}
     .search-prompt{display:flex;align-items:center;gap:.5rem;margin-top:.8rem;color:#94a3b8;font-size:.8rem}
     .search-prompt-dot{width:6px;height:6px;border-radius:50%;background:#60a5fa;box-shadow:0 0 12px #60a5fa}
     .search-results-heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1.5rem}
@@ -87,7 +67,7 @@
     .search-page-result-path{margin:.12rem 0 .4rem;color:#bfdbfe;font-size:.78rem;overflow-wrap:anywhere}
     .search-page-result-excerpt{color:#cbd5e1;font-size:.9rem;line-height:1.55}
     .search-page-empty{padding:1rem;border:1px solid #334155;border-radius:12px;color:#cbd5e1}
-    @media(max-width:560px){.search-header-inner{padding:.9rem 1rem}.search-main{width:calc(100% - 1.25rem);margin-top:2rem}.site-search-form{gap:.35rem;padding-left:.65rem}.site-search-submit{padding:.45rem .8rem}.search-brand-icon{flex-basis:58px;width:58px;height:58px;border-radius:16px}.search-brandline{gap:.8rem}.search-controls{padding:.85rem}.search-category{padding:.5rem .85rem}.advanced-search-fields{grid-template-columns:1fr}.advanced-check,.advanced-actions{grid-column:1}}
+    @media(max-width:560px){.search-header-inner{padding:.9rem 1rem}.search-main{width:calc(100% - 1.25rem);margin-top:2rem}.site-search-form{gap:.35rem;padding-left:.65rem}.site-search-submit{padding:.45rem .65rem}.advanced-search-fields{grid-template-columns:1fr}.advanced-check,.advanced-actions{grid-column:1}}
   </style>
 </head>
 <body>
@@ -99,29 +79,18 @@
   </header>
   <main class="search-main">
     <section class="search-hero" aria-labelledby="search-page-query">
-      <div class="search-brandline">
-        <div class="search-brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"></circle><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></div>
-        <div><h1 id="search-page-query">Search Hamlet</h1><p class="search-description">Find properties, brokers, resources and more.</p></div>
+      <p class="search-eyebrow">Hamlet intelligence</p>
+      <h1 id="search-page-query">Find what you need, faster.</h1>
+      <p class="search-description">Explore Hamlet pages, broker resources and product guidance from one focused search.</p>
+      <div class="site-search" role="search">
+      <form class="site-search-form" id="site-search-form" action="/search.html" method="get" autocomplete="off">
+        <svg class="site-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"></circle><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+        <input class="site-search-input" id="site-search-input" name="q" type="search" placeholder="Try ‘sustainable offices in London’" aria-label="Search all Hamlet pages" aria-controls="site-search-results" aria-expanded="false" minlength="2">
+        <button class="site-search-submit" type="submit">Search</button>
+      </form>
+      <div class="site-search-results" id="site-search-results" role="listbox" aria-label="Search suggestions" hidden></div>
       </div>
-      <div class="search-controls">
-        <div class="site-search" role="search">
-          <form class="site-search-form" id="site-search-form" action="/search.html" method="get" autocomplete="off">
-            <svg class="site-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"></circle><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
-            <input class="site-search-input" id="site-search-input" name="q" type="search" placeholder="Try “sustainable offices in London”" aria-label="Search all Hamlet pages" aria-controls="site-search-results" aria-expanded="false" minlength="2">
-            <button class="site-search-submit" type="submit">Search <span aria-hidden="true">→</span></button>
-          </form>
-          <div class="site-search-results" id="site-search-results" role="listbox" aria-label="Search suggestions" hidden></div>
-        </div>
-        <hr class="search-divider">
-        <div class="search-categories" role="group" aria-label="Quick search categories">
-          <button class="search-category" type="button" data-query="" aria-pressed="true">Everything</button>
-          <button class="search-category" type="button" data-query="property" aria-pressed="false">Properties</button>
-          <button class="search-category" type="button" data-query="broker" aria-pressed="false">Brokers</button>
-          <button class="search-category" type="button" data-query="resources" aria-pressed="false">Resources</button>
-        </div>
-        <div class="search-cta-row"><button class="site-search-submit" type="button" id="search-main-submit">Search <span aria-hidden="true">→</span></button></div>
-      </div>
-      <p class="search-benefit"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-3Z" stroke="currentColor" stroke-width="1.8"></path><path d="m8.5 12 2.2 2.2 4.8-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg> Clear results, useful filters and a responsive desktop/mobile layout.</p>
+      <div class="search-prompt"><span class="search-prompt-dot" aria-hidden="true"></span> Search titles, page content and URLs · refine results with advanced options</div>
     </section>
     <details class="advanced-search" id="advanced-search">
       <summary>Advanced search options</summary>

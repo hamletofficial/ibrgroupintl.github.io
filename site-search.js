@@ -32,7 +32,7 @@
           // even if an older or incorrectly generated index still contains them.
           const privateFiles = new Set([
             'archive.html', 'dashboard.html', 'live.html', 'portfolio.html',
-            'residential.html', 'resi-resources.html', 'resources.html',
+            'residential.html', 'resi-resources.html', 'resources.html', 'members.html',
             'directory.html', 'profile.html', 'editprofile.html', 'posts.html',
             'rankings.html', 'messages.html', 'requests.html', 'settings.html',
             'admin.html', 'login.html', 'invoice.html', 'loggedout.html',

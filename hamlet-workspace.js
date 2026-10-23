@@ -33,7 +33,7 @@ function buildNav(){
    });
    if(group.parentNode)group.parentNode.removeChild(group);
   });
-  routes.filter(function(r){return !r.parent&&r.href!='/members.html'}).forEach(function(r){
+  routes.filter(function(r){return !r.parent}).forEach(function(r){
    var children=routes.filter(function(child){return child.parent===r.short});
    var existingLink=existing.querySelector('a[href="'+r.href+'"]');
    if(children.length){
@@ -89,7 +89,7 @@ function buildPalette(){
  routes.filter(function(r){return r.href!=='/members.html'&&r.searchable!==false&&!r.parent}).forEach(function(r){var option=make('option','',r.label);option.value=r.href;paletteRouteSelect.appendChild(option)});
  var submit=make('button','hamlet-search-submit','Search');submit.type='submit';form.appendChild(paletteRouteSelect);form.appendChild(submit);dialog.appendChild(form);
  paletteStatus=make('div','hamlet-search-status');paletteStatus.setAttribute('role','status');paletteStatus.setAttribute('aria-live','polite');paletteStatus.hidden=true;dialog.appendChild(paletteStatus);
- form.addEventListener('submit',function(e){e.preventDefault();var q=paletteInput.value.trim(),target=paletteRouteSelect.value;if(!target){var path=currentPath(),current=routes.find(function(r){return r.paths.indexOf(path)!==-1&&r.href!=='/members.html'});if(current&&current.href!='/messages.html'){target=current.href}else{paletteStatus.textContent='Choose a workspace below or select one from the destination menu.';paletteStatus.hidden=false;paletteRouteSelect.focus();return}}location.href=withQuery(target,q)});
+ form.addEventListener('submit',function(e){e.preventDefault();var q=paletteInput.value.trim(),target=paletteRouteSelect.value;if(!target){var path=currentPath(),current=routes.find(function(r){return r.paths.indexOf(path)!==-1});if(current&&current.href!='/messages.html'){target=current.href}else{paletteStatus.textContent='Choose a workspace below or select one from the destination menu.';paletteStatus.hidden=false;paletteRouteSelect.focus();return}}location.href=withQuery(target,q)});
  var caption=make('div','hamlet-search-caption','Choose where to search');dialog.appendChild(caption);
  var list=make('div','hamlet-search-destinations');
  routes.filter(function(r){return r.href!=='/members.html'&&r.searchable!==false&&!r.parent}).forEach(function(r){

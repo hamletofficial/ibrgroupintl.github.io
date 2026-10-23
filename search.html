@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#071d4a">
+  <meta name="description" content="Search pages and content across the Hamlet website.">
+  <title>Search | hamlet by IBR</title>
+  <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/theme.css">
+  <link rel="stylesheet" href="/mobile-compat.css">
+  <style>
+    :root{color-scheme:dark}
+    body{margin:0;background:#0b1120;color:#f8fafc;font-family:"DM Sans","Segoe UI",Arial,sans-serif;line-height:1.6}
+    .search-header{background:#071d4a;border-bottom:1px solid #334b70}
+    .search-header-inner{max-width:1120px;margin:auto;padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .search-brand{color:#fff;font-size:1.35rem;font-weight:850;letter-spacing:-.04em;text-decoration:none}
+    .search-brand span{color:#bfdbfe;font-size:.78rem;letter-spacing:0}
+    .search-home{color:#fff;text-decoration:none;font-weight:700;font-size:.9rem}
+    .search-main{width:min(900px,calc(100% - 2rem));margin:clamp(2rem,6vw,4.5rem) auto 4rem}
+    .search-eyebrow{margin:0 0 .4rem;color:#bfdbfe;font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    h1{margin:0;color:#fff;font-size:clamp(2rem,5vw,3rem);letter-spacing:-.045em;line-height:1.1}
+    .search-description{margin:.8rem 0 1.5rem;color:#cbd5e1}
+    .site-search{position:relative;width:100%;max-width:720px}
+    .site-search-form{display:flex;align-items:center;gap:.55rem;padding:.35rem .4rem .35rem .9rem;border:1px solid #45618d;border-radius:12px;background:#111827}
+    .site-search-form:focus-within{border-color:#bfdbfe;box-shadow:0 0 0 3px #bfdbfe24}
+    .site-search-icon{width:20px;height:20px;flex:0 0 auto;color:#bfdbfe}
+    .site-search-input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#fff;font:inherit}
+    .site-search-input::placeholder{color:#cbd5e1}
+    .site-search-submit{min-height:40px;padding:.5rem .9rem;border:0;border-radius:8px;background:#fff;color:#071d4a;font-weight:800;cursor:pointer}
+    .site-search-results{position:absolute;top:calc(100% + .5rem);left:0;right:0;z-index:5;max-height:60vh;overflow:auto;padding:.35rem;border:1px solid #344b70;border-radius:12px;background:#111827;box-shadow:0 18px 40px #020617a8}
+    .site-search-results[hidden]{display:none}
+    .site-search-result{display:block;padding:.65rem .75rem;border-radius:8px;color:#fff;text-decoration:none}
+    .site-search-result:hover,.site-search-result:focus-visible{background:#1f2937;outline:2px solid #93c5fd;outline-offset:-2px}
+    .site-search-result strong,.site-search-result small{display:block}
+    .site-search-result small{color:#bfdbfe;font-size:.75rem}
+    .site-search-empty{padding:.75rem;color:#cbd5e1}
+    .search-count{margin:1.5rem 0 .7rem;color:#cbd5e1;font-size:.9rem}
+    .search-page-result{display:block;margin:.65rem 0;padding:1rem 1.1rem;border:1px solid #334155;border-radius:12px;background:#111827;color:#fff;text-decoration:none;transition:border-color .15s ease,background .15s ease}
+    .search-page-result:hover,.search-page-result:focus-visible{border-color:#93c5fd;background:#172033;outline:2px solid #93c5fd;outline-offset:2px}
+    .search-page-result-title,.search-page-result-path,.search-page-result-excerpt{display:block}
+    .search-page-result-title{font-weight:800;font-size:1.02rem}
+    .search-page-result-path{margin:.12rem 0 .4rem;color:#bfdbfe;font-size:.78rem;overflow-wrap:anywhere}
+    .search-page-result-excerpt{color:#cbd5e1;font-size:.9rem;line-height:1.55}
+    .search-page-empty{padding:1rem;border:1px solid #334155;border-radius:12px;color:#cbd5e1}
+    @media(max-width:560px){.search-header-inner{padding:.9rem 1rem}.search-main{width:calc(100% - 1.25rem);margin-top:2rem}.site-search-form{gap:.35rem;padding-left:.65rem}.site-search-submit{padding:.45rem .65rem}}
+  </style>
+</head>
+<body>
+  <header class="search-header">
+    <div class="search-header-inner">
+      <a class="search-brand" href="/index.html" aria-label="hamlet home">hamlet <span>by IBR</span></a>
+      <a class="search-home" href="/index.html">Back to homepage</a>
+    </div>
+  </header>
+  <main class="search-main">
+    <p class="search-eyebrow">Hamlet site search</p>
+    <h1 id="search-page-query">Search all Hamlet pages</h1>
+    <p class="search-description">Search page titles, paths and visible page content across the website.</p>
+    <div class="site-search" role="search">
+      <form class="site-search-form" id="site-search-form" action="/search.html" method="get" autocomplete="off">
+        <svg class="site-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"></circle><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+        <input class="site-search-input" id="site-search-input" name="q" type="search" placeholder="Search all pages…" aria-label="Search all Hamlet pages" aria-controls="site-search-results" aria-expanded="false" minlength="2">
+        <button class="site-search-submit" type="submit">Search</button>
+      </form>
+      <div class="site-search-results" id="site-search-results" role="listbox" aria-label="Search suggestions" hidden></div>
+    </div>
+    <p class="search-count" id="search-page-count" aria-live="polite">Loading search index…</p>
+    <section id="search-page-results" aria-label="Search results"></section>
+  </main>
+  <script src="/site-search.js?v=20261023-1" defer></script>
+</body>
+</html>

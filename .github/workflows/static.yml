@@ -85,7 +85,7 @@ jobs:
                   pass
               title = html.unescape(parser.title.strip()) or path.stem.replace('-', ' ').replace('_', ' ').title()
               text = html.unescape(' '.join(parser.parts))
-              text = re.sub(r'\\s+', ' ', text).strip()
+              text = re.sub(r'\s+', ' ', text).strip()
               if not text:
                   continue
               relative = path.as_posix()

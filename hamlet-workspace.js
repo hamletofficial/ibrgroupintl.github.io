@@ -33,7 +33,7 @@ function buildNav(){
    });
    if(group.parentNode)group.parentNode.removeChild(group);
   });
-  routes.filter(function(r){return !r.parent&&r.href!='/members.html'}).forEach(function(r){
+  routes.filter(function(r){return !r.parent}).forEach(function(r){
    var children=routes.filter(function(child){return child.parent===r.short});
    var existingLink=existing.querySelector('a[href="'+r.href+'"]');
    if(children.length){

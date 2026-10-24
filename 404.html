@@ -1,256 +1,131 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
-<meta charset="utf-8">
-  <meta name="theme-color" content="#07111f">
-  <link rel="stylesheet" href="/mobile-compat.css">
-  <link rel="stylesheet" href="/legal-pages.css">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex">
-  <meta name="description" content="The requested page could not be found.">
-  <title>404 — Page not found | Hamlet</title>
-  <style>
-    :root{
-      --bg:#07111f;
-      --bg-2:#0b1a2d;
-      --card:rgba(15,31,52,.82);
-      --card-border:rgba(148,163,184,.16);
-      --text:#f8fafc;
-      --muted:#9fb0c5;
-      --accent:#38bdf8;
-      --accent-strong:#0284c7;
-      --focus:#7dd3fc;
-    }
-    *{box-sizing:border-box}
-    html{min-height:100%;background:var(--bg)}
-    body{
-      min-height:100vh;
-      margin:0;
-      color:var(--text);
-      background:
-        radial-gradient(circle at 50% 18%,rgba(14,116,144,.20),transparent 32rem),
-        radial-gradient(circle at 85% 85%,rgba(2,132,199,.12),transparent 28rem),
-        linear-gradient(145deg,var(--bg),var(--bg-2));
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      display:flex;
-      flex-direction:column;
-      overflow-x:hidden;
-    }
-    a{color:inherit}
-    a:focus-visible,button:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
-    .site-header{
-      width:100%;
-      padding:16px 18px;
-      position:relative;
-      z-index:2;
-    }
-    .header-inner{
-      max-width:1180px;
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
-    .brand{
-      display:inline-flex;
-      align-items:center;
-      gap:11px;
-      text-decoration:none;
-    }
-    .brand img{
-      width:42px;height:42px;object-fit:cover;border-radius:12px;
-      box-shadow:0 8px 24px rgba(0,0,0,.22);
-    }
-    .brand-copy{display:grid;gap:2px}
-    .brand-name{font-weight:800;letter-spacing:-.02em}
-    .brand-sub{font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-    .header-link{
-      text-decoration:none;
-      color:#d8e6f5;
-      font-size:.88rem;
-      font-weight:700;
-      padding:9px 13px;
-      border:1px solid var(--card-border);
-      border-radius:999px;
-      background:rgba(255,255,255,.035);
-      transition:background .18s ease,border-color .18s ease,transform .18s ease;
-    }
-    .header-link:hover{background:rgba(56,189,248,.10);border-color:rgba(56,189,248,.32);transform:translateY(-1px)}
-    main{
-      flex:1;
-      width:100%;
-      display:grid;
-      place-items:center;
-      padding:28px 18px 48px;
-    }
-    .error-shell{
-      width:min(760px,100%);
-      text-align:center;
-      position:relative;
-    }
-    .error-code{
-      margin:0;
-      font-size:clamp(6rem,20vw,12rem);
-      line-height:.78;
-      font-weight:900;
-      letter-spacing:-.09em;
-      color:transparent;
-      background:linear-gradient(135deg,#e0f2fe 0%,#38bdf8 45%,#0284c7 100%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      filter:drop-shadow(0 18px 35px rgba(2,132,199,.16));
-      user-select:none;
-    }
-    .error-card{
-      margin:0 auto;
-      max-width:610px;
-      padding:30px 24px 26px;
-      border:1px solid var(--card-border);
-      border-radius:24px;
-      background:var(--card);
-      box-shadow:0 26px 70px rgba(0,0,0,.30);
-      backdrop-filter:blur(18px);
-    }
-    .status-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 12px;
-      border-radius:999px;
-      background:rgba(56,189,248,.09);
-      border:1px solid rgba(56,189,248,.18);
-      color:#b9e8fb;
-      font-size:.76rem;
-      font-weight:800;
-      letter-spacing:.04em;
-      text-transform:uppercase;
-    }
-    .status-dot{
-      width:7px;height:7px;border-radius:50%;background:var(--accent);
-      box-shadow:0 0 0 5px rgba(56,189,248,.08);
-    }
-    h1{
-      margin:18px 0 10px;
-      font-size:clamp(1.55rem,4vw,2.15rem);
-      line-height:1.12;
-      letter-spacing:-.035em;
-    }
-    .message{
-      margin:0 auto;
-      max-width:500px;
-      color:var(--muted);
-      font-size:1rem;
-      line-height:1.7;
-    }
-    .actions{
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap:11px;
-      margin-top:25px;
-    }
-    .btn{
-      min-width:145px;
-      padding:12px 17px;
-      border-radius:12px;
-      text-decoration:none;
-      font-weight:800;
-      font-size:.9rem;
-      transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease;
-    }
-    .btn-primary{
-      color:#fff;
-      background:linear-gradient(135deg,#0ea5e9,#0284c7);
-      box-shadow:0 10px 25px rgba(2,132,199,.24);
-    }
-    .btn-secondary{
-      color:#e2edf8;
-      border:1px solid rgba(148,163,184,.22);
-      background:rgba(255,255,255,.045);
-    }
-    .btn:hover{transform:translateY(-2px)}
-    .btn-primary:hover{box-shadow:0 14px 30px rgba(2,132,199,.32)}
-    .btn-secondary:hover{background:rgba(255,255,255,.08);border-color:rgba(56,189,248,.30)}
-    .help{
-      margin:22px 0 0;
-      padding-top:18px;
-      border-top:1px solid rgba(148,163,184,.11);
-      color:#8193a9;
-      font-size:.8rem;
-      line-height:1.6;
-    }
-    .site-footer{
-      padding:0 24px 24px;
-      text-align:center;
-      color:#71849b;
-      font-size:.76rem;
-    }
-    .footer-links{
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap:9px 15px;
-      margin-bottom:10px;
-    }
-    .footer-links a{text-decoration:none;color:#91a4ba}
-    .footer-links a:hover{color:#d8e6f5;text-decoration:underline}
-    @media (max-width:600px){
-      .site-header{padding:14px 16px}
-      .brand img{width:38px;height:38px}
-      .brand-sub{display:none}.brand-name{font-size:.88rem}.header-link{min-height:44px;display:inline-flex;align-items:center}
-      .header-link{padding:8px 11px;font-size:.78rem}
-      main{padding:20px 14px 34px;align-items:center}
-      .error-code{font-size:clamp(5.4rem,27vw,8rem);line-height:.82}
-      .error-card{padding:24px 18px 22px;border-radius:18px}
-      .actions{flex-direction:column;gap:9px}
-      .btn{width:100%;min-width:0;min-height:48px;display:flex;align-items:center;justify-content:center}
-      .site-footer{padding:0 14px 16px}
-    }
-    @media (prefers-reduced-motion:reduce){
-      *,*::before,*::after{scroll-behavior:auto!important;transition:none!important}
-    }
-  </style>
-
+  <meta name="theme-color" content="#0b1120">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="The page you were looking for could not be found. Find your way back to Hamlet.">
+  <title>404 — Page not found | hamlet</title>
+  <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/mobile-compat.css">
   <link rel="stylesheet" href="/theme.css">
-  <script src="/theme.js"></script>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1120;--surface:#111827;--royal:#071D4A;--blue:#3b82f6;--muted:#a8b7cc;--line:rgba(96,165,250,.24)}
+    *{box-sizing:border-box}
+    html{min-height:100%;background:var(--bg);scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;color:#f8fafc;background:radial-gradient(ellipse at 78% 40%,rgba(29,78,216,.22),transparent 42%),radial-gradient(ellipse at 15% 15%,rgba(37,99,235,.12),transparent 38%),var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column;overflow-x:hidden}
+    a{color:inherit}a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
+    .topbar{border-bottom:1px solid rgba(148,163,184,.13);background:rgba(7,17,31,.78);backdrop-filter:blur(16px)}
+    .topbar-inner{width:min(1440px,100%);margin:auto;padding:16px clamp(18px,4vw,52px);display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{font-size:clamp(1.5rem,3vw,2rem);font-weight:850;letter-spacing:-.055em;text-decoration:none}
+    .brand span{color:#60a5fa}
+    .top-links{display:flex;align-items:center;gap:clamp(12px,2vw,28px);font-size:.88rem;color:#dbeafe}
+    .top-links a{text-decoration:none;white-space:nowrap}.top-links a:hover{color:#60a5fa}
+    .signin{padding:10px 18px;border-radius:999px;background:#075bea;color:#fff!important;font-weight:750}
+    main{width:min(1440px,100%);margin:0 auto;flex:1;display:flex;align-items:center;padding:clamp(34px,6vw,82px) clamp(18px,4vw,52px)}
+    .layout{width:100%;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);align-items:center;gap:clamp(28px,4vw,68px)}
+    .copy{position:relative;z-index:1}
+    .eyebrow{display:flex;align-items:center;gap:12px;color:#60a5fa;font-size:.78rem;font-weight:800;letter-spacing:.32em;text-transform:uppercase}
+    .eyebrow:before{content:"";width:28px;height:2px;background:#3b82f6}
+    h1{font-size:clamp(2.65rem,5.6vw,5.4rem);line-height:1.02;letter-spacing:-.065em;margin:22px 0 20px;max-width:760px}
+    h1 span{color:#3b82f6}
+    .intro{max-width:590px;color:#afc2dc;font-size:clamp(1rem,1.4vw,1.2rem);line-height:1.75;margin:0}
+    .rule{width:42px;height:3px;background:#2563eb;border-radius:4px;margin:28px 0}
+    .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:660px}
+    .action{min-height:68px;display:flex;align-items:center;gap:14px;padding:15px 17px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(125deg,rgba(7,29,74,.72),rgba(17,24,39,.94));text-decoration:none;transition:transform .2s ease,border-color .2s ease,background .2s ease}
+    .action:hover{transform:translateY(-2px);border-color:rgba(96,165,250,.7);background:linear-gradient(125deg,rgba(29,78,216,.28),rgba(17,24,39,.96))}
+    .action-icon{width:30px;height:30px;display:grid;place-items:center;flex:none;color:#60a5fa}
+    .action-icon svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .action-label{font-weight:700;font-size:.92rem;line-height:1.35}.arrow{margin-left:auto;color:#60a5fa;font-size:1.25rem}
+    .search-wrap{margin-top:28px;max-width:660px}.search-label{display:block;color:#c5d4e7;margin-bottom:10px;font-size:.92rem}
+    .search-form{display:flex;gap:8px;padding:6px;border:1px solid rgba(96,165,250,.3);border-radius:15px;background:rgba(7,17,31,.78)}
+    .search-form input{min-width:0;flex:1;border:0;outline:0;background:transparent;color:#fff;padding:12px;font:inherit}
+    .search-form input::placeholder{color:#8094b1}
+    .search-form button{border:0;border-radius:11px;padding:0 22px;min-height:46px;background:#075bea;color:#fff;font:inherit;font-weight:800;cursor:pointer}
+    .search-form button:hover{background:#2563eb}
+    .visual{position:relative;min-width:0}
+    .visual:before{content:"";position:absolute;inset:12% 5%;background:rgba(37,99,235,.25);filter:blur(65px);border-radius:50%}
+    .visual img{position:relative;display:block;width:100%;height:auto;max-height:690px;object-fit:contain;filter:drop-shadow(0 28px 42px rgba(0,0,0,.35));animation:arrive .7s ease-out both}
+    footer{padding:18px clamp(18px,4vw,52px) 24px;color:#8293ab;font-size:.78rem}
+    .footer-inner{width:min(1440px,100%);margin:auto;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-top:1px solid rgba(148,163,184,.12);padding-top:18px}
+    .footer-links{display:flex;gap:18px;flex-wrap:wrap}.footer-links a{color:#9eb0c7;text-decoration:none}.footer-links a:hover{color:#fff}
+    @keyframes arrive{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @media(max-width:900px){.top-links a:not(.signin){display:none}.layout{grid-template-columns:1fr;gap:16px}.copy{max-width:760px}.visual{grid-row:1;max-width:600px;width:100%;margin:0 auto -12px}.visual img{max-height:390px}main{padding-top:26px}.eyebrow{font-size:.72rem}h1{max-width:680px}}
+    @media(max-width:540px){.topbar-inner{padding:13px 18px}.layout{gap:12px}.visual img{max-height:270px}.eyebrow{letter-spacing:.22em}h1{font-size:clamp(2.45rem,12vw,3.8rem);margin:17px 0 14px}.intro{font-size:1rem}.rule{margin:22px 0}.actions{grid-template-columns:1fr;gap:9px}.action{min-height:58px}.search-form button{padding:0 15px}.footer-inner{flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+  </style>
 </head>
 <body>
-  <header class="legal-topbar" role="banner">
-    <div class="legal-topbar-inner">
-      <a class="legal-brand" href="/">Impact in Business Recruitment</a>
-      <div class="legal-actions">
-        <a class="legal-signin" href="/login.html">Sign in</a>
-      </div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="hamlet home">hamlet<span>.</span></a>
+      <nav class="top-links" aria-label="Main navigation">
+        <a href="/live.html">Live Properties</a>
+        <a href="/portfolio.html">Portfolio</a>
+        <a href="/resources/">Resources</a>
+        <a href="/support/">Support</a>
+        <a class="signin" href="/login.html">Sign in</a>
+      </nav>
     </div>
   </header>
-  <main role="main">
-    <section class="error-shell" aria-labelledby="error-title">
-      <p class="error-code" aria-hidden="true">404</p>
-      <div class="error-card">
-        <span class="status-pill"><span class="status-dot" aria-hidden="true"></span> Page unavailable</span>
-        <h1 id="error-title">We couldn't find that page.</h1>
-        <p class="message">The address may be incorrect, the page may have moved, or the link may no longer be active. You can return to the portal and continue from there.</p>
-        <nav class="actions" aria-label="404 page actions">
-          <a class="btn btn-primary" href="/">Return to home</a>
-          <a class="btn btn-secondary" href="/login.html">Go to sign in</a>
+  <main>
+    <div class="layout">
+      <section class="copy" aria-labelledby="error-title">
+        <div class="eyebrow">404 · Page not found</div>
+        <h1 id="error-title">A slight detour.<br>This page <span>isn't here.</span></h1>
+        <p class="intro">The page may have moved, been renamed or no longer exists. No need to lose your bearings — find your way back to Hamlet and keep your deals moving.</p>
+        <div class="rule" aria-hidden="true"></div>
+        <nav class="actions" aria-label="Helpful destinations">
+          <a class="action" href="/">
+            <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h5v-7h4v7h5V9"/></svg></span>
+            <span class="action-label">Go to homepage</span><span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="action" href="/live.html">
+            <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 21v-4h6v4M8 7h2m4 0h2M8 11h2m4 0h2"/></svg></span>
+            <span class="action-label">Browse live properties</span><span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="action" href="/portfolio.html">
+            <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+            <span class="action-label">Explore the portfolio</span><span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="action" href="/support/">
+            <span class="action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H20v17H7.5A3.5 3.5 0 0 0 4 22z"/><path d="M4 5.5V22m4-15h8m-8 4h8"/></svg></span>
+            <span class="action-label">Visit the Support Centre</span><span class="arrow" aria-hidden="true">→</span>
+          </a>
         </nav>
-        <p class="help">If you followed a link that should work, please contact support so we can check it.</p>
+        <div class="search-wrap">
+          <label class="search-label" for="site-search">Or search the Hamlet website</label>
+          <form class="search-form" id="site-search-form" role="search">
+            <input id="site-search" name="q" type="search" placeholder="Search Hamlet…" autocomplete="off">
+            <button type="submit">Search</button>
+          </form>
+        </div>
+      </section>
+      <div class="visual">
+        <img src="/assets/images/ipad-backup.png" alt="Hamlet digital workspace for sustainable commercial property professionals" fetchpriority="high">
       </div>
-    </section>
+    </div>
   </main>
-
-  <footer class="site-footer" role="contentinfo">
-    <nav class="footer-links" aria-label="Legal">
-      <a href="/terms.html">Terms of Service</a>
-      <a href="/privacy.html">Privacy Policy</a>
-      <a href="/cookies.html">Cookie Policy</a>
-    </nav>
-    <div>&copy; 2026 Impact in Business Recruitment. All rights reserved.</div>
+  <footer>
+    <div class="footer-inner">
+      <span>Less fragmentation, more connected deals.</span>
+      <nav class="footer-links" aria-label="Legal links">
+        <a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/cookies.html">Cookies</a><a href="/contact.html">Contact</a>
+      </nav>
+      <span>© 2026 Impact in Business Recruitment</span>
+    </div>
   </footer>
-  <script src="/hamlet-background.js?v=20261013-1"></script>
+  <script>
+    // Reuse Hamlet's existing search page; never search authenticated/member-only pages here.
+    document.getElementById('site-search-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var input = document.getElementById('site-search');
+      var query = input.value.trim();
+      if (!query) { input.focus(); return; }
+      window.location.href = '/search.html?q=' + encodeURIComponent(query);
+    });
+  </script>
+  <script src="/hamlet-background.js?v=20261024-1"></script>
 </body>
 </html>

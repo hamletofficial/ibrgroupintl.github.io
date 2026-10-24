@@ -35,9 +35,8 @@
   };
 })();
 
-  // Brand consistency: the homepage is intentionally excluded from this wordmark treatment.
+  // Brand consistency: apply the contrasting full-stop to wordmarks across all pages, including the homepage.
   function applyHamletWordmarkDot() {
-    if (window.location.pathname === '/' || window.location.pathname === '/index.html') return;
     document.querySelectorAll('a.brand, a.sector-brand, a.search-brand, .brand-wordmark').forEach(el => {
       if (!/^hamlet(?:\s|$)/i.test(el.textContent.trim())) return;
       if (el.querySelector('.brand-dot')) return;

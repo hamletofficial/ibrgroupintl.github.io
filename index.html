@@ -77,9 +77,16 @@
     @media(hover:hover) and (pointer:fine){.card:hover,.capability:hover,.ticks li:hover,.workflow article:hover,.launch-card:hover,.price-card:hover,.preview-column:hover,.preview-deal:hover,.preview-mini:hover{transform:translateY(-4px);border-color:#93c5fd;box-shadow:0 14px 30px #0005,0 0 0 1px #60a5fa26}
     .card:hover,.launch-card:hover,.price-card:hover{box-shadow:0 18px 36px #0006,0 0 24px #2563eb18}}
     .card:focus-within,.capability:focus-within,.ticks li:focus-within,.workflow article:focus-within,.launch-card:focus-within,.price-card:focus-within{border-color:#93c5fd;box-shadow:0 0 0 2px #60a5fa33,0 12px 28px #0004}
-    .usp{display:grid;grid-template-columns:.8fr 1.2fr;gap:1.5rem;align-items:start;border:1px solid #365277;border-radius:16px;padding:clamp(1.2rem,3vw,2rem);background:linear-gradient(135deg,rgba(7,29,74,.88) 0%,rgba(16,43,91,.76) 52%,rgba(17,24,39,.88) 100%),url('/assets/images/ipad.png') center/cover no-repeat}
-    .usp h2{font-size:clamp(1.7rem,3.2vw,2.5rem);line-height:1.12;letter-spacing:-.04em;margin:0}
-    .usp p{margin:0 0 .8rem;color:var(--muted)}
+    .usp{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:clamp(1.25rem,3vw,2.5rem);align-items:center;overflow:hidden;border:1px solid #365b91;border-radius:18px;padding:clamp(1.25rem,3.2vw,2.4rem);background:linear-gradient(135deg,#071d4a 0%,#102b5b 52%,#111827 100%);box-shadow:inset 0 1px 0 rgba(191,219,254,.12),0 18px 42px rgba(0,0,0,.22)}
+    .usp h2{font-size:clamp(1.8rem,3.4vw,2.65rem);line-height:1.08;letter-spacing:-.045em;margin:0;max-width:15ch}
+    .usp p{margin:1rem 0 1.1rem;color:#e2e8f0;max-width:62ch}
+    .usp .eyebrow{border-color:#7898c7;background:rgba(7,17,40,.28);color:#dbeafe}
+    .usp .ticks{grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;margin-top:1.2rem}
+    .usp .ticks li{border-color:rgba(191,219,254,.25);background:rgba(11,17,32,.42);color:#f8fafc;font-size:.9rem;line-height:1.45;padding:.75rem;border-radius:10px}
+    .usp-visual{position:relative;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(191,219,254,.28);border-radius:14px;background:rgba(11,17,32,.38);box-shadow:0 16px 35px rgba(0,0,0,.25)}
+    .usp-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(7,29,74,.08),rgba(7,29,74,.22));pointer-events:none}
+    .usp-visual img{display:block;width:100%;height:100%;min-height:320px;max-height:440px;object-fit:cover;object-position:center;border-radius:inherit}
+    .usp-caption{position:absolute;z-index:1;left:.85rem;right:.85rem;bottom:.85rem;padding:.65rem .8rem;border:1px solid rgba(191,219,254,.25);border-radius:9px;background:rgba(7,17,40,.82);color:#dbeafe;font-size:.76rem;font-weight:700;backdrop-filter:blur(8px)}
     .ticks{list-style:none;padding:0;margin:1rem 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
     .ticks li{padding:.7rem;border:1px solid #374151;border-radius:9px}
     .workflow{counter-reset:step;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.9rem}
@@ -128,9 +135,9 @@
     .pricing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;align-items:stretch}.price-card{display:flex;flex-direction:column;padding:1.25rem;border:1px solid var(--line);border-radius:14px;background:#111827}.price-card.featured{border-color:#6b9fe0;background:linear-gradient(150deg,#172d49,#111827 76%)}
     .price-label{margin:0 0 .6rem;color:#bddcff;font-size:.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.price{margin:0;font-size:clamp(2rem,3.5vw,2.6rem);line-height:1.1;font-weight:850;letter-spacing:-.055em}.price span{color:#a8b8cf;font-size:.82rem;font-weight:650;letter-spacing:0}
     .price-description{flex:1;margin:.65rem 0 1rem;color:var(--muted);font-size:.9rem}.price-card .button{width:100%}.pricing-note{margin-top:1.1rem;padding:1rem 1.1rem;border:1px solid #33445d;border-left:3px solid #93c5fd;border-radius:10px;color:var(--muted);background:#101a2a;font-size:.87rem}.pricing-note strong{color:#fff}
-    @media(max-width:850px){.hero-grid,.usp,.launch-grid{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow{grid-template-columns:repeat(2,minmax(0,1fr))}.capability-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.pricing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:850px){.hero-grid,.usp,.launch-grid{grid-template-columns:1fr}.usp-visual img{min-height:240px;max-height:340px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow{grid-template-columns:repeat(2,minmax(0,1fr))}.capability-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.pricing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:850px){.site-header .header-row{flex-wrap:wrap}.site-header .header-row>.site-search{flex:1 1 240px;max-width:100%}} 
-    @media(max-width:560px){.site-header .header-row{align-items:stretch;flex-direction:column;padding:.8rem 0;gap:.75rem}.brand{align-self:flex-start}.site-header .header-row>.site-search{display:block!important;width:100%;max-width:none;min-width:0;flex:0 0 auto}.site-header .site-search-form{min-height:46px}.site-header .site-search-submit{min-height:36px}.nav{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}.nav .button{width:100%;min-width:0;min-height:44px;padding:.62rem .45rem;text-align:center;white-space:normal;line-height:1.25}.nav .button:last-child{grid-column:1/-1}.grid,.ticks,.workflow,.capability-strip,.pricing-grid{grid-template-columns:1fr}.hero{padding-top:2.8rem}.hero-panel{padding:1rem}.product-preview{padding:0}.preview-body{padding:.7rem}.preview-top{padding:.75rem}.preview-columns{gap:.3rem}.preview-column{padding:.35rem}.preview-deal{padding:.38rem}.preview-column-title{font-size:.59rem}.preview-deal strong{font-size:.6rem}.preview-deal small{font-size:.56rem}}
+    @media(max-width:560px){.usp{padding:1rem;gap:1.1rem}.usp .ticks{grid-template-columns:1fr}.usp-visual img{min-height:210px;max-height:280px}.site-header .header-row{align-items:stretch;flex-direction:column;padding:.8rem 0;gap:.75rem}.brand{align-self:flex-start}.site-header .header-row>.site-search{display:block!important;width:100%;max-width:none;min-width:0;flex:0 0 auto}.site-header .site-search-form{min-height:46px}.site-header .site-search-submit{min-height:36px}.nav{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}.nav .button{width:100%;min-width:0;min-height:44px;padding:.62rem .45rem;text-align:center;white-space:normal;line-height:1.25}.nav .button:last-child{grid-column:1/-1}.grid,.ticks,.workflow,.capability-strip,.pricing-grid{grid-template-columns:1fr}.hero{padding-top:2.8rem}.hero-panel{padding:1rem}.product-preview{padding:0}.preview-body{padding:.7rem}.preview-top{padding:.75rem}.preview-columns{gap:.3rem}.preview-column{padding:.35rem}.preview-deal{padding:.38rem}.preview-column-title{font-size:.59rem}.preview-deal strong{font-size:.6rem}.preview-deal small{font-size:.56rem}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
   
 
@@ -257,17 +264,22 @@
     <section class="content-section" aria-labelledby="usp-title">
       <div class="container">
         <div class="usp">
-          <div><span class="eyebrow">The hamlet difference</span><h2 id="usp-title" style="margin-top:1rem">A clearer route to sustainable commercial space.</h2></div>
-          <div>
-            <p>Hamlet brings commercial leasing workflows together around a clear market focus: sustainable properties with current, valid energy-efficiency credentials and Passivhaus or EnerPHit certification. Members can discover opportunities, organise leasing pipelines, manage resources and coordinate follow-up in one workspace. Certification and energy-performance evidence should be checked against the property documentation and relevant scheme records.</p>
+          <div class="usp-copy">
+            <span class="eyebrow">The hamlet difference</span>
+            <h2 id="usp-title" style="margin-top:1rem">Sustainable property. Better-connected work.</h2>
+            <p>Hamlet brings commercial leasing activity into one focused workspace, with sustainability at the centre. Discover property opportunities, keep deal progress and resources organised, and stay connected with fellow professionals—while checking energy-performance claims against the underlying property documents and scheme records.</p>
             <ul class="ticks">
-              <li>✓ Sustainable commercial leasing opportunities</li>
-              <li>✓ Valid energy-efficiency standards and evidence</li>
-              <li>✓ Passivhaus or EnerPHit certification focus</li>
-              <li>✓ Direct messaging and social updates</li>
-              <li>✓ Authenticated member workspace</li>
-              <li>✓ Clear routes to policies and support</li>
+              <li>✓ Commercial opportunities with a sustainability focus</li>
+              <li>✓ Energy-efficiency evidence to review</li>
+              <li>✓ Passivhaus and EnerPHit credentials in focus</li>
+              <li>✓ Deal coordination and resource management</li>
+              <li>✓ Member messaging and professional updates</li>
+              <li>✓ Support and policy information in reach</li>
             </ul>
+          </div>
+          <div class="usp-visual">
+            <img src="/assets/images/ipad-backup.png" alt="Hamlet workspace displayed on a tablet" loading="lazy" decoding="async">
+            <div class="usp-caption">One workspace for connected commercial leasing workflows</div>
           </div>
         </div>
         <p class="notice"><strong>Important:</strong> hamlet is a workflow and networking environment, not a guarantee that a listing is accurate, a transaction will complete, or a counterparty has been independently vetted. Carry out your own commercial, legal, financial and property due diligence.</p>

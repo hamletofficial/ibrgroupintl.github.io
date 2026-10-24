@@ -170,7 +170,12 @@
     .github-update-count{flex:0 0 auto;color:#4b5563;font-size:.78rem;font-variant-numeric:tabular-nums;white-space:nowrap}
     @media(max-width:620px){.github-update-bar{align-items:flex-start;justify-content:flex-start;gap:.25rem .55rem}.github-update-label{white-space:normal}.github-update-viewport{flex-basis:100%;max-width:100%}.github-update-slide{flex-wrap:wrap}.github-update-time{font-size:.75rem}}
     @media(prefers-reduced-motion:reduce){.github-update-slide{transition:none}}
-\n  </style>
+\n  
+    /* Subtle interactive border for the four featured homepage tags. */
+    .homepage-hover-tag{border:1px solid rgba(147,197,253,.3);transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease}
+    .homepage-hover-tag:hover{border-color:#93c5fd;box-shadow:0 0 0 2px rgba(147,197,253,.14);background-color:rgba(59,130,246,.08)}
+    @media(prefers-reduced-motion:reduce){.homepage-hover-tag{transition:none}}
+</style>
 </head>
 <body>
   <header class="site-header">
@@ -205,7 +210,7 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <span class="eyebrow">Sustainable commercial leasing</span>
+          <span class="eyebrow homepage-hover-tag">Sustainable commercial leasing</span>
           <h1>Commercial leasing.<br><span>Built around sustainability.</span></h1>
           <p>hamlet is a commercial leasing workspace focused on sustainable properties that meet applicable energy-efficiency standards and hold valid <strong><a href="/resources/passivhaus.html">Passivhaus</a></strong> or <strong><a href="/resources/enerphit.html">EnerPHit</a></strong> certification. Discover relevant opportunities, manage leasing activity and coordinate professional relationships in one connected environment.</p>
           <div class="actions">
@@ -265,7 +270,7 @@
       <div class="container">
         <div class="usp">
           <div class="usp-copy">
-            <span class="eyebrow">The hamlet difference</span>
+            <span class="eyebrow homepage-hover-tag">The hamlet difference</span>
             <h2 id="usp-title" style="margin-top:1rem">Sustainable property. Better-connected work.</h2>
             <p>Hamlet brings commercial leasing activity into one focused workspace, with sustainability at the centre. Discover property opportunities, keep deal progress and resources organised, and stay connected with fellow professionals—while checking energy-performance claims against the underlying property documents and scheme records.</p>
             <ul class="ticks">
@@ -335,13 +340,13 @@
     <section class="content-section" id="coming-soon" aria-labelledby="coming-soon-title">
       <div class="container">
         <div class="section-heading">
-          <span class="eyebrow">On the horizon</span>
+          <span class="eyebrow homepage-hover-tag">On the horizon</span>
           <h2 id="coming-soon-title" style="margin-top:1rem">The next chapter of hamlet is taking shape.</h2>
           <p>We’re preparing two AI-assisted tools designed to reduce fragmentation in commercial property workflows. The aim is practical support for brokers: keep deal progress clearer and make listing preparation more consistent, while leaving decisions and final approval with the professional.</p>
         </div>
         <div class="launch-grid">
           <article class="launch-card">
-            <span class="launch-status">In preparation</span>
+            <span class="launch-status homepage-hover-tag">In preparation</span>
             <h3>1. Deal Assistant</h3>
             <p>A focused AI companion for commercial property deal progression—helping users organise deal notes, summarise the information they provide, identify gaps and consider sensible next actions.</p>
             <ul>

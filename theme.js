@@ -39,17 +39,20 @@
   function applyHamletWordmarkDot() {
     if (window.location.pathname === '/' || window.location.pathname === '/index.html') return;
     document.querySelectorAll('a.brand, a.sector-brand, a.search-brand, .brand-wordmark').forEach(el => {
-      if (!/^hamlet$/i.test((el.childNodes[0]?.textContent || '').trim()) && !/^hamlet(?:\\s|$)/i.test(el.textContent.trim())) return;
+      if (!/^hamlet(?:\\s|$)/i.test(el.textContent.trim())) return;
       if (el.querySelector('.brand-dot')) return;
+
       const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
       let node;
       while ((node = walker.nextNode())) {
         if (/hamlet/i.test(node.nodeValue)) {
-          node.nodeValue = node.nodeValue.replace(/hamlet/i, 'hamlet');
           const dot = document.createElement('span');
           dot.className = 'brand-dot';
           dot.textContent = '.';
-          dot.style.color = '#bfdbfe';
+          // Use a white dot when the wordmark itself is baby blue; otherwise use baby blue.
+          const wordmarkColor = getComputedStyle(el).color.replace(/\\s/g, '').toLowerCase();
+          const isBabyBlue = ['#bfdbfe', 'rgb(191,219,254)', '#7dd3fc', 'rgb(125,211,252)', '#93c5fd', 'rgb(147,197,253)'].includes(wordmarkColor);
+          dot.style.color = isBabyBlue ? '#ffffff' : '#bfdbfe';
           node.parentNode.insertBefore(dot, node.nextSibling);
           break;
         }

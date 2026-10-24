@@ -457,7 +457,7 @@ service cloud.firestore {
         && request.resource.data.client.size() <= 100
         && request.resource.data.notes is string
         && request.resource.data.notes.size() <= 1000
-        && (!('sustainability' in request.resource.data)
+        && (!request.resource.data.keys().hasAny(['sustainability'])
           || (request.resource.data.sustainability is map
             && request.resource.data.sustainability.keys().hasOnly([
               'leedLevel','leedScore','leedReference','leedDate','leedStatus',
@@ -478,7 +478,7 @@ service cloud.firestore {
             && (!('energy' in request.resource.data.sustainability) || (request.resource.data.sustainability.energy is string && request.resource.data.sustainability.energy.size() <= 100))
             && (!('carbon' in request.resource.data.sustainability) || (request.resource.data.sustainability.carbon is string && request.resource.data.sustainability.carbon.size() <= 100))
             && (!('water' in request.resource.data.sustainability) || (request.resource.data.sustainability.water is string && request.resource.data.sustainability.water.size() <= 100))
-            && (!('notes' in request.resource.data.sustainability) || (request.resource.data.sustainability.notes is string && request.resource.data.sustainability.notes.size() <= 600)))
+            && (!('notes' in request.resource.data.sustainability) || (request.resource.data.sustainability.notes is string && request.resource.data.sustainability.notes.size() <= 600))))
         && request.resource.data.createdAt is string
         && request.resource.data.createdAt.size() <= 50
         && request.resource.data.updatedAt == request.time;
@@ -522,7 +522,7 @@ service cloud.firestore {
         && request.resource.data.client.size() <= 100
         && request.resource.data.notes is string
         && request.resource.data.notes.size() <= 1000
-        && (!('sustainability' in request.resource.data)
+        && (!request.resource.data.keys().hasAny(['sustainability'])
           || (request.resource.data.sustainability is map
             && request.resource.data.sustainability.keys().hasOnly([
               'leedLevel','leedScore','leedReference','leedDate','leedStatus',
@@ -543,7 +543,7 @@ service cloud.firestore {
             && (!('energy' in request.resource.data.sustainability) || (request.resource.data.sustainability.energy is string && request.resource.data.sustainability.energy.size() <= 100))
             && (!('carbon' in request.resource.data.sustainability) || (request.resource.data.sustainability.carbon is string && request.resource.data.sustainability.carbon.size() <= 100))
             && (!('water' in request.resource.data.sustainability) || (request.resource.data.sustainability.water is string && request.resource.data.sustainability.water.size() <= 100))
-            && (!('notes' in request.resource.data.sustainability) || (request.resource.data.sustainability.notes is string && request.resource.data.sustainability.notes.size() <= 600)))
+            && (!('notes' in request.resource.data.sustainability) || (request.resource.data.sustainability.notes is string && request.resource.data.sustainability.notes.size() <= 600))))
         && request.resource.data.updatedAt == request.time;
 
       allow delete: if request.auth != null && resource.data.uid == request.auth.uid;

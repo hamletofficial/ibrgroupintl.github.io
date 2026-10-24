@@ -44,6 +44,7 @@
             const path = String(page.path || page.url || '').replace(/^\/+/, '');
             const filename = path.split('/').pop().toLowerCase();
             return !/loading\s+search\s+index/.test(searchableText)
+              && filename !== '404.html'
               && !privateFiles.has(filename)
               && !privateDirs.test(path);
           });

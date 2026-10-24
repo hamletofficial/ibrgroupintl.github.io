@@ -425,7 +425,7 @@ service cloud.firestore {
           'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.keys().hasOnly([
-          'id','uid','name','property','propertyResourceId','contactUid','type','value','stage','owner','client','notes','createdAt','updatedAt'
+          'id','uid','name','property','propertyResourceId','contactUid','type','value','stage','owner','client','notes','sustainability','createdAt','updatedAt'
         ])
         && request.resource.data.id == dealId
         && request.resource.data.uid == request.auth.uid
@@ -457,6 +457,28 @@ service cloud.firestore {
         && request.resource.data.client.size() <= 100
         && request.resource.data.notes is string
         && request.resource.data.notes.size() <= 1000
+        && (!('sustainability' in request.resource.data)
+          || (request.resource.data.sustainability is map
+            && request.resource.data.sustainability.keys().hasOnly([
+              'leedLevel','leedScore','leedReference','leedDate','leedStatus',
+              'breeamRating','breeamScore','breeamReference','breeamDate','breeamStatus',
+              'epc','energy','carbon','water','notes'
+            ])
+            && (!('leedLevel' in request.resource.data.sustainability) || request.resource.data.sustainability.leedLevel is string)
+            && (!('leedScore' in request.resource.data.sustainability) || request.resource.data.sustainability.leedScore == '' || (request.resource.data.sustainability.leedScore is number && request.resource.data.sustainability.leedScore >= 0 && request.resource.data.sustainability.leedScore <= 110))
+            && (!('leedReference' in request.resource.data.sustainability) || (request.resource.data.sustainability.leedReference is string && request.resource.data.sustainability.leedReference.size() <= 120))
+            && (!('leedDate' in request.resource.data.sustainability) || request.resource.data.sustainability.leedDate is string)
+            && (!('leedStatus' in request.resource.data.sustainability) || request.resource.data.sustainability.leedStatus in ['not-verified','verified-by-member','document-attached','expired','in-progress'])
+            && (!('breeamRating' in request.resource.data.sustainability) || request.resource.data.sustainability.breeamRating is string)
+            && (!('breeamScore' in request.resource.data.sustainability) || request.resource.data.sustainability.breeamScore == '' || (request.resource.data.sustainability.breeamScore is number && request.resource.data.sustainability.breeamScore >= 0 && request.resource.data.sustainability.breeamScore <= 100))
+            && (!('breeamReference' in request.resource.data.sustainability) || (request.resource.data.sustainability.breeamReference is string && request.resource.data.sustainability.breeamReference.size() <= 120))
+            && (!('breeamDate' in request.resource.data.sustainability) || request.resource.data.sustainability.breeamDate is string)
+            && (!('breeamStatus' in request.resource.data.sustainability) || request.resource.data.sustainability.breeamStatus in ['not-verified','verified-by-member','document-attached','expired','in-progress'])
+            && (!('epc' in request.resource.data.sustainability) || request.resource.data.sustainability.epc is string)
+            && (!('energy' in request.resource.data.sustainability) || (request.resource.data.sustainability.energy is string && request.resource.data.sustainability.energy.size() <= 100))
+            && (!('carbon' in request.resource.data.sustainability) || (request.resource.data.sustainability.carbon is string && request.resource.data.sustainability.carbon.size() <= 100))
+            && (!('water' in request.resource.data.sustainability) || (request.resource.data.sustainability.water is string && request.resource.data.sustainability.water.size() <= 100))
+            && (!('notes' in request.resource.data.sustainability) || (request.resource.data.sustainability.notes is string && request.resource.data.sustainability.notes.size() <= 600)))
         && request.resource.data.createdAt is string
         && request.resource.data.createdAt.size() <= 50
         && request.resource.data.updatedAt == request.time;
@@ -467,7 +489,7 @@ service cloud.firestore {
           'id','uid','name','property','type','value','stage','owner','client','notes','createdAt','updatedAt'
         ])
         && request.resource.data.keys().hasOnly([
-          'id','uid','name','property','propertyResourceId','contactUid','type','value','stage','owner','client','notes','createdAt','updatedAt'
+          'id','uid','name','property','propertyResourceId','contactUid','type','value','stage','owner','client','notes','sustainability','createdAt','updatedAt'
         ])
         && request.resource.data.id == dealId
         && request.resource.data.uid == request.auth.uid
@@ -500,6 +522,28 @@ service cloud.firestore {
         && request.resource.data.client.size() <= 100
         && request.resource.data.notes is string
         && request.resource.data.notes.size() <= 1000
+        && (!('sustainability' in request.resource.data)
+          || (request.resource.data.sustainability is map
+            && request.resource.data.sustainability.keys().hasOnly([
+              'leedLevel','leedScore','leedReference','leedDate','leedStatus',
+              'breeamRating','breeamScore','breeamReference','breeamDate','breeamStatus',
+              'epc','energy','carbon','water','notes'
+            ])
+            && (!('leedLevel' in request.resource.data.sustainability) || request.resource.data.sustainability.leedLevel is string)
+            && (!('leedScore' in request.resource.data.sustainability) || request.resource.data.sustainability.leedScore == '' || (request.resource.data.sustainability.leedScore is number && request.resource.data.sustainability.leedScore >= 0 && request.resource.data.sustainability.leedScore <= 110))
+            && (!('leedReference' in request.resource.data.sustainability) || (request.resource.data.sustainability.leedReference is string && request.resource.data.sustainability.leedReference.size() <= 120))
+            && (!('leedDate' in request.resource.data.sustainability) || request.resource.data.sustainability.leedDate is string)
+            && (!('leedStatus' in request.resource.data.sustainability) || request.resource.data.sustainability.leedStatus in ['not-verified','verified-by-member','document-attached','expired','in-progress'])
+            && (!('breeamRating' in request.resource.data.sustainability) || request.resource.data.sustainability.breeamRating is string)
+            && (!('breeamScore' in request.resource.data.sustainability) || request.resource.data.sustainability.breeamScore == '' || (request.resource.data.sustainability.breeamScore is number && request.resource.data.sustainability.breeamScore >= 0 && request.resource.data.sustainability.breeamScore <= 100))
+            && (!('breeamReference' in request.resource.data.sustainability) || (request.resource.data.sustainability.breeamReference is string && request.resource.data.sustainability.breeamReference.size() <= 120))
+            && (!('breeamDate' in request.resource.data.sustainability) || request.resource.data.sustainability.breeamDate is string)
+            && (!('breeamStatus' in request.resource.data.sustainability) || request.resource.data.sustainability.breeamStatus in ['not-verified','verified-by-member','document-attached','expired','in-progress'])
+            && (!('epc' in request.resource.data.sustainability) || request.resource.data.sustainability.epc is string)
+            && (!('energy' in request.resource.data.sustainability) || (request.resource.data.sustainability.energy is string && request.resource.data.sustainability.energy.size() <= 100))
+            && (!('carbon' in request.resource.data.sustainability) || (request.resource.data.sustainability.carbon is string && request.resource.data.sustainability.carbon.size() <= 100))
+            && (!('water' in request.resource.data.sustainability) || (request.resource.data.sustainability.water is string && request.resource.data.sustainability.water.size() <= 100))
+            && (!('notes' in request.resource.data.sustainability) || (request.resource.data.sustainability.notes is string && request.resource.data.sustainability.notes.size() <= 600)))
         && request.resource.data.updatedAt == request.time;
 
       allow delete: if request.auth != null && resource.data.uid == request.auth.uid;

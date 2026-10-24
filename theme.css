@@ -790,4 +790,4 @@ html[data-appearance="dark"] nav.workspace-nav .workspace-nav-link[href^="/"]:no
 
 
 /* Hamlet identity: the baby-blue full-stop follows the wordmark on site headers. */
-a.brand::after, a.sector-brand::after, a.search-brand::after, .brand-wordmark::after { content: "."; color: #bfdbfe; }
+a.brand:not(:has(.brand-dot))::after, a.sector-brand:not(:has(.brand-dot))::after, a.search-brand:not(:has(.brand-dot))::after, .brand-wordmark:not(:has(.brand-dot))::after { content: "."; color: #bfdbfe; }

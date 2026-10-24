@@ -787,3 +787,7 @@ html[data-appearance="dark"] nav.workspace-nav .workspace-nav-link[href^="/"]:no
 html[data-appearance="dark"] nav.workspace-nav .workspace-nav-link[href^="/"]:not([href^="/app/"])[aria-current="page"] {
   color: #FFF !important;
 }
+
+
+/* Hamlet identity: the baby-blue full-stop follows the wordmark on site headers. */
+a.brand::after, a.sector-brand::after, a.search-brand::after, .brand-wordmark::after { content: "."; color: #bfdbfe; }

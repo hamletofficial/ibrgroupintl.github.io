@@ -203,13 +203,13 @@
             ? await window.ibrProfileService.getProfile(currentUser.uid)
             : await db.collection('publicProfiles').doc(currentUser.uid).get().then(function(snap){return {exists:snap.exists,data:snap.exists?(snap.data()||{}):{}}});
           if(!profileResult.exists || profileResult.data.onfidoVerified !== true){
-            setFormStatus('Your listing could not be posted. Please complete identity verification before submitting a property listing. If you experience technical difficulties, contact Support at support@ibrecruitment.com.','error');
+            setFormStatus('Your listing could not be posted. Please complete identity verification before submitting a property listing. If you experience technical difficulties, contact Support at support@mail.hamlet-ai.co.uk.','error');
             saveBtn.disabled=false;
             return;
           }
         }catch(verificationError){
           console.error('Unable to verify member identity status:',verificationError);
-          setFormStatus('We could not confirm your identity verification status, so your listing has not been posted. Please try again or contact support@ibrecruitment.com for assistance.','error');
+          setFormStatus('We could not confirm your identity verification status, so your listing has not been posted. Please try again or contact support@mail.hamlet-ai.co.uk for assistance.','error');
           saveBtn.disabled=false;
           return;
         }

@@ -131,6 +131,26 @@
     .preview-deal{padding:.48rem;border:1px solid #2a3c55;border-radius:7px;background:#16263b}.preview-deal strong{display:block;font-size:.65rem;line-height:1.35;overflow-wrap:anywhere}.preview-deal small{display:block;margin-top:.25rem;color:#91a5c0;font-size:.6rem}
     .preview-bottom{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:.65rem}.preview-mini{padding:.6rem;border:1px solid #2a3c55;border-radius:8px;background:#111f32}.preview-mini strong{display:block;font-size:.72rem}.preview-mini span{display:block;margin-top:.12rem;color:#91a5c0;font-size:.65rem}
     .preview-caption{margin:0;padding:0 1rem 1rem;color:#91a5c0;font-size:.68rem}
+    /* Sustainable deal workspace preview: certification fields are illustrative, not live data. */
+    .sustainability-dashboard{display:grid;gap:.7rem}
+    .sustainability-scorecards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+    .sustainability-card{min-width:0;padding:.7rem;border:1px solid #2b405a;border-radius:10px;background:linear-gradient(145deg,#14243a,#101b2d)}
+    .sustainability-card-head{display:flex;align-items:center;justify-content:space-between;gap:.35rem;color:#cbdcf0;font-size:.66rem;font-weight:800}
+    .sustainability-pill{display:inline-flex;align-items:center;gap:.25rem;padding:.2rem .4rem;border:1px solid #3b5c70;border-radius:999px;color:#bbf7d0;background:#123329;font-size:.57rem;font-weight:800;white-space:nowrap}
+    .sustainability-rating{display:flex;align-items:baseline;gap:.35rem;margin:.42rem 0 .2rem}
+    .sustainability-rating strong{font-size:1.15rem;line-height:1.1;color:#f8fafc}
+    .sustainability-rating span{color:#a9bdd4;font-size:.64rem}
+    .sustainability-meter{height:5px;overflow:hidden;border-radius:999px;background:#26374b}
+    .sustainability-meter span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#34d399,#93c5fd)}
+    .sustainability-card small{display:block;margin-top:.35rem;color:#9fb3cb;font-size:.6rem;line-height:1.4}
+    .sustainability-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem}
+    .sustainability-metric{padding:.55rem .45rem;border:1px solid #263b53;border-radius:8px;background:#111f32;min-width:0}
+    .sustainability-metric span{display:block;color:#91a5c0;font-size:.58rem;line-height:1.3}
+    .sustainability-metric strong{display:block;margin-top:.2rem;color:#e5eef9;font-size:.72rem;overflow-wrap:anywhere}
+    .sustainability-evidence{display:flex;align-items:flex-start;gap:.5rem;padding:.65rem .7rem;border:1px solid #33465f;border-radius:9px;background:#101e31;color:#cbdcf0;font-size:.64rem;line-height:1.45}
+    .sustainability-evidence b{color:#bfdbfe}
+    .sustainability-evidence-icon{flex:0 0 auto;color:#6ee7b7;font-size:.9rem}
+    @media(max-width:560px){.sustainability-card{padding:.55rem}.sustainability-rating strong{font-size:1rem}.sustainability-metric{padding:.45rem .3rem}.sustainability-metrics{gap:.3rem}}
     .capability-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;padding:0 0 1rem}.capability{min-width:0;padding:1rem;border:1px solid #2a3b55;border-radius:12px;background:#101a2a}.capability .icon{font-size:1.35rem}.capability strong{display:block;margin:.25rem 0;font-size:.9rem}.capability p{margin:0;color:var(--muted);font-size:.82rem;line-height:1.5}
     .pricing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;align-items:stretch}.price-card{display:flex;flex-direction:column;padding:1.25rem;border:1px solid var(--line);border-radius:14px;background:#111827}.price-card.featured{border-color:#6b9fe0;background:linear-gradient(150deg,#172d49,#111827 76%)}
     .price-label{margin:0 0 .6rem;color:#bddcff;font-size:.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.price{margin:0;font-size:clamp(2rem,3.5vw,2.6rem);line-height:1.1;font-weight:850;letter-spacing:-.055em}.price span{color:#a8b8cf;font-size:.82rem;font-weight:650;letter-spacing:0}
@@ -225,19 +245,32 @@
             <span class="preview-badge">DEAL PIPELINE</span>
           </div>
           <div class="preview-body">
-            <div class="preview-heading"><div><h2>Your deal workspace</h2><p>Keep context and next actions together</p></div><span class="preview-badge">Illustration</span></div>
-            <div class="preview-search" aria-hidden="true">⌕ &nbsp; Search the workspace</div>
-            <div class="preview-columns" aria-hidden="true">
-              <div class="preview-column"><div class="preview-column-title"><span class="stage-dot"></span> Opportunity</div><div class="preview-deal"><strong>Property opportunity</strong><small>Review details</small></div></div>
-              <div class="preview-column"><div class="preview-column-title"><span class="stage-dot amber"></span> Review</div><div class="preview-deal"><strong>Commercial enquiry</strong><small>Check next steps</small></div></div>
-              <div class="preview-column"><div class="preview-column-title"><span class="stage-dot teal"></span> Progress</div><div class="preview-deal"><strong>Deal follow-up</strong><small>Review critical path</small></div></div>
-            </div>
-            <div class="preview-bottom">
-              <div class="preview-mini"><strong>Deal activity</strong><span>Recent actions in view</span></div>
-              <div class="preview-mini"><strong>Critical path</strong><span>Deadlines and next steps</span></div>
+            <div class="preview-heading"><div><h2>Your Deal Workspace</h2><p>Sustainable property intelligence at a glance</p></div><span class="preview-badge">SUSTAINABILITY</span></div>
+            <div class="preview-search" aria-hidden="true">⌕ &nbsp; Search deals, properties or certification evidence</div>
+            <div class="sustainability-dashboard" aria-label="Illustrative sustainability dashboard">
+              <div class="sustainability-scorecards">
+                <article class="sustainability-card">
+                  <div class="sustainability-card-head"><span>LEED</span><span class="sustainability-pill">● Evidence</span></div>
+                  <div class="sustainability-rating"><strong>Gold</strong><span>Certification level</span></div>
+                  <div class="sustainability-meter" aria-hidden="true"><span style="width:76%"></span></div>
+                  <small>Example score: 68/100 · Check scheme version and certificate</small>
+                </article>
+                <article class="sustainability-card">
+                  <div class="sustainability-card-head"><span>BREEAM</span><span class="sustainability-pill">● Evidence</span></div>
+                  <div class="sustainability-rating"><strong>Excellent</strong><span>Rating level</span></div>
+                  <div class="sustainability-meter" aria-hidden="true"><span style="width:70%"></span></div>
+                  <small>Example score: 72% · Check assessment and certificate status</small>
+                </article>
+              </div>
+              <div class="sustainability-metrics">
+                <div class="sustainability-metric"><span>Energy performance</span><strong>EPC A</strong></div>
+                <div class="sustainability-metric"><span>Operational carbon</span><strong>Tracked</strong></div>
+                <div class="sustainability-metric"><span>Water efficiency</span><strong>Evidence needed</strong></div>
+              </div>
+              <div class="sustainability-evidence"><span class="sustainability-evidence-icon" aria-hidden="true">✓</span><span><b>Due-diligence checkpoint</b><br>Verify certificate, issue date, asset scope and supporting evidence before relying on a rating.</span></div>
             </div>
           </div>
-          <p class="preview-caption">Illustrative preview only. The labels shown are examples, not live customer or transaction data.</p>
+          <p class="preview-caption">Illustrative dashboard only. All ratings and metrics are fictional examples, not verified property data or live certification records.</p>
         </aside>
       </div>
     </section>

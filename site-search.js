@@ -63,7 +63,7 @@
             'admin.html', 'login.html', 'invoice.html', 'loggedout.html',
             'callback.html', 'success.html'
           ]);
-          const privateDirs = /^(?:app\/hamlet|app\/public|app\/functions\/public|functions\/public|public|superuser|account|accounts|auth|authentication)(?:\/|$)/i;
+          const privateDirs = /^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication)(?:\/|$)/i;
           pages = index.filter(page => {
             const searchableText = [page.title, page.path, page.url, page.text].join(' ').toLocaleLowerCase();
             const path = String(page.path || page.url || '').replace(/^\/+/, '');

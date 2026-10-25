@@ -90,3 +90,14 @@ Added two press-release-labelled summary pages from accessible IBR articles: Jus
 ## Additional direct-source migration — Mileway (25 October 2026)
 
 Added a press-release-labelled article for the 17 December 2025 announcement promoting Andrew Jones and Aymeric Canivenc to Co-Heads of Real Estate. The accessible IBR source text and quotations were used, with an original-source backlink. The catalogue and sitemap were updated; source portraits are omitted pending asset verification. The wider archive crawl and QA remain ongoing.
+
+
+## Additional source-discovered People Moves batch — 25 October 2026
+
+Added three summary pages discovered through direct-source search and available IBR article text:
+
+- Saudi PIF — Saad Alkroud appointed Head of the Local Real Estate Investment Division (22 May 2025).
+- PGIM Real Estate — Rory Morrison appointed Head of Core Strategies for its European platform (20 May 2025).
+- BP — Simon Henry appointed Non-Executive Director (8 July 2025).
+
+Each page has a Press Release label, an original IBR source backlink, a catalogue record and a sitemap URL. These are summary adaptations, not claimed verbatim copies; original source text and metadata still require line-by-line QA. The People Moves archive pagination itself remains inaccessible in this retrieval, so this is not a complete archive count.

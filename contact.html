@@ -55,9 +55,10 @@
     .contact-actions { display:flex; flex-wrap:wrap; gap:.7rem; margin:1.2rem 0 1.6rem; }
     .contact-action { display:inline-flex; align-items:center; justify-content:center; padding:.72rem 1rem; border:1px solid #64748b; border-radius:10px; color:#fff; text-decoration:none; font-weight:800; }
     .contact-action-primary { background:#fff; color:#071d4a; border-color:#fff; }
-    .contact-sections { display:grid; gap:1rem; }
-    .contact-detail { padding-top:1rem; border-top:1px solid #334765; }
-    .contact-detail h2 { font-size:1.08rem; margin:0 0 .4rem; }
+    .contact-sections { display:grid; gap:1rem; counter-reset: contact-section; }
+    .contact-detail { padding-top:1rem; border-top:1px solid #334765; counter-increment: contact-section; }
+    .contact-detail h2 { display:flex; align-items:center; gap:.65rem; font-size:1.08rem; margin:0 0 .4rem; }
+    .contact-detail h2::before { content:counter(contact-section, decimal-leading-zero); display:inline-flex; flex:0 0 2rem; width:2rem; height:2rem; align-items:center; justify-content:center; border:1px solid #647da8; border-radius:8px; background:rgba(7,29,74,.8); color:#bfdbfe; font-size:.78rem; font-weight:800; letter-spacing:.03em; }
     .contact-detail p { margin:.35rem 0; text-align:left; }
     .contact-detail a,.contact-followup a { color:#bfdbfe; font-weight:700; }
     .contact-inline-links,.contact-legal-links { display:flex; flex-wrap:wrap; gap:.55rem 1rem; }

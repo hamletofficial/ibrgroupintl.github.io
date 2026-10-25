@@ -568,6 +568,56 @@
       "contentPath": "/resources/news-insights/articles/arora-group-heathrow-expansion-proposal.html",
       "migrationStatus": "migrated from accessible IBR article; official Arora source backlink retained; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "legal-general-magnavale-cold-storage-investment",
+      "title": "News: L&G expands private credit portfolio with £250m Magnavale Cold Storage investment",
+      "slug": "legal-general-magnavale-cold-storage-investment",
+      "excerpt": "L&G completed a £250 million private debt investment in Magnavale as part of a £500 million facility to support UK cold-chain infrastructure and energy-efficient storage.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "cold storage",
+        "logistics",
+        "private credit",
+        "food security",
+        "energy efficiency"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-13",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/news-l-g-expands-private-credit-portfolio-with-gbp250m-magnavale-cold-storage-investment/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/legal-general-magnavale-cold-storage-investment.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Legal & General; Magnavale; Sadel Group",
+      "contentPath": "/resources/news-insights/articles/legal-general-magnavale-cold-storage-investment.html",
+      "migrationStatus": "migrated from accessible IBR-authored release; original IBR and L&G source links retained; third-party image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "great-british-energy-first-schools-solar-panels",
+      "title": "News: First schools install Great British Energy solar panels",
+      "slug": "great-british-energy-first-schools-solar-panels",
+      "excerpt": "The first 11 schools in England's Great British Energy rooftop solar rollout were expected to save a combined £175,000 per year, with further schools and NHS sites planned.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "solar PV",
+        "public buildings",
+        "energy bills",
+        "Great British Energy",
+        "schools"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-07",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/news-first-schools-install-great-british-energy-solar-panels/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/great-british-energy-first-schools-solar-panels.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Great British Energy; UK Government",
+      "contentPath": "/resources/news-insights/articles/great-british-energy-first-schools-solar-panels.html",
+      "migrationStatus": "migrated from accessible IBR article; UK Government source backlink retained; source image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

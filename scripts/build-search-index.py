@@ -120,8 +120,15 @@ def generate():
     if not pages:
         raise SystemExit("ERROR: generated search index is empty; refusing to publish.")
     validate_records(pages)
-    OUTPUT.write_text(json.dumps(pages, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
-    print(f"Generated and validated {len(pages)} public HTML pages in {OUTPUT}")
+    serialized = json.dumps(pages, ensure_ascii=False, separators=(",", ":"))
+    OUTPUT.write_text(serialized + "\n", encoding="utf-8")
+    # Serve the generated index as JavaScript as well as JSON. Some CDN
+    # configurations reject JSON requests while allowing static JS assets.
+    (ROOT / "search-index.js").write_text(
+        "window.HAMLET_SEARCH_INDEX = " + serialized + ";\n",
+        encoding="utf-8",
+    )
+    print(f"Generated and validated {len(pages)} public HTML pages in {OUTPUT} and search-index.js")
 
 
 def validate_records(data):

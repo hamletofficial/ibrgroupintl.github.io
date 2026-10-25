@@ -458,6 +458,83 @@
       "contentType": "Press Release",
       "contentPath": "/resources/people-moves/articles/mileway-andrew-jones-aymeric-canivenc-co-heads-real-estate.html",
       "migrationStatus": "migrated from accessible live IBR page; press release label and source backlink included; image omitted pending asset verification; QA pending"
+    },
+    {
+      "id": "saudi-pif-saad-alkroud-local-real-estate",
+      "title": "People Moves: Saudi PIF appoints Saad Alkroud to lead local real estate",
+      "slug": "saudi-pif-saad-alkroud-local-real-estate",
+      "excerpt": "Saudi Arabia's Public Investment Fund appointed Saad Alkroud as Head of its Local Real Estate Investment Division.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "real estate investment",
+        "sovereign wealth fund",
+        "Saudi Arabia",
+        "infrastructure"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-05-22",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-saudi-pif-appoints-saad-alkroud-to-lead-on-local-real-estate/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/saudi-pif-saad-alkroud-local-real-estate.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Saad Alkroud",
+      "role": "Head of the Local Real Estate Investment Division",
+      "company": "Public Investment Fund (PIF)",
+      "contentPath": "/resources/people-moves/articles/saudi-pif-saad-alkroud-local-real-estate.html",
+      "migrationStatus": "summary migrated from accessible IBR source/search extract; original IBR backlink retained; source-text QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "pgim-real-estate-rory-morrison-european-core-strategies",
+      "title": "People Moves: PGIM Real Estate appoints Rory Morrison to lead European Core Strategies",
+      "slug": "pgim-real-estate-rory-morrison-european-core-strategies",
+      "excerpt": "PGIM Real Estate appointed Rory Morrison as Head of Core Strategies for its European platform, overseeing core, core-plus and UK affordable-housing strategies.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "real estate investment",
+        "fund management",
+        "European property",
+        "affordable housing"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-05-20",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-pgim-real-estate-appoints-rory-morrison-as-core-strategies-lead-for-its-european-platform/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/pgim-real-estate-rory-morrison-european-core-strategies.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Rory Morrison",
+      "role": "Head of Core Strategies, European platform",
+      "company": "PGIM Real Estate",
+      "contentPath": "/resources/people-moves/articles/pgim-real-estate-rory-morrison-european-core-strategies.html",
+      "migrationStatus": "summary migrated from accessible IBR source/search extract; original IBR backlink retained; source-text QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "bp-simon-henry-non-executive-director",
+      "title": "People Moves: BP welcomes Shell's Simon Henry as Non-Executive Director",
+      "slug": "bp-simon-henry-non-executive-director",
+      "excerpt": "BP confirmed the appointment of Simon Henry, formerly Shell's Chief Financial Officer, as a Non-Executive Director.",
+      "category": "Energy & Utilities",
+      "topics": [
+        "energy",
+        "board appointments",
+        "corporate governance"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-07-08",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-bp-welcomes-shells-simon-henry-as-non-executive-director/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/bp-simon-henry-non-executive-director.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Simon Henry",
+      "role": "Non-Executive Director",
+      "company": "BP plc",
+      "contentPath": "/resources/people-moves/articles/bp-simon-henry-non-executive-director.html",
+      "migrationStatus": "summary migrated from accessible IBR source/search extract; original IBR backlink retained; source-text QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

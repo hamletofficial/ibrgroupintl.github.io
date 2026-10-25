@@ -23,7 +23,8 @@
       "imageAlt": null,
       "company": "Acuity; One Big Circle; Loram",
       "contentPath": "/resources/news-insights/articles/acuity-one-big-circle-loram-partnership.html",
-      "migrationStatus": "migrated from accessible live source; press-release attribution retained; third-party image omitted pending verification"
+      "migrationStatus": "migrated from accessible live source; press-release attribution retained; third-party image omitted pending verification",
+      "contentType": "Press Release"
     },
     {
       "id": "riocan-third-quarter-2026-earnings-call",
@@ -45,7 +46,8 @@
       "imageAlt": null,
       "company": "RioCan Real Estate Investment Trust",
       "contentPath": "/resources/news-insights/articles/riocan-third-quarter-2026-earnings-call.html",
-      "migrationStatus": "migrated from accessible live source; line-by-line QA pending"
+      "migrationStatus": "migrated from accessible live source; line-by-line QA pending",
+      "contentType": "Press Release"
     },
     {
       "id": "cbre-third-quarter-2026-results-call",
@@ -67,7 +69,8 @@
       "imageAlt": null,
       "company": "CBRE Group, Inc.",
       "contentPath": "/resources/news-insights/articles/cbre-third-quarter-2026-results-call.html",
-      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending",
+      "contentType": "Press Release"
     },
     {
       "id": "jll-third-quarter-2026-earnings-call",
@@ -89,7 +92,8 @@
       "imageAlt": null,
       "company": "Jones Lang LaSalle Incorporated",
       "contentPath": "/resources/news-insights/articles/jll-third-quarter-2026-earnings-call.html",
-      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending",
+      "contentType": "Press Release"
     },
     {
       "id": "skanska-h2offices-budapest-phase-two-sale",
@@ -111,7 +115,8 @@
       "imageAlt": null,
       "company": "Skanska; ERSTE Open-Ended Real Estate Investment Fund",
       "contentPath": "/resources/news-insights/articles/skanska-h2offices-budapest-phase-two-sale.html",
-      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending",
+      "contentType": "Press Release"
     },
     {
       "id": "aberdeen-intermediate-income-fund-reverse-stock-split",
@@ -133,7 +138,8 @@
       "imageAlt": null,
       "company": "Aberdeen Intermediate Income Fund (NYSE: MIN)",
       "contentPath": "/resources/news-insights/articles/aberdeen-intermediate-income-fund-reverse-stock-split.html",
-      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

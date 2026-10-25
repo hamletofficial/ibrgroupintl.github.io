@@ -107,3 +107,8 @@ Two News & Insights candidates previously treated as unresolved were recovered v
 - Saudi Real Estate Co / Al Akaria — 2025 audited annual financial results (27 April 2026).
 
 Added summary pages with source backlinks, correct article/press-release classification, catalogue entries and sitemap URLs. Figures and project claims are attributed to the source and should be checked against the original publication during QA. This recovery demonstrates that a failed first retrieval does not necessarily mean the source article is unavailable.
+
+
+## Additional source article — CBRE / LKQ Europe (25 October 2026)
+
+Migrated the accessible IBR article announcing CBRE's appointment as exclusive European real estate adviser to LKQ Europe, effective 1 January 2026. Added native HTML page, original IBR source link, CBRE source link, catalogue record and sitemap URL. QA remains pending.

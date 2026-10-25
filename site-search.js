@@ -53,8 +53,22 @@
 
   function loadIndex() {
     if (!indexPromise) {
-      indexPromise = fetch('/search-index.json', {cache:'no-cache'})
-        .then(response => { if (!response.ok) throw new Error('Search index unavailable'); return response.json(); })
+      // Load the generated JS index first. This avoids JSON-endpoint/CDN
+      // restrictions that can leave both the dropdown and results page empty.
+      indexPromise = new Promise((resolve, reject) => {
+        if (Array.isArray(window.HAMLET_SEARCH_INDEX)) {
+          resolve(window.HAMLET_SEARCH_INDEX);
+          return;
+        }
+        const script = document.createElement('script');
+        script.src = '/search-index.js?v=20261025-index';
+        script.async = true;
+        script.onload = () => Array.isArray(window.HAMLET_SEARCH_INDEX)
+          ? resolve(window.HAMLET_SEARCH_INDEX)
+          : reject(new Error('Search index loaded without data'));
+        script.onerror = () => reject(new Error('Search index unavailable'));
+        document.head.appendChild(script);
+      })
         .then(data => {
           // Exclude stale/generated records containing transient search UI status copy.
           const index = Array.isArray(data) ? data : [];

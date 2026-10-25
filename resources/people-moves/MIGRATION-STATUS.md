@@ -80,3 +80,8 @@ Added three press-release-labelled People Moves summary pages from accessible IB
 ## Additional direct-source migration — Herbert Smith Freehills Kramer (25 October 2026)
 
 Added a press-release-labelled summary of the 24 April 2026 announcement promoting 25 partners. The page links to the original IBR article, and the catalogue and sitemap have been updated. The summary directs readers to IBR for the complete list rather than reproducing the full third-party release. Source-by-source QA and exhaustive archive enumeration remain outstanding.
+
+
+## Additional direct-source batch — Spencer Stuart and PensionDanmark (25 October 2026)
+
+Added two press-release-labelled summary pages from accessible IBR articles: Justin Zale / Spencer Stuart (16 April 2026) and Cecilie Orland Kiærskou / PensionDanmark (27 November 2025). Updated the catalogue and sitemap. Both pages link back to IBR; source images are omitted pending asset verification. Full archive enumeration and source-by-source QA remain outstanding.

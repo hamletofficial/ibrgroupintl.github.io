@@ -45,8 +45,8 @@ class PageText(HTMLParser):
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         should_skip = tag in {"script", "style", "noscript", "svg"} or attrs.get("id") == "search-page-count"
-        self.skip_stack.append(should_skip)
         if should_skip:
+            self.skip_stack.append((tag, True))
             self.skip_depth += 1
         if tag == "title":
             self.in_title = True
@@ -55,9 +55,12 @@ class PageText(HTMLParser):
         return
 
     def handle_endtag(self, tag):
-        if self.skip_stack:
-            if self.skip_stack.pop():
-                self.skip_depth = max(0, self.skip_depth - 1)
+        for i in range(len(self.skip_stack) - 1, -1, -1):
+            if self.skip_stack[i][0] == tag:
+                _, was_skipped = self.skip_stack.pop(i)
+                if was_skipped:
+                    self.skip_depth = max(0, self.skip_depth - 1)
+                break
         if tag == "title":
             self.in_title = False
 

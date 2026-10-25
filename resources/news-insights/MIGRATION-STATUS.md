@@ -59,3 +59,8 @@ Added native HTML summary pages for the Skanska H2Offices divestment and Aberdee
 - Added direct links to official issuer sources where the IBR item exposed a clear official release: RioCan's own press release, CBRE Investor Relations' release, and JLL Investor Relations. IBR source backlinks remain in place as the migration provenance links.
 - Both archive pages now have content-type filters. People Moves search and sector filtering were corrected to include the `category` field when `sector` is absent.
 - This is still a draft migration. The full News & Insights inventory and older People Moves pagination have not been exhaustively enumerated or verified; current article pages require QA against the live source before production.
+
+
+## Direct-source archive page 2 batch — 25 October 2026
+
+Added three pages from the second News & Insights archive listing: Simon Donohue's planning-policy insight (classified Article, summarised and attributed), the FCA ESG ratings voluntary pilot announcement (Press Release summary), and L&G's affordable-housing Partnership RP model announcement (Press Release summary). Each page includes the original IBR backlink and catalogue/sitemap entry. The other three listing entries on this archive page were not migrated in this batch because their direct IBR article links returned 404 or cache-miss errors during retrieval; retain them in the inventory as blockers and retry later.

@@ -29,6 +29,17 @@
     h1 span{color:#bfdbfe}
     .hero p{color:var(--muted);font-size:1.05rem;max-width:70ch}
     .editorial-note{margin-top:1.2rem;padding:1rem 1.1rem;border:1px solid #374151;border-left:3px solid #93c5fd;border-radius:10px;background:#111827;color:#cbd5e1;font-size:.92rem}
+    .calendar-search{margin:1.5rem 0 2rem;padding:1rem;border:1px solid #254a7b;border-radius:14px;background:linear-gradient(135deg,#111827 0%,#142844 60%,#071d4a 100%)}
+    .calendar-search label{display:block;margin-bottom:.5rem;color:#f8fafc;font-weight:800}
+    .calendar-search .search-row{display:flex;gap:.65rem;align-items:center}
+    .calendar-search input{flex:1;min-width:0;padding:.8rem .9rem;border:1px solid #64748b;border-radius:9px;background:#0b1120;color:#f8fafc;font:inherit}
+    .calendar-search input::placeholder{color:#94a3b8}
+    .calendar-search input:focus-visible{outline:3px solid #93c5fd;outline-offset:2px;border-color:#93c5fd}
+    .calendar-search button{padding:.8rem 1rem;border:1px solid #93c5fd;border-radius:9px;background:#071d4a;color:#fff;font:inherit;font-weight:800;cursor:pointer}
+    .calendar-search button:hover{background:#173b75}
+    .search-status{margin:.65rem 0 0;color:#cbd5e1;font-size:.9rem}
+    .event-card[hidden]{display:none!important}
+    .calendar-search .clear-search{background:#111827}
     .event-list{display:grid;gap:1rem}
     .event-card{display:grid;grid-template-columns:145px minmax(0,1fr);gap:1.2rem;padding:1.25rem;border:1px solid #254a7b;border-radius:14px;background:linear-gradient(135deg,#111827 0%,#142844 60%,#071d4a 100%);box-shadow:inset 0 1px 0 rgba(147,197,253,.07)}
     .event-date{align-self:start;padding:.75rem;border:1px solid #47658a;border-radius:10px;background:#0b1120;text-align:center;color:#dbeafe}
@@ -59,6 +70,15 @@
       <h1 id="page-title">Hamlet’s <span>Calendar</span> &amp; Events</h1>
       <p>A calendar of upcoming events alongside a public record of conferences, workshops and professional events documented by Hamlet founder Alfred Anate Bodurin Mayaki.</p>
       <div class="editorial-note"><strong>Editorial note:</strong> This page includes events that can be substantiated from publicly available event information or the founder’s own published reflections. Where an exact attendance date was not stated in the source, that limitation is shown rather than inferred. This is a documented list, not a guarantee that every event attended is represented.</div>
+    </section>
+
+    <section class="calendar-search" aria-labelledby="event-search-label">
+      <label id="event-search-label" for="event-search">🔎 Search calendar events</label>
+      <div class="search-row">
+        <input id="event-search" type="search" placeholder="Search event names, topics, dates or venues…" autocomplete="off" aria-describedby="event-search-status">
+        <button type="button" id="clear-event-search" class="clear-search">Clear</button>
+      </div>
+      <p class="search-status" id="event-search-status" role="status" aria-live="polite">Showing all 35 events. Search across upcoming and past events.</p>
     </section>
 
     <section aria-labelledby="attending-title" style="margin:0 0 1rem;padding:1.25rem;border:1px solid #60a5fa;border-radius:14px;background:linear-gradient(135deg,#111827 0%,#172554 65%,#071d4a 100%);box-shadow:inset 0 1px 0 rgba(147,197,253,.08)">
@@ -423,6 +443,35 @@
       </article>
     </section>
   </main>
-  <footer><div class="wrap">© 2026 <a href="https://www.ibrecruitment.com/" target="_blank" rel="noopener noreferrer">Impact in Business Recruitment Group Limited</a> · hamlet</div></footer>
+
+  <script>
+    (function () {
+      "use strict";
+      var input = document.getElementById("event-search");
+      var clear = document.getElementById("clear-event-search");
+      var status = document.getElementById("event-search-status");
+      var cards = Array.prototype.slice.call(document.querySelectorAll(".event-card"));
+      var total = cards.length;
+      function searchEvents() {
+        var query = input.value.trim().toLocaleLowerCase();
+        var visible = 0;
+        cards.forEach(function (card) {
+          var match = !query || (card.textContent || "").toLocaleLowerCase().includes(query);
+          card.hidden = !match;
+          if (match) visible += 1;
+        });
+        status.textContent = query
+          ? "Showing " + visible + " of " + total + " events for “" + input.value.trim() + "”."
+          : "Showing all " + total + " events. Search across upcoming and past events.";
+      }
+      input.addEventListener("input", searchEvents);
+      clear.addEventListener("click", function () {
+        input.value = "";
+        searchEvents();
+        input.focus();
+      });
+    }());
+  </script>
+\n  <footer><div class="wrap">© 2026 <a href="https://www.ibrecruitment.com/" target="_blank" rel="noopener noreferrer">Impact in Business Recruitment Group Limited</a> · hamlet</div></footer>
 </body>
 </html>

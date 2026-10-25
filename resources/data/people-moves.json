@@ -639,6 +639,82 @@
       "contentPath": "/resources/people-moves/articles/bp-david-hager-non-executive-director.html",
       "migrationStatus": "migrated from accessible IBR source; official BP/EuropaWire source link retained; image omitted pending rights check; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "bp-gordon-birrell-chief-financial-officer",
+      "title": "People Moves: BP appoints Gordon Birrell as Chief Financial Officer",
+      "slug": "bp-gordon-birrell-chief-financial-officer",
+      "excerpt": "BP appointed Gordon Birrell as Chief Financial Officer, with the change effective from 1 July 2025.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "C-suite appointment",
+        "finance",
+        "oil and gas",
+        "energy"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-05-22",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-bp-appoints-gordon-birrell-as-chief-financial-officer/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/bp-gordon-birrell-chief-financial-officer.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Gordon Birrell",
+      "role": "Chief Financial Officer",
+      "company": "BP plc",
+      "contentPath": "/resources/people-moves/articles/bp-gordon-birrell-chief-financial-officer.html",
+      "migrationStatus": "migrated from IBR source listing/article; source backlink retained; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "abrdn-nick-bryan-global-real-estate-head",
+      "title": "People Moves: abrdn appoints Nick Bryan as Global Head of Real Estate",
+      "slug": "abrdn-nick-bryan-global-real-estate-head",
+      "excerpt": "abrdn appointed Nick Bryan to lead its global real estate business, succeeding Guy McKenna.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "real estate investment",
+        "leadership",
+        "asset management"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-05-19",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-abrdn-appoints-nick-bryan-as-global-head-of-real-estate/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/abrdn-nick-bryan-global-real-estate-head.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Nick Bryan",
+      "role": "Global Head of Real Estate",
+      "company": "abrdn",
+      "contentPath": "/resources/people-moves/articles/abrdn-nick-bryan-global-real-estate-head.html",
+      "migrationStatus": "migrated from IBR source listing/article; source backlink retained; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "bp-murray-audibert-chief-operating-officer",
+      "title": "People Moves: BP appoints Murray Auchincloss as Chief Executive Officer",
+      "slug": "bp-murray-audibert-chief-operating-officer",
+      "excerpt": "BP announced a leadership transition naming Murray Auchincloss as Chief Executive Officer, following the departure of Bernard Looney.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "C-suite appointment",
+        "energy",
+        "leadership transition"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2023-09-29",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-bp-appoints-murray-auchincloss-as-chief-executive-officer/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/bp-murray-auchincloss-chief-executive-officer.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Murray Auchincloss",
+      "role": "Chief Executive Officer",
+      "company": "BP plc",
+      "contentPath": "/resources/people-moves/articles/bp-murray-auchincloss-chief-executive-officer.html",
+      "migrationStatus": "migrated from IBR source listing/article; source backlink retained; QA pending; historical appointment status is time-specific",
+      "contentType": "Press Release"
     }
   ]
 }

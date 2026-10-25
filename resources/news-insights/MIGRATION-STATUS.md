@@ -85,3 +85,10 @@ The page-2 listing also surfaced three other candidates whose direct article URL
 ## Additional direct-source article — Newmark Q3 2026 results notice (25 October 2026)
 
 Added a native HTML summary page for Newmark Group's third-quarter 2026 financial-results notice, dated 5 October 2026, with an original IBR backlink and official investor-relations links. Catalogue and sitemap updated. This is a summary of a third-party announcement; archive enumeration and line-by-line QA remain outstanding.
+
+
+## Direct archive crawl — page 3 — 25 October 2026
+
+Followed the News & Insights archive pagination to page 3. The page lists A&O Hostels refinancing (20 April), Colliers/CoreNet Global corporate real estate and AI insight (20 April), Acuity / One Big Circle / Loram (16 April), Industrial Realty Group / Hyundai Translead logistics lease (15 April), Eastern Union warehouse refinancing (15 April), and Adani-Minerva renewable joint venture (15 April). Acuity was already migrated. Added the accessible Colliers/CoreNet Global article and Adani-Minerva article as native HTML pages, preserving IBR source links and metadata; updated catalogue and sitemap.
+
+The direct source URLs for A&O Hostels and IRG returned 404; Eastern Union returned a cache-miss retrieval error. These three are unresolved and were not reconstructed. Archive crawl continues.

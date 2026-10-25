@@ -55,3 +55,8 @@ The project owner has explicitly selected direct migration from the original liv
 ## Additional direct-source migration — Serica Energy (25 October 2026)
 
 Added `articles/serica-energy-two-senior-appointments.html` from the accessible original IBR page, including the visible article text, author/date, appointee details and source attribution. Added the record to `resources/data/people-moves.json` and the public URL to the sitemap. The source article credits a Serica Energy / KeyFacts Energy press release; the two source photographs are not copied pending asset verification. This entry has not yet undergone a complete independent line-by-line QA pass.
+
+
+## Additional direct-source migration — Equilis France (25 October 2026)
+
+Added `articles/equilis-france-constance-poublet-ceo.html` from the accessible live IBR article dated 10 April 2026. The page covers Constance Poublet's appointment as CEO of Equilis France and preserves the article's statements and source link. The third-party image is not reproduced pending asset verification. Added the record to the JSON catalogue and sitemap. Independent line-by-line QA remains outstanding.

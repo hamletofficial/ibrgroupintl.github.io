@@ -50,3 +50,8 @@ The project owner has explicitly selected direct migration from the original liv
 - The archive's Older posts link resolves to `https://www.ibrecruitment.com/exec-appointments/p-u2otgxma/1`; that page could not be fetched (cache miss). The first archive page is therefore not a complete inventory.
 - Reopened the Woodway Energy source article. It is accessible and includes a PR Newswire attribution and photo credit. The Hamlet version is still a first-pass adaptation, not a verbatim transcription; its wording, omissions and source attribution need a line-by-line correction before production.
 - No source export requested; continue direct migration. Do not publish unsupported reconstructed text or unlicensed third-party images.
+
+
+## Additional direct-source migration — Serica Energy (25 October 2026)
+
+Added `articles/serica-energy-two-senior-appointments.html` from the accessible original IBR page, including the visible article text, author/date, appointee details and source attribution. Added the record to `resources/data/people-moves.json` and the public URL to the sitemap. The source article credits a Serica Energy / KeyFacts Energy press release; the two source photographs are not copied pending asset verification. This entry has not yet undergone a complete independent line-by-line QA pass.

@@ -82,25 +82,38 @@
             && !privateDirs.test(path);
         });
       };
-      indexPromise = fetch('/search-index.json?v=' + encodeURIComponent(assetVersion), {
-        cache: 'no-store',
-        credentials: 'same-origin',
-        headers: { 'Accept': 'application/json' }
-      })
-        .then(response => {
-          if (!response.ok) throw new Error('Search index returned HTTP ' + response.status);
-          return response.json();
-        })
-        .then(filterPublicIndex)
-        .then(data => {
-          if (!data.length) throw new Error('Search index contained no public pages');
-          pages = data;
-          return pages;
-        })
-        .catch(() => {
-          indexPromise = null;
-          throw new Error('Search is temporarily unavailable. Please try again shortly.');
+      const fetchIndexFrom = async url => {
+        const response = await fetch(url, {
+          cache: 'no-store',
+          credentials: 'omit',
+          headers: { 'Accept': 'application/json' }
         });
+        if (!response.ok) throw new Error('Search index returned HTTP ' + response.status);
+        return filterPublicIndex(await response.json());
+      };
+      indexPromise = (async () => {
+        // Read the canonical index committed to GitHub first, bypassing any
+        // custom-domain/CDN rule that might reject JSON on the website host.
+        const urls = [
+          'https://raw.githubusercontent.com/hamletofficial/oss/main/search-index.json?cb=' + Date.now(),
+          '/search-index.json?v=' + encodeURIComponent(assetVersion) + '&cb=' + Date.now()
+        ];
+        let lastError;
+        for (const url of urls) {
+          try {
+            const data = await fetchIndexFrom(url);
+            if (!data.length) throw new Error('Search index contained no public pages');
+            pages = data;
+            return pages;
+          } catch (error) {
+            lastError = error;
+          }
+        }
+        throw lastError || new Error('Search index could not be loaded');
+      })().catch(() => {
+        indexPromise = null;
+        throw new Error('Search is temporarily unavailable. Please try again shortly.');
+      });
     }
     return indexPromise;
   }

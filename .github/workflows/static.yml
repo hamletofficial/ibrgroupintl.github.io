@@ -31,97 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Build searchable page index
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import html
-          import json
-          import re
-          from html.parser import HTMLParser
-          from pathlib import Path
-
-          EXCLUDED = {'.git', '.vs', '.firebase', 'node_modules', '.github'}
-          EXCLUDED_DIRS = {'superuser', 'admin', 'account', 'accounts', 'auth', 'authentication', 'app', 'functions', 'public'}
-          # Never publish Firebase-authenticated/private pages in the public search index.
-          # Keep this explicit denylist in addition to the private-directory exclusions.
-          EXCLUDED_FILES = {
-              'admin.html', 'login.html', 'editprofile.html', 'invoice.html', 'search.html',
-              'archive.html', 'dashboard.html', 'live.html', 'portfolio.html', 'residential.html',
-              'resi-resources.html', 'resources.html', 'members.html', 'directory.html',
-              'profile.html', 'posts.html', 'rankings.html', 'messages.html', 'requests.html',
-              'settings.html', 'loggedout.html', 'callback.html', 'success.html'
-          }
-          class PageText(HTMLParser):
-              def __init__(self):
-                  super().__init__()
-                  self.title = ''
-                  self.in_title = False
-                  self.skip = 0
-                  self.transient_tags = []
-                  self.parts = []
-              def handle_starttag(self, tag, attrs):
-                  attrs = dict(attrs)
-                  if tag in ('script', 'style', 'noscript', 'svg'):
-                      self.skip += 1
-                  # Ignore the live search status placeholder; it is replaced after load.
-                  if attrs.get('id') == 'search-page-count':
-                      self.skip += 1
-                      self.transient_tags.append(tag)
-                  if tag == 'title':
-                      self.in_title = True
-              def handle_endtag(self, tag):
-                  if tag in ('script', 'style', 'noscript', 'svg') and self.skip:
-                      self.skip -= 1
-                  if tag in self.transient_tags:
-                      self.transient_tags.remove(tag)
-                      if self.skip:
-                          self.skip -= 1
-                  if tag == 'title':
-                      self.in_title = False
-              def handle_data(self, data):
-                  value = ' '.join(data.split())
-                  if not value:
-                      return
-                  if self.in_title:
-                      self.title += (' ' if self.title else '') + value
-                  if not self.skip:
-                      self.parts.append(value)
-
-          pages = []
-          for path in sorted(Path('.').rglob('*.html')):
-              if any(part in EXCLUDED for part in path.parts):
-                  continue
-              if any(part.lower() in EXCLUDED_DIRS for part in path.parts[:-1]):
-                  continue
-              if path.name.lower() in EXCLUDED_FILES:
-                  continue
-              if path.name.startswith('.'):
-                  continue
-              try:
-                  source = path.read_text(encoding='utf-8', errors='ignore')
-              except OSError:
-                  continue
-              parser = PageText()
-              try:
-                  parser.feed(source)
-              except Exception:
-                  pass
-              title = html.unescape(parser.title.strip()) or path.stem.replace('-', ' ').replace('_', ' ').title()
-              text = html.unescape(' '.join(parser.parts))
-              text = re.sub(r'\s+', ' ', text).strip()
-              # Defensive cleanup for transient status copy that must never be searchable.
-              text = re.sub(r'(?i)loading\s+search\s+index[.…]*', ' ', text)
-              text = re.sub(r'\s+', ' ', text).strip()
-              if not text:
-                  continue
-              relative = path.as_posix()
-              url = '/' if relative == 'index.html' else '/' + relative
-              pages.append({'title': title, 'url': url, 'path': relative, 'text': text[:18000]})
-
-          Path('search-index.json').write_text(json.dumps(pages, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-          print(f'Indexed {len(pages)} HTML pages into search-index.json')
-          PY
+      - name: Build and validate public search index
+        run: python3 scripts/build-search-index.py
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
@@ -132,3 +43,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+      - name: Verify live public search index
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: python3 scripts/build-search-index.py --check-live "$PAGE_URL"

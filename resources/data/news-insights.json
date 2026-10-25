@@ -90,6 +90,50 @@
       "company": "Jones Lang LaSalle Incorporated",
       "contentPath": "/resources/news-insights/articles/jll-third-quarter-2026-earnings-call.html",
       "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+    },
+    {
+      "id": "skanska-h2offices-budapest-phase-two-sale",
+      "title": "News: Skanska sells second phase of H2Offices in Budapest for EUR 98 million",
+      "slug": "skanska-h2offices-budapest-phase-two-sale",
+      "excerpt": "Skanska agreed to sell the second phase of Budapest's H2Offices for EUR 98 million to ERSTE Open-Ended Real Estate Investment Fund.",
+      "category": "Commercial Real Estate",
+      "topics": [
+        "real estate",
+        "investment",
+        "commercial property"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-09-28",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/skanska-divests-second-phase-of-h2offices-in-budapest-hungary-for-eur-98m-about-sek-1-1-billion/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/skanska-h2offices-budapest-phase-two-sale.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Skanska; ERSTE Open-Ended Real Estate Investment Fund",
+      "contentPath": "/resources/news-insights/articles/skanska-h2offices-budapest-phase-two-sale.html",
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+    },
+    {
+      "id": "aberdeen-intermediate-income-fund-reverse-stock-split",
+      "title": "News: Aberdeen Intermediate Income Fund announces 1-for-6 reverse stock split",
+      "slug": "aberdeen-intermediate-income-fund-reverse-stock-split",
+      "excerpt": "Aberdeen Intermediate Income Fund approved a 1-for-6 reverse split of its issued and outstanding common shares.",
+      "category": "Investment & Finance",
+      "topics": [
+        "real estate",
+        "investment",
+        "commercial property"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-09-28",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/aberdeen-intermediate-income-fund-min-announces-upcoming-reverse-stock-split/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/aberdeen-intermediate-income-fund-reverse-stock-split.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Aberdeen Intermediate Income Fund (NYSE: MIN)",
+      "contentPath": "/resources/news-insights/articles/aberdeen-intermediate-income-fund-reverse-stock-split.html",
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
     }
   ]
 }

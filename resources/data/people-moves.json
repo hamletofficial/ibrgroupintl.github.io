@@ -432,6 +432,32 @@
       "contentType": "Press Release",
       "contentPath": "/resources/people-moves/articles/pensiondanmark-cecilie-orland-kiaerskou-real-estate-investment.html",
       "migrationStatus": "summary migrated from accessible live IBR page; source backlink and press release label included; QA pending"
+    },
+    {
+      "id": "mileway-andrew-jones-aymeric-canivenc-co-heads-real-estate",
+      "title": "People Moves: Mileway promotes Andrew Jones and Aymeric Canivenc to Co-Heads of Real Estate",
+      "slug": "mileway-andrew-jones-aymeric-canivenc-co-heads-real-estate",
+      "excerpt": "Mileway promoted Andrew Jones and Aymeric Canivenc to Co-Heads of Real Estate, effective 1 January 2026, following Thomas ten Bokum's decision to step down.",
+      "category": "Commercial Real Estate",
+      "sector": "Commercial Real Estate",
+      "topics": [
+        "executive appointments",
+        "logistics real estate",
+        "leadership"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-12-17",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-mileway-promotes-andrew-jones-and-aymeric-canivenc-to-co-heads-of-real-estate/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/mileway-andrew-jones-aymeric-canivenc-co-heads-real-estate.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Andrew Jones and Aymeric Canivenc",
+      "role": "Co-Heads of Real Estate",
+      "company": "Mileway",
+      "contentType": "Press Release",
+      "contentPath": "/resources/people-moves/articles/mileway-andrew-jones-aymeric-canivenc-co-heads-real-estate.html",
+      "migrationStatus": "migrated from accessible live IBR page; press release label and source backlink included; image omitted pending asset verification; QA pending"
     }
   ]
 }

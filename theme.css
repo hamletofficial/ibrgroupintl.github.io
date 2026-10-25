@@ -791,3 +791,14 @@ html[data-appearance="dark"] nav.workspace-nav .workspace-nav-link[href^="/"]:no
 
 /* Hamlet identity: the baby-blue full-stop follows the wordmark on site headers. */
 /* Wordmark punctuation is managed in markup/shared JS to avoid duplicate CSS-generated dots. */
+/* Defensive compatibility: older cached stylesheets may still append a pseudo-element dot.
+   When a wordmark already contains its punctuation span, suppress every generated after-dot. */
+a.brand:has(span)::after,
+a.sector-brand:has(span)::after,
+a.search-brand:has(span)::after,
+a.legal-brand:has(span)::after,
+a.pricing-brand:has(span)::after,
+a.site-title:has(span)::after,
+.brand-wordmark:has(span)::after {
+  content: none !important;
+}

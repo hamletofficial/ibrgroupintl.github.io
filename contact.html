@@ -47,7 +47,27 @@
   </style>
 
     <style>
-      .mail-header-icon { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:9px; text-decoration:none; font-size:1.15rem; transition:background-color .2s ease, transform .2s ease; }
+      .contact-shell { width:min(1120px,calc(100% - 2rem)); max-width:none; margin:2rem auto 3rem; padding:0; }
+    .contact-card { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr); gap:clamp(1.25rem,3vw,2.5rem); overflow:hidden; padding:clamp(1.25rem,3vw,2.5rem); border:1px solid #254a7b; border-radius:22px; background:linear-gradient(135deg,#111827 0%,#142844 52%,#071d4a 100%); color:#f8fafc; box-shadow:0 20px 48px rgba(2,6,23,.2),inset 0 1px 0 rgba(147,197,253,.1); }
+    .contact-card h1,.contact-card h2 { color:#fff; }
+    .contact-card .lead,.contact-card p { color:#cbd5e1; }
+    .contact-card-copy { min-width:0; }
+    .contact-actions { display:flex; flex-wrap:wrap; gap:.7rem; margin:1.2rem 0 1.6rem; }
+    .contact-action { display:inline-flex; align-items:center; justify-content:center; padding:.72rem 1rem; border:1px solid #64748b; border-radius:10px; color:#fff; text-decoration:none; font-weight:800; }
+    .contact-action-primary { background:#fff; color:#071d4a; border-color:#fff; }
+    .contact-sections { display:grid; gap:1rem; }
+    .contact-detail { padding-top:1rem; border-top:1px solid #334765; }
+    .contact-detail h2 { font-size:1.08rem; margin:0 0 .4rem; }
+    .contact-detail p { margin:.35rem 0; text-align:left; }
+    .contact-detail a,.contact-followup a { color:#bfdbfe; font-weight:700; }
+    .contact-inline-links,.contact-legal-links { display:flex; flex-wrap:wrap; gap:.55rem 1rem; }
+    .contact-followup { margin:1.2rem 0 0; padding:1rem; border:1px solid #365b91; border-radius:12px; background:#0b1b3a; }
+    .contact-card-visual { min-width:0; align-self:start; position:sticky; top:100px; overflow:hidden; border:1px solid #365b91; border-radius:16px; background:#071d4a; }
+    .contact-card-visual img { display:block; width:100%; height:auto; aspect-ratio:3/2; object-fit:cover; }
+    .contact-card-visual p { margin:0; padding:.9rem 1rem; font-size:.9rem; font-weight:700; }
+    @media(max-width:800px) { .contact-card { grid-template-columns:1fr; } .contact-card-visual { position:static; grid-row:1; } }
+    @media(max-width:520px) { .contact-shell { width:calc(100% - 1.1rem); margin:1rem auto 2rem; } .contact-card { padding:1rem; border-radius:16px; } .contact-actions { flex-direction:column; } .contact-action { width:100%; } }
+    .mail-header-icon { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:9px; text-decoration:none; font-size:1.15rem; transition:background-color .2s ease, transform .2s ease; }
       .mail-header-icon:hover, .mail-header-icon:focus-visible { background:rgba(255,255,255,.14); transform:translateY(-1px); }
     </style>
 
@@ -91,47 +111,41 @@
     </script>
 
     <main class="contact-shell" role="main">
-      <section class="hero">
-        <span class="eyebrow">Talk to Impact in Business</span>
-        <h1>Contact support</h1>
-        <p class="lead">There is no contact form on this page. Communications briefs, member questions, and commercial enquiries go through the channels below so the right desk can pick them up.</p>
+      <section class="contact-card" aria-labelledby="contact-title">
+        <div class="contact-card-copy">
+          <span class="eyebrow">Talk to Impact in Business</span>
+          <h1 id="contact-title">Let’s talk property and possibilities.</h1>
+          <p class="lead">From commercial property conversations to communications briefs and account support, we’ll help direct your enquiry to the right place.</p>
+          <div class="contact-actions">
+            <a class="contact-action contact-action-primary" href="mailto:support@mail.hamlet-ai.co.uk">Email support</a>
+            <a class="contact-action" href="/requests.html">Submit a communications brief</a>
+          </div>
+          <div class="contact-sections">
+            <section class="contact-detail">
+              <h2>Communications brief</h2>
+              <p>Signed-in members can send a media brief with the headline, spokesperson, embargo and key message.</p>
+              <a href="/requests.html">Open Media Relations →</a>
+            </section>
+            <section class="contact-detail">
+              <h2>Members and accounts</h2>
+              <p>Manage your profile, insights and account preferences using the links below.</p>
+              <div class="contact-inline-links"><a href="/members.html">Members Area</a><a href="/editprofile.html">Edit Profile</a><a href="/insights.html">Insights Archive</a><a href="/settings.html">Account Settings</a></div>
+            </section>
+            <section class="contact-detail">
+              <h2>Company details</h2>
+              <p><strong>Impact in Business Recruitment Group Limited</strong><br>Company No. 17487414</p>
+              <p>Registered Office: Suite RA01, 195–197 Wood Street, London, E17 3NU</p>
+              <p><a href="tel:+447940916731">+44 7940 916 731</a> · <a href="https://www.ibrecruitment.com" target="_blank" rel="noopener noreferrer">ibrecruitment.com</a></p>
+              <p class="contact-legal-links"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/cookies.html">Cookies</a></p>
+            </section>
+          </div>
+          <p class="contact-followup"><strong>What happens next:</strong> The communications desk reviews saved briefs and follows up from <a href="mailto:support@mail.hamlet-ai.co.uk">support@mail.hamlet-ai.co.uk</a>. For other member questions, please use the same address.</p>
+        </div>
+        <div class="contact-card-visual">
+          <img src="/contact-svg-image.svg" alt="Illustration of a message envelope, communication icons and a modern commercial property skyline" width="768" height="512">
+          <p>Good property conversations start with a clear connection.</p>
+        </div>
       </section>
-
-      <div class="grid">
-        <article class="card">
-          <h2>Communications brief</h2>
-          <p>Signed-in members can send a media brief — headline, spokesperson, embargo, and the line to carry — from the communications desk.</p>
-          <p style="margin-top:10px"><a href="/requests.html">Open Media Relations →</a></p>
-        </article>
-        <article class="card">
-          <h2>Email support</h2>
-          <p>For commercial or operational questions that are not a communications brief, write to support. Include your company name and what you need.</p>
-          <p style="margin-top:10px"><a href="mailto:support@mail.hamlet-ai.co.uk">support@mail.hamlet-ai.co.uk</a></p>
-        </article>
-        <article class="card">
-          <h2>Members and accounts</h2>
-          <p>After sign-in, complete your profile, read the Insights Archive, then manage preferences in Account Settings. This page is the support step.</p>
-          <ul style="margin-top:10px">
-            <li><a href="/members.html">Members Area</a></li>
-            <li><a href="/editprofile.html">Edit Profile</a></li>
-            <li><a href="/insights.html">Insights Archive</a></li>
-            <li><a href="/settings.html">Account Settings</a></li>
-          </ul>
-        </article>
-        <article class="card">
-          <h2>Company</h2>
-          <p>Impact in Business Recruitment Group Limited operates this Premium CRM surface at <a href="https://www.hamlet-ai.co.uk/">https://www.hamlet-ai.co.uk/</a>.</p>
-          <ul style="margin-top:10px">
-            <li><strong>Company No:</strong> 17487414</li>
-            <li><strong>Registered Office:</strong> Suite RA01, 195-197 Wood Street, London, E17 3NU</li>
-            <li><strong>Phone:</strong> <a href="tel:+447940916731">+44 7940 916 731</a></li>
-            <li>Public site: <a href="https://www.ibrecruitment.com">www.ibrecruitment.com</a></li>
-            <li>Legal: <a href="/terms.html">Terms</a>, <a href="/privacy.html">Privacy</a>, <a href="/cookies.html">Cookies</a></li>
-          </ul>
-        </article>
-      </div>
-
-      <p class="note"><strong>What happens next.</strong> The communications desk reviews a saved brief and follows up from support@mail.hamlet-ai.co.uk. Member questions about profile, insights, or account settings can use the same address.</p>
     </main>
 
     <footer class="resource-footer" role="contentinfo">

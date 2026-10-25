@@ -350,6 +350,54 @@
       "contentPath": "/resources/news-insights/articles/newmark-third-quarter-2026-financial-results.html",
       "migrationStatus": "summary migrated from accessible IBR source listing/page; third-party press announcement summarised; source attribution retained; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "asia-pacific-cre-ai-corenet-colliers",
+      "title": "Insights: Asia Pacific corporate real estate leaders accelerate innovation as AI reshapes portfolios",
+      "slug": "asia-pacific-cre-ai-corenet-colliers",
+      "excerpt": "Colliers and CoreNet Global research found AI was the leading global driver of corporate real estate transformation, cited by 51% of surveyed professionals.",
+      "category": "Real Estate & Technology",
+      "topics": [
+        "corporate real estate",
+        "artificial intelligence",
+        "workplace strategy",
+        "portfolio management"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-20",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/asia-pacific-corporate-real-estate-leaders-accelerate-innovation-as-ai-reshapes-portfolios/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/asia-pacific-cre-ai-corenet-colliers.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Colliers; CoreNet Global",
+      "contentPath": "/resources/news-insights/articles/asia-pacific-cre-ai-corenet-colliers.html",
+      "migrationStatus": "migrated from accessible IBR-authored article; image omitted pending asset rights check; QA pending",
+      "contentType": "Article"
+    },
+    {
+      "id": "adani-minerva-renewable-jv-india",
+      "title": "News: Adani-Minerva Renewable JV in India",
+      "slug": "adani-minerva-renewable-jv-india",
+      "excerpt": "Adani Renewable Energy Middle East agreed a joint venture with Minerva Holding RSC to develop renewable energy projects in India.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "renewable energy",
+        "solar",
+        "energy transition",
+        "India"
+      ],
+      "author": "Michael Marray",
+      "publishedAt": "2026-04-15",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/adani-minerva-renewable-jv-in-india/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/adani-minerva-renewable-jv-india.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Adani Green Energy; Minerva Holding RSC",
+      "contentPath": "/resources/news-insights/articles/adani-minerva-renewable-jv-india.html",
+      "migrationStatus": "migrated from accessible IBR-authored article; image omitted pending asset rights check; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

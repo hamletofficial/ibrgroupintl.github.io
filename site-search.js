@@ -61,9 +61,30 @@
 
   function loadIndex() {
     if (!indexPromise) {
-      // Load the generated JS index first. This avoids JSON-endpoint/CDN
-      // restrictions that can leave both the dropdown and results page empty.
-      indexPromise = new Promise((resolve, reject) => {
+      const privateFiles = new Set([
+        'archive.html', 'dashboard.html', 'live.html', 'portfolio.html',
+        'residential.html', 'resi-resources.html', 'resources.html', 'members.html',
+        'directory.html', 'profile.html', 'editprofile.html', 'posts.html',
+        'rankings.html', 'messages.html', 'requests.html', 'settings.html',
+        'admin.html', 'login.html', 'invoice.html', 'loggedout.html',
+        'callback.html', 'success.html'
+      ]);
+      const privateDirs = /^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication)(?:\\/|$)/i;
+      const filterPublicIndex = data => {
+        if (!Array.isArray(data)) throw new Error('Search index has an invalid format');
+        // Defence in depth: Firebase-authenticated/private routes are excluded
+        // even if a stale or incorrectly generated index contains them.
+        return data.filter(page => {
+          const searchableText = [page.title, page.path, page.url, page.text].join(' ').toLocaleLowerCase();
+          const path = String(page.path || page.url || '').replace(/^\\/+/, '');
+          const filename = path.split('/').pop().toLowerCase();
+          return !/loading\\s+search\\s+index/.test(searchableText)
+            && filename !== '404.html'
+            && !privateFiles.has(filename)
+            && !privateDirs.test(path);
+        });
+      };
+      const loadScriptIndex = () => new Promise((resolve, reject) => {
         if (Array.isArray(window.HAMLET_SEARCH_INDEX)) {
           resolve(window.HAMLET_SEARCH_INDEX);
           return;
@@ -73,36 +94,31 @@
         script.async = true;
         script.onload = () => Array.isArray(window.HAMLET_SEARCH_INDEX)
           ? resolve(window.HAMLET_SEARCH_INDEX)
-          : reject(new Error('Search index loaded without data'));
-        script.onerror = () => reject(new Error('Search index unavailable'));
+          : reject(new Error('JavaScript search index contained no data'));
+        script.onerror = () => reject(new Error('JavaScript search index could not be loaded'));
         document.head.appendChild(script);
-      })
+      });
+      const loadJsonIndex = async () => {
+        const response = await fetch('/search-index.json?v=' + encodeURIComponent(assetVersion), {
+          cache: 'no-store',
+          credentials: 'same-origin',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) throw new Error('JSON search index returned HTTP ' + response.status);
+        const data = await response.json();
+        return filterPublicIndex(data);
+      };
+      indexPromise = loadScriptIndex()
+        .then(filterPublicIndex)
+        .catch(() => loadJsonIndex())
         .then(data => {
-          // Exclude stale/generated records containing transient search UI status copy.
-          const index = Array.isArray(data) ? data : [];
-          // Defence in depth: never show Firebase-authenticated/private pages,
-          // even if an older or incorrectly generated index still contains them.
-          const privateFiles = new Set([
-            'archive.html', 'dashboard.html', 'live.html', 'portfolio.html',
-            'residential.html', 'resi-resources.html', 'resources.html', 'members.html',
-            'directory.html', 'profile.html', 'editprofile.html', 'posts.html',
-            'rankings.html', 'messages.html', 'requests.html', 'settings.html',
-            'admin.html', 'login.html', 'invoice.html', 'loggedout.html',
-            'callback.html', 'success.html'
-          ]);
-          const privateDirs = /^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication)(?:\/|$)/i;
-          pages = index.filter(page => {
-            const searchableText = [page.title, page.path, page.url, page.text].join(' ').toLocaleLowerCase();
-            const path = String(page.path || page.url || '').replace(/^\/+/, '');
-            const filename = path.split('/').pop().toLowerCase();
-            return !/loading\s+search\s+index/.test(searchableText)
-              && filename !== '404.html'
-              && !privateFiles.has(filename)
-              && !privateDirs.test(path);
-          });
+          pages = data;
           return pages;
         })
-        .catch(() => { indexPromise = null; throw new Error('Search is temporarily unavailable. Please try again shortly.'); });
+        .catch(() => {
+          indexPromise = null;
+          throw new Error('Search is temporarily unavailable. Please try again shortly.');
+        });
     }
     return indexPromise;
   }

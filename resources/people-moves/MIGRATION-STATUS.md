@@ -34,6 +34,11 @@ The first archive listing exposes six posts:
 5. Becky Wood appointed NISTA CEO — 9 June 2025 (migrated)
 6. Convergent Energy and Power CFO appointment — 7 June 2025 (migrated)
 
-The direct Pantheon article URL currently returns a 404 in the web retrieval check, and the archive's “Older posts” target could not be retrieved during this pass. Do not invent the missing full text or treat the first listing as a complete archive. The next safe step is to obtain a source export or a working direct URL for the Pantheon article and the paginated archive, then capture each article verbatim before publishing more pages.
+The direct Pantheon article URL and the archive pagination have not yet been reliably retrieved in this pass. Continue the migration by crawling the live IBR website directly; do not make a source export a prerequisite. Retry the original article URL and pagination through alternate source paths and indexed results. If an article remains unavailable, record the exact URL, attempted retrieval paths and status, and proceed with other accessible articles. Never reconstruct missing full text from an excerpt.
 
 The five initial HTML pages are provisional migration drafts, not yet marked as source-verified. Their text, headings, quotes, dates, bylines, source credits and factual details must be compared line-by-line with a complete source copy before production release. The source listing labels some entries as press releases or exchange notices, so third-party content and assets must be tracked separately even though IBR authorises republication of its own content.
+
+
+## Migration method decision
+
+The project owner has explicitly selected direct migration from the original live IBR website rather than a manual export/upload workflow. Continue direct source retrieval in batches, resolve article URLs from archive pages, and capture article text, dates, bylines and credits. Keep all work on `feat/news-insights-migration` and in draft PR #9; do not merge or deploy without explicit approval. A retrieval failure for one source page must not stop migration of other accessible pages.

@@ -80,3 +80,8 @@ Re-opened the live News & Insights archive and followed its older-posts paginati
 - CBRE Q1 2026 financial results — 23 April 2026. Summarised reported financial highlights, retained the original IBR source backlink and linked CBRE Investor Relations.
 
 The page-2 listing also surfaced three other candidates whose direct article URLs returned 404 in retrieval (The Spine / Egypt; Al Ismaelia / EBRD; Saudi Real Estate Co annual results). They remain unresolved, not counted as migrated. Archive crawling and QA continue; no production merge or deployment has occurred.
+
+
+## Additional direct-source article — Newmark Q3 2026 results notice (25 October 2026)
+
+Added a native HTML summary page for Newmark Group's third-quarter 2026 financial-results notice, dated 5 October 2026, with an original IBR backlink and official investor-relations links. Catalogue and sitemap updated. This is a summary of a third-party announcement; archive enumeration and line-by-line QA remain outstanding.

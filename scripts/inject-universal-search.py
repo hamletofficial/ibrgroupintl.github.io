@@ -15,7 +15,7 @@ SKIP_FILES = {
     "dashboard.html", "live.html", "portfolio.html", "residential.html", "resi-resources.html",
     "resources.html", "members.html", "directory.html", "profile.html", "posts.html",
     "rankings.html", "messages.html", "requests.html", "settings.html", "loggedout.html",
-    "callback.html", "success.html", "404.html",
+    "callback.html", "success.html",
 }
 
 STYLE = """

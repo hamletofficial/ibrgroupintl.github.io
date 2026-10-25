@@ -54,7 +54,7 @@ function json(data, status, origin) {
 
 async function verifyFirebaseToken(request) {
   const authorization = request.headers.get("Authorization") || "";
-  const match = authorization.match(/^Bearer\\s+(.+)$/i);
+  const match = authorization.match(/^Bearer\s+(.+)$/i);
   if (!match) throw new Error("unauthorized");
   const { payload } = await jwtVerify(match[1], FIREBASE_KEYS, {
     issuer: `https://securetoken.google.com/${PROJECT_ID}`,

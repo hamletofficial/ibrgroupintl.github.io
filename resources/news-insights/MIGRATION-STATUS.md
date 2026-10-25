@@ -50,3 +50,12 @@ Added native HTML summary pages for the accessible CBRE and JLL third-quarter 20
 ## Additional direct-source batch — Skanska and Aberdeen (25 October 2026)
 
 Added native HTML summary pages for the Skanska H2Offices divestment and Aberdeen Intermediate Income Fund reverse split, both dated 28 September 2026. Updated the catalogue and sitemap. Both source entries reproduce or summarise third-party press releases, so Hamlet retains factual summaries, original IBR links and attribution rather than republishing the full external release or image. Full archive crawl and article QA remain ongoing.
+
+
+## Press-release classification and source-backlink pass — 25 October 2026
+
+- Added visible `Press Release` labels and source backlinks to the six current News & Insights article pages, including original IBR source links.
+- Added source backlinks and visible labels to the current People Moves pages, and added `contentType: Press Release` to the current catalogue entries. Note: the current batch largely consists of media-release/announcement items; before launch, editorially authored pieces should be reclassified as `Article` or `Analysis` rather than automatically treated as press releases.
+- Added direct links to official issuer sources where the IBR item exposed a clear official release: RioCan's own press release, CBRE Investor Relations' release, and JLL Investor Relations. IBR source backlinks remain in place as the migration provenance links.
+- Both archive pages now have content-type filters. People Moves search and sector filtering were corrected to include the `category` field when `sector` is absent.
+- This is still a draft migration. The full News & Insights inventory and older People Moves pagination have not been exhaustively enumerated or verified; current article pages require QA against the live source before production.

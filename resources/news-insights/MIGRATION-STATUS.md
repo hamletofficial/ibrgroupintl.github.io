@@ -64,3 +64,8 @@ Added native HTML summary pages for the Skanska H2Offices divestment and Aberdee
 ## Direct-source archive page 2 batch — 25 October 2026
 
 Added three pages from the second News & Insights archive listing: Simon Donohue's planning-policy insight (classified Article, summarised and attributed), the FCA ESG ratings voluntary pilot announcement (Press Release summary), and L&G's affordable-housing Partnership RP model announcement (Press Release summary). Each page includes the original IBR backlink and catalogue/sitemap entry. The other three listing entries on this archive page were not migrated in this batch because their direct IBR article links returned 404 or cache-miss errors during retrieval; retain them in the inventory as blockers and retry later.
+
+
+## Additional direct-source batch — News & Insights archive page 2 (25 October 2026)
+
+Added summary pages for Berkshire Hathaway's completion of its Taylor Morrison acquisition (25 July 2026) and Flexstone Partners' proposed acquisition of Glouston Capital Partners (18 June 2026). Both entries are labelled Press Release, include IBR source backlinks, and are included in the catalogue and sitemap. These are third-party announcement summaries, not full republications. Continue resolving older-post pagination and verify remaining entries individually.

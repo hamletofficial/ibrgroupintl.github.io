@@ -446,6 +446,55 @@
       "contentPath": "/resources/news-insights/articles/investec-ifc-200m-green-buildings-south-africa.html",
       "migrationStatus": "migrated from accessible IBR-authored source; image omitted pending rights check; QA pending",
       "contentType": "Article"
+    },
+    {
+      "id": "the-spine-egypt-mega-project",
+      "title": "News: The Spine — Inside Egypt’s new mega project",
+      "slug": "the-spine-egypt-mega-project",
+      "excerpt": "The Spine is a proposed $27 billion mixed-use development east of Cairo, combining residential, office, retail, hospitality and landscaped areas with AI-enabled city systems.",
+      "category": "Real Estate & Infrastructure",
+      "topics": [
+        "urban development",
+        "Egypt",
+        "mixed-use",
+        "smart cities",
+        "infrastructure"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-27",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/the-spine-egypt-s-new-mega-project/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/the-spine-egypt-mega-project.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Talaat Moustafa Group; National Bank of Egypt",
+      "contentPath": "/resources/news-insights/articles/the-spine-egypt-mega-project.html",
+      "migrationStatus": "summary migrated from accessible IBR article; attributed to Zawya; third-party images omitted pending rights check; QA pending",
+      "contentType": "Article"
+    },
+    {
+      "id": "saudi-real-estate-co-2025-annual-results",
+      "title": "News: Saudi Real Estate Co announces annual financial results for 2025",
+      "slug": "saudi-real-estate-co-2025-annual-results",
+      "excerpt": "Saudi Real Estate Co reported lower 2025 revenue, with declines in infrastructure and construction revenue, while continuing to advance residential and mixed-use projects in Riyadh.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "financial results",
+        "Saudi Arabia",
+        "real estate development",
+        "infrastructure"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-27",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/saudi-real-estate-2025-annual-financial-results/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/saudi-real-estate-co-2025-annual-results.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Saudi Real Estate Co (Al Akaria)",
+      "contentPath": "/resources/news-insights/articles/saudi-real-estate-co-2025-annual-results.html",
+      "migrationStatus": "summary migrated from accessible IBR article; third-party financial details summarised with attribution; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

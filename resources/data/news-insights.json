@@ -519,6 +519,55 @@
       "contentPath": "/resources/news-insights/articles/cbre-lkq-europe-exclusive-real-estate-advisor.html",
       "migrationStatus": "migrated from accessible IBR source text; source backlink retained; third-party press release link included; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "cbre-greater-manchester-transport-vision",
+      "title": "News: CBRE to support delivery of Greater Manchester's Transport Vision",
+      "slug": "cbre-greater-manchester-transport-vision",
+      "excerpt": "CBRE was appointed to a four-year Transport for Greater Manchester framework to provide estates advisory services supporting transport infrastructure and sustainable regeneration.",
+      "category": "Transport & Infrastructure",
+      "topics": [
+        "transport",
+        "public sector",
+        "estates advisory",
+        "regeneration",
+        "net zero homes"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-07-15",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/cbre-to-support-delivery-of-greater-manchesters-transport-vision/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/cbre-greater-manchester-transport-vision.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "CBRE; Transport for Greater Manchester",
+      "contentPath": "/resources/news-insights/articles/cbre-greater-manchester-transport-vision.html",
+      "migrationStatus": "migrated from accessible IBR article; source attribution retained; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "arora-group-heathrow-expansion-proposal",
+      "title": "News: The Arora Group finalises landmark Heathrow Airport expansion proposal",
+      "slug": "arora-group-heathrow-expansion-proposal",
+      "excerpt": "The Arora Group confirmed it would submit a proposal for an expanded Heathrow Airport following the Department for Transport's request for proposals.",
+      "category": "Transport & Infrastructure",
+      "topics": [
+        "aviation",
+        "Heathrow",
+        "infrastructure",
+        "airport expansion"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-08-01",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/news-the-arora-group-finalises-landmark-heathrow-airport-expansion-proposal/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/arora-group-heathrow-expansion-proposal.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "The Arora Group; Heathrow Airport",
+      "contentPath": "/resources/news-insights/articles/arora-group-heathrow-expansion-proposal.html",
+      "migrationStatus": "migrated from accessible IBR article; official Arora source backlink retained; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

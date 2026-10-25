@@ -106,3 +106,14 @@ Each page has a Press Release label, an original IBR source backlink, a catalogu
 ## Archive-only record — Pantheon Resources appointments (25 October 2026)
 
 Added a clearly flagged provisional record for the Pantheon Resources archive item dated 9 June 2025. The archive listing identifies Tralisa Maraj as CFO and Erich Krumanocker as CDO, but the direct article URL returned 404. The page explicitly states this is an archive-derived summary, not full-text migration; it must remain flagged for source verification and should not be described as fully migrated.
+
+
+## Additional People Moves source pages — 25 October 2026
+
+Added three more source-backed appointments found through indexed IBR article pages:
+
+- Macquarie Capital names Sean Yajnik Head of Digital Infrastructure Advisory – Americas (4 June 2025).
+- Gcore welcomes Prof. Dr. Feiyu Xu as Board Advisor (28 May 2025).
+- BP appoints Devon Energy's David Hager as a Non-Executive Director (2 June 2025).
+
+Added native HTML pages, original IBR links, catalogue entries and sitemap URLs. Images were omitted pending rights verification. Older archive pagination remains partly inaccessible through the retrieval route; these direct-source discoveries extend the candidate list but do not establish a complete denominator.

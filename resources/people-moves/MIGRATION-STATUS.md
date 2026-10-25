@@ -117,3 +117,14 @@ Added three more source-backed appointments found through indexed IBR article pa
 - BP appoints Devon Energy's David Hager as a Non-Executive Director (2 June 2025).
 
 Added native HTML pages, original IBR links, catalogue entries and sitemap URLs. Images were omitted pending rights verification. Older archive pagination remains partly inaccessible through the retrieval route; these direct-source discoveries extend the candidate list but do not establish a complete denominator.
+
+
+## Further People Moves additions — 25 October 2026
+
+Added three historical executive appointment summaries:
+
+- BP appoints Gordon Birrell as CFO (22 May 2025).
+- abrdn appoints Nick Bryan as Global Head of Real Estate (19 May 2025).
+- BP appoints Murray Auchincloss as CEO (29 September 2023).
+
+Added source backlinks, catalogue records and sitemap entries. The source pages are historical announcements; the articles explicitly avoid implying that those appointments remain current. Detailed source-text QA is still required.

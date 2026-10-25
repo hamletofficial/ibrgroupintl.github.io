@@ -66,17 +66,17 @@ def inject(path: Path) -> bool:
     source = path.read_text(encoding="utf-8", errors="ignore")
     updated = source
     if 'id="hamlet-universal-search-style"' not in updated and re.search(r"</head\s*>", updated, re.I):
-        updated = re.sub(r"</head\s*>", STYLE + "\\n</head>", updated, count=1, flags=re.I)
+        updated = re.sub(r"</head\s*>", STYLE + "\n</head>", updated, count=1, flags=re.I)
     if 'id="site-search-form"' not in updated:
         header = re.search(r"</header\s*>", updated, re.I)
         if header:
-            updated = updated[:header.start()] + MARKUP + "\\n" + updated[header.start():]
+            updated = updated[:header.start()] + MARKUP + "\n" + updated[header.start():]
         else:
-            body = re.search(r"<body\\b[^>]*>", updated, re.I)
+            body = re.search(r"<body\b[^>]*>", updated, re.I)
             if body:
-                updated = updated[:body.end()] + "\\n" + MARKUP + updated[body.end():]
+                updated = updated[:body.end()] + "\n" + MARKUP + updated[body.end():]
     if 'src="/site-search.js' not in updated and re.search(r"</body\s*>", updated, re.I):
-        updated = re.sub(r"</body\s*>", '<script src="/site-search.js?v=20261025-universal" defer></script>\\n</body>', updated, count=1, flags=re.I)
+        updated = re.sub(r"</body\s*>", '<script src="/site-search.js?v=20261025-universal" defer></script>\n</body>', updated, count=1, flags=re.I)
     if updated != source:
         path.write_text(updated, encoding="utf-8")
         return True

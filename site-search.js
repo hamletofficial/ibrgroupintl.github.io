@@ -102,7 +102,7 @@
     return !/^(app|workspace|support|docs|documentation|superuser|admin|account|auth|login)(\/|$)/.test(path);
   }
 
-  function rankPages(query, options = currentOptions()) {
+  function rankPages(query, options = currentOptions(), allowPartial = false) {
     const terms = termsFor(query);
     if (!terms.length) return [];
     const phrase = normalise(query).trim();
@@ -114,24 +114,30 @@
       const searchable = options.in === 'title' ? title : options.in === 'content' ? text : options.in === 'path' ? path : title + ' ' + path + ' ' + text;
       if (options.exact && !searchable.includes(phrase)) return null;
       let score = 0;
+      let matchedTerms = 0;
       for (const term of terms) {
         const titleHit = title.includes(term);
         const pathHit = path.includes(term);
         const textHit = text.includes(term);
         const fieldHit = searchable.includes(term);
-        if (!fieldHit) return null;
+        if (!fieldHit) {
+          if (allowPartial) continue;
+          return null;
+        }
+        matchedTerms++;
         if (options.in === 'all' || options.in === 'title') {
           if (titleHit) score += title === term ? 16 : title.startsWith(term) ? 10 : 7;
         }
         if ((options.in === 'all' || options.in === 'path') && pathHit) score += 5;
         if ((options.in === 'all' || options.in === 'content') && textHit) score += 2;
       }
-      if (terms.length > 1 && terms.every(term => title.includes(term))) score += 6;
+      if (!matchedTerms) return null;
+      if (terms.length > 1 && matchedTerms === terms.length && terms.every(term => title.includes(term))) score += 6;
       if (options.exact) score += 20;
-      return {page, score};
+      return {page, score, matchedTerms};
     }).filter(Boolean).sort((a,b) => options.sort === 'title'
       ? a.page.title.localeCompare(b.page.title)
-      : b.score-a.score || a.page.title.localeCompare(b.page.title));
+      : b.matchedTerms-a.matchedTerms || b.score-a.score || a.page.title.localeCompare(b.page.title));
   }
 
   function renderSuggestions(items, message) {
@@ -222,8 +228,21 @@
       }
       try {
         await loadIndex();
-        const results = rankPages(query, currentOptions());
-        if (pageCount) pageCount.textContent = results.length + (results.length === 1 ? ' page found' : ' pages found') + (currentOptions().exact ? ' · exact phrase' : '');
+        const options = currentOptions();
+        let results = rankPages(query, options);
+        let partialMatches = false;
+        // The full results page should still be useful when a natural-language
+        // query contains words absent from every individual page. Keep exact-phrase
+        // mode strict, but otherwise fall back to pages matching the most terms.
+        if (!results.length && !options.exact) {
+          results = rankPages(query, options, true);
+          partialMatches = results.length > 0;
+        }
+        if (pageCount) {
+          pageCount.textContent = results.length + (results.length === 1 ? ' page found' : ' pages found')
+            + (options.exact ? ' · exact phrase' : '')
+            + (partialMatches ? ' · showing closest matches to your terms' : '');
+        }
         pageResults.innerHTML = results.length ? results.map(({page}) =>
           '<a class="search-page-result" href="' + escapeHtml(page.url) + '"><span class="search-page-result-title">' + escapeHtml(page.title) + '</span><span class="search-page-result-path">' + escapeHtml(page.path || page.url) + '</span><span class="search-page-result-excerpt">' + escapeHtml(makeExcerpt(page.text, termsFor(query))) + '</span></a>'
         ).join('') : '<p class="search-page-empty">No matching pages found. Try a different word or phrase.</p>';

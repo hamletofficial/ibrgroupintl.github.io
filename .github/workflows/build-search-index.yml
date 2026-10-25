@@ -28,7 +28,7 @@ jobs:
           from pathlib import Path
 
           EXCLUDED = {'.git', '.vs', '.firebase', 'node_modules', '.github'}
-          EXCLUDED_DIRS = {'superuser', 'admin', 'account', 'accounts', 'auth', 'authentication'}
+          EXCLUDED_DIRS = {'superuser', 'admin', 'account', 'accounts', 'auth', 'authentication', 'app', 'functions', 'public'}
           EXCLUDED_FILES = {
               'admin.html', 'login.html', 'editprofile.html', 'invoice.html', 'search.html', '404.html',
               'archive.html', 'dashboard.html', 'live.html', 'portfolio.html', 'residential.html',

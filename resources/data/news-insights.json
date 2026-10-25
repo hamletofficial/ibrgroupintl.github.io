@@ -1,5 +1,29 @@
 {
   "version": 1,
   "generatedAt": "2026-10-25",
-  "articles": []
+  "articles": [
+    {
+      "id": "acuity-one-big-circle-loram-partnership",
+      "title": "News: Acuity advises One Big Circle on its strategic partnership with Loram",
+      "slug": "acuity-one-big-circle-loram-partnership",
+      "excerpt": "Acuity advised One Big Circle on a partnership with Loram combining rail technology and track maintenance expertise.",
+      "category": "Transport & Infrastructure",
+      "topics": [
+        "rail infrastructure",
+        "AI monitoring",
+        "digital inspection",
+        "strategic partnership"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-16",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/acuity-guides-one-big-circle-loram/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/acuity-one-big-circle-loram-partnership.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Acuity; One Big Circle; Loram",
+      "contentPath": "/resources/news-insights/articles/acuity-one-big-circle-loram-partnership.html",
+      "migrationStatus": "migrated from accessible live source; press-release attribution retained; third-party image omitted pending verification"
+    }
+  ]
 }

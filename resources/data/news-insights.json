@@ -764,6 +764,56 @@
       "contentPath": "/resources/news-insights/articles/legal-general-proprium-75-percent-stake.html",
       "migrationStatus": "migrated from accessible IBR source; L&G source link retained; image omitted pending rights check; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "federated-hermes-rivington-energy-management",
+      "title": "News: Federated Hermes Limited acquires majority stake in Rivington Energy Management",
+      "slug": "federated-hermes-rivington-energy-management",
+      "excerpt": "Federated Hermes Limited completed the acquisition of a majority stake in UK renewable-energy developer Rivington Energy Management, expanding its energy-transition investment pipeline.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "renewable energy",
+        "energy transition",
+        "solar",
+        "battery storage",
+        "infrastructure investment"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-04-08",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/federated-hermes-limited-acquires-majority-stake-in-rivington-energy-management/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/federated-hermes-rivington-energy-management.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Federated Hermes; Rivington Energy Management",
+      "contentPath": "/resources/news-insights/articles/federated-hermes-rivington-energy-management.html",
+      "migrationStatus": "migrated from accessible IBR source; image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "majid-al-futtaim-city-centre-muscat-leed-platinum",
+      "title": "News: Majid Al Futtaim elevates sustainability standards in Oman with LEED Platinum certification",
+      "slug": "majid-al-futtaim-city-centre-muscat-leed-platinum",
+      "excerpt": "City Centre Muscat, developed by Majid Al Futtaim, received LEED Platinum certification, according to the original Zawya press release.",
+      "category": "Sustainable Buildings",
+      "topics": [
+        "LEED Platinum",
+        "green buildings",
+        "Oman",
+        "retail real estate",
+        "sustainability certification"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2023-12-22",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/majid-al-futtaim-elevates-sustainability-standards-in-oman-with-leed-platinum-certification/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/majid-al-futtaim-city-centre-muscat-leed-platinum.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Majid Al Futtaim; City Centre Muscat",
+      "contentPath": "/resources/news-insights/articles/majid-al-futtaim-city-centre-muscat-leed-platinum.html",
+      "migrationStatus": "migrated from accessible IBR listing/article; Zawya press-release source linked; original image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

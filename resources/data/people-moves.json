@@ -121,6 +121,30 @@
       "company": "Convergent Energy and Power",
       "contentPath": "/resources/people-moves/articles/convergent-energy-power-russ-laplante-cfo.html",
       "migrationStatus": "initially migrated; review against source before launch"
+    },
+    {
+      "id": "serica-energy-two-senior-appointments",
+      "title": "People Moves: Serica Energy unveils two new senior appointments",
+      "slug": "serica-energy-two-senior-appointments",
+      "excerpt": "Serica Energy appointed Janice Doyle as Chief People Officer and Carla Riddell as Chief Technical Officer.",
+      "category": "Energy & Upstream",
+      "topics": [
+        "upstream energy",
+        "executive appointments",
+        "leadership"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-18",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-serica-energy-unveils-two-new-senior-appointments/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/serica-energy-two-senior-appointments.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Janice Doyle; Carla Riddell",
+      "role": "Chief People Officer; Chief Technical Officer",
+      "company": "Serica Energy",
+      "contentPath": "/resources/people-moves/articles/serica-energy-two-senior-appointments.html",
+      "migrationStatus": "migrated from accessible live source; source credits preserved; third-party images omitted pending verification"
     }
   ]
 }

@@ -30,3 +30,8 @@
 5. Add verified article HTML pages and catalogue entries.
 6. Test public search, keyboard accessibility, mobile layout, canonical metadata, internal links, robots policy, and sitemap.
 7. Review this branch and its pull request before merge or deployment.
+
+
+## Additional direct-source migration — Acuity / One Big Circle / Loram (25 October 2026)
+
+Added `articles/acuity-one-big-circle-loram-partnership.html` from the accessible original IBR article dated 16 April 2026. The entry covers the rail technology partnership and retains the source link and press-release context. The third-party image is not copied pending asset verification. Added a searchable catalogue record and sitemap URL. This first-pass migration requires line-by-line QA against the source before production release.

@@ -101,3 +101,8 @@ Added three summary pages discovered through direct-source search and available 
 - BP — Simon Henry appointed Non-Executive Director (8 July 2025).
 
 Each page has a Press Release label, an original IBR source backlink, a catalogue record and a sitemap URL. These are summary adaptations, not claimed verbatim copies; original source text and metadata still require line-by-line QA. The People Moves archive pagination itself remains inaccessible in this retrieval, so this is not a complete archive count.
+
+
+## Archive-only record — Pantheon Resources appointments (25 October 2026)
+
+Added a clearly flagged provisional record for the Pantheon Resources archive item dated 9 June 2025. The archive listing identifies Tralisa Maraj as CFO and Erich Krumanocker as CDO, but the direct article URL returned 404. The page explicitly states this is an archive-derived summary, not full-text migration; it must remain flagged for source verification and should not be described as fully migrated.

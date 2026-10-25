@@ -327,6 +327,29 @@
       "contentPath": "/resources/news-insights/articles/cbre-q1-2026-financial-results.html",
       "migrationStatus": "summary migrated from accessible IBR page; external financial release summarised with source attribution; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "newmark-third-quarter-2026-financial-results",
+      "title": "News: Newmark Group's Third Quarter 2026 Financial Results",
+      "slug": "newmark-third-quarter-2026-financial-results",
+      "excerpt": "Newmark announced the planned release of its third-quarter 2026 financial results and investor conference call.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "commercial real estate",
+        "financial results",
+        "investor relations"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-10-05",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/newmark-groups-third-quarter-2026-financial-results/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/newmark-third-quarter-2026-financial-results.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Newmark Group, Inc.",
+      "contentPath": "/resources/news-insights/articles/newmark-third-quarter-2026-financial-results.html",
+      "migrationStatus": "summary migrated from accessible IBR source listing/page; third-party press announcement summarised; source attribution retained; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

@@ -561,6 +561,84 @@
       "contentPath": "/resources/people-moves/articles/pantheon-resources-tralisa-maraj-erich-krumanocker.html",
       "migrationStatus": "provisional archive-derived summary only; full source URL returned 404; do not treat as full-text migration",
       "contentType": "Press Release"
+    },
+    {
+      "id": "macquarie-sean-yajnik-digital-infrastructure-advisory",
+      "title": "People Moves: Macquarie Capital names Sean Yajnik Head of Digital Infrastructure Advisory – Americas",
+      "slug": "macquarie-sean-yajnik-digital-infrastructure-advisory",
+      "excerpt": "Macquarie Capital appointed Sean Yajnik to lead Digital Infrastructure Advisory in the Americas, strengthening its advisory coverage across data centres, broadband, fibre and wireless infrastructure.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "digital infrastructure",
+        "data centres",
+        "M&A advisory",
+        "capital raising"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-04",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-macquarie-capital-names-sean-yajnik-head-of-digital-infrastructure-advisory-americas/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/macquarie-sean-yajnik-digital-infrastructure-advisory.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Sean Yajnik",
+      "role": "Head of Digital Infrastructure Advisory – Americas",
+      "company": "Macquarie Capital",
+      "contentPath": "/resources/people-moves/articles/macquarie-sean-yajnik-digital-infrastructure-advisory.html",
+      "migrationStatus": "migrated from accessible IBR source; source backlink retained; image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "gcore-feiyu-xu-board-advisor",
+      "title": "People Moves: Gcore welcomes Prof. Dr. Feiyu Xu as Board Advisor",
+      "slug": "gcore-feiyu-xu-board-advisor",
+      "excerpt": "Gcore appointed AI researcher and industry leader Prof. Dr. Feiyu Xu as a Board Advisor to guide its AI strategy and innovation.",
+      "category": "Technology & Infrastructure",
+      "topics": [
+        "artificial intelligence",
+        "edge AI",
+        "cloud infrastructure",
+        "board appointments"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-05-28",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-gcore-welcomes-prof-dr-feiyu-xu-a-leading-figure-with-expertise-in-ai-research-and-industry/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/gcore-feiyu-xu-board-advisor.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Prof. Dr. Feiyu Xu",
+      "role": "Board Advisor",
+      "company": "Gcore",
+      "contentPath": "/resources/people-moves/articles/gcore-feiyu-xu-board-advisor.html",
+      "migrationStatus": "migrated from accessible IBR source; source backlink retained; image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "bp-david-hager-non-executive-director",
+      "title": "People Moves: BP appoints Devon Energy's David Hager as a Non-Executive Director",
+      "slug": "bp-david-hager-non-executive-director",
+      "excerpt": "BP appointed David Hager, former Devon Energy executive chair and chief executive, to its board as a Non-Executive Director from 2 June 2025.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "board appointment",
+        "oil and gas",
+        "corporate governance",
+        "energy"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-02",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/bp-appoints-devon-energys-david-hager-as-a-board-ned/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/bp-david-hager-non-executive-director.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "David Hager",
+      "role": "Non-Executive Director",
+      "company": "BP plc",
+      "contentPath": "/resources/people-moves/articles/bp-david-hager-non-executive-director.html",
+      "migrationStatus": "migrated from accessible IBR source; official BP/EuropaWire source link retained; image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

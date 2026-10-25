@@ -68,9 +68,23 @@ def inject(path: Path) -> bool:
     if 'id="hamlet-universal-search-style"' not in updated and re.search(r"</head\s*>", updated, re.I):
         updated = re.sub(r"</head\s*>", STYLE + "\n</head>", updated, count=1, flags=re.I)
     if 'id="site-search-form"' not in updated:
-        header = re.search(r"</header\s*>", updated, re.I)
-        if header:
-            updated = updated[:header.start()] + MARKUP + "\n" + updated[header.start():]
+        header_open = re.search(r"<header\b[^>]*>", updated, re.I)
+        header_close = re.search(r"</header\s*>", updated, re.I)
+        if header_open and header_close and header_open.end() < header_close.start():
+            header_content = updated[header_open.end():header_close.start()]
+            nav_close = list(re.finditer(r"</nav\s*>", header_content, re.I))
+            if nav_close:
+                # Place search beside the existing navigation, inside its layout wrapper.
+                pos = header_open.end() + nav_close[-1].end()
+                updated = updated[:pos] + "\n" + MARKUP + updated[pos:]
+            else:
+                # Put search inside the header's final layout wrapper, not below the header.
+                final_div = list(re.finditer(r"</div\s*>", header_content, re.I))
+                if final_div:
+                    pos = header_open.end() + final_div[-1].start()
+                    updated = updated[:pos] + MARKUP + "\n" + updated[pos:]
+                else:
+                    updated = updated[:header_close.start()] + MARKUP + "\n" + updated[header_close.start():]
         else:
             body = re.search(r"<body\b[^>]*>", updated, re.I)
             if body:

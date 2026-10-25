@@ -24,7 +24,8 @@
       "role": "Chief Executive",
       "company": "National Grid plc",
       "contentPath": "/resources/people-moves/articles/national-grid-chief-executive-succession-plan.html",
-      "migrationStatus": "initially migrated; review against source before launch"
+      "migrationStatus": "initially migrated; review against source before launch",
+      "contentType": "Press Release"
     },
     {
       "id": "sse-martin-pibworth-chief-executive",
@@ -48,7 +49,8 @@
       "role": "Chief Executive Officer",
       "company": "SSE plc",
       "contentPath": "/resources/people-moves/articles/sse-martin-pibworth-chief-executive.html",
-      "migrationStatus": "initially migrated; review against source before launch"
+      "migrationStatus": "initially migrated; review against source before launch",
+      "contentType": "Press Release"
     },
     {
       "id": "woodway-energy-diaco-aviki-president-ceo",
@@ -72,7 +74,8 @@
       "role": "President and Chief Executive Officer",
       "company": "Woodway Energy Infrastructure LLC",
       "contentPath": "/resources/people-moves/articles/woodway-energy-diaco-aviki-president-ceo.html",
-      "migrationStatus": "initially migrated; review against source before launch"
+      "migrationStatus": "initially migrated; review against source before launch",
+      "contentType": "Press Release"
     },
     {
       "id": "becky-wood-nista-chief-executive",
@@ -96,7 +99,8 @@
       "role": "Chief Executive Officer",
       "company": "National Infrastructure and Service Transformation Authority (NISTA)",
       "contentPath": "/resources/people-moves/articles/becky-wood-nista-chief-executive.html",
-      "migrationStatus": "initially migrated; review against source before launch"
+      "migrationStatus": "initially migrated; review against source before launch",
+      "contentType": "Press Release"
     },
     {
       "id": "convergent-energy-power-russ-laplante-cfo",
@@ -120,7 +124,8 @@
       "role": "Chief Financial Officer",
       "company": "Convergent Energy and Power",
       "contentPath": "/resources/people-moves/articles/convergent-energy-power-russ-laplante-cfo.html",
-      "migrationStatus": "initially migrated; review against source before launch"
+      "migrationStatus": "initially migrated; review against source before launch",
+      "contentType": "Press Release"
     },
     {
       "id": "serica-energy-two-senior-appointments",
@@ -144,7 +149,8 @@
       "role": "Chief People Officer; Chief Technical Officer",
       "company": "Serica Energy",
       "contentPath": "/resources/people-moves/articles/serica-energy-two-senior-appointments.html",
-      "migrationStatus": "migrated from accessible live source; source credits preserved; third-party images omitted pending verification"
+      "migrationStatus": "migrated from accessible live source; source credits preserved; third-party images omitted pending verification",
+      "contentType": "Press Release"
     },
     {
       "id": "equilis-france-constance-poublet-ceo",
@@ -168,7 +174,8 @@
       "role": "Chief Executive Officer",
       "company": "Equilis France",
       "contentPath": "/resources/people-moves/articles/equilis-france-constance-poublet-ceo.html",
-      "migrationStatus": "migrated from accessible live source; third-party image omitted pending verification"
+      "migrationStatus": "migrated from accessible live source; third-party image omitted pending verification",
+      "contentType": "Press Release"
     },
     {
       "id": "mg-duncan-batty-real-estate-finance",
@@ -192,7 +199,8 @@
       "role": "Head of Real Estate Finance",
       "company": "M&G",
       "contentPath": "/resources/people-moves/articles/mg-duncan-batty-real-estate-finance.html",
-      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending",
+      "contentType": "Press Release"
     },
     {
       "id": "barings-sloan-sutta-asset-based-finance",
@@ -216,7 +224,8 @@
       "role": "Global Head of Asset-Based Finance",
       "company": "Barings",
       "contentPath": "/resources/people-moves/articles/barings-sloan-sutta-asset-based-finance.html",
-      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending",
+      "contentType": "Press Release"
     },
     {
       "id": "newmark-mike-whitaker-group-cio",
@@ -240,7 +249,8 @@
       "role": "Group Chief Information Officer",
       "company": "Newmark Group, Inc.",
       "contentPath": "/resources/people-moves/articles/newmark-mike-whitaker-group-cio.html",
-      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending",
+      "contentType": "Press Release"
     },
     {
       "id": "omers-luca-lupo-europe-infrastructure-lead",
@@ -264,7 +274,8 @@
       "role": "Senior Managing Director and Head of Europe",
       "company": "OMERS Infrastructure",
       "contentPath": "/resources/people-moves/articles/omers-luca-lupo-europe-infrastructure-lead.html",
-      "migrationStatus": "migrated from accessible live IBR page; source attribution preserved; QA pending"
+      "migrationStatus": "migrated from accessible live IBR page; source attribution preserved; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

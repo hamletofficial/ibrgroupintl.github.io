@@ -37,12 +37,18 @@
 
   // Brand consistency: apply the contrasting full-stop to wordmarks across all pages, including the homepage.
   function applyHamletWordmarkDot() {
-    document.querySelectorAll('a.brand, a.sector-brand, a.search-brand, .brand-wordmark').forEach(el => {
-      const wordmarkText = el.textContent.trim();
-      if (!/^hamlet(?:\s|\.|$)/i.test(wordmarkText)) return;
-      // Existing wordmarks may already include the terminal full stop in their HTML.
-      // Only inject the accent dot when no full stop is present.
-      if (/\.\s*$/.test(wordmarkText) || el.querySelector('.brand-dot')) return;
+    document.querySelectorAll('a.brand, a.sector-brand, a.search-brand, .brand-wordmark, a.legal-brand, a.pricing-brand, a.site-title').forEach(el => {
+      const firstText = el.childNodes[0]?.textContent?.trim() || '';
+      if (!/^hamlet$/i.test(firstText) && !/^hamlet(?:\s|\.|$)/i.test(el.textContent.trim())) return;
+
+      // Reuse a full stop already present in the markup; mark it so CSS/other
+      // scripts do not add another one.
+      const existingDot = Array.from(el.querySelectorAll('span')).find(span => span.textContent.trim() === '.');
+      if (existingDot) {
+        existingDot.classList.add('brand-dot');
+        return;
+      }
+      if (el.querySelector('.brand-dot')) return;
 
       const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
       let node;
@@ -51,14 +57,7 @@
           const dot = document.createElement('span');
           dot.className = 'brand-dot';
           dot.textContent = '.';
-          // Evaluate the actual wordmark text's colour, not only the parent link.
-          const textColor = getComputedStyle(node.parentElement || el).color.replace(/\s/g, '').toLowerCase();
-          const babyBlueColors = [
-            '#bfdbfe', 'rgb(191,219,254)',
-            '#7dd3fc', 'rgb(125,211,252)',
-            '#93c5fd', 'rgb(147,197,253)'
-          ];
-          dot.style.color = babyBlueColors.includes(textColor) ? '#ffffff' : '#bfdbfe';
+          dot.style.color = '#bfdbfe';
           node.parentNode.insertBefore(dot, node.nextSibling);
           break;
         }

@@ -140,6 +140,75 @@
       "contentPath": "/resources/news-insights/articles/aberdeen-intermediate-income-fund-reverse-stock-split.html",
       "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "planning-policy-andy-burnham-prime-minister",
+      "title": "Insights: What would planning policy look like with Andy Burnham as Prime Minister?",
+      "slug": "planning-policy-andy-burnham-prime-minister",
+      "excerpt": "Simon Donohue examines how Andy Burnham's record in Greater Manchester could shape national planning, housing delivery, devolution and regeneration policy.",
+      "category": "Planning & Policy",
+      "topics": [
+        "Planning & Policy",
+        "news",
+        "insights"
+      ],
+      "author": "Simon Donohue",
+      "publishedAt": "2026-05-30",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/what-would-planning-policy-look-like-with-andy-burnham-as-prime-minister/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/planning-policy-andy-burnham-prime-minister.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Simon Donohue",
+      "contentType": "Article",
+      "contentPath": "/resources/news-insights/articles/planning-policy-andy-burnham-prime-minister.html",
+      "migrationStatus": "summary migrated from accessible live IBR source; source backlink retained; QA pending"
+    },
+    {
+      "id": "fca-esg-ratings-voluntary-reporting-pilot",
+      "title": "Press Release: FCA invites ESG rating providers to join voluntary reporting pilot",
+      "slug": "fca-esg-ratings-voluntary-reporting-pilot",
+      "excerpt": "The Financial Conduct Authority invited ESG rating providers to join a voluntary pilot to improve transparency and comparability in ESG ratings.",
+      "category": "Regulation & ESG",
+      "topics": [
+        "Regulation & ESG",
+        "news",
+        "insights"
+      ],
+      "author": "IBR",
+      "publishedAt": "2026-04-29",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/fca-esg-ratings-pilot/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/fca-esg-ratings-voluntary-reporting-pilot.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Financial Conduct Authority",
+      "contentType": "Press Release",
+      "contentPath": "/resources/news-insights/articles/fca-esg-ratings-voluntary-reporting-pilot.html",
+      "migrationStatus": "summary migrated from accessible live IBR source; source backlink retained; QA pending"
+    },
+    {
+      "id": "legal-general-affordable-housing-partnership-model",
+      "title": "Press Release: L&G proposes partnership model to unlock additional investment in affordable housing",
+      "slug": "legal-general-affordable-housing-partnership-model",
+      "excerpt": "Legal & General outlined a Partnership RP model it says could mobilise around £9bn in annual investment and support more than 80,000 affordable homes a year if adopted widely.",
+      "category": "Affordable Housing & Investment",
+      "topics": [
+        "Affordable Housing & Investment",
+        "news",
+        "insights"
+      ],
+      "author": "IBR",
+      "publishedAt": "2026-04-28",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/l-g-unveils-new-partnership-model-which-could-unlock-gbp9bn-of-additional-annual-investment-in-affordable-housing-delivery/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/legal-general-affordable-housing-partnership-model.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Legal & General",
+      "contentType": "Press Release",
+      "contentPath": "/resources/news-insights/articles/legal-general-affordable-housing-partnership-model.html",
+      "migrationStatus": "summary migrated from accessible live IBR source; source backlink retained; QA pending"
     }
   ]
 }

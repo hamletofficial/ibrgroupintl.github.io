@@ -535,6 +535,32 @@
       "contentPath": "/resources/people-moves/articles/bp-simon-henry-non-executive-director.html",
       "migrationStatus": "summary migrated from accessible IBR source/search extract; original IBR backlink retained; source-text QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "pantheon-resources-tralisa-maraj-erich-krumanocker",
+      "title": "People Moves: Pantheon Resources names new CFO and CDO ahead of US listing",
+      "slug": "pantheon-resources-tralisa-maraj-erich-krumanocker",
+      "excerpt": "Pantheon Resources announced Tralisa Maraj as Chief Financial Officer and Erich Krumanocker as Chief Development Officer ahead of its planned US listing.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "energy",
+        "executive appointments",
+        "US listing",
+        "oil and gas"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-09",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-pantheon-resources-names-new-cfo-and-cdo-as-it-prepares-for-us-listing-lse/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/pantheon-resources-tralisa-maraj-erich-krumanocker.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Tralisa Maraj; Erich Krumanocker",
+      "role": "Chief Financial Officer; Chief Development Officer",
+      "company": "Pantheon Resources plc",
+      "contentPath": "/resources/people-moves/articles/pantheon-resources-tralisa-maraj-erich-krumanocker.html",
+      "migrationStatus": "provisional archive-derived summary only; full source URL returned 404; do not treat as full-text migration",
+      "contentType": "Press Release"
     }
   ]
 }

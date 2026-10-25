@@ -46,6 +46,50 @@
       "company": "RioCan Real Estate Investment Trust",
       "contentPath": "/resources/news-insights/articles/riocan-third-quarter-2026-earnings-call.html",
       "migrationStatus": "migrated from accessible live source; line-by-line QA pending"
+    },
+    {
+      "id": "cbre-third-quarter-2026-results-call",
+      "title": "News: CBRE announces third-quarter 2026 results call and webcast",
+      "slug": "cbre-third-quarter-2026-results-call",
+      "excerpt": "CBRE scheduled its third-quarter 2026 results release and investor conference call for 22 October 2026.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "commercial real estate",
+        "financial results",
+        "investor relations"
+      ],
+      "author": "IBR",
+      "publishedAt": "2026-09-28",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/cbre-group-inc-announces-details-of-conference-call-and-webcast-for-third-quarter-2026-financial-results/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/cbre-third-quarter-2026-results-call.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "CBRE Group, Inc.",
+      "contentPath": "/resources/news-insights/articles/cbre-third-quarter-2026-results-call.html",
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+    },
+    {
+      "id": "jll-third-quarter-2026-earnings-call",
+      "title": "News: JLL announces third-quarter 2026 earnings release and conference call",
+      "slug": "jll-third-quarter-2026-earnings-call",
+      "excerpt": "JLL scheduled a webcast and conference call to discuss third-quarter 2026 results on 28 October 2026.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "commercial real estate",
+        "financial results",
+        "investor relations"
+      ],
+      "author": "IBR",
+      "publishedAt": "2026-09-28",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/jll-announces-details-of-third-quarter-2026-earnings-release-and-conference-call/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/jll-third-quarter-2026-earnings-call.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Jones Lang LaSalle Incorporated",
+      "contentPath": "/resources/news-insights/articles/jll-third-quarter-2026-earnings-call.html",
+      "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
     }
   ]
 }

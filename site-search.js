@@ -1,7 +1,15 @@
 (() => {
   'use strict';
+  // The 404 page uses a legacy input ID; support it without changing its layout.
   const form = document.getElementById('site-search-form');
-  const input = document.getElementById('site-search-input');
+  const input = document.getElementById('site-search-input') || document.getElementById('site-search');
+  // Reuse the content-versioned script URL for the generated index.
+  const assetVersion = (() => {
+    try {
+      const src = document.currentScript && document.currentScript.src;
+      return src ? (new URL(src, window.location.href).searchParams.get('v') || '20261025') : '20261025';
+    } catch (_) { return '20261025'; }
+  })();
   const suggestions = document.getElementById('site-search-results');
   const pageResults = document.getElementById('search-page-results');
   const pageQuery = document.getElementById('search-page-query');
@@ -61,7 +69,7 @@
           return;
         }
         const script = document.createElement('script');
-        script.src = '/search-index.js?v=20261025-results-fix-2';
+        script.src = '/search-index.js?v=' + encodeURIComponent(assetVersion);
         script.async = true;
         script.onload = () => Array.isArray(window.HAMLET_SEARCH_INDEX)
           ? resolve(window.HAMLET_SEARCH_INDEX)

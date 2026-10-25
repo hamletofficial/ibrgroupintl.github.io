@@ -209,6 +209,52 @@
       "contentType": "Press Release",
       "contentPath": "/resources/news-insights/articles/legal-general-affordable-housing-partnership-model.html",
       "migrationStatus": "summary migrated from accessible live IBR source; source backlink retained; QA pending"
+    },
+    {
+      "id": "berkshire-hathaway-taylor-morrison-acquisition-completion",
+      "title": "Press Release: Berkshire Hathaway completes acquisition of Taylor Morrison",
+      "slug": "berkshire-hathaway-taylor-morrison-acquisition-completion",
+      "excerpt": "Berkshire Hathaway completed its acquisition of Taylor Morrison at $72.50 per common share in cash, implying approximately $6.8 billion in equity value.",
+      "category": "Real Estate & M&A",
+      "topics": [
+        "investment",
+        "acquisition",
+        "real estate"
+      ],
+      "author": "IBR",
+      "publishedAt": "2026-07-25",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/berkshire-hathaway-completes-acquisition-of-taylor-morrison/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/berkshire-hathaway-taylor-morrison-acquisition-completion.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Berkshire Hathaway; Taylor Morrison",
+      "contentType": "Press Release",
+      "contentPath": "/resources/news-insights/articles/berkshire-hathaway-taylor-morrison-acquisition-completion.html",
+      "migrationStatus": "summary migrated from accessible IBR archive page; source backlink included; line-by-line QA pending"
+    },
+    {
+      "id": "flexstone-partners-glouston-capital-acquisition",
+      "title": "Press Release: Flexstone Partners to acquire Glouston Capital Partners to form $15 billion private equity platform",
+      "slug": "flexstone-partners-glouston-capital-acquisition",
+      "excerpt": "Flexstone Partners agreed to acquire Glouston Capital Partners, bringing together private-markets investment platforms with approximately $15 billion in assets under management.",
+      "category": "Investment & M&A",
+      "topics": [
+        "investment",
+        "acquisition",
+        "real estate"
+      ],
+      "author": "IBR",
+      "publishedAt": "2026-06-18",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/flexstone-partners-to-acquire-glouston-capital-partners-to-form-15-billion-private-equity-platform/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/flexstone-partners-glouston-capital-acquisition.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Flexstone Partners; Glouston Capital Partners",
+      "contentType": "Press Release",
+      "contentPath": "/resources/news-insights/articles/flexstone-partners-glouston-capital-acquisition.html",
+      "migrationStatus": "summary migrated from accessible IBR archive page; source backlink included; line-by-line QA pending"
     }
   ]
 }

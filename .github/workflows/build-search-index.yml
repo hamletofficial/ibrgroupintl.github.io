@@ -1,8 +1,11 @@
 name: Build public search index
 
 on:
-  # Search-index generation is handled by static.yml during every Pages deployment.
-  # Keep this workflow manual-only to avoid competing index commits and deployments.
+  push:
+    branches: ["main"]
+    # Index-only commits must not start another indexing run.
+    paths-ignore:
+      - "search-index.json"
   workflow_dispatch:
 permissions:
   contents: write

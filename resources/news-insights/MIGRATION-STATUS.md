@@ -35,3 +35,8 @@
 ## Additional direct-source migration — Acuity / One Big Circle / Loram (25 October 2026)
 
 Added `articles/acuity-one-big-circle-loram-partnership.html` from the accessible original IBR article dated 16 April 2026. The entry covers the rail technology partnership and retains the source link and press-release context. The third-party image is not copied pending asset verification. Added a searchable catalogue record and sitemap URL. This first-pass migration requires line-by-line QA against the source before production release.
+
+
+## Additional direct-source migration — RioCan (25 October 2026)
+
+Added `articles/riocan-third-quarter-2026-earnings-call.html` from the accessible live IBR article dated 5 October 2026. Added its searchable catalogue record and sitemap URL. This is a first-pass migration and still requires line-by-line QA against the source before production.

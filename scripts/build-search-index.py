@@ -16,7 +16,7 @@ OUTPUT = ROOT / "search-index.json"
 EXCLUDED_PARTS = {".git", ".vs", ".firebase", "node_modules", ".github"}
 EXCLUDED_DIRS = {
     "superuser", "admin", "account", "accounts", "auth",
-    "authentication", "app", "functions", "public",
+    "authentication", "app", "functions", "public", "onfido", "oauth",
 }
 EXCLUDED_FILES = {
     "admin.html", "login.html", "editprofile.html", "invoice.html",
@@ -81,7 +81,19 @@ def is_public_html(path):
         return False
     if path.name.startswith(".") or path.name.lower() in EXCLUDED_FILES:
         return False
-    return path.suffix.lower() == ".html"
+    if path.suffix.lower() != ".html":
+        return False
+    # Honour explicit page-level robots exclusions as an additional safety layer.
+    try:
+        source = path.read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return False
+    for meta in re.findall(r"<meta\\b[^>]*>", source, flags=re.I):
+        name = re.search(r"""\\bname\\s*=\\s*["']robots["']""", meta, flags=re.I)
+        content_attr = re.search(r"""\\bcontent\\s*=\\s*["']([^"']*)["']""", meta, flags=re.I)
+        if name and content_attr and re.search(r"\\bnoindex\\b", content_attr.group(1), flags=re.I):
+            return False
+    return True
 
 
 def generate():

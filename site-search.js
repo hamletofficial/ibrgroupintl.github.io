@@ -19,6 +19,11 @@
     if (window.location.pathname === '/' || window.location.pathname === '/index.html') return;
     document.querySelectorAll('a.brand, a.sector-brand, a.search-brand, .brand-wordmark').forEach(el => {
       if (!/^hamlet$/i.test((el.childNodes[0]?.textContent || '').trim()) && !/^hamlet(?:\\s|$)/i.test(el.textContent.trim())) return;
+      const existingDot = Array.from(el.querySelectorAll('span')).find(span => span.textContent.trim() === '.');
+      if (existingDot) {
+        existingDot.classList.add('brand-dot');
+        return;
+      }
       if (el.querySelector('.brand-dot')) return;
       const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
       let node;

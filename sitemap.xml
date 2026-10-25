@@ -20,4 +20,8 @@
     <loc>https://www.hamlet-ai.co.uk/resources/news-insights/</loc>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://www.hamlet-ai.co.uk/resources/people-moves/</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>

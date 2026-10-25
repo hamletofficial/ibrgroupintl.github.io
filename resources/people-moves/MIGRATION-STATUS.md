@@ -85,3 +85,8 @@ Added a press-release-labelled summary of the 24 April 2026 announcement promoti
 ## Additional direct-source batch — Spencer Stuart and PensionDanmark (25 October 2026)
 
 Added two press-release-labelled summary pages from accessible IBR articles: Justin Zale / Spencer Stuart (16 April 2026) and Cecilie Orland Kiærskou / PensionDanmark (27 November 2025). Updated the catalogue and sitemap. Both pages link back to IBR; source images are omitted pending asset verification. Full archive enumeration and source-by-source QA remain outstanding.
+
+
+## Additional direct-source migration — Mileway (25 October 2026)
+
+Added a press-release-labelled article for the 17 December 2025 announcement promoting Andrew Jones and Aymeric Canivenc to Co-Heads of Real Estate. The accessible IBR source text and quotations were used, with an original-source backlink. The catalogue and sitemap were updated; source portraits are omitted pending asset verification. The wider archive crawl and QA remain ongoing.

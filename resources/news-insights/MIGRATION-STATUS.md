@@ -69,3 +69,14 @@ Added three pages from the second News & Insights archive listing: Simon Donohue
 ## Additional direct-source batch — News & Insights archive page 2 (25 October 2026)
 
 Added summary pages for Berkshire Hathaway's completion of its Taylor Morrison acquisition (25 July 2026) and Flexstone Partners' proposed acquisition of Glouston Capital Partners (18 June 2026). Both entries are labelled Press Release, include IBR source backlinks, and are included in the catalogue and sitemap. These are third-party announcement summaries, not full republications. Continue resolving older-post pagination and verify remaining entries individually.
+
+
+## Direct archive-page batch — 25 October 2026
+
+Re-opened the live News & Insights archive and followed its older-posts pagination to page 2. Added three direct-source articles to the Hamlet branch and catalogue:
+
+- PRI 20th anniversary / London Stock Exchange — 27 April 2026. IBR-authored article content migrated with attribution; source image omitted pending verification. Classified as **Article**, not a press release.
+- Winckworth Sherwood / £1bn affordable-housing partnership — 24 April 2026. Summarised the third-party announcement, retained the original IBR source backlink and linked the named firm.
+- CBRE Q1 2026 financial results — 23 April 2026. Summarised reported financial highlights, retained the original IBR source backlink and linked CBRE Investor Relations.
+
+The page-2 listing also surfaced three other candidates whose direct article URLs returned 404 in retrieval (The Spine / Egypt; Al Ismaelia / EBRD; Saudi Real Estate Co annual results). They remain unresolved, not counted as migrated. Archive crawling and QA continue; no production merge or deployment has occurred.

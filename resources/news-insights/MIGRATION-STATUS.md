@@ -154,3 +154,13 @@ Migrated three accessible IBR announcements from May 2025:
 - L&G's proposed 75% stake acquisition in Proprium Capital Partners (20 May 2025).
 
 Added native HTML pages, original IBR source backlinks, catalogue entries and sitemap URLs. Third-party images were omitted pending rights checks. Confirm historical deal status and full metadata during QA.
+
+
+## Additional source pages from archive page 11 — 25 October 2026
+
+Migrated two accessible IBR articles:
+
+- Federated Hermes Limited acquires majority stake in Rivington Energy Management (8 April 2025), a UK renewable-energy project developer.
+- Majid Al Futtaim / City Centre Muscat receives LEED Platinum certification (22 December 2023), based on the short IBR/Zawya release; details not present in the source have not been invented.
+
+Added source links, catalogue entries and sitemap URLs. Images were omitted pending rights verification. QA remains outstanding.

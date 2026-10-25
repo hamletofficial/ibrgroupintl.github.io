@@ -1,0 +1,32 @@
+# News & Insights migration status
+
+**Branch:** `feat/news-insights-migration`  
+**Target:** `/resources/news-insights/`  
+**Status:** Foundation in progress; source article migration not complete.
+
+## Completed in this branch
+
+- Added a public News & Insights landing page with static JSON-driven search and category filtering.
+- Added an initially empty catalogue file at `/resources/data/news-insights.json`.
+- Linked the archive from the existing public `/resources/index.html` hub.
+- Removed the blanket `Disallow: /*.html$` rule from `robots.txt`, as explicitly authorised.
+- Updated crawler exclusions for known member, workspace, and administrative paths.
+- Updated the sitemap to the Hamlet production hostname and added the public resource pages and archive.
+
+## Important limitations before launch
+
+- The catalogue intentionally contains no articles yet. The working source inventory has 143 candidate records across listing pages 1–23, but it is not exhaustive and some records do not yet have a verified direct article URL.
+- Do not generate article pages from archive-listing titles alone. Each candidate needs its direct source URL, complete source text, publication date, byline (where available), and media references checked.
+- Preserve IBR-owned original text in full under the owner's authorisation. Review third-party press releases, quotations, charts, photos, embeds and other externally authored material separately; ownership of an article page does not necessarily establish rights to every included component.
+- Review the exact protected paths in `robots.txt` against the live site before production release. Robots directives guide crawlers; they do not enforce access control. Firebase authentication and server-side/database rules must remain the actual protection boundary.
+- Verify that the production site serves the `www.hamlet-ai.co.uk` hostname and that the canonical URLs match deployment configuration before publishing the sitemap.
+
+## Next steps
+
+1. Complete archive enumeration beyond page 23 and resolve direct article links.
+2. Capture and compare the full text of each selected article before the source is removed.
+3. Deduplicate repeated and updated stories, then classify candidates by editorial relevance.
+4. Review media rights and preserve attribution/credits.
+5. Add verified article HTML pages and catalogue entries.
+6. Test public search, keyboard accessibility, mobile layout, canonical metadata, internal links, robots policy, and sitemap.
+7. Review this branch and its pull request before merge or deployment.

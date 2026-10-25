@@ -61,7 +61,7 @@
           return;
         }
         const script = document.createElement('script');
-        script.src = '/search-index.js?v=20261025-index';
+        script.src = '/search-index.js?v=20261025-results-fix-2';
         script.async = true;
         script.onload = () => Array.isArray(window.HAMLET_SEARCH_INDEX)
           ? resolve(window.HAMLET_SEARCH_INDEX)

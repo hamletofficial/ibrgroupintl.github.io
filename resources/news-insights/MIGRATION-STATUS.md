@@ -132,3 +132,14 @@ Migrated two accessible IBR articles from June 2025:
 - First schools install Great British Energy solar panels (7 June 2025), summarising the original programme estimates and retaining a UK Government source link.
 
 Added native HTML pages, original IBR backlinks, catalogue entries and sitemap URLs. Source imagery was omitted pending rights checks; line-by-line QA remains outstanding.
+
+
+## Additional source pages from archive page 9 — 25 October 2026
+
+Migrated three accessible IBR announcements from May–June 2025:
+
+- Colliers partners with global infrastructure investment bank Astris Finance (5 June 2025).
+- DBS anchors SGD 692 million green loan for Hong Leong Holdings' Tengah development (3 June 2025).
+- Port Arthur LNG Phase 2 receives non-FTA export authorization (30 May 2025).
+
+Added source links, catalogue entries and sitemap URLs. Third-party image assets were omitted pending rights review; content and metadata QA remains outstanding.

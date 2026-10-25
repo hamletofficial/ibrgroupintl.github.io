@@ -24,6 +24,28 @@
       "company": "Acuity; One Big Circle; Loram",
       "contentPath": "/resources/news-insights/articles/acuity-one-big-circle-loram-partnership.html",
       "migrationStatus": "migrated from accessible live source; press-release attribution retained; third-party image omitted pending verification"
+    },
+    {
+      "id": "riocan-third-quarter-2026-earnings-call",
+      "title": "News: RioCan Real Estate Investment Trust schedules third-quarter 2026 earnings release, conference call and webcast",
+      "slug": "riocan-third-quarter-2026-earnings-call",
+      "excerpt": "RioCan scheduled its third-quarter 2026 results release for 2 November 2026, followed by a management conference call on 3 November.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "commercial real estate",
+        "earnings",
+        "investor relations"
+      ],
+      "author": "IBR",
+      "publishedAt": "2026-10-05",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/riocan-real-estate-investment-trust-schedules-third-quarter-2026-earnings-release-conference-call-and-webcast/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/riocan-third-quarter-2026-earnings-call.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "RioCan Real Estate Investment Trust",
+      "contentPath": "/resources/news-insights/articles/riocan-third-quarter-2026-earnings-call.html",
+      "migrationStatus": "migrated from accessible live source; line-by-line QA pending"
     }
   ]
 }

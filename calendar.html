@@ -38,7 +38,7 @@
     .calendar-search button{padding:.8rem 1rem;border:1px solid #93c5fd;border-radius:9px;background:#071d4a;color:#fff;font:inherit;font-weight:800;cursor:pointer}
     .calendar-search button:hover{background:#173b75}
     .search-status{margin:.65rem 0 0;color:#cbd5e1;font-size:.9rem}
-    .event-card[hidden]{display:none!important}
+    .event-card[hidden],.upcoming-event-card[hidden]{display:none!important}
     .calendar-search .clear-search{background:#111827}
     .event-list{display:grid;gap:1rem}
     .event-card{display:grid;grid-template-columns:145px minmax(0,1fr);gap:1.2rem;padding:1.25rem;border:1px solid #254a7b;border-radius:14px;background:linear-gradient(135deg,#111827 0%,#142844 60%,#071d4a 100%);box-shadow:inset 0 1px 0 rgba(147,197,253,.07)}
@@ -78,10 +78,10 @@
         <input id="event-search" type="search" placeholder="Search event names, topics, dates or venues…" autocomplete="off" aria-describedby="event-search-status">
         <button type="button" id="clear-event-search" class="clear-search">Clear</button>
       </div>
-      <p class="search-status" id="event-search-status" role="status" aria-live="polite">Showing all 35 events. Search across upcoming and past events.</p>
+      <p class="search-status" id="event-search-status" role="status" aria-live="polite">Showing all 37 events. Search across upcoming and past events.</p>
     </section>
 
-    <section aria-labelledby="attending-title" style="margin:0 0 1rem;padding:1.25rem;border:1px solid #60a5fa;border-radius:14px;background:linear-gradient(135deg,#111827 0%,#172554 65%,#071d4a 100%);box-shadow:inset 0 1px 0 rgba(147,197,253,.08)">
+    <section class="upcoming-event-card" aria-labelledby="attending-title" style="margin:0 0 1rem;padding:1.25rem;border:1px solid #60a5fa;border-radius:14px;background:linear-gradient(135deg,#111827 0%,#172554 65%,#071d4a 100%);box-shadow:inset 0 1px 0 rgba(147,197,253,.08)">
       <span class="eyebrow">Upcoming event</span>
       <h2 id="attending-title" style="margin:.65rem 0 .4rem;font-size:1.45rem">I will be attending...</h2>
       <p style="margin:.3rem 0;color:#bfdbfe;font-weight:750">GitHub Universe 2026 · <span aria-hidden="true">📅 </span>28–29 October 2026</p>
@@ -89,7 +89,7 @@
       <p style="margin:.8rem 0 0"><a href="https://githubuniverse.com/" target="_blank" rel="noopener noreferrer" style="font-weight:800">Visit the official GitHub Universe event page →</a></p>
     </section>
 
-    <section aria-labelledby="lhg-policy-day-title" style="margin:0 0 2rem;padding:1.25rem;border:1px solid #60a5fa;border-radius:14px;background:linear-gradient(135deg,#111827 0%,#172554 65%,#071d4a 100%);box-shadow:inset 0 1px 0 rgba(147,197,253,.08)">
+    <section class="upcoming-event-card" aria-labelledby="lhg-policy-day-title" style="margin:0 0 2rem;padding:1.25rem;border:1px solid #60a5fa;border-radius:14px;background:linear-gradient(135deg,#111827 0%,#172554 65%,#071d4a 100%);box-shadow:inset 0 1px 0 rgba(147,197,253,.08)">
       <span class="eyebrow">Upcoming event</span>
       <h2 id="lhg-policy-day-title" style="margin:.65rem 0 .4rem;font-size:1.45rem">LHG Policy Day 2026</h2>
       <p style="margin:.3rem 0;color:#bfdbfe;font-weight:750"><span aria-hidden="true">📅 </span>Saturday 14 November 2026 · 1:00–5:00 pm</p>
@@ -450,7 +450,7 @@
       var input = document.getElementById("event-search");
       var clear = document.getElementById("clear-event-search");
       var status = document.getElementById("event-search-status");
-      var cards = Array.prototype.slice.call(document.querySelectorAll(".event-card"));
+      var cards = Array.prototype.slice.call(document.querySelectorAll(".event-card, .upcoming-event-card"));
       var total = cards.length;
       function searchEvents() {
         var query = input.value.trim().toLocaleLowerCase();

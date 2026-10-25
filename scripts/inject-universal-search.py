@@ -9,7 +9,7 @@ import re
 
 ROOT = Path(".")
 SKIP_PARTS = {".git", ".vs", ".firebase", "node_modules", ".github", "functions"}
-SKIP_DIRS = {"app", "functions", "public", "superuser", "admin", "account", "accounts", "auth", "authentication"}
+SKIP_DIRS = {"app", "functions", "public", "superuser", "admin", "account", "accounts", "auth", "authentication", "onfido", "oauth"}
 SKIP_FILES = {
     "admin.html", "login.html", "editprofile.html", "invoice.html", "archive.html",
     "dashboard.html", "live.html", "portfolio.html", "residential.html", "resi-resources.html",

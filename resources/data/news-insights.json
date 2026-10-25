@@ -495,6 +495,30 @@
       "contentPath": "/resources/news-insights/articles/saudi-real-estate-co-2025-annual-results.html",
       "migrationStatus": "summary migrated from accessible IBR article; third-party financial details summarised with attribution; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "cbre-lkq-europe-exclusive-real-estate-advisor",
+      "title": "News: CBRE appointed exclusive European real estate advisor for LKQ Europe",
+      "slug": "cbre-lkq-europe-exclusive-real-estate-advisor",
+      "excerpt": "CBRE was appointed LKQ Europe's exclusive European real estate adviser under a five-year contract effective 1 January 2026.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "commercial real estate",
+        "corporate real estate",
+        "European property",
+        "advisory"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-11-04",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/news-lkq-appoints-cbre-as-exclusive-european-real-estate-advisor/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/cbre-lkq-europe-exclusive-real-estate-advisor.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "CBRE; LKQ Europe",
+      "contentPath": "/resources/news-insights/articles/cbre-lkq-europe-exclusive-real-estate-advisor.html",
+      "migrationStatus": "migrated from accessible IBR source text; source backlink retained; third-party press release link included; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

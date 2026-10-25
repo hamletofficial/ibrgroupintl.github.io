@@ -618,6 +618,80 @@
       "contentPath": "/resources/news-insights/articles/great-british-energy-first-schools-solar-panels.html",
       "migrationStatus": "migrated from accessible IBR article; UK Government source backlink retained; source image omitted pending rights check; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "colliers-astris-infrastructure-acquisition",
+      "title": "News: Colliers partners with global infrastructure investment bank",
+      "slug": "colliers-astris-infrastructure-acquisition",
+      "excerpt": "Colliers agreed to acquire a controlling interest in Astris Finance, expanding its infrastructure and energy-transition investment-banking advisory capabilities.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "infrastructure finance",
+        "energy transition",
+        "M&A",
+        "project finance",
+        "renewables"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-05",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/news-colliers-partners-with-global-infrastructure-investment-bank/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/colliers-astris-infrastructure-acquisition.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Colliers; Astris Finance",
+      "contentPath": "/resources/news-insights/articles/colliers-astris-infrastructure-acquisition.html",
+      "migrationStatus": "migrated from accessible IBR source; original IBR source retained; image omitted pending rights review; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "dbs-hong-leong-tengah-green-loan",
+      "title": "News: DBS anchors SGD 692 million green loan for Hong Leong Holdings' Tengah development",
+      "slug": "dbs-hong-leong-tengah-green-loan",
+      "excerpt": "DBS anchored a SGD 692 million green loan for a nature-aligned mixed-use residential development in Tengah, Singapore, with a planned 860 homes and integrated retail.",
+      "category": "Sustainable Finance",
+      "topics": [
+        "green loan",
+        "sustainable property",
+        "Singapore",
+        "urban development",
+        "biodiversity"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-03",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/news-dbs-anchors-sgd-692-million-green-loan-for-hong-leong-holdings-flagship-nature-aligned-development-in-singapore-s-first-forest-town-tengah/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/dbs-hong-leong-tengah-green-loan.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "DBS; Hong Leong Holdings; GuocoLand; CSC Land Group",
+      "contentPath": "/resources/news-insights/articles/dbs-hong-leong-tengah-green-loan.html",
+      "migrationStatus": "migrated from accessible IBR source; source backlinks retained; image omitted pending rights review; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "sempra-port-arthur-lng-phase-two-export-authorization",
+      "title": "News: Port Arthur LNG Phase 2 receives non-FTA export authorization",
+      "slug": "sempra-port-arthur-lng-phase-two-export-authorization",
+      "excerpt": "Sempra Infrastructure said the US Department of Energy granted non-FTA export authorization for Port Arthur LNG Phase 2, enabling exports to countries without a US free-trade agreement.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "LNG",
+        "energy infrastructure",
+        "export authorization",
+        "energy security"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-05-30",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/news-port-arthur-lng-phase-2-receives-non-fta-export-authorization/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/sempra-port-arthur-lng-phase-two-export-authorization.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Sempra Infrastructure; Port Arthur LNG",
+      "contentPath": "/resources/news-insights/articles/sempra-port-arthur-lng-phase-two-export-authorization.html",
+      "migrationStatus": "migrated from accessible IBR source; official Sempra source linked; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

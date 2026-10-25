@@ -70,3 +70,8 @@ Added three native HTML summary pages from accessible IBR pages dated 7 October 
 ## Additional direct-source migration — OMERS Infrastructure (25 October 2026)
 
 Added a native HTML article summarising the accessible IBR announcement of Luca Lupo's appointment as Senior Managing Director and Head of Europe, dated 23 March 2026. Updated the JSON catalogue and sitemap. Source attribution is retained and the third-party photograph is omitted pending verification. Line-by-line QA and full archive enumeration remain in progress.
+
+
+## Additional direct-source batch — Denham Capital, West Sussex and CBRE Investment Management (25 October 2026)
+
+Added three press-release-labelled People Moves summary pages from accessible IBR source pages: Arturo Prieto / Denham Capital (1 October 2026), Henry Powell / West Sussex Economic Growth Board (25 September 2026), and Paul White / CBRE Investment Management (16 April 2026). Each entry has a source backlink and catalogue/sitemap record. Source images are not reproduced pending asset verification. Full archive enumeration and line-by-line QA remain outstanding.

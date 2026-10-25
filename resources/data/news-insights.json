@@ -692,6 +692,78 @@
       "contentPath": "/resources/news-insights/articles/sempra-port-arthur-lng-phase-two-export-authorization.html",
       "migrationStatus": "migrated from accessible IBR source; official Sempra source linked; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "tikehau-dunman-frankfurt-office-serviced-apartments",
+      "title": "News: Tikehau Capital and Dunman Capital Partners acquire Frankfurt office property for serviced-apartment conversion",
+      "slug": "tikehau-dunman-frankfurt-office-serviced-apartments",
+      "excerpt": "Tikehau Capital and Dunman Capital Partners partnered on an 8,000-square-metre Frankfurt office asset with a value-add strategy that includes conversion to serviced apartments.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "office conversion",
+        "serviced apartments",
+        "Frankfurt",
+        "value-add real estate"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-05-28",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/news-tikehau-capital-and-dunman-capital-partners-acquire-frankfurt-office-property-for-conversion-into-service-apartment-complex/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/tikehau-dunman-frankfurt-office-serviced-apartments.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Tikehau Capital; Dunman Capital Partners",
+      "contentPath": "/resources/news-insights/articles/tikehau-dunman-frankfurt-office-serviced-apartments.html",
+      "migrationStatus": "migrated from accessible IBR-authored source; official Tikehau source linked; image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "barings-four-uk-logistics-assets-sale",
+      "title": "News: Barings completes sale of four UK logistics assets",
+      "slug": "barings-four-uk-logistics-assets-sale",
+      "excerpt": "Barings sold four fully let UK logistics assets in Bristol, Daventry, Warrington and Nottingham to joint-venture partners Copley Point Capital and Sixth Street.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "industrial real estate",
+        "logistics",
+        "asset management",
+        "UK property"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-05-21",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/news-barings-completes-sale-of-four-uk-logistics-assets/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/barings-four-uk-logistics-assets-sale.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Barings; Copley Point Capital; Sixth Street",
+      "contentPath": "/resources/news-insights/articles/barings-four-uk-logistics-assets-sale.html",
+      "migrationStatus": "migrated from accessible IBR-authored source; original Barings source linked; image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "legal-general-proprium-75-percent-stake",
+      "title": "News: L&G targets global markets with 75% acquisition of Proprium Capital Partners",
+      "slug": "legal-general-proprium-75-percent-stake",
+      "excerpt": "L&G agreed to acquire a 75% stake in global real estate investor Proprium Capital Partners to expand its private-markets platform and geographic reach.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "real estate investment",
+        "private markets",
+        "global expansion",
+        "asset management"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-05-20",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/news-l-g-targets-global-markets-acquired-75-of-proprium-capital-partners/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/legal-general-proprium-75-percent-stake.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Legal & General; Proprium Capital Partners",
+      "contentPath": "/resources/news-insights/articles/legal-general-proprium-75-percent-stake.html",
+      "migrationStatus": "migrated from accessible IBR source; L&G source link retained; image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

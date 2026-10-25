@@ -122,3 +122,13 @@ Migrated two accessible IBR articles from the archive page dated July–August 2
 - The Arora Group finalises Heathrow Airport expansion proposal (1 August 2025), retaining that this was a proposal submission and not an approved expansion.
 
 Added source backlinks, catalogue records and sitemap entries. The source image was not copied; line-by-line QA remains pending.
+
+
+## Additional source pages from archive page 8 — 25 October 2026
+
+Migrated two accessible IBR articles from June 2025:
+
+- L&G expands private credit portfolio with £250m Magnavale Cold Storage investment (13 June 2025), covering cold-chain real estate debt and energy-efficient facilities.
+- First schools install Great British Energy solar panels (7 June 2025), summarising the original programme estimates and retaining a UK Government source link.
+
+Added native HTML pages, original IBR backlinks, catalogue entries and sitemap URLs. Source imagery was omitted pending rights checks; line-by-line QA remains outstanding.

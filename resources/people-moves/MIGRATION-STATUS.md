@@ -65,3 +65,8 @@ Added `articles/equilis-france-constance-poublet-ceo.html` from the accessible l
 ## Additional direct-source batch — M&G, Barings and Newmark (25 October 2026)
 
 Added three native HTML summary pages from accessible IBR pages dated 7 October 2026 (M&G / Duncan Batty), 6 October 2026 (Barings / Sloan Sutta) and 28 September 2026 (Newmark / Mike Whitaker). Updated the JSON catalogue and sitemap. As these entries are presented as third-party company media releases, Hamlet preserves key appointment facts, IBR source links and attribution rather than reproducing the full external releases or source photographs. Line-by-line QA and full archive enumeration remain outstanding.
+
+
+## Additional direct-source migration — OMERS Infrastructure (25 October 2026)
+
+Added a native HTML article summarising the accessible IBR announcement of Luca Lupo's appointment as Senior Managing Director and Head of Europe, dated 23 March 2026. Updated the JSON catalogue and sitemap. Source attribution is retained and the third-party photograph is omitted pending verification. Line-by-line QA and full archive enumeration remain in progress.

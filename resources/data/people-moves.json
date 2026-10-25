@@ -241,6 +241,30 @@
       "company": "Newmark Group, Inc.",
       "contentPath": "/resources/people-moves/articles/newmark-mike-whitaker-group-cio.html",
       "migrationStatus": "summary migrated from accessible live IBR page; third-party release summarized with attribution; QA pending"
+    },
+    {
+      "id": "omers-luca-lupo-europe-infrastructure-lead",
+      "title": "People Moves: OMERS appoints Luca Lupo as Infrastructure leader for Europe",
+      "slug": "omers-luca-lupo-europe-infrastructure-lead",
+      "excerpt": "OMERS Infrastructure appointed Luca Lupo as Senior Managing Director and Head of Europe, based in London.",
+      "category": "Infrastructure Investment",
+      "topics": [
+        "infrastructure investment",
+        "leadership",
+        "Europe"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-03-23",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/luca-lupo-appointed-omers-infrastructure-leader-of-europe/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/omers-luca-lupo-europe-infrastructure-lead.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Luca Lupo",
+      "role": "Senior Managing Director and Head of Europe",
+      "company": "OMERS Infrastructure",
+      "contentPath": "/resources/people-moves/articles/omers-luca-lupo-europe-infrastructure-lead.html",
+      "migrationStatus": "migrated from accessible live IBR page; source attribution preserved; QA pending"
     }
   ]
 }

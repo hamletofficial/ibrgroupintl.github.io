@@ -97,3 +97,13 @@ The direct source URLs for A&O Hostels and IRG returned 404; Eastern Union retur
 ## Direct archive crawl — page 4 — 25 October 2026
 
 Followed the News & Insights archive to page 4 and opened the original IBR pages for Arthur Cox/AIB/Lidl's €80m green loan (11 April 2026) and Investec/IFC's $200m green-building loan in South Africa (10 April 2026). Migrated the accessible IBR-authored text into two native HTML pages, with source backlinks; third-party images were not copied. Catalogue and sitemap updated. Other page-4 entries include a Savills future homes standard item and additional real estate/finance stories; continue enumeration and source checks.
+
+
+## Recovered source pages — 25 October 2026
+
+Two News & Insights candidates previously treated as unresolved were recovered via indexed direct article pages:
+
+- The Spine — Inside Egypt's new mega project (27 April 2026), an IBR factsheet attributed to Zawya.
+- Saudi Real Estate Co / Al Akaria — 2025 audited annual financial results (27 April 2026).
+
+Added summary pages with source backlinks, correct article/press-release classification, catalogue entries and sitemap URLs. Figures and project claims are attributed to the source and should be checked against the original publication during QA. This recovery demonstrates that a failed first retrieval does not necessarily mean the source article is unavailable.

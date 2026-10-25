@@ -92,3 +92,8 @@ Added a native HTML summary page for Newmark Group's third-quarter 2026 financia
 Followed the News & Insights archive pagination to page 3. The page lists A&O Hostels refinancing (20 April), Colliers/CoreNet Global corporate real estate and AI insight (20 April), Acuity / One Big Circle / Loram (16 April), Industrial Realty Group / Hyundai Translead logistics lease (15 April), Eastern Union warehouse refinancing (15 April), and Adani-Minerva renewable joint venture (15 April). Acuity was already migrated. Added the accessible Colliers/CoreNet Global article and Adani-Minerva article as native HTML pages, preserving IBR source links and metadata; updated catalogue and sitemap.
 
 The direct source URLs for A&O Hostels and IRG returned 404; Eastern Union returned a cache-miss retrieval error. These three are unresolved and were not reconstructed. Archive crawl continues.
+
+
+## Direct archive crawl — page 4 — 25 October 2026
+
+Followed the News & Insights archive to page 4 and opened the original IBR pages for Arthur Cox/AIB/Lidl's €80m green loan (11 April 2026) and Investec/IFC's $200m green-building loan in South Africa (10 April 2026). Migrated the accessible IBR-authored text into two native HTML pages, with source backlinks; third-party images were not copied. Catalogue and sitemap updated. Other page-4 entries include a Savills future homes standard item and additional real estate/finance stories; continue enumeration and source checks.

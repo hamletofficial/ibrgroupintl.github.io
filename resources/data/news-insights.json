@@ -398,6 +398,54 @@
       "contentPath": "/resources/news-insights/articles/adani-minerva-renewable-jv-india.html",
       "migrationStatus": "migrated from accessible IBR-authored article; image omitted pending asset rights check; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "arthur-cox-aib-lidl-80m-green-loan",
+      "title": "News: Arthur Cox advises AIB on €80 million green loan to Lidl Ireland",
+      "slug": "arthur-cox-aib-lidl-80m-green-loan",
+      "excerpt": "Arthur Cox advised Allied Irish Banks on an €80 million green loan facility to Lidl Ireland, supporting investment in energy-efficient stores, low-carbon logistics and sustainable infrastructure.",
+      "category": "Sustainable Finance",
+      "topics": [
+        "green finance",
+        "green loan",
+        "energy efficiency",
+        "sustainable logistics"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-11",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/arthur-cox-advises-aib-on-eur80m-green-loan/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/arthur-cox-aib-lidl-80m-green-loan.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Arthur Cox; Allied Irish Banks; Lidl Ireland",
+      "contentPath": "/resources/news-insights/articles/arthur-cox-aib-lidl-80m-green-loan.html",
+      "migrationStatus": "migrated from accessible IBR-authored source; image omitted pending rights check; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "investec-ifc-200m-green-buildings-south-africa",
+      "title": "News: Investec obtains $200 million IFC loan to accelerate green building development in South Africa",
+      "slug": "investec-ifc-200m-green-buildings-south-africa",
+      "excerpt": "Investec secured a $200 million IFC loan to expand financing for sustainable property developments in South Africa, with additional performance-based incentives for qualifying green construction.",
+      "category": "Sustainable Finance",
+      "topics": [
+        "green buildings",
+        "IFC",
+        "sustainable property finance",
+        "South Africa"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-10",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/investec-secures-200-million-ifc-loan-to-expand-green-buildings-in-south-africa/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/investec-ifc-200m-green-buildings-south-africa.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Investec Bank Limited; International Finance Corporation",
+      "contentPath": "/resources/news-insights/articles/investec-ifc-200m-green-buildings-south-africa.html",
+      "migrationStatus": "migrated from accessible IBR-authored source; image omitted pending rights check; QA pending",
+      "contentType": "Article"
     }
   ]
 }

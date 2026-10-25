@@ -1,0 +1,38 @@
+name: Refresh public search index
+
+on:
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - "search-index.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-public-search-index
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Build and validate public JSON index
+        run: python3 scripts/build-search-index.py
+      - name: Commit index only when changed
+        run: |
+          git add search-index.json
+          if git diff --cached --quiet -- search-index.json; then
+            echo "Public search index is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: refresh public search index"
+          git push origin HEAD:main

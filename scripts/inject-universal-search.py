@@ -89,8 +89,16 @@ def inject(path: Path) -> bool:
             body = re.search(r"<body\b[^>]*>", updated, re.I)
             if body:
                 updated = updated[:body.end()] + "\n" + MARKUP + updated[body.end():]
+    # Always bump the shared script version so browsers/CDNs do not keep
+    # running the previous JSON-only loader after a deployment.
+    updated = re.sub(
+        r'(<script\b[^>]*src=["\']/site-search\.js)(?:\?[^"\']*)?(["\'][^>]*>)',
+        r'\1?v=20261025-index-fallback\2',
+        updated,
+        flags=re.I,
+    )
     if 'src="/site-search.js' not in updated and re.search(r"</body\s*>", updated, re.I):
-        updated = re.sub(r"</body\s*>", '<script src="/site-search.js?v=20261025-universal" defer></script>\n</body>', updated, count=1, flags=re.I)
+        updated = re.sub(r"</body\s*>", '<script src="/site-search.js?v=20261025-index-fallback" defer></script>\n</body>', updated, count=1, flags=re.I)
     if updated != source:
         path.write_text(updated, encoding="utf-8")
         return True

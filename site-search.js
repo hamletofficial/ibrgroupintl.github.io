@@ -69,49 +69,31 @@
         'admin.html', 'login.html', 'invoice.html', 'loggedout.html',
         'callback.html', 'success.html'
       ]);
-      const privateDirs = /^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication)(?:\\/|$)/i;
+      const privateDirs = /^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication)(?:\/|$)/i;
       const filterPublicIndex = data => {
         if (!Array.isArray(data)) throw new Error('Search index has an invalid format');
-        // Defence in depth: Firebase-authenticated/private routes are excluded
-        // even if a stale or incorrectly generated index contains them.
         return data.filter(page => {
           const searchableText = [page.title, page.path, page.url, page.text].join(' ').toLocaleLowerCase();
-          const path = String(page.path || page.url || '').replace(/^\\/+/, '');
+          const path = String(page.path || page.url || '').replace(/^\/+/, '');
           const filename = path.split('/').pop().toLowerCase();
-          return !/loading\\s+search\\s+index/.test(searchableText)
+          return !/loading\s+search\s+index/.test(searchableText)
             && filename !== '404.html'
             && !privateFiles.has(filename)
             && !privateDirs.test(path);
         });
       };
-      const loadScriptIndex = () => new Promise((resolve, reject) => {
-        if (Array.isArray(window.HAMLET_SEARCH_INDEX)) {
-          resolve(window.HAMLET_SEARCH_INDEX);
-          return;
-        }
-        const script = document.createElement('script');
-        script.src = '/search-index.js?v=' + encodeURIComponent(assetVersion);
-        script.async = true;
-        script.onload = () => Array.isArray(window.HAMLET_SEARCH_INDEX)
-          ? resolve(window.HAMLET_SEARCH_INDEX)
-          : reject(new Error('JavaScript search index contained no data'));
-        script.onerror = () => reject(new Error('JavaScript search index could not be loaded'));
-        document.head.appendChild(script);
-      });
-      const loadJsonIndex = async () => {
-        const response = await fetch('/search-index.json?v=' + encodeURIComponent(assetVersion), {
-          cache: 'no-store',
-          credentials: 'same-origin',
-          headers: { 'Accept': 'application/json' }
-        });
-        if (!response.ok) throw new Error('JSON search index returned HTTP ' + response.status);
-        const data = await response.json();
-        return filterPublicIndex(data);
-      };
-      indexPromise = loadScriptIndex()
+      indexPromise = fetch('/search-index.json?v=' + encodeURIComponent(assetVersion), {
+        cache: 'no-store',
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(response => {
+          if (!response.ok) throw new Error('Search index returned HTTP ' + response.status);
+          return response.json();
+        })
         .then(filterPublicIndex)
-        .catch(() => loadJsonIndex())
         .then(data => {
+          if (!data.length) throw new Error('Search index contained no public pages');
           pages = data;
           return pages;
         })

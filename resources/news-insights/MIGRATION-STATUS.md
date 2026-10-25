@@ -40,3 +40,8 @@ Added `articles/acuity-one-big-circle-loram-partnership.html` from the accessibl
 ## Additional direct-source migration — RioCan (25 October 2026)
 
 Added `articles/riocan-third-quarter-2026-earnings-call.html` from the accessible live IBR article dated 5 October 2026. Added its searchable catalogue record and sitemap URL. This is a first-pass migration and still requires line-by-line QA against the source before production.
+
+
+## Additional direct-source batch — CBRE and JLL (25 October 2026)
+
+Added native HTML summary pages for the accessible CBRE and JLL third-quarter 2026 earnings announcements dated 28 September 2026. Each entry is linked to the original IBR page, listed in the JSON catalogue and sitemap, and preserves source attribution. As the original entries are third-party press releases, these pages summarise key factual details rather than reproducing the full external release. QA and archive enumeration remain in progress.

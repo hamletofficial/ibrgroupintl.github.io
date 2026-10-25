@@ -380,6 +380,58 @@
       "contentType": "Press Release",
       "contentPath": "/resources/people-moves/articles/herbert-smith-freehills-kramer-promotes-25-to-partnership.html",
       "migrationStatus": "summary migrated from accessible live IBR page; source backlink and press release classification included; QA pending"
+    },
+    {
+      "id": "spencer-stuart-justin-zale-global-real-estate-practice",
+      "title": "People Moves: Spencer Stuart appoints Justin Zale to lead its Global Real Estate practice",
+      "slug": "spencer-stuart-justin-zale-global-real-estate-practice",
+      "excerpt": "Spencer Stuart appointed Justin Zale to lead its Global Real Estate Practice, advising investors, developers and occupiers on leadership teams and boards.",
+      "category": "Executive Search & Real Estate",
+      "sector": "Executive Search & Real Estate",
+      "topics": [
+        "executive appointment",
+        "leadership",
+        "Executive Search & Real Estate"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-16",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/justin-zale-leads-spencer-stuart-s-global-real-estate-practice/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/spencer-stuart-justin-zale-global-real-estate-practice.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Justin Zale",
+      "role": "Leader, Global Real Estate Practice",
+      "company": "Spencer Stuart",
+      "contentType": "Press Release",
+      "contentPath": "/resources/people-moves/articles/spencer-stuart-justin-zale-global-real-estate-practice.html",
+      "migrationStatus": "summary migrated from accessible live IBR page; source backlink and press release label included; QA pending"
+    },
+    {
+      "id": "pensiondanmark-cecilie-orland-kiaerskou-real-estate-investment",
+      "title": "People Moves: PensionDanmark appoints Cecilie Orland Kiærskou as Real Estate Investment Director",
+      "slug": "pensiondanmark-cecilie-orland-kiaerskou-real-estate-investment",
+      "excerpt": "PensionDanmark appointed Cecilie Orland Kiærskou to lead investments in its real estate division as it strengthens joint-venture partnerships and development projects.",
+      "category": "Institutional Real Estate Investment",
+      "sector": "Institutional Real Estate Investment",
+      "topics": [
+        "executive appointment",
+        "leadership",
+        "Institutional Real Estate Investment"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-11-27",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-pensiondanmark-appoints-orland-kiaerskou-as-real-estate-investment-director/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/pensiondanmark-cecilie-orland-kiaerskou-real-estate-investment.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Cecilie Orland Kiærskou",
+      "role": "Head of Investments, Real Estate",
+      "company": "PensionDanmark",
+      "contentType": "Press Release",
+      "contentPath": "/resources/people-moves/articles/pensiondanmark-cecilie-orland-kiaerskou-real-estate-investment.html",
+      "migrationStatus": "summary migrated from accessible live IBR page; source backlink and press release label included; QA pending"
     }
   ]
 }

@@ -276,6 +276,84 @@
       "contentPath": "/resources/people-moves/articles/omers-luca-lupo-europe-infrastructure-lead.html",
       "migrationStatus": "migrated from accessible live IBR page; source attribution preserved; QA pending",
       "contentType": "Press Release"
+    },
+    {
+      "id": "denham-capital-arturo-prieto-sustainable-infrastructure-credit",
+      "title": "People Moves: Denham Capital appoints Arturo Prieto to Sustainable Infrastructure Credit Platform",
+      "slug": "denham-capital-arturo-prieto-sustainable-infrastructure-credit",
+      "excerpt": "Denham Capital appointed Arturo Prieto as Managing Director in its Sustainable Infrastructure Credit Platform.",
+      "category": "Infrastructure Investment",
+      "sector": "Infrastructure Investment",
+      "topics": [
+        "executive appointment",
+        "leadership",
+        "Infrastructure Investment"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-10-01",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/denham-capital-appoints-arturo-prieto-in-sustainable-infrastructure-role/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/denham-capital-arturo-prieto-sustainable-infrastructure-credit.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Arturo Prieto",
+      "role": "Managing Director, Sustainable Infrastructure Credit Platform",
+      "company": "Denham Capital",
+      "contentType": "Press Release",
+      "contentPath": "/resources/people-moves/articles/denham-capital-arturo-prieto-sustainable-infrastructure-credit.html",
+      "migrationStatus": "summary migrated from accessible live IBR page; source backlink and press release classification included; QA pending"
+    },
+    {
+      "id": "west-sussex-economic-growth-board-henry-powell-chair",
+      "title": "People Moves: West Sussex Economic Growth Board appoints Henry Powell as independent Chair",
+      "slug": "west-sussex-economic-growth-board-henry-powell-chair",
+      "excerpt": "The West Sussex Economic Growth Board appointed Henry Powell as independent Chair to support the county's strategic economic development.",
+      "category": "Public Sector & Economic Development",
+      "sector": "Public Sector & Economic Development",
+      "topics": [
+        "executive appointment",
+        "leadership",
+        "Public Sector & Economic Development"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-09-25",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/new-chair-leads-west-sussex/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/west-sussex-economic-growth-board-henry-powell-chair.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Henry Powell",
+      "role": "Independent Chair",
+      "company": "West Sussex Economic Growth Board",
+      "contentType": "Press Release",
+      "contentPath": "/resources/people-moves/articles/west-sussex-economic-growth-board-henry-powell-chair.html",
+      "migrationStatus": "summary migrated from accessible live IBR page; source backlink and press release classification included; QA pending"
+    },
+    {
+      "id": "cbre-im-paul-white-emea-value-add-fund",
+      "title": "People Moves: CBRE Investment Management appoints Paul White to lead EMEA flagship Value-Add fund series",
+      "slug": "cbre-im-paul-white-emea-value-add-fund",
+      "excerpt": "CBRE Investment Management appointed Paul White to lead its EMEA flagship Value-Add fund series.",
+      "category": "Real Estate Investment",
+      "sector": "Real Estate Investment",
+      "topics": [
+        "executive appointment",
+        "leadership",
+        "Real Estate Investment"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-16",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/cbre-im-appoints-paul-white/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/cbre-im-paul-white-emea-value-add-fund.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Paul White",
+      "role": "Head of EMEA flagship Value-Add fund series",
+      "company": "CBRE Investment Management",
+      "contentType": "Press Release",
+      "contentPath": "/resources/people-moves/articles/cbre-im-paul-white-emea-value-add-fund.html",
+      "migrationStatus": "summary migrated from accessible live IBR page; source backlink and press release classification included; QA pending"
     }
   ]
 }

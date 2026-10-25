@@ -75,3 +75,8 @@ Added a native HTML article summarising the accessible IBR announcement of Luca 
 ## Additional direct-source batch — Denham Capital, West Sussex and CBRE Investment Management (25 October 2026)
 
 Added three press-release-labelled People Moves summary pages from accessible IBR source pages: Arturo Prieto / Denham Capital (1 October 2026), Henry Powell / West Sussex Economic Growth Board (25 September 2026), and Paul White / CBRE Investment Management (16 April 2026). Each entry has a source backlink and catalogue/sitemap record. Source images are not reproduced pending asset verification. Full archive enumeration and line-by-line QA remain outstanding.
+
+
+## Additional direct-source migration — Herbert Smith Freehills Kramer (25 October 2026)
+
+Added a press-release-labelled summary of the 24 April 2026 announcement promoting 25 partners. The page links to the original IBR article, and the catalogue and sitemap have been updated. The summary directs readers to IBR for the complete list rather than reproducing the full third-party release. Source-by-source QA and exhaustive archive enumeration remain outstanding.

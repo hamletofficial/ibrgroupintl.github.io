@@ -38,8 +38,11 @@
   // Brand consistency: apply the contrasting full-stop to wordmarks across all pages, including the homepage.
   function applyHamletWordmarkDot() {
     document.querySelectorAll('a.brand, a.sector-brand, a.search-brand, .brand-wordmark').forEach(el => {
-      if (!/^hamlet(?:\s|$)/i.test(el.textContent.trim())) return;
-      if (el.querySelector('.brand-dot')) return;
+      const wordmarkText = el.textContent.trim();
+      if (!/^hamlet(?:\s|\.|$)/i.test(wordmarkText)) return;
+      // Existing wordmarks may already include the terminal full stop in their HTML.
+      // Only inject the accent dot when no full stop is present.
+      if (/\.\s*$/.test(wordmarkText) || el.querySelector('.brand-dot')) return;
 
       const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
       let node;

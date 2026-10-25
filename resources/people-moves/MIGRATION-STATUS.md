@@ -60,3 +60,8 @@ Added `articles/serica-energy-two-senior-appointments.html` from the accessible 
 ## Additional direct-source migration — Equilis France (25 October 2026)
 
 Added `articles/equilis-france-constance-poublet-ceo.html` from the accessible live IBR article dated 10 April 2026. The page covers Constance Poublet's appointment as CEO of Equilis France and preserves the article's statements and source link. The third-party image is not reproduced pending asset verification. Added the record to the JSON catalogue and sitemap. Independent line-by-line QA remains outstanding.
+
+
+## Additional direct-source batch — M&G, Barings and Newmark (25 October 2026)
+
+Added three native HTML summary pages from accessible IBR pages dated 7 October 2026 (M&G / Duncan Batty), 6 October 2026 (Barings / Sloan Sutta) and 28 September 2026 (Newmark / Mike Whitaker). Updated the JSON catalogue and sitemap. As these entries are presented as third-party company media releases, Hamlet preserves key appointment facts, IBR source links and attribution rather than reproducing the full external releases or source photographs. Line-by-line QA and full archive enumeration remain outstanding.

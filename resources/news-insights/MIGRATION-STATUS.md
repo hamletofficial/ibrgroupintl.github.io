@@ -112,3 +112,13 @@ Added summary pages with source backlinks, correct article/press-release classif
 ## Additional source article — CBRE / LKQ Europe (25 October 2026)
 
 Migrated the accessible IBR article announcing CBRE's appointment as exclusive European real estate adviser to LKQ Europe, effective 1 January 2026. Added native HTML page, original IBR source link, CBRE source link, catalogue record and sitemap URL. QA remains pending.
+
+
+## Additional source pages from archive page 7 — 25 October 2026
+
+Migrated two accessible IBR articles from the archive page dated July–August 2025:
+
+- CBRE to support delivery of Greater Manchester's Transport Vision (15 July 2025), including the four-year TfGM framework and Lot 15 estates advisory scope.
+- The Arora Group finalises Heathrow Airport expansion proposal (1 August 2025), retaining that this was a proposal submission and not an approved expansion.
+
+Added source backlinks, catalogue records and sitemap entries. The source image was not copied; line-by-line QA remains pending.

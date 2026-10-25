@@ -3,7 +3,7 @@
 **hamlet** is a property-focused CRM and broker-community platform developed by Impact in Business Recruitment Group Limited (IBR). It brings property listings, deal progression, broker profiles, rankings and communications into a more connected workspace.
 
 **Live website:** https://hamlet-ai.co.uk  
-**Repository:** https://github.com/hamletofficial/ibrgroupintl.github.io  
+**Repository:** https://github.com/hamletofficial/oss  
 **Hosting:** GitHub Pages and Firebase services, depending on the feature  
 **Core principle:** *Less fragmentation, more connected deals.*
 
@@ -51,8 +51,8 @@ The presence of configuration files does not by itself confirm that every servic
 For a quick preview of static website pages, use Python's built-in HTTP server from the repository root:
 
 ```bash
-git clone https://github.com/hamletofficial/ibrgroupintl.github.io.git
-cd ibrgroupintl.github.io
+git clone https://github.com/hamletofficial/oss.git
+cd oss
 python -m http.server 8080
 ```
 
@@ -107,7 +107,7 @@ Use concise commit messages that describe the user-visible change or technical f
 ## Useful links
 
 - [Live website](https://hamlet-ai.co.uk)
-- [Source repository](https://github.com/hamletofficial/ibrgroupintl.github.io)
+- [Source repository](https://github.com/hamletofficial/oss)
 - [Security guidance](SECURITY.md)
 - [Page standards](PAGE-STANDARDS.md)
 - [Profile service documentation](PROFILE-SERVICE.md)

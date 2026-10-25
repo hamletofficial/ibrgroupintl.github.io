@@ -41,8 +41,8 @@ jobs:
           from html.parser import HTMLParser
           from pathlib import Path
 
-          EXCLUDED = {'.git', '.vs', '.firebase', 'node_modules'}
-          EXCLUDED_DIRS = {'superuser', 'admin', 'account', 'accounts', 'auth', 'authentication'}
+          EXCLUDED = {'.git', '.vs', '.firebase', 'node_modules', '.github'}
+          EXCLUDED_DIRS = {'superuser', 'admin', 'account', 'accounts', 'auth', 'authentication', 'app', 'functions', 'public'}
           # Never publish Firebase-authenticated/private pages in the public search index.
           # Keep this explicit denylist in addition to the private-directory exclusions.
           EXCLUDED_FILES = {

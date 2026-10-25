@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-       <loc>https://www.hamlet-ai.co.uk/</loc>
-       <lastmod>2026-10-13T05:59:37+00:00</lastmod>
-       <priority>1.0000</priority>
+    <loc>https://www.hamlet-ai.co.uk/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.hamlet-ai.co.uk/resources/index.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hamlet-ai.co.uk/resources/passivhaus.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hamlet-ai.co.uk/resources/enerphit.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hamlet-ai.co.uk/resources/news-insights/</loc>
+    <priority>0.8</priority>
   </url>
 </urlset>

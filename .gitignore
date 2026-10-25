@@ -23,3 +23,7 @@ success.html
 # Cloudflare Wrangler local state and generated bundles
 .wrangler/
 **/.wrangler/
+
+# Local Visual Studio state and private university documents
+.vs/
+uni/

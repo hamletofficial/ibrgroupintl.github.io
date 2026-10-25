@@ -145,6 +145,30 @@
       "company": "Serica Energy",
       "contentPath": "/resources/people-moves/articles/serica-energy-two-senior-appointments.html",
       "migrationStatus": "migrated from accessible live source; source credits preserved; third-party images omitted pending verification"
+    },
+    {
+      "id": "equilis-france-constance-poublet-ceo",
+      "title": "People Moves: Equilis France names new CEO",
+      "slug": "equilis-france-constance-poublet-ceo",
+      "excerpt": "Equilis appointed Constance Poublet as Chief Executive Officer of its French platform.",
+      "category": "Real Estate & Development",
+      "topics": [
+        "real estate development",
+        "executive appointments",
+        "France"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-10",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/equilis-names-new-ceo/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/equilis-france-constance-poublet-ceo.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Constance Poublet",
+      "role": "Chief Executive Officer",
+      "company": "Equilis France",
+      "contentPath": "/resources/people-moves/articles/equilis-france-constance-poublet-ceo.html",
+      "migrationStatus": "migrated from accessible live source; third-party image omitted pending verification"
     }
   ]
 }

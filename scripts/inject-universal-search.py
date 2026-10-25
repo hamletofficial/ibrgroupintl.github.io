@@ -15,7 +15,7 @@ SKIP_FILES = {
     "dashboard.html", "live.html", "portfolio.html", "residential.html", "resi-resources.html",
     "resources.html", "members.html", "directory.html", "profile.html", "posts.html",
     "rankings.html", "messages.html", "requests.html", "settings.html", "loggedout.html",
-    "callback.html", "success.html", "404.html",
+    "callback.html", "success.html",
 }
 
 STYLE = """
@@ -93,12 +93,12 @@ def inject(path: Path) -> bool:
     # running the previous JSON-only loader after a deployment.
     updated = re.sub(
         r'(<script\b[^>]*src=["\']/site-search\.js)(?:\?[^"\']*)?(["\'][^>]*>)',
-        r'\1?v=20261025-index-fallback\2',
+        r'\1?v=20261025-search-fix-2\2',
         updated,
         flags=re.I,
     )
     if 'src="/site-search.js' not in updated and re.search(r"</body\s*>", updated, re.I):
-        updated = re.sub(r"</body\s*>", '<script src="/site-search.js?v=20261025-index-fallback" defer></script>\n</body>', updated, count=1, flags=re.I)
+        updated = re.sub(r"</body\s*>", '<script src="/site-search.js?v=20261025-search-fix-2" defer></script>\n</body>', updated, count=1, flags=re.I)
     if updated != source:
         path.write_text(updated, encoding="utf-8")
         return True

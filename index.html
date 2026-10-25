@@ -44,6 +44,12 @@
     .header-row{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
     .brand{font-size:1.35rem;font-weight:800;letter-spacing:-.04em;text-decoration:none;color:#fff}
     .brand span{color:#bfdbfe}
+    .poppy-link{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:34px;height:42px;padding:3px;border:1px solid transparent;border-radius:8px;text-decoration:none;transition:background-color .18s ease,border-color .18s ease,transform .18s ease}
+    .header-poppy{display:block;width:27px;height:34px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+    .poppy-link:hover{background:rgba(255,255,255,.08);border-color:#7898c7;transform:translateY(-1px)}
+    .poppy-link:focus-visible{outline:2px solid #bfdbfe;outline-offset:2px}
+    @media(max-width:760px){.poppy-link{width:30px;height:38px}.header-poppy{width:24px;height:30px}}
+    @media(prefers-reduced-motion:reduce){.poppy-link{transition:none}}
     .site-header nav.nav{display:flex!important;visibility:visible!important;opacity:1!important;position:relative;z-index:25;align-items:center;gap:.6rem;flex-wrap:wrap}
     .button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.68rem .95rem;border:1px solid #4b5563;border-radius:9px;background:#111827;color:#fff;text-decoration:none;font-weight:700;font-size:.92rem}
     .button:hover{border-color:#93c5fd;background:#1f2937}
@@ -201,6 +207,15 @@
   <header class="site-header">
     <div class="container header-row">
       <a class="brand" href="/index.html" aria-label="hamlet home">hamlet <span>by IBR</span></a>
+      <a class="poppy-link" href="https://www.amazon.co.uk/stores/TheRoyalBritishLegion/page/3D56E76E-A3AA-4E80-96E0-9A6BBB03A545/?_encoding=UTF8&amp;ref_=ast_bln&amp;pd_rd_w=H43kr&amp;content-id=amzn1.sym.d172f8e9-7bda-443f-b9c9-c257f98b0dc3&amp;pf_rd_p=d172f8e9-7bda-443f-b9c9-c257f98b0dc3&amp;pf_rd_r=W6JCT0QC33PCKP29W81H&amp;pd_rd_wg=hhIwE&amp;pd_rd_r=53f1a520-496b-432a-8dda-254dd1fe5130" target="_blank" rel="noopener noreferrer" aria-label="Visit The Royal British Legion poppy shop (opens in a new tab)" title="Support the Royal British Legion">
+        <svg class="header-poppy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 48" role="img" aria-labelledby="header-poppy-title">
+          <title id="header-poppy-title">Remembrance poppy</title>
+          <path d="M20 29 C17 36 18 42 15 47 M19 38 C13 34 10 36 8 40 C14 42 17 41 19 38" fill="#267343" stroke="#267343" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M20 25 C11 34 1 27 4 18 C6 12 12 13 17 20 C13 10 18 3 24 6 C30 8 28 15 23 21 C30 14 37 17 36 23 C35 31 27 32 20 25Z" fill="#d71920" stroke="#f87171" stroke-width="1"/>
+          <circle cx="20" cy="23" r="5.2" fill="#111827" stroke="#f8fafc" stroke-width=".8"/>
+          <circle cx="20" cy="23" r="2.4" fill="#111"/>
+        </svg>
+      </a>
       <div class="site-search" role="search">
         <form class="site-search-form" id="site-search-form" action="/search.html" method="get" autocomplete="off">
           <svg class="site-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"></circle><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>

@@ -88,10 +88,9 @@ def is_public_html(path):
         source = path.read_text(encoding="utf-8", errors="ignore")
     except OSError:
         return False
-    for meta in re.findall(r"<meta\\b[^>]*>", source, flags=re.I):
-        name = re.search(r"""\\bname\\s*=\\s*["']robots["']""", meta, flags=re.I)
-        content_attr = re.search(r"""\\bcontent\\s*=\\s*["']([^"']*)["']""", meta, flags=re.I)
-        if name and content_attr and re.search(r"\\bnoindex\\b", content_attr.group(1), flags=re.I):
+    for meta in re.findall("<meta[^>]*>", source, flags=re.I):
+        compact = meta.lower().replace(" ", "").replace("\\t", "").replace("\\n", "")
+        if ("name=\\"robots\\"" in compact or "name='robots'" in compact) and "noindex" in compact:
             return False
     return True
 

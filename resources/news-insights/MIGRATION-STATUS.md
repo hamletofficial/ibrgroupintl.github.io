@@ -143,3 +143,14 @@ Migrated three accessible IBR announcements from May–June 2025:
 - Port Arthur LNG Phase 2 receives non-FTA export authorization (30 May 2025).
 
 Added source links, catalogue entries and sitemap URLs. Third-party image assets were omitted pending rights review; content and metadata QA remains outstanding.
+
+
+## Additional source pages from archive page 10 — 25 October 2026
+
+Migrated three accessible IBR announcements from May 2025:
+
+- Tikehau Capital and Dunman Capital Partners' Frankfurt office-to-serviced-apartment conversion strategy (28 May 2025).
+- Barings' sale of four UK logistics assets (21 May 2025).
+- L&G's proposed 75% stake acquisition in Proprium Capital Partners (20 May 2025).
+
+Added native HTML pages, original IBR source backlinks, catalogue entries and sitemap URLs. Third-party images were omitted pending rights checks. Confirm historical deal status and full metadata during QA.

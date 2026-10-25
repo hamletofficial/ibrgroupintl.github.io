@@ -145,9 +145,41 @@ body.legal-page *::after {
   }
 }
 
-/* Legal pages keep the brand/sign-in header clean; suppress the shared workspace navigation. */
+/* Legal pages keep the brand/sign-in header clean while retaining Search Hamlet. */
 body.legal-page > .hamlet-primary-nav,
-body.legal-page nav.workspace-nav,
-body.legal-page .hamlet-global-search-row {
+body.legal-page nav.workspace-nav {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 0;
+  padding: 8px max(12px, calc((100% - 1120px) / 2));
+  border-bottom: 1px solid #263750;
+  background: #0b1220;
+  position: relative;
+  z-index: 100002 !important;
+}
+body.legal-page > .hamlet-primary-nav > .hamlet-nav-link,
+body.legal-page > .hamlet-primary-nav > .hamlet-nav-group {
   display: none !important;
+}
+body.legal-page .hamlet-global-search-row {
+  display: flex !important;
+  position: relative;
+  z-index: 100002 !important;
+  width: min(1120px, calc(100% - 1.5rem));
+  margin: 8px auto 12px;
+}
+body.legal-page .hamlet-global-search {
+  position: relative;
+  z-index: 100003 !important;
+  margin-left: auto;
+}
+body.legal-page .hamlet-search-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483000 !important;
+}
+body.legal-page .hamlet-search-dialog {
+  position: relative;
+  z-index: 2147483001 !important;
 }

@@ -255,6 +255,78 @@
       "contentType": "Press Release",
       "contentPath": "/resources/news-insights/articles/flexstone-partners-glouston-capital-acquisition.html",
       "migrationStatus": "summary migrated from accessible IBR archive page; source backlink included; line-by-line QA pending"
+    },
+    {
+      "id": "pri-responsible-investment-20th-anniversary-lseg",
+      "title": "News: Principles for Responsible Investment marks 20th anniversary at the London Stock Exchange",
+      "slug": "pri-responsible-investment-20th-anniversary-lseg",
+      "excerpt": "The PRI marked 20 years since its launch, with the London Stock Exchange hosting the opening of a global anniversary programme and reflecting on the growth of responsible investment.",
+      "category": "Sustainable Finance",
+      "topics": [
+        "responsible investment",
+        "ESG",
+        "sustainable finance",
+        "London Stock Exchange"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-27",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/un-pri-marks-its-20th-anniversary-at-the-london-stock-exchange/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/pri-responsible-investment-20th-anniversary-lseg.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Principles for Responsible Investment; London Stock Exchange Group",
+      "contentPath": "/resources/news-insights/articles/pri-responsible-investment-20th-anniversary-lseg.html",
+      "migrationStatus": "migrated from accessible IBR-authored source; source text retained with attribution; asset omitted pending verification",
+      "contentType": "Article"
+    },
+    {
+      "id": "winckworth-sherwood-affordable-housing-partnership",
+      "title": "News: Winckworth Sherwood advises on £1bn affordable housing strategic partnership",
+      "slug": "winckworth-sherwood-affordable-housing-partnership",
+      "excerpt": "Winckworth Sherwood advised Park Properties Housing Association on a partnership backed by Sixth Street to expand affordable housing delivery across the UK.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "affordable housing",
+        "institutional investment",
+        "real estate",
+        "UK housing"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-24",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/winckworth-sherwood-s-gbp1bn-affordable-housing/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/winckworth-sherwood-affordable-housing-partnership.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "Winckworth Sherwood; Park Properties Housing Association; Sixth Street; HSPG",
+      "contentPath": "/resources/news-insights/articles/winckworth-sherwood-affordable-housing-partnership.html",
+      "migrationStatus": "summary migrated from accessible IBR page; external announcement summarised with source attribution; QA pending",
+      "contentType": "Press Release"
+    },
+    {
+      "id": "cbre-q1-2026-financial-results",
+      "title": "News: CBRE reports first-quarter 2026 financial results",
+      "slug": "cbre-q1-2026-financial-results",
+      "excerpt": "CBRE reported higher first-quarter revenue and earnings, citing growth across advisory, building operations, project management and infrastructure-related services.",
+      "category": "Real Estate & Investment",
+      "topics": [
+        "commercial real estate",
+        "financial results",
+        "infrastructure services",
+        "investor relations"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2026-04-23",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/cbre-group-inc-reports-financial-results-for-q1-2026/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/news-insights/articles/cbre-q1-2026-financial-results.html",
+      "image": null,
+      "imageAlt": null,
+      "company": "CBRE Group, Inc.",
+      "contentPath": "/resources/news-insights/articles/cbre-q1-2026-financial-results.html",
+      "migrationStatus": "summary migrated from accessible IBR page; external financial release summarised with source attribution; QA pending",
+      "contentType": "Press Release"
     }
   ]
 }

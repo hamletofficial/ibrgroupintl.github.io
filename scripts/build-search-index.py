@@ -90,7 +90,7 @@ def is_public_html(path):
         return False
     for meta in re.findall("<meta[^>]*>", source, flags=re.I):
         compact = meta.lower().replace(" ", "").replace("\\t", "").replace("\\n", "")
-        if ("name=\\"robots\\"" in compact or "name='robots'" in compact) and "noindex" in compact:
+        if "robots" in compact and "noindex" in compact:
             return False
     return True
 

@@ -45,3 +45,8 @@ Added `articles/riocan-third-quarter-2026-earnings-call.html` from the accessibl
 ## Additional direct-source batch — CBRE and JLL (25 October 2026)
 
 Added native HTML summary pages for the accessible CBRE and JLL third-quarter 2026 earnings announcements dated 28 September 2026. Each entry is linked to the original IBR page, listed in the JSON catalogue and sitemap, and preserves source attribution. As the original entries are third-party press releases, these pages summarise key factual details rather than reproducing the full external release. QA and archive enumeration remain in progress.
+
+
+## Additional direct-source batch — Skanska and Aberdeen (25 October 2026)
+
+Added native HTML summary pages for the Skanska H2Offices divestment and Aberdeen Intermediate Income Fund reverse split, both dated 28 September 2026. Updated the catalogue and sitemap. Both source entries reproduce or summarise third-party press releases, so Hamlet retains factual summaries, original IBR links and attribution rather than republishing the full external release or image. Full archive crawl and article QA remain ongoing.

@@ -1,5 +1,126 @@
 {
   "version": 1,
   "generatedAt": "2026-10-25",
-  "articles": []
+  "articles": [
+    {
+      "id": "national-grid-chief-executive-succession-plan",
+      "title": "People Moves: National Grid plc announces Chief Executive Succession Plan",
+      "slug": "national-grid-chief-executive-succession-plan",
+      "excerpt": "National Grid announced Zoë Yujnovich as its next Chief Executive, succeeding John Pettigrew in November 2025.",
+      "category": "Energy & Utilities",
+      "topics": [
+        "energy networks",
+        "executive succession",
+        "utilities"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-11",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-national-grid-plc-announces-chief-executive-succession-plan/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/national-grid-chief-executive-succession-plan.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Zoë Yujnovich",
+      "role": "Chief Executive",
+      "company": "National Grid plc",
+      "contentPath": "/resources/people-moves/articles/national-grid-chief-executive-succession-plan.html",
+      "migrationStatus": "initially migrated; review against source before launch"
+    },
+    {
+      "id": "sse-martin-pibworth-chief-executive",
+      "title": "People Moves: SSE Plc appoints Martin Pibworth as Chief Executive Officer",
+      "slug": "sse-martin-pibworth-chief-executive",
+      "excerpt": "SSE appointed Martin Pibworth as Chief Executive designate following a succession process, with the handover planned for July 2025.",
+      "category": "Energy & Utilities",
+      "topics": [
+        "clean energy",
+        "executive succession",
+        "renewables"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-11",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/sse-plc-appoints-martin-pibworth-as-chief-executive-officer/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/sse-martin-pibworth-chief-executive.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Martin Pibworth",
+      "role": "Chief Executive Officer",
+      "company": "SSE plc",
+      "contentPath": "/resources/people-moves/articles/sse-martin-pibworth-chief-executive.html",
+      "migrationStatus": "initially migrated; review against source before launch"
+    },
+    {
+      "id": "woodway-energy-diaco-aviki-president-ceo",
+      "title": "People Moves: Woodway Energy appoints Diaco Aviki as President and Chief Executive Officer",
+      "slug": "woodway-energy-diaco-aviki-president-ceo",
+      "excerpt": "Woodway Energy appointed Diaco Aviki as President and CEO, succeeding Thomas King, who would remain involved as a board member.",
+      "category": "Energy & Infrastructure",
+      "topics": [
+        "natural gas",
+        "pipelines",
+        "energy infrastructure"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-09",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/people-moves-woodway-energy-appoints-diaco-aviki-as-president-and-chief-executive-officer/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/woodway-energy-diaco-aviki-president-ceo.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Diaco Aviki",
+      "role": "President and Chief Executive Officer",
+      "company": "Woodway Energy Infrastructure LLC",
+      "contentPath": "/resources/people-moves/articles/woodway-energy-diaco-aviki-president-ceo.html",
+      "migrationStatus": "initially migrated; review against source before launch"
+    },
+    {
+      "id": "becky-wood-nista-chief-executive",
+      "title": "People Moves: Becky Wood appointed as Chief Executive Officer of NISTA",
+      "slug": "becky-wood-nista-chief-executive",
+      "excerpt": "NISTA welcomed Becky Wood as Chief Executive following her appointment in April 2025 and the authority's formal launch.",
+      "category": "Infrastructure & Public Sector",
+      "topics": [
+        "UK infrastructure",
+        "public sector",
+        "transport"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-09",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/becky-wood-appointed-as-chief-executive-officer-of-nista/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/becky-wood-nista-chief-executive.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Becky Wood",
+      "role": "Chief Executive Officer",
+      "company": "National Infrastructure and Service Transformation Authority (NISTA)",
+      "contentPath": "/resources/people-moves/articles/becky-wood-nista-chief-executive.html",
+      "migrationStatus": "initially migrated; review against source before launch"
+    },
+    {
+      "id": "convergent-energy-power-russ-laplante-cfo",
+      "title": "People Moves: Convergent Energy and Power appoints Russ Laplante as Chief Financial Officer in management reshuffle",
+      "slug": "convergent-energy-power-russ-laplante-cfo",
+      "excerpt": "Convergent Energy and Power appointed Russ Laplante as CFO; co-founder Frank Genova would transition to Co-CEO.",
+      "category": "Energy Storage & Finance",
+      "topics": [
+        "battery storage",
+        "renewables",
+        "energy finance"
+      ],
+      "author": "Alfred Anate Mayaki",
+      "publishedAt": "2025-06-07",
+      "updatedAt": null,
+      "sourceUrl": "https://www.ibrecruitment.com/l/convergent-energy-and-power-appoints-russ-laplante-as-chief-financial-officer-in-management-reshuffle/",
+      "canonicalUrl": "https://www.hamlet-ai.co.uk/resources/people-moves/articles/convergent-energy-power-russ-laplante-cfo.html",
+      "image": null,
+      "imageAlt": null,
+      "appointee": "Russ Laplante",
+      "role": "Chief Financial Officer",
+      "company": "Convergent Energy and Power",
+      "contentPath": "/resources/people-moves/articles/convergent-energy-power-russ-laplante-cfo.html",
+      "migrationStatus": "initially migrated; review against source before launch"
+    }
+  ]
 }

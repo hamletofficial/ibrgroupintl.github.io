@@ -51,6 +51,38 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyHamletWordmarkDot, { once: true });
   else applyHamletWordmarkDot();
 
+  // Capture search/filter fields on pages that load this shared script, not just the header search.
+  const searchInputTimers = new WeakMap();
+  async function recordSearchEvent(rawQuery, area) {
+    const query = String(rawQuery || '').trim().toLocaleLowerCase()
+      .replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi, '[email]')
+      .replace(/\b\d{6,}\b/g, '[number]').slice(0, 100);
+    if (query.length < 2) return;
+    try {
+      await ensureSearchAnalyticsFirebase();
+      const auth = firebase.auth();
+      await firebase.firestore().collection('searchAnalyticsEvents').add({
+        query, area: String(area || 'page-search').slice(0, 80),
+        path: String(window.location.pathname || '/').slice(0, 160),
+        uid: auth.currentUser ? auth.currentUser.uid : null,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (error) { console.debug('Search analytics event was not recorded:', error && (error.code || error.message)); }
+  }
+  document.addEventListener('input', event => {
+    const field = event.target;
+    if (!(field instanceof HTMLInputElement) && !(field instanceof HTMLTextAreaElement)) return;
+    if (field.id === 'site-search-input' || field.id === 'site-search') return;
+    const label = [field.id, field.name, field.getAttribute('aria-label'), field.placeholder].join(' ').toLowerCase();
+    if (!/search|filter/.test(label) && field.type !== 'search') return;
+    if (searchInputTimers.has(field)) clearTimeout(searchInputTimers.get(field));
+    const timer = setTimeout(() => {
+      const value = field.value.trim();
+      if (value.length >= 2) recordSearchEvent(value, 'page-search');
+    }, 900);
+    searchInputTimers.set(field, timer);
+  }, true);
+
   if (!form || !input) return;
 
   let pages = [];
@@ -236,10 +268,43 @@
       if (first) { event.preventDefault(); first.focus(); }
     }
   });
+  async function ensureSearchAnalyticsFirebase() {
+    if (window.__hamletAnalyticsFirebasePromise) return window.__hamletAnalyticsFirebasePromise;
+    window.__hamletAnalyticsFirebasePromise = (async function() {
+      function load(src) { return new Promise(function(resolve,reject) {
+        var absolute = new URL(src, location.href).href;
+        var found = Array.from(document.scripts).find(function(el){return el.src===absolute});
+        if(found){if((src.indexOf('firebase-config.js')>=0&&window.firebaseConfig)||(src.indexOf('firebase-app-compat.js')>=0&&window.firebase&&firebase.apps)||(src.indexOf('firebase-auth-compat.js')>=0&&window.firebase&&firebase.auth)||(src.indexOf('firebase-firestore-compat.js')>=0&&window.firebase&&firebase.firestore))return resolve();found.addEventListener('load',resolve,{once:true});found.addEventListener('error',reject,{once:true});return;}
+        var el=document.createElement('script');el.src=src;el.async=true;el.onload=resolve;el.onerror=reject;document.head.appendChild(el);
+      });}
+      if(!window.firebase||!firebase.apps)await load('https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js');
+      if(!window.firebase||!firebase.auth)await load('https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js');
+      if(!window.firebase||!firebase.firestore)await load('https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js');
+      if(!window.firebaseConfig)await load('/firebase-config.js');
+      if(!window.firebase||!window.firebaseConfig)throw new Error('Firebase configuration unavailable');
+      if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);
+    })().catch(function(e){window.__hamletAnalyticsFirebasePromise=null;throw e;});
+    return window.__hamletAnalyticsFirebasePromise;
+  }
+  async function recordHamletSearch(rawQuery, area) {
+    const query = String(rawQuery || '').trim().toLocaleLowerCase().replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi, '[email]').replace(/\b\d{6,}\b/g, '[number]').slice(0, 100);
+    if (query.length < 2) return;
+    try {
+      await ensureSearchAnalyticsFirebase();
+      const auth = firebase.auth();
+      await firebase.firestore().collection('searchAnalyticsEvents').add({
+        query, area: String(area || 'public').slice(0, 80),
+        path: String(location.pathname || '/').slice(0, 160),
+        uid: auth.currentUser ? auth.currentUser.uid : null,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (error) { console.debug('Search analytics event was not recorded:', error && (error.code || error.message)); }
+  }
   form.addEventListener('submit', async event => {
     event.preventDefault();
     const query = input.value.trim();
     if (query.length < 2) { input.focus(); return; }
+    await recordHamletSearch(query, 'public-site');
     window.location.href = '/search.html?q=' + encodeURIComponent(query);
   });
 

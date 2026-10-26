@@ -27,7 +27,7 @@ EXCLUDED_FILES = {
     "settings.html", "loggedout.html", "callback.html", "success.html",
 }
 PRIVATE_PATH = re.compile(
-    r"^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication)(?:/|$)",
+    r"^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication|onfido|oauth)(?:/|$)",
     re.I,
 )
 TRANSIENT_COPY = re.compile(r"(?i)loading\s+search\s+index[.…]*")

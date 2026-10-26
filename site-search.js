@@ -268,15 +268,34 @@
       if (first) { event.preventDefault(); first.focus(); }
     }
   });
+  async function ensureSearchAnalyticsFirebase() {
+    if (window.__hamletAnalyticsFirebasePromise) return window.__hamletAnalyticsFirebasePromise;
+    window.__hamletAnalyticsFirebasePromise = (async function() {
+      function load(src) { return new Promise(function(resolve,reject) {
+        var absolute = new URL(src, location.href).href;
+        var found = Array.from(document.scripts).find(function(el){return el.src===absolute});
+        if(found){if((src.indexOf('firebase-config.js')>=0&&window.firebaseConfig)||(src.indexOf('firebase-app-compat.js')>=0&&window.firebase&&firebase.apps)||(src.indexOf('firebase-auth-compat.js')>=0&&window.firebase&&firebase.auth)||(src.indexOf('firebase-firestore-compat.js')>=0&&window.firebase&&firebase.firestore))return resolve();found.addEventListener('load',resolve,{once:true});found.addEventListener('error',reject,{once:true});return;}
+        var el=document.createElement('script');el.src=src;el.async=true;el.onload=resolve;el.onerror=reject;document.head.appendChild(el);
+      });}
+      if(!window.firebase||!firebase.apps)await load('https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js');
+      if(!window.firebase||!firebase.auth)await load('https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js');
+      if(!window.firebase||!firebase.firestore)await load('https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js');
+      if(!window.firebaseConfig)await load('/firebase-config.js');
+      if(!window.firebase||!window.firebaseConfig)throw new Error('Firebase configuration unavailable');
+      if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);
+    })().catch(function(e){window.__hamletAnalyticsFirebasePromise=null;throw e;});
+    return window.__hamletAnalyticsFirebasePromise;
+  }
   async function recordHamletSearch(rawQuery, area) {
-    const query = String(rawQuery || '').trim().toLocaleLowerCase().replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi, '[email]').replace(/\b\d{6,}\b/g, '[number]').slice(0, 100);
-    if (query.length < 2 || !window.firebase || !window.firebaseConfig) return;
+    const query = String(rawQuery || '').trim().toLocaleLowerCase().replace(/[\\w.+-]+@[\\w.-]+\\.[a-z]{2,}/gi, '[email]').replace(/\\b\\d{6,}\\b/g, '[number]').slice(0, 100);
+    if (query.length < 2) return;
     try {
-      if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
+      await ensureSearchAnalyticsFirebase();
+      const auth = firebase.auth();
       await firebase.firestore().collection('searchAnalyticsEvents').add({
-        query, area: String(area || 'public').slice(0, 40),
-        path: String(window.location.pathname || '/').slice(0, 160),
-        uid: firebase.auth().currentUser ? firebase.auth().currentUser.uid : null,
+        query, area: String(area || 'public').slice(0, 80),
+        path: String(location.pathname || '/').slice(0, 160),
+        uid: auth.currentUser ? auth.currentUser.uid : null,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
     } catch (error) { console.debug('Search analytics event was not recorded:', error && (error.code || error.message)); }

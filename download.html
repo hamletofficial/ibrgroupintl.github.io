@@ -19,15 +19,25 @@
     .panel{margin:1.3rem 0;padding:1.25rem;border:1px solid var(--line);border-radius:14px;background:var(--panel)}.notice{border-left:3px solid #93c5fd}
     .button{display:inline-flex;align-items:center;justify-content:center;padding:.75rem 1rem;border-radius:9px;background:#f9fafb;color:#111827;text-decoration:none;font-weight:800;margin:.25rem .35rem .25rem 0}.button.secondary{background:transparent;color:#f9fafb;border:1px solid #64748b}
     ol{padding-left:1.4rem}li{padding:.2rem 0}code{overflow-wrap:anywhere;color:#fff}
-    .github-update-bar{display:flex;align-items:center;justify-content:center;text-align:center;gap:.65rem;min-height:48px;padding:.6rem 1rem;background:#e5e7eb;color:#111827;border-bottom:1px solid #d1d5db;font-size:.86rem;line-height:1.4;flex-wrap:wrap}
-    .github-update-label{flex:0 0 auto;font-weight:800;white-space:nowrap}
+    .github-update-bar{--ticker-accent:#67e8f9;position:relative;isolation:isolate;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;gap:.7rem;min-height:54px;padding:.65rem 1rem;overflow:hidden;color:#f8fbff;border-bottom:1px solid rgba(147,197,253,.55);background:linear-gradient(112deg,#071d4a 0%,#123b7a 28%,#075985 52%,#172554 76%,#071d4a 100%);background-size:240% 240%;animation:hamletTickerGradient 16s ease-in-out infinite;font-size:.86rem;line-height:1.4;flex-wrap:wrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 5px 18px rgba(2,6,23,.18)}
+    .github-update-bar:before{content:"";position:absolute;inset:-60% auto -60% -35%;width:28%;z-index:-1;pointer-events:none;transform:rotate(18deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),rgba(103,232,249,.2),transparent);animation:hamletTickerSheen 9s ease-in-out infinite}
+    .github-update-bar:after{content:"";position:absolute;inset:auto 0 0;height:2px;pointer-events:none;background:linear-gradient(90deg,transparent,#60a5fa 18%,#67e8f9 50%,#a5b4fc 82%,transparent);background-size:200% 100%;animation:hamletTickerLine 7s linear infinite}
+    .github-update-label{position:relative;display:inline-flex;align-items:center;gap:.55rem;flex:0 0 auto;font-weight:850;letter-spacing:.015em;white-space:nowrap;color:#fff}
+    .github-update-label:before{content:"";width:8px;height:8px;flex:0 0 auto;border-radius:50%;background:#67e8f9;box-shadow:0 0 0 3px rgba(103,232,249,.14),0 0 12px rgba(103,232,249,.8);animation:hamletTickerPulse 2.4s ease-in-out infinite}
     .github-update-viewport{position:relative;min-width:0;max-width:min(700px,100%);flex:1 1 320px;overflow:hidden;text-align:left}
-    .github-update-slide{display:flex;align-items:center;gap:.55rem;min-width:0;opacity:1;transform:translateY(0);transition:opacity .28s ease,transform .28s ease}
-    .github-update-slide.is-leaving{opacity:0;transform:translateY(8px)}
-    .github-update-message{min-width:0;overflow-wrap:anywhere}
-    .github-update-time{flex:0 0 auto;color:#4b5563;font-size:.78rem;white-space:nowrap}
-    .github-update-link{flex:0 0 auto;color:#1d4ed8;font-weight:750;white-space:nowrap}
-    .github-update-count{flex:0 0 auto;color:#4b5563;font-size:.78rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .github-update-slide{display:flex;align-items:center;gap:.55rem;min-width:0;opacity:1;transform:translate3d(0,0,0);transition:opacity .32s ease,transform .42s cubic-bezier(.2,.75,.25,1);text-shadow:0 1px 1px rgba(0,0,0,.18)}
+    .github-update-slide.is-leaving{opacity:0;transform:translate3d(0,8px,0)}
+    .github-update-message{min-width:0;overflow-wrap:anywhere;color:#fff;font-weight:650}
+    .github-update-time{flex:0 0 auto;color:#dbeafe;font-size:.78rem;white-space:nowrap}
+    .github-update-link{flex:0 0 auto;color:#fff;font-weight:800;white-space:nowrap;text-decoration:none;border-bottom:1px solid rgba(191,219,254,.65);transition:color .2s ease,border-color .2s ease,transform .2s ease}
+    .github-update-link:hover{color:#a5f3fc;border-color:#a5f3fc;transform:translateY(-1px)}
+    .github-update-count{flex:0 0 auto;color:#dbeafe;font-size:.76rem;font-variant-numeric:tabular-nums;white-space:nowrap;padding:.18rem .48rem;border:1px solid rgba(191,219,254,.3);border-radius:999px;background:rgba(7,17,40,.28)}
+    @keyframes hamletTickerGradient{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+    @keyframes hamletTickerSheen{0%,12%{left:-35%;opacity:0}22%{opacity:1}48%,100%{left:115%;opacity:0}}
+    @keyframes hamletTickerLine{0%{background-position:100% 0}100%{background-position:-100% 0}}
+    @keyframes hamletTickerPulse{0%,100%{opacity:1;box-shadow:0 0 0 3px rgba(103,232,249,.14),0 0 12px rgba(103,232,249,.8)}50%{opacity:.72;box-shadow:0 0 0 5px rgba(103,232,249,.08),0 0 6px rgba(103,232,249,.45)}}
+    @media(max-width:620px){.github-update-bar{align-items:flex-start;justify-content:flex-start;gap:.35rem .6rem;padding:.7rem .85rem}.github-update-label{white-space:normal}.github-update-viewport{flex-basis:100%;max-width:100%}.github-update-slide{flex-wrap:wrap;row-gap:.35rem}.github-update-time{font-size:.75rem}.github-update-count{margin-left:auto}}
+    @media(prefers-reduced-motion:reduce){.github-update-bar,.github-update-bar:before,.github-update-bar:after,.github-update-label:before{animation:none}.github-update-slide,.github-update-link{transition:none}}
     .hero{max-width:760px;margin-bottom:1.6rem}
     .hero-copy{font-size:1.08rem;max-width:680px}
     .release-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(250px,.65fr);gap:1rem;align-items:stretch}
@@ -75,7 +85,7 @@
       </div>
     </div>
     <span id="github-update-count" class="github-update-count" aria-hidden="true"></span>
-    <a class="github-update-link" href="https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main/" target="_blank" rel="noopener noreferrer">All commits</a>
+    <a class="github-update-link" href="https://github.com/hamletofficial/oss/commits/main/" target="_blank" rel="noopener noreferrer">All commits</a>
   </aside>
   <main class="wrap">
     <div class="hero">
@@ -171,7 +181,7 @@
       const commitsSlide = document.getElementById('github-update-slide');
       const commitsMessage = document.getElementById('github-update-message');
       const commitsCount = document.getElementById('github-update-count');
-      const commitsApi = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/commits?per_page=3';
+      const commitsApi = 'https://api.github.com/repos/hamletofficial/oss/commits?per_page=3';
       const releasesApi = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/releases?per_page=100';
       let releases = [];
       let commits = [];

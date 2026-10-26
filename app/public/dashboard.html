@@ -119,7 +119,7 @@
           <div class="form-grid">
             <div class="field"><label for="propertyName">Property / building name <span class="required">*</span></label><input id="propertyName" required maxlength="180"></div>
             <div class="field"><label for="propertyType">Property type <span class="required">*</span></label><select id="propertyType" required><option value="">Select type</option><option>Office</option><option>Retail</option><option>Industrial / Warehouse</option><option>Logistics</option><option>Mixed Use</option><option>Development / Land</option><option>Other Commercial</option></select></div>
-            <div class="field"><label for="address">Address / location <span class="required">*</span></label><input id="address" required maxlength="250" placeholder="Town / city and street"></div>
+            <div class="field"><label for="address">Address / location <span class="required">*</span></label><input id="address" required maxlength="250" placeholder="Start typing a building, street, town or postcode" autocomplete="street-address" aria-describedby="addressHelp"><p class="photo-help" id="addressHelp">Start typing to see address suggestions. Select a result to fill the address and postcode automatically, or enter the details manually.</p><p class="status" id="addressLookupStatus" role="status" aria-live="polite"></p></div>
             <div class="field"><label for="postcode">Postcode</label><input id="postcode" maxlength="20"></div>
             <div class="field"><label for="availability">Availability <span class="required">*</span></label><select id="availability" required><option value="">Select availability</option><option>Immediately available</option><option>Available within 3 months</option><option>Available within 6 months</option><option>Future availability</option></select></div>
             <div class="field"><label for="size">Approx. floor area</label><input id="size" maxlength="80" placeholder="e.g. 12,500 sq ft"></div>
@@ -152,6 +152,59 @@
       propertyPhotosInput.addEventListener('change',function(){const files=selectedPropertyPhotos();propertyPhotoPreview.innerHTML='';if(files.length>MAX_PROPERTY_PHOTOS){propertyPhotosInput.value='';setFormStatus('Choose no more than 6 property photographs.','error');return}for(const file of files){if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>MAX_PROPERTY_PHOTO_BYTES){propertyPhotosInput.value='';propertyPhotoPreview.innerHTML='';setFormStatus('Use JPEG, PNG or WebP images up to 8 MB each.','error');return}const img=document.createElement('img');img.alt='Preview: '+file.name;img.src=URL.createObjectURL(file);img.onload=function(){URL.revokeObjectURL(img.src)};propertyPhotoPreview.appendChild(img)}setFormStatus(files.length?files.length+' photo'+(files.length===1?'':'s')+' selected.':'');});
 
       function setFormStatus(message,type){formStatus.textContent=message||'';formStatus.className='status'+(type?' '+type:'');}
+
+      // Google Places Autocomplete is optional until a restricted browser API key
+      // is configured in firebase-config.js as window.HAMLET_GOOGLE_MAPS_API_KEY.
+      // Manual address entry remains available when the API is not configured.
+      function initAddressAutocomplete(){
+        const addressInput=document.getElementById('address');
+        const postcodeInput=document.getElementById('postcode');
+        const lookupStatus=document.getElementById('addressLookupStatus');
+        const apiKey=window.HAMLET_GOOGLE_MAPS_API_KEY||window.GOOGLE_MAPS_API_KEY;
+        if(!addressInput||!lookupStatus)return;
+        if(!apiKey){
+          lookupStatus.textContent='Address suggestions are not configured yet. You can still enter the address manually.';
+          return;
+        }
+        function activateAutocomplete(){
+          if(!window.google||!google.maps||!google.maps.places||!google.maps.places.Autocomplete){
+            lookupStatus.textContent='Address suggestions are temporarily unavailable. Please enter the address manually.';
+            return;
+          }
+          const autocomplete=new google.maps.places.Autocomplete(addressInput,{
+            fields:['formatted_address','address_components','geometry','place_id']
+          });
+          autocomplete.addListener('place_changed',function(){
+            const place=autocomplete.getPlace();
+            if(!place||!place.address_components||!place.formatted_address){
+              lookupStatus.textContent='Please select an address from the suggestions, or enter it manually.';
+              return;
+            }
+            addressInput.value=place.formatted_address.slice(0,250);
+            const postcodeComponent=place.address_components.find(function(component){
+              return component.types&&component.types.includes('postal_code');
+            });
+            if(postcodeComponent)postcodeInput.value=postcodeComponent.long_name.slice(0,20);
+            // Coordinates and place ID are retained in memory for future use;
+            // the existing Firestore schema and submission contract are unchanged.
+            addressInput.dataset.placeId=place.place_id||'';
+            addressInput.dataset.latitude=place.geometry&&place.geometry.location?String(place.geometry.location.lat()):'';
+            addressInput.dataset.longitude=place.geometry&&place.geometry.location?String(place.geometry.location.lng()):'';
+            lookupStatus.textContent='Address selected. Please check the address and postcode before saving.';
+          });
+          lookupStatus.textContent='Address suggestions are ready.';
+        }
+        if(window.google&&google.maps&&google.maps.places){activateAutocomplete();return;}
+        if(document.getElementById('hamletGooglePlacesScript'))return;
+        const script=document.createElement('script');
+        script.id='hamletGooglePlacesScript';
+        script.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(apiKey)+'&libraries=places&loading=async';
+        script.async=true;
+        script.onload=activateAutocomplete;
+        script.onerror=function(){lookupStatus.textContent='Address suggestions could not be loaded. Please enter the address manually.';};
+        document.head.appendChild(script);
+      }
+      initAddressAutocomplete();
       function esc(value){return String(value??'').replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]})}
       function showUnauthenticated(){
         currentUser=null;  document.body.classList.remove('auth-pending','is-authenticated'); document.body.classList.add('auth-signed-out');

@@ -38,6 +38,11 @@
     .panel{border:1px solid var(--line);border-radius:14px;background:#fff;padding:1.4rem;box-shadow:0 6px 20px rgba(2,6,23,.06);margin-bottom:1rem}
     .panel h2{margin:0 0 .35rem;color:var(--ink);font-size:1.2rem}.panel-intro{margin:0 0 1rem;color:var(--muted)}
     .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+    .address-field{position:relative}
+    .address-suggestions{position:absolute;z-index:1000;top:3.5rem;left:0;right:0;max-height:18rem;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:10px;box-shadow:0 12px 28px rgba(2,6,23,.18);padding:.3rem}
+    .address-suggestions[hidden]{display:none}
+    .address-suggestion{display:block;width:100%;padding:.7rem .8rem;border:0;border-radius:7px;background:#fff;color:#0f172a;text-align:left;font:inherit;cursor:pointer}
+    .address-suggestion:hover,.address-suggestion[aria-selected="true"]{background:#eff6ff;color:#071D4A}
     .field{display:grid;gap:.38rem}.field.full{grid-column:1/-1}.field label{font-weight:700;font-size:.9rem;color:#173b5d}.field input,.field select,.field textarea{width:100%;padding:.72rem .8rem;border:1px solid var(--line);border-radius:8px;background:#fff;color:#0f172a;font:inherit}.field textarea{min-height:115px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{outline:3px solid rgba(2,132,199,.2);border-color:var(--blue)}
     .photo-help{margin:.15rem 0 0;color:#64748b;font-size:.8rem;line-height:1.45}.photo-preview-grid,.resource-photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:.6rem;margin:.7rem 0}.photo-preview-grid img,.resource-photo-grid img{width:100%;height:100px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}.required{color:#b91c1c}.form-actions{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:1.1rem}.status{margin:0;color:var(--muted)}.status.success{color:var(--green)}.status.error{color:#b91c1c}
     .resource-list{display:grid;gap:.8rem}.property-card{border:1px solid var(--line);border-radius:12px;padding:1rem;background:#fbfdff}.property-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}.property-card h3{margin:0;color:var(--ink);font-size:1rem}.badge{display:inline-flex;padding:.3rem .55rem;border-radius:999px;background:#e8f5ec;color:var(--green);font-size:.75rem;font-weight:800}.property-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin:.8rem 0;color:var(--muted);font-size:.84rem}.property-meta strong{display:block;color:#173b5d;font-size:.78rem;margin-bottom:.15rem}.empty{padding:1rem;border:1px dashed #cbd5e1;border-radius:10px;color:var(--muted)}
@@ -119,7 +124,7 @@
           <div class="form-grid">
             <div class="field"><label for="propertyName">Property / building name <span class="required">*</span></label><input id="propertyName" required maxlength="180"></div>
             <div class="field"><label for="propertyType">Property type <span class="required">*</span></label><select id="propertyType" required><option value="">Select type</option><option>Office</option><option>Retail</option><option>Industrial / Warehouse</option><option>Logistics</option><option>Mixed Use</option><option>Development / Land</option><option>Other Commercial</option></select></div>
-            <div class="field"><label for="address">Address / location <span class="required">*</span></label><input id="address" required maxlength="250" placeholder="Start typing a building, street, town or postcode" autocomplete="street-address" aria-describedby="addressHelp"><p class="photo-help" id="addressHelp">Start typing to see address suggestions. Select a result to fill the address and postcode automatically, or enter the details manually.</p><p class="status" id="addressLookupStatus" role="status" aria-live="polite"></p></div>
+            <div class="field address-field"><label for="address">Address / location <span class="required">*</span></label><input id="address" required maxlength="250" placeholder="Start typing a building, street, town or postcode" autocomplete="street-address" aria-describedby="addressHelp" aria-expanded="false" aria-controls="addressSuggestions"><div id="addressSuggestions" class="address-suggestions" role="listbox" hidden></div><p class="photo-help" id="addressHelp">Start typing to see address suggestions. Select a result to fill the address and postcode automatically, or enter the details manually.</p><p class="status" id="addressLookupStatus" role="status" aria-live="polite"></p></div>
             <div class="field"><label for="postcode">Postcode</label><input id="postcode" maxlength="20"></div>
             <div class="field"><label for="availability">Availability <span class="required">*</span></label><select id="availability" required><option value="">Select availability</option><option>Immediately available</option><option>Available within 3 months</option><option>Available within 6 months</option><option>Future availability</option></select></div>
             <div class="field"><label for="size">Approx. floor area</label><input id="size" maxlength="80" placeholder="e.g. 12,500 sq ft"></div>
@@ -153,56 +158,24 @@
 
       function setFormStatus(message,type){formStatus.textContent=message||'';formStatus.className='status'+(type?' '+type:'');}
 
-      // Google Places Autocomplete is optional until a restricted browser API key
-      // is configured in firebase-config.js as window.HAMLET_GOOGLE_MAPS_API_KEY.
-      // Manual address entry remains available when the API is not configured.
+      // Google Places API (New). Configure window.HAMLET_GOOGLE_MAPS_API_KEY in firebase-config.js.
+      // Manual entry remains available as a fallback.
       function initAddressAutocomplete(){
-        const addressInput=document.getElementById('address');
-        const postcodeInput=document.getElementById('postcode');
-        const lookupStatus=document.getElementById('addressLookupStatus');
-        const apiKey=window.HAMLET_GOOGLE_MAPS_API_KEY||window.GOOGLE_MAPS_API_KEY;
-        if(!addressInput||!lookupStatus)return;
-        if(!apiKey){
-          lookupStatus.textContent='Address suggestions are not configured yet. You can still enter the address manually.';
-          return;
-        }
-        function activateAutocomplete(){
-          if(!window.google||!google.maps||!google.maps.places||!google.maps.places.Autocomplete){
-            lookupStatus.textContent='Address suggestions are temporarily unavailable. Please enter the address manually.';
-            return;
-          }
-          const autocomplete=new google.maps.places.Autocomplete(addressInput,{
-            fields:['formatted_address','address_components','geometry','place_id']
-          });
-          autocomplete.addListener('place_changed',function(){
-            const place=autocomplete.getPlace();
-            if(!place||!place.address_components||!place.formatted_address){
-              lookupStatus.textContent='Please select an address from the suggestions, or enter it manually.';
-              return;
-            }
-            addressInput.value=place.formatted_address.slice(0,250);
-            const postcodeComponent=place.address_components.find(function(component){
-              return component.types&&component.types.includes('postal_code');
-            });
-            if(postcodeComponent)postcodeInput.value=postcodeComponent.long_name.slice(0,20);
-            // Coordinates and place ID are retained in memory for future use;
-            // the existing Firestore schema and submission contract are unchanged.
-            addressInput.dataset.placeId=place.place_id||'';
-            addressInput.dataset.latitude=place.geometry&&place.geometry.location?String(place.geometry.location.lat()):'';
-            addressInput.dataset.longitude=place.geometry&&place.geometry.location?String(place.geometry.location.lng()):'';
-            lookupStatus.textContent='Address selected. Please check the address and postcode before saving.';
-          });
-          lookupStatus.textContent='Address suggestions are ready.';
-        }
-        if(window.google&&google.maps&&google.maps.places){activateAutocomplete();return;}
-        if(document.getElementById('hamletGooglePlacesScript'))return;
-        const script=document.createElement('script');
-        script.id='hamletGooglePlacesScript';
-        script.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(apiKey)+'&libraries=places&loading=async';
-        script.async=true;
-        script.onload=activateAutocomplete;
-        script.onerror=function(){lookupStatus.textContent='Address suggestions could not be loaded. Please enter the address manually.';};
-        document.head.appendChild(script);
+        const input=document.getElementById('address'),postcode=document.getElementById('postcode'),status=document.getElementById('addressLookupStatus'),box=document.getElementById('addressSuggestions'),key=window.HAMLET_GOOGLE_MAPS_API_KEY;
+        if(!input||!postcode||!status||!box)return;
+        let ready=false,seq=0,timer=null,active=-1;
+        function close(){box.hidden=true;box.replaceChildren();input.setAttribute('aria-expanded','false');active=-1;}
+        function comp(components,type){const c=(components||[]).find(x=>x.types&&x.types.includes(type));return c?String(c.longText||c.shortText||''):'';}
+        async function choose(prediction){const id=++seq;close();status.textContent='Retrieving address details…';try{const place=prediction.toPlace();await place.fetchFields({fields:['formattedAddress','addressComponents','location','id']});if(id!==seq)return;if(!place.formattedAddress){status.textContent='Please enter the address manually.';return;}input.value=place.formattedAddress.slice(0,250);const pc=comp(place.addressComponents,'postal_code');if(pc)postcode.value=pc.slice(0,20);input.dataset.placeId=place.id||'';input.dataset.latitude=place.location?String(place.location.lat()):'';input.dataset.longitude=place.location?String(place.location.lng()):'';status.textContent='Address selected. Please check the address and postcode before saving.';}catch(e){console.warn('Places details unavailable',e);status.textContent='Address details could not be retrieved. Please enter the address manually.';}}
+        function render(items){close();items.forEach(function(p){const b=document.createElement('button');b.type='button';b.className='address-suggestion';b.setAttribute('role','option');b.textContent=p.text?p.text.toString():'Address suggestion';b.addEventListener('mousedown',e=>e.preventDefault());b.addEventListener('click',()=>choose(p));box.appendChild(b);});if(items.length){box.hidden=false;input.setAttribute('aria-expanded','true');}}
+        input.addEventListener('input',function(){const value=input.value.trim();++seq;if(timer)clearTimeout(timer);close();if(!ready||value.length<3)return;timer=setTimeout(async function(){const id=++seq;try{const res=await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions({input:value,includedRegionCodes:['gb']});if(id!==seq||input.value.trim()!==value)return;render((res.suggestions||[]).map(x=>x.placePrediction).filter(Boolean));if(!box.hidden)status.textContent='Choose an address suggestion, or continue entering it manually.';}catch(e){console.warn('Places suggestions unavailable',e);status.textContent='Address suggestions are unavailable. You can enter the address manually.';}},250);});
+        input.addEventListener('keydown',function(e){const items=Array.from(box.querySelectorAll('.address-suggestion'));if(e.key==='ArrowDown'&&!box.hidden){e.preventDefault();active=(active+1)%items.length;}else if(e.key==='ArrowUp'&&!box.hidden){e.preventDefault();active=(active-1+items.length)%items.length;}else if(e.key==='Enter'&&!box.hidden&&active>=0&&items[active]){e.preventDefault();items[active].click();}else if(e.key==='Escape')close();items.forEach((b,i)=>b.setAttribute('aria-selected',String(i===active)));});
+        document.addEventListener('click',e=>{if(!e.target.closest('.address-field'))close();});
+        if(!key){status.textContent='Address suggestions are not configured yet. You can still enter the address manually.';return;}
+        if(window.google&&google.maps&&google.maps.places&&google.maps.places.AutocompleteSuggestion){ready=true;status.textContent='Address suggestions are ready.';return;}
+        const script=document.createElement('script');script.id='hamletGooglePlacesScript';script.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(key)+'&libraries=places&v=weekly';script.async=true;
+        script.onload=function(){if(window.google&&google.maps&&google.maps.places&&google.maps.places.AutocompleteSuggestion){ready=true;status.textContent='Address suggestions are ready.';}else status.textContent='Address suggestions could not initialize. Enter the address manually.';};
+        script.onerror=function(){status.textContent='Address suggestions could not load. Enter the address manually.';};document.head.appendChild(script);
       }
       initAddressAutocomplete();
       function esc(value){return String(value??'').replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]})}

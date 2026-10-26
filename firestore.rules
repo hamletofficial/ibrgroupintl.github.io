@@ -732,6 +732,38 @@ service cloud.firestore {
       allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
     }
 
+    // Search analytics events: bounded, minimally identifying client-submitted records.
+    // Reads are granted only to the designated super administrator by the catch-all rule below.
+    match /searchAnalyticsEvents/{eventId} {
+      allow create: if (
+        request.resource.data.keys().hasAll(['query','area','path','uid','createdAt'])
+        && request.resource.data.keys().hasOnly(['query','area','path','uid','createdAt'])
+        && request.resource.data.query is string
+        && request.resource.data.query.size() >= 2
+        && request.resource.data.query.size() <= 100
+        && request.resource.data.area is string
+        && request.resource.data.area.size() <= 80
+        && request.resource.data.path is string
+        && request.resource.data.path.size() <= 160
+        && request.resource.data.uid == null
+        && request.resource.data.createdAt == request.time
+      ) || (
+        request.auth != null
+        && request.resource.data.keys().hasAll(['query','area','path','uid','createdAt'])
+        && request.resource.data.keys().hasOnly(['query','area','path','uid','createdAt'])
+        && request.resource.data.query is string
+        && request.resource.data.query.size() >= 2
+        && request.resource.data.query.size() <= 100
+        && request.resource.data.area is string
+        && request.resource.data.area.size() <= 80
+        && request.resource.data.path is string
+        && request.resource.data.path.size() <= 160
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == request.time
+      );
+      allow update, delete: if false;
+    }
+
     // Read-only platform-wide access for the designated Hamlet super administrator.
     // Keep this identity aligned with the administrator configured in admin.html.
     match /{document=**} {

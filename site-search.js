@@ -236,10 +236,24 @@
       if (first) { event.preventDefault(); first.focus(); }
     }
   });
+  async function recordHamletSearch(rawQuery, area) {
+    const query = String(rawQuery || '').trim().toLocaleLowerCase().replace(/[\\w.+-]+@[\\w.-]+\\.[a-z]{2,}/gi, '[email]').replace(/\\b\\d{6,}\\b/g, '[number]').slice(0, 100);
+    if (query.length < 2 || !window.firebase || !window.firebaseConfig) return;
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
+      await firebase.firestore().collection('searchAnalyticsEvents').add({
+        query, area: String(area || 'public').slice(0, 40),
+        path: String(window.location.pathname || '/').slice(0, 160),
+        uid: firebase.auth().currentUser ? firebase.auth().currentUser.uid : null,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (error) { console.debug('Search analytics event was not recorded:', error && (error.code || error.message)); }
+  }
   form.addEventListener('submit', async event => {
     event.preventDefault();
     const query = input.value.trim();
     if (query.length < 2) { input.focus(); return; }
+    await recordHamletSearch(query, 'public-site');
     window.location.href = '/search.html?q=' + encodeURIComponent(query);
   });
 

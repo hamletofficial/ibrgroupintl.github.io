@@ -188,16 +188,25 @@
       .brand-image-copy p{max-width:none;margin:.55rem 0 0;font-size:.9rem;line-height:1.5}
     }
 
-    .github-update-bar{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;gap:.65rem;min-height:48px;padding:.6rem 1rem;background:#e5e7eb;color:#111827;border-bottom:1px solid #d1d5db;font-size:.86rem;line-height:1.4;flex-wrap:wrap}
-    .github-update-label{flex:0 0 auto;font-weight:800;white-space:nowrap}
+    .github-update-bar{--ticker-accent:#67e8f9;position:relative;isolation:isolate;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;gap:.7rem;min-height:54px;padding:.65rem 1rem;overflow:hidden;color:#f8fbff;border-bottom:1px solid rgba(147,197,253,.55);background:linear-gradient(112deg,#071d4a 0%,#123b7a 28%,#075985 52%,#172554 76%,#071d4a 100%);background-size:240% 240%;animation:hamletTickerGradient 16s ease-in-out infinite;font-size:.86rem;line-height:1.4;flex-wrap:wrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 5px 18px rgba(2,6,23,.18)}
+    .github-update-bar:before{content:"";position:absolute;inset:-60% auto -60% -35%;width:28%;z-index:-1;pointer-events:none;transform:rotate(18deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),rgba(103,232,249,.2),transparent);animation:hamletTickerSheen 9s ease-in-out infinite}
+    .github-update-bar:after{content:"";position:absolute;inset:auto 0 0;height:2px;pointer-events:none;background:linear-gradient(90deg,transparent,#60a5fa 18%,#67e8f9 50%,#a5b4fc 82%,transparent);background-size:200% 100%;animation:hamletTickerLine 7s linear infinite}
+    .github-update-label{position:relative;display:inline-flex;align-items:center;gap:.55rem;flex:0 0 auto;font-weight:850;letter-spacing:.015em;white-space:nowrap;color:#fff}
+    .github-update-label:before{content:"";width:8px;height:8px;flex:0 0 auto;border-radius:50%;background:#67e8f9;box-shadow:0 0 0 3px rgba(103,232,249,.14),0 0 12px rgba(103,232,249,.8);animation:hamletTickerPulse 2.4s ease-in-out infinite}
     .github-update-viewport{position:relative;min-width:0;max-width:min(700px,100%);flex:1 1 320px;overflow:hidden;text-align:left}
-    .github-update-slide{display:flex;align-items:center;gap:.55rem;min-width:0;transition:opacity .28s ease,transform .28s ease}
-    .github-update-message{min-width:0;overflow-wrap:anywhere}
-    .github-update-time{flex:0 0 auto;color:#4b5563;font-size:.78rem;white-space:nowrap}
-    .github-update-link{flex:0 0 auto;color:#1d4ed8;font-weight:750;white-space:nowrap}
-    .github-update-count{flex:0 0 auto;color:#4b5563;font-size:.78rem;font-variant-numeric:tabular-nums;white-space:nowrap}
-    @media(max-width:620px){.github-update-bar{align-items:flex-start;justify-content:flex-start;gap:.25rem .55rem}.github-update-label{white-space:normal}.github-update-viewport{flex-basis:100%;max-width:100%}.github-update-slide{flex-wrap:wrap}.github-update-time{font-size:.75rem}}
-    @media(prefers-reduced-motion:reduce){.github-update-slide{transition:none}}
+    .github-update-slide{display:flex;align-items:center;gap:.55rem;min-width:0;opacity:1;transform:translate3d(0,0,0);transition:opacity .32s ease,transform .42s cubic-bezier(.2,.75,.25,1);text-shadow:0 1px 1px rgba(0,0,0,.18)}
+    .github-update-slide.is-leaving{opacity:0;transform:translate3d(0,8px,0)}
+    .github-update-message{min-width:0;overflow-wrap:anywhere;color:#fff;font-weight:650}
+    .github-update-time{flex:0 0 auto;color:#dbeafe;font-size:.78rem;white-space:nowrap}
+    .github-update-link{flex:0 0 auto;color:#fff;font-weight:800;white-space:nowrap;text-decoration:none;border-bottom:1px solid rgba(191,219,254,.65);transition:color .2s ease,border-color .2s ease,transform .2s ease}
+    .github-update-link:hover{color:#a5f3fc;border-color:#a5f3fc;transform:translateY(-1px)}
+    .github-update-count{flex:0 0 auto;color:#dbeafe;font-size:.76rem;font-variant-numeric:tabular-nums;white-space:nowrap;padding:.18rem .48rem;border:1px solid rgba(191,219,254,.3);border-radius:999px;background:rgba(7,17,40,.28)}
+    @keyframes hamletTickerGradient{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+    @keyframes hamletTickerSheen{0%,12%{left:-35%;opacity:0}22%{opacity:1}48%,100%{left:115%;opacity:0}}
+    @keyframes hamletTickerLine{0%{background-position:100% 0}100%{background-position:-100% 0}}
+    @keyframes hamletTickerPulse{0%,100%{opacity:1;box-shadow:0 0 0 3px rgba(103,232,249,.14),0 0 12px rgba(103,232,249,.8)}50%{opacity:.72;box-shadow:0 0 0 5px rgba(103,232,249,.08),0 0 6px rgba(103,232,249,.45)}}
+    @media(max-width:620px){.github-update-bar{align-items:flex-start;justify-content:flex-start;gap:.35rem .6rem;padding:.7rem .85rem}.github-update-label{white-space:normal}.github-update-viewport{flex-basis:100%;max-width:100%}.github-update-slide{flex-wrap:wrap;row-gap:.35rem}.github-update-time{font-size:.75rem}.github-update-count{margin-left:auto}}
+    @media(prefers-reduced-motion:reduce){.github-update-bar,.github-update-bar:before,.github-update-bar:after,.github-update-label:before{animation:none}.github-update-slide,.github-update-link{transition:none}}
 \n  
     /* Subtle interactive border for the four featured homepage tags. */
     .homepage-hover-tag{border:1px solid rgba(147,197,253,.3);transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease}
@@ -262,7 +271,7 @@
       </div>
     </div>
     <span id="homepage-update-count" class="github-update-count" aria-hidden="true"></span>
-    <a class="github-update-link" href="https://github.com/hamletofficial/ibrgroupintl.github.io/commits/main/" target="_blank" rel="noopener noreferrer">All commits</a>
+    <a class="github-update-link" href="https://github.com/hamletofficial/oss/commits/main/" target="_blank" rel="noopener noreferrer">All commits</a>
   </aside>
   <main>
     <section class="hero">
@@ -541,6 +550,7 @@
         if (seconds < 604800) return Math.floor(seconds / 86400) + 'd ago';
         return date.toLocaleDateString(undefined, {day:'numeric', month:'short', year:'numeric'});
       }
+      let transitionTimer = null;
       function renderCommit(index, animate = true) {
         if (!commits.length) return;
         activeCommit = (index + commits.length) % commits.length;
@@ -556,12 +566,13 @@
           commitsCount.textContent = (activeCommit + 1) + ' / ' + commits.length;
           commitsSlide.classList.remove('is-leaving');
         };
+        if (transitionTimer) window.clearTimeout(transitionTimer);
         if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           apply();
           return;
         }
         commitsSlide.classList.add('is-leaving');
-        window.setTimeout(apply, 280);
+        transitionTimer = window.setTimeout(apply, 320);
       }
       function startRotation() {
         if (rotationTimer) window.clearInterval(rotationTimer);
@@ -591,6 +602,7 @@
       window.addEventListener('pagehide', () => {
         if (rotationTimer) window.clearInterval(rotationTimer);
         if (refreshTimer) window.clearInterval(refreshTimer);
+        if (transitionTimer) window.clearTimeout(transitionTimer);
       }, {once:true});
     })();
   </script>

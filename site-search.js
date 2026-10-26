@@ -56,7 +56,7 @@
   async function recordSearchEvent(rawQuery, area) {
     const query = String(rawQuery || '').trim().toLocaleLowerCase()
       .replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi, '[email]')
-      .replace(/\b\\d{6,}\b/g, '[number]').slice(0, 100);
+      .replace(/\b\d{6,}\b/g, '[number]').slice(0, 100);
     if (query.length < 2 || !window.firebase || !window.firebaseConfig) return;
     try {
       if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
@@ -269,7 +269,7 @@
     }
   });
   async function recordHamletSearch(rawQuery, area) {
-    const query = String(rawQuery || '').trim().toLocaleLowerCase().replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi, '[email]').replace(/\b\\d{6,}\b/g, '[number]').slice(0, 100);
+    const query = String(rawQuery || '').trim().toLocaleLowerCase().replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi, '[email]').replace(/\b\d{6,}\b/g, '[number]').slice(0, 100);
     if (query.length < 2 || !window.firebase || !window.firebaseConfig) return;
     try {
       if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);

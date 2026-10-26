@@ -88,7 +88,7 @@ function buildPalette(){
  paletteRouteSelect=make('select','hamlet-search-route');paletteRouteSelect.setAttribute('aria-label','Choose where to search');var choose=make('option','','Choose workspace…');choose.value='';paletteRouteSelect.appendChild(choose);
  var submit=make('button','hamlet-search-submit','Search');submit.type='submit';form.appendChild(paletteRouteSelect);form.appendChild(submit);dialog.appendChild(form);
  paletteStatus=make('div','hamlet-search-status');paletteStatus.setAttribute('role','status');paletteStatus.setAttribute('aria-live','polite');paletteStatus.hidden=true;dialog.appendChild(paletteStatus);
- form.addEventListener('submit',function(e){e.preventDefault();var q=paletteInput.value.trim(),target=paletteRouteSelect.value;if(!target){var path=currentPath(),current=routes.find(function(r){return r.paths.indexOf(path)!==-1});if(current&&current.href!='/messages.html'){target=current.href}else{paletteStatus.textContent='Choose a workspace below or select one from the destination menu.';paletteStatus.hidden=false;paletteRouteSelect.focus();return}}location.href=withQuery(target,q)});
+ form.addEventListener('submit',async function(e){e.preventDefault();var q=paletteInput.value.trim(),target=paletteRouteSelect.value;await recordHamletWorkspaceSearch(q,target);if(!target){var path=currentPath(),current=routes.find(function(r){return r.paths.indexOf(path)!==-1});if(current&&current.href!='/messages.html'){target=current.href}else{paletteStatus.textContent='Choose a workspace below or select one from the destination menu.';paletteStatus.hidden=false;paletteRouteSelect.focus();return}}location.href=withQuery(target,q)});
  var caption=make('div','hamlet-search-caption','Choose where to search');dialog.appendChild(caption);
  var list=make('div','hamlet-search-destinations');
    var a=make('a','hamlet-search-destination');a.href=r.href;a.dataset.base=r.href;
@@ -109,6 +109,11 @@ function buildPalette(){
 function openPalette(){buildPalette();lastFocus=document.activeElement;previousBodyOverflow=document.body.style.overflow;palette.hidden=false;paletteInput.value='';paletteRouteSelect.value='';if(paletteStatus){paletteStatus.hidden=true;paletteStatus.textContent=''}paletteLinks.forEach(function(link){link.classList.remove('is-selected');link.removeAttribute('aria-current')});updatePaletteLinks();document.body.style.overflow='hidden';paletteInput.focus()}
 function closePalette(){if(!palette||palette.hidden)return;palette.hidden=true;document.body.style.overflow=previousBodyOverflow;if(lastFocus&&typeof lastFocus.focus==='function')lastFocus.focus()}
 function updatePaletteLinks(){var q=paletteInput?paletteInput.value.trim():'';paletteLinks.forEach(function(a){a.href=withQuery(a.dataset.base,q)})}
+async function recordHamletWorkspaceSearch(rawQuery,target){
+var query=String(rawQuery||'').trim().toLocaleLowerCase().replace(/[\\w.+-]+@[\\w.-]+\\.[a-z]{2,}/gi,'[email]').replace(/\\b\\d{6,}\\b/g,'[number]').slice(0,100);
+if(query.length<2||!window.firebase||!window.firebaseConfig)return;
+try{if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);var db=firebase.firestore(),auth=firebase.auth();await db.collection('searchAnalyticsEvents').add({query:query,area:'workspace:'+String(target||'auto').slice(0,40),path:String(location.pathname||'/').slice(0,160),uid:auth.currentUser?auth.currentUser.uid:null,createdAt:firebase.firestore.FieldValue.serverTimestamp()})}catch(e){console.debug('Search analytics event was not recorded:',e&&(e.code||e.message))}
+}
 function prefillSearch(){
  var params=new URLSearchParams(location.search),q=(params.get('q')||params.get('search')||'').trim().slice(0,140);if(!q)return;
  var path=currentPath(),id=null;

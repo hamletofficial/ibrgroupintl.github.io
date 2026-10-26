@@ -39,8 +39,13 @@
     .panel h2{margin:0 0 .35rem;color:var(--ink);font-size:1.2rem}.panel-intro{margin:0 0 1rem;color:var(--muted)}
     .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
     .form-section-heading{display:block;padding:.35rem 0 .15rem;border-bottom:1px solid var(--line);margin-top:.35rem}.form-section-heading h3{margin:0 0 .25rem;color:var(--ink);font-size:1.02rem}.form-section-heading p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.5}
-    .postcode-field{gap:.15rem}
-    .postcode-field input{max-width:12rem}
+    .postcode-field{gap:.25rem}
+    /* Section 1: consistent full-width controls, with a balanced two-column layout. */
+    .property-details-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;min-width:0}
+    .property-details-grid .field{min-width:0;width:100%}
+    .property-details-grid .field input,.property-details-grid .field select{width:100%;min-width:0}
+    .property-details-grid .field.full{grid-column:1/-1}
+    .property-details-grid .postcode-field input{max-width:none;width:100%}
     .address-field{position:relative}
     .address-suggestions{position:absolute;z-index:1000;top:3.5rem;left:0;right:0;max-height:18rem;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:10px;box-shadow:0 12px 28px rgba(2,6,23,.18);padding:.3rem}
     .address-suggestions[hidden]{display:none}
@@ -53,7 +58,7 @@
     .broker-rankings-button{position:fixed;left:1rem;bottom:1rem;z-index:30;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:.8rem 1rem;border:1px solid #0f766e;border-radius:10px;background:#0f766e;color:#fff;text-decoration:none;font-weight:800;box-shadow:0 6px 20px rgba(2,6,23,.22)}.broker-rankings-button:hover{background:#115e59;border-color:#115e59}@media(max-width:520px){.broker-rankings-button{left:.65rem;bottom:.65rem;min-height:44px;padding:.7rem .85rem}}
     .hidden{display:none!important}
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem}.profile{display:flex;align-items:center;gap:.65rem;color:#fff}.profile img{width:38px;height:38px;border-radius:50%;object-fit:cover}.topbar-actions{display:flex;align-items:center;gap:.6rem}
-    @media(max-width:800px){.dashboard{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-section-label{grid-column:1/-1}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.property-meta{grid-template-columns:1fr 1fr}.topbar{align-items:flex-start;flex-direction:column}.topbar-actions{width:100%}}
+    @media(max-width:800px){.dashboard{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-section-label{grid-column:1/-1}.form-grid{grid-template-columns:1fr}.property-details-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.field.full{grid-column:auto}.property-details-grid .field.full{grid-column:1/-1}.property-meta{grid-template-columns:1fr 1fr}.topbar{align-items:flex-start;flex-direction:column}.topbar-actions{width:100%}}
     @media(max-width:520px){.dashboard{grid-template-columns:1fr}.residential-dashboard-grid{grid-template-columns:1fr}.dashboard-section-label{grid-column:1}.hero-message-btn{width:100%}.resource-shell{padding:0 .65rem}.hero,.panel{padding:1.1rem}.property-meta{grid-template-columns:1fr}}
   /* Dark transparent header override */
 .resource-nav{background:rgba(15,43,110,.88)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
@@ -62,7 +67,7 @@
 :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #0284c7!important;outline-offset:3px!important;scroll-margin-block:6rem}
 .field input,.field select,.field textarea,.form-actions .btn,.hero-message-btn{min-height:42px}
 .photo-preview-grid a,.resource-photo-grid a{display:block;min-width:0}
-@media(max-width:650px){.form-grid{grid-template-columns:minmax(0,1fr)}.form-actions{align-items:stretch}.form-actions .btn{width:100%;min-height:44px}.resource-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.form-grid{grid-template-columns:minmax(0,1fr)}.property-details-grid{grid-template-columns:minmax(0,1fr)}.property-details-grid .field.full{grid-column:auto}.form-actions{align-items:stretch}.form-actions .btn{width:100%;min-height:44px}.resource-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
   <link rel="stylesheet" href="/hamlet-workspace.css?v=20261015-4">
@@ -126,14 +131,16 @@
         <form id="propertyForm">
           <div class="form-grid">
             <div class="field full form-section-heading"><h3>1. Property details</h3><p>Start with the building identity, location and availability.</p></div>
-            <div class="field"><label for="propertyName">Property / building name <span class="required">*</span></label><input id="propertyName" required maxlength="180"></div>
-            <div class="field"><label for="propertyType">Property type <span class="required">*</span></label><select id="propertyType" required><option value="">Select type</option><option>Office</option><option>Retail</option><option>Industrial / Warehouse</option><option>Logistics</option><option>Mixed Use</option><option>Development / Land</option><option>Other Commercial</option></select></div>
-            <div class="field address-field"><label for="address">Address / location <span class="required">*</span></label><input id="address" required maxlength="250" placeholder="Start typing a building, street, town or postcode" autocomplete="street-address" aria-describedby="addressHelp" aria-expanded="false" aria-controls="addressSuggestions"><div id="addressSuggestions" class="address-suggestions" role="listbox" hidden></div><p class="photo-help" id="addressHelp">Start typing to see address suggestions. Select a result to fill the address and postcode automatically, or enter the details manually.</p><p class="status" id="addressLookupStatus" role="status" aria-live="polite"></p></div>
-            <div class="field postcode-field"><label for="postcode">Postcode</label><input id="postcode" maxlength="20" autocomplete="postal-code"></div>
-            <div class="field"><label for="availability">Availability <span class="required">*</span></label><select id="availability" required><option value="">Select availability</option><option>Immediately available</option><option>Available within 3 months</option><option>Available within 6 months</option><option>Future availability</option></select></div>
-            <div class="field"><label for="size">Approx. floor area</label><input id="size" maxlength="80" placeholder="e.g. 12,500 sq ft"></div>
-            <div class="field"><label for="askingRent">Asking rent / lease terms</label><input id="askingRent" maxlength="160" placeholder="e.g. £35 psf pa"></div>
-            <div class="field"><label for="status">Listing status <span class="required">*</span></label><select id="status" required><option>Active</option><option>Under Offer</option><option>Let</option></select></div>
+            <div class="property-details-grid field full">
+              <div class="field"><label for="propertyName">Property / building name <span class="required">*</span></label><input id="propertyName" required maxlength="180" autocomplete="organization"></div>
+              <div class="field"><label for="propertyType">Property type <span class="required">*</span></label><select id="propertyType" required><option value="">Select type</option><option>Office</option><option>Retail</option><option>Industrial / Warehouse</option><option>Logistics</option><option>Mixed Use</option><option>Development / Land</option><option>Other Commercial</option></select></div>
+              <div class="field address-field full"><label for="address">Address / location <span class="required">*</span></label><input id="address" required maxlength="250" placeholder="Start typing a building, street, town or postcode" autocomplete="street-address" aria-describedby="addressHelp" aria-expanded="false" aria-controls="addressSuggestions"><div id="addressSuggestions" class="address-suggestions" role="listbox" hidden></div><p class="photo-help" id="addressHelp">Start typing to see address suggestions. Select a result to fill the address and postcode automatically, or enter the details manually.</p><p class="status" id="addressLookupStatus" role="status" aria-live="polite"></p></div>
+              <div class="field postcode-field"><label for="postcode">Postcode</label><input id="postcode" maxlength="20" autocomplete="postal-code"></div>
+              <div class="field"><label for="availability">Availability <span class="required">*</span></label><select id="availability" required><option value="">Select availability</option><option>Immediately available</option><option>Available within 3 months</option><option>Available within 6 months</option><option>Future availability</option></select></div>
+              <div class="field"><label for="size">Approx. floor area</label><input id="size" maxlength="80" placeholder="e.g. 12,500 sq ft"></div>
+              <div class="field"><label for="askingRent">Asking rent / lease terms</label><input id="askingRent" maxlength="160" placeholder="e.g. £35 psf pa"></div>
+              <div class="field"><label for="status">Listing status <span class="required">*</span></label><select id="status" required><option>Active</option><option>Under Offer</option><option>Let</option></select></div>
+            </div>
             <div class="field full form-section-heading"><h3>2. Description and marketing</h3><p>Describe the property and add any existing listing details or photographs.</p></div>
             <div class="field full"><label for="description">Property description <span class="required">*</span></label><textarea id="description" required maxlength="5000" placeholder="Describe the building, accommodation, location, use class, transport links and key leasing proposition."></textarea></div>
             <div class="field"><label for="propertyUrl">Existing listing URL</label><input id="propertyUrl" type="url" maxlength="500" placeholder="https://…"></div>

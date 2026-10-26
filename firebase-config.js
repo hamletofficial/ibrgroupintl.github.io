@@ -12,6 +12,9 @@ window.firebaseConfig = {
 // Public LinkedIn app client ID. The client secret stays in LINKEDIN_CLIENT_SECRET.
 window.linkedinClientId = "78e83w1spj610a";
 
+// Google Cloud Places API (New)
+window.HAMLET_GOOGLE_MAPS_API_KEY = 'AIzaSyCNsmXetVtw15La9B8dNBwNW8BYWXRKA4A';
+
 // Set this to the public Web Push certificate key from Firebase Console > Project Settings > Cloud Messaging.
 // Do not put a service-account credential or private key here.
 window.firebaseMessagingVapidKey = window.firebaseMessagingVapidKey || "BPWBggtpi8y_teO3-zlLOotKkmOJcTy7S99lP3l0W6EtwgGLZ_KcAeQRr2KBdrFrtSp7HO2yP0n3gEAnOOzBGCo";

@@ -110,7 +110,7 @@ function openPalette(){buildPalette();lastFocus=document.activeElement;previousB
 function closePalette(){if(!palette||palette.hidden)return;palette.hidden=true;document.body.style.overflow=previousBodyOverflow;if(lastFocus&&typeof lastFocus.focus==='function')lastFocus.focus()}
 function updatePaletteLinks(){var q=paletteInput?paletteInput.value.trim():'';paletteLinks.forEach(function(a){a.href=withQuery(a.dataset.base,q)})}
 async function recordHamletWorkspaceSearch(rawQuery,target){
-var query=String(rawQuery||'').trim().toLocaleLowerCase().replace(/[\\w.+-]+@[\\w.-]+\\.[a-z]{2,}/gi,'[email]').replace(/\\b\\d{6,}\\b/g,'[number]').slice(0,100);
+var query=String(rawQuery||'').trim().toLocaleLowerCase().replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi,'[email]').replace(/\b\\d{6,}\b/g,'[number]').slice(0,100);
 if(query.length<2||!window.firebase||!window.firebaseConfig)return;
 try{if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);var db=firebase.firestore(),auth=firebase.auth();await db.collection('searchAnalyticsEvents').add({query:query,area:'workspace:'+String(target||'auto').slice(0,40),path:String(location.pathname||'/').slice(0,160),uid:auth.currentUser?auth.currentUser.uid:null,createdAt:firebase.firestore.FieldValue.serverTimestamp()})}catch(e){console.debug('Search analytics event was not recorded:',e&&(e.code||e.message))}
 }

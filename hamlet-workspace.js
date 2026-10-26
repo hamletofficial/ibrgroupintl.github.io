@@ -110,10 +110,24 @@ function openPalette(){buildPalette();lastFocus=document.activeElement;previousB
 function closePalette(){if(!palette||palette.hidden)return;palette.hidden=true;document.body.style.overflow=previousBodyOverflow;if(lastFocus&&typeof lastFocus.focus==='function')lastFocus.focus()}
 function updatePaletteLinks(){var q=paletteInput?paletteInput.value.trim():'';paletteLinks.forEach(function(a){a.href=withQuery(a.dataset.base,q)})}
 async function recordHamletWorkspaceSearch(rawQuery,target){
-var query=String(rawQuery||'').trim().toLocaleLowerCase().replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi,'[email]').replace(/\b\d{6,}\b/g,'[number]').slice(0,100);
-if(query.length<2||!window.firebase||!window.firebaseConfig)return;
-try{if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);var db=firebase.firestore(),auth=firebase.auth();await db.collection('searchAnalyticsEvents').add({query:query,area:'workspace:'+String(target||'auto').slice(0,40),path:String(location.pathname||'/').slice(0,160),uid:auth.currentUser?auth.currentUser.uid:null,createdAt:firebase.firestore.FieldValue.serverTimestamp()})}catch(e){console.debug('Search analytics event was not recorded:',e&&(e.code||e.message))}
+var query=String(rawQuery||'').trim().toLocaleLowerCase().replace(/[\\w.+-]+@[\\w.-]+\\.[a-z]{2,}/gi,'[email]').replace(/\\b\\d{6,}\\b/g,'[number]').slice(0,100);
+if(query.length<2)return;
+try{
+if(window.__hamletAnalyticsFirebasePromise)await window.__hamletAnalyticsFirebasePromise;
+if(!window.firebase||!firebase.firestore||!firebase.auth){
+function load(src){return new Promise(function(resolve,reject){var absolute=new URL(src,location.href).href,found=Array.from(document.scripts).find(function(el){return el.src===absolute});if(found){if((src.indexOf('firebase-config.js')>=0&&window.firebaseConfig)||(src.indexOf('firebase-app-compat.js')>=0&&window.firebase&&firebase.apps)||(src.indexOf('firebase-auth-compat.js')>=0&&window.firebase&&firebase.auth)||(src.indexOf('firebase-firestore-compat.js')>=0&&window.firebase&&firebase.firestore))return resolve();found.addEventListener('load',resolve,{once:true});found.addEventListener('error',reject,{once:true});return;}var el=document.createElement('script');el.src=src;el.async=true;el.onload=resolve;el.onerror=reject;document.head.appendChild(el);});}
+if(!window.firebase||!firebase.apps)await load('https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js');
+if(!window.firebase||!firebase.auth)await load('https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js');
+if(!window.firebase||!firebase.firestore)await load('https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js');
+if(!window.firebaseConfig)await load('/firebase-config.js');
 }
+if(!window.firebase||!window.firebaseConfig)throw new Error('Firebase configuration unavailable');
+if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);
+var auth=firebase.auth();
+await firebase.firestore().collection('searchAnalyticsEvents').add({query:query,area:'workspace:'+String(target||'auto').slice(0,70),path:String(location.pathname||'/').slice(0,160),uid:auth.currentUser?auth.currentUser.uid:null,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+}catch(e){console.debug('Search analytics event was not recorded:',e&&(e.code||e.message))}
+}
+
 function prefillSearch(){
  var params=new URLSearchParams(location.search),q=(params.get('q')||params.get('search')||'').trim().slice(0,140);if(!q)return;
  var path=currentPath(),id=null;

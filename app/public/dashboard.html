@@ -38,6 +38,7 @@
     .panel{border:1px solid var(--line);border-radius:14px;background:#fff;padding:1.4rem;box-shadow:0 6px 20px rgba(2,6,23,.06);margin-bottom:1rem}
     .panel h2{margin:0 0 .35rem;color:var(--ink);font-size:1.2rem}.panel-intro{margin:0 0 1rem;color:var(--muted)}
     .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+    .postcode-field input{max-width:12rem}
     .address-field{position:relative}
     .address-suggestions{position:absolute;z-index:1000;top:3.5rem;left:0;right:0;max-height:18rem;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:10px;box-shadow:0 12px 28px rgba(2,6,23,.18);padding:.3rem}
     .address-suggestions[hidden]{display:none}
@@ -125,7 +126,7 @@
             <div class="field"><label for="propertyName">Property / building name <span class="required">*</span></label><input id="propertyName" required maxlength="180"></div>
             <div class="field"><label for="propertyType">Property type <span class="required">*</span></label><select id="propertyType" required><option value="">Select type</option><option>Office</option><option>Retail</option><option>Industrial / Warehouse</option><option>Logistics</option><option>Mixed Use</option><option>Development / Land</option><option>Other Commercial</option></select></div>
             <div class="field address-field"><label for="address">Address / location <span class="required">*</span></label><input id="address" required maxlength="250" placeholder="Start typing a building, street, town or postcode" autocomplete="street-address" aria-describedby="addressHelp" aria-expanded="false" aria-controls="addressSuggestions"><div id="addressSuggestions" class="address-suggestions" role="listbox" hidden></div><p class="photo-help" id="addressHelp">Start typing to see address suggestions. Select a result to fill the address and postcode automatically, or enter the details manually.</p><p class="status" id="addressLookupStatus" role="status" aria-live="polite"></p></div>
-            <div class="field"><label for="postcode">Postcode</label><input id="postcode" maxlength="20"></div>
+            <div class="field postcode-field"><label for="postcode">Postcode</label><input id="postcode" maxlength="20" autocomplete="postal-code"></div>
             <div class="field"><label for="availability">Availability <span class="required">*</span></label><select id="availability" required><option value="">Select availability</option><option>Immediately available</option><option>Available within 3 months</option><option>Available within 6 months</option><option>Future availability</option></select></div>
             <div class="field"><label for="size">Approx. floor area</label><input id="size" maxlength="80" placeholder="e.g. 12,500 sq ft"></div>
             <div class="field"><label for="askingRent">Asking rent / lease terms</label><input id="askingRent" maxlength="160" placeholder="e.g. £35 psf pa"></div>

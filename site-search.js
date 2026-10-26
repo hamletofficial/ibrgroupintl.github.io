@@ -51,6 +51,38 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyHamletWordmarkDot, { once: true });
   else applyHamletWordmarkDot();
 
+  // Capture search/filter fields on pages that load this shared script, not just the header search.
+  const searchInputTimers = new WeakMap();
+  async function recordSearchEvent(rawQuery, area) {
+    const query = String(rawQuery || '').trim().toLocaleLowerCase()
+      .replace(/[\\w.+-]+@[\\w.-]+\\.[a-z]{2,}/gi, '[email]')
+      .replace(/\\b\\d{6,}\\b/g, '[number]').slice(0, 100);
+    if (query.length < 2 || !window.firebase || !window.firebaseConfig) return;
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
+      const auth = firebase.auth();
+      await firebase.firestore().collection('searchAnalyticsEvents').add({
+        query, area: String(area || 'page-search').slice(0, 80),
+        path: String(window.location.pathname || '/').slice(0, 160),
+        uid: auth.currentUser ? auth.currentUser.uid : null,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (error) { console.debug('Search analytics event was not recorded:', error && (error.code || error.message)); }
+  }
+  document.addEventListener('input', event => {
+    const field = event.target;
+    if (!(field instanceof HTMLInputElement) && !(field instanceof HTMLTextAreaElement)) return;
+    if (field.id === 'site-search-input' || field.id === 'site-search') return;
+    const label = [field.id, field.name, field.getAttribute('aria-label'), field.placeholder].join(' ').toLowerCase();
+    if (!/search|filter/.test(label) && field.type !== 'search') return;
+    if (searchInputTimers.has(field)) clearTimeout(searchInputTimers.get(field));
+    const timer = setTimeout(() => {
+      const value = field.value.trim();
+      if (value.length >= 2) recordSearchEvent(value, 'page-search');
+    }, 900);
+    searchInputTimers.set(field, timer);
+  }, true);
+
   if (!form || !input) return;
 
   let pages = [];

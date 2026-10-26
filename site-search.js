@@ -57,9 +57,9 @@
     const query = String(rawQuery || '').trim().toLocaleLowerCase()
       .replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi, '[email]')
       .replace(/\b\d{6,}\b/g, '[number]').slice(0, 100);
-    if (query.length < 2 || !window.firebase || !window.firebaseConfig) return;
+    if (query.length < 2) return;
     try {
-      if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
+      await ensureSearchAnalyticsFirebase();
       const auth = firebase.auth();
       await firebase.firestore().collection('searchAnalyticsEvents').add({
         query, area: String(area || 'page-search').slice(0, 80),

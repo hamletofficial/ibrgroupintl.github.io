@@ -51,9 +51,29 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyHamletWordmarkDot, { once: true });
   else applyHamletWordmarkDot();
 
-  // Capture search/filter fields on pages that load this shared script, not just the header search.
+  // Public-page analytics only: keep authenticated workspaces, member-only pages,
+  // and account routes out even if this shared script is included there by mistake.
+  const analyticsPrivateFiles = new Set([
+    'archive.html', 'dashboard.html', 'live.html', 'portfolio.html',
+    'residential.html', 'resi-resources.html', 'resources.html', 'members.html',
+    'directory.html', 'profile.html', 'editprofile.html', 'posts.html',
+    'rankings.html', 'messages.html', 'requests.html', 'settings.html',
+    'admin.html', 'login.html', 'invoice.html', 'loggedout.html',
+    'callback.html', 'success.html'
+  ]);
+  const analyticsPrivateDirs = /^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication|onfido|oauth)(?:\/|$)/i;
+  function isPublicAnalyticsPath() {
+    const path = String(window.location.pathname || '/').replace(/^\/+/, '');
+    return !analyticsPrivateFiles.has(path.split('/').pop().toLowerCase())
+      && !analyticsPrivateDirs.test(path);
+  }
+
+  // Record meaningful search/filter values after typing pauses, deduplicating
+  // repeated pauses on the same value. The public-site form has its own submit logger.
   const searchInputTimers = new WeakMap();
+  const loggedSearchValues = new WeakMap();
   async function recordSearchEvent(rawQuery, area) {
+    if (!isPublicAnalyticsPath()) return;
     const query = String(rawQuery || '').trim().toLocaleLowerCase()
       .replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi, '[email]')
       .replace(/\b\d{6,}\b/g, '[number]').slice(0, 100);
@@ -70,6 +90,7 @@
     } catch (error) { console.debug('Search analytics event was not recorded:', error && (error.code || error.message)); }
   }
   document.addEventListener('input', event => {
+    if (!isPublicAnalyticsPath()) return;
     const field = event.target;
     if (!(field instanceof HTMLInputElement) && !(field instanceof HTMLTextAreaElement)) return;
     if (field.id === 'site-search-input' || field.id === 'site-search') return;
@@ -78,7 +99,10 @@
     if (searchInputTimers.has(field)) clearTimeout(searchInputTimers.get(field));
     const timer = setTimeout(() => {
       const value = field.value.trim();
-      if (value.length >= 2) recordSearchEvent(value, 'page-search');
+      const signature = value.toLocaleLowerCase();
+      if (value.length < 2 || loggedSearchValues.get(field) === signature) return;
+      loggedSearchValues.set(field, signature);
+      recordSearchEvent(value, field.id || field.name || 'page-search');
     }, 900);
     searchInputTimers.set(field, timer);
   }, true);
@@ -287,6 +311,7 @@
     return window.__hamletAnalyticsFirebasePromise;
   }
   async function recordHamletSearch(rawQuery, area) {
+    if (!isPublicAnalyticsPath()) return;
     const query = String(rawQuery || '').trim().toLocaleLowerCase().replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi, '[email]').replace(/\b\d{6,}\b/g, '[number]').slice(0, 100);
     if (query.length < 2) return;
     try {

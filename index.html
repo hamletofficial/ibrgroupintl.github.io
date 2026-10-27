@@ -215,6 +215,45 @@
     .homepage-hover-tag{border:1px solid rgba(147,197,253,.3);transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease}
     .homepage-hover-tag:hover{border-color:#93c5fd;box-shadow:0 0 0 2px rgba(147,197,253,.14);background-color:rgba(59,130,246,.08)}
     @media(prefers-reduced-motion:reduce){.homepage-hover-tag{transition:none}}
+
+    
+    /* Homepage polish: consistent touch targets, calmer spacing and stronger responsive hierarchy. */
+    .hero-grid{gap:clamp(1.4rem,3.4vw,2.6rem)}
+    .hero h1{text-wrap:balance}
+    .hero> .container>div:first-child>p{text-wrap:pretty}
+    .hero .actions{align-items:stretch}
+    .hero .actions .button{min-height:46px}
+    .hero-panel{min-width:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 16px 36px rgba(0,0,0,.16)}
+    .button{min-height:44px;transition:transform .18s ease,border-color .18s ease,background-color .18s ease,box-shadow .18s ease}
+    .button:focus-visible,.site-search-submit:focus-visible,.github-update-link:focus-visible{outline:3px solid #bfdbfe;outline-offset:3px}
+    .site-header .header-row{row-gap:.8rem}
+    .github-update-bar{overflow-wrap:anywhere}
+    @media(hover:hover) and (pointer:fine){
+      .button:hover{transform:translateY(-1px)}
+      .button.primary:hover{box-shadow:0 5px 16px rgba(0,0,0,.18)}
+    }
+    @media(max-width:850px){
+      .hero{padding-top:clamp(2.6rem,6vw,4rem)}
+      .hero-grid{gap:1.5rem}
+      .hero-panel{max-width:760px;width:100%;justify-self:center}
+    }
+    @media(max-width:560px){
+      .hero{padding-top:2.25rem;padding-bottom:2rem}
+      .hero h1{font-size:clamp(2.25rem,10.5vw,3.3rem);line-height:1.06;letter-spacing:-.05em}
+      .hero p{font-size:1rem;line-height:1.65}
+      .hero .actions{display:grid;grid-template-columns:minmax(0,1fr);gap:.6rem}
+      .hero .actions .button{width:100%;min-width:0;padding:.78rem .8rem;text-align:center}
+      .hero-panel{border-radius:14px}
+      .github-update-bar{gap:.45rem .6rem}
+      .github-update-viewport{flex-basis:100%}
+      .github-update-slide{align-items:flex-start}
+      .github-update-link{font-size:.8rem}
+      .site-header .header-row{gap:.7rem}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .button{transition:none!important}
+    }
+
 </style>
 </head>
 <body>

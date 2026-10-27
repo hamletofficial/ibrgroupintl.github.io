@@ -143,15 +143,14 @@
 
     /* Interactive hero showcase: one full-size workspace screen at a time. */
     .workspace-showcase{position:relative;min-width:0;align-self:stretch}
-    .workspace-stack{position:relative;min-width:0;min-height:390px;perspective:1100px}
-    .workspace-screen{position:absolute;inset:0;width:100%;height:100%;margin:0;transition:opacity .32s ease,transform .38s cubic-bezier(.2,.75,.25,1),filter .32s ease;transform-origin:center center}
+    .workspace-stack{position:relative;min-width:0;min-height:390px;perspective:1100px;isolation:isolate}
+    .workspace-screen{position:absolute;inset:0 auto auto 0;width:calc(100% - 54px);min-height:390px;height:auto;margin:0;opacity:1;overflow:hidden;transform:translateX(calc(var(--shelf-index, 0) * 18px));z-index:calc(8 - var(--shelf-index, 0));transition:opacity .28s ease,transform .38s cubic-bezier(.2,.75,.25,1),width .38s cubic-bezier(.2,.75,.25,1),box-shadow .3s ease;transform-origin:left center;cursor:pointer;box-shadow:0 18px 42px #0005}
     .workspace-screen[hidden]{display:none!important}
-    .workspace-screen.is-active{position:relative;z-index:4;opacity:1;transform:translateY(0) scale(1);filter:none}
-    .workspace-screen.is-behind{z-index:1;opacity:.55;transform:translateY(12px) scale(.96);pointer-events:none}
-    .workspace-screen.is-behind:nth-child(3){transform:translateY(22px) scale(.92)}
-    .workspace-screen.is-behind:nth-child(4){transform:translateY(32px) scale(.88)}
+    .workspace-screen.is-active{width:100%;z-index:12;opacity:1;transform:translateX(0);cursor:default;box-shadow:0 22px 58px #0008}
+    .workspace-screen.is-behind{opacity:.96}
+    .workspace-screen.is-behind:hover,.workspace-screen.is-behind:focus-within{filter:brightness(1.12)}
     .workspace-showcase.is-previewing .workspace-screen.is-active{animation:workspaceReveal .38s ease both}
-    @keyframes workspaceReveal{from{opacity:.25;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes workspaceReveal{from{opacity:.8;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
     .workspace-switcher{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
     .workspace-switcher button{flex:1 1 auto;min-width:0;padding:.48rem .55rem;border:1px solid #365277;border-radius:8px;background:#111f32;color:#cbdcf0;font:inherit;font-size:.72rem;font-weight:750;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
     .workspace-switcher button[aria-pressed="true"],.workspace-switcher button:hover{background:#17345d;border-color:#93c5fd;color:#fff}
@@ -734,16 +733,26 @@
         active = Math.max(0, Math.min(screens.length - 1, Number(index) || 0));
         screens.forEach((screen, i) => {
           const selected = i === active;
-          screen.hidden = !selected;
+          screen.hidden = false;
+          screen.style.setProperty('--shelf-index', String(i));
+          screen.style.zIndex = String(selected ? 12 : 8 - i);
           screen.classList.toggle('is-active', selected);
           screen.classList.toggle('is-behind', !selected);
           screen.setAttribute('aria-hidden', String(!selected));
+          screen.tabIndex = selected ? 0 : -1;
         });
         controls.forEach((control, i) => control.setAttribute('aria-pressed', String(i === active)));
         showcase.classList.toggle('is-previewing', animate);
       }
-      showcase.addEventListener('pointerenter', event => {
-        if (event.pointerType === 'mouse' && active === 0) showScreen(1);
+      screens.forEach(screen => {
+        screen.addEventListener('pointerenter', event => {
+          if (event.pointerType === 'mouse') showScreen(screen.dataset.workspaceScreen);
+        });
+        screen.addEventListener('focus', () => showScreen(screen.dataset.workspaceScreen));
+        screen.addEventListener('click', event => {
+          if (event.target.closest('a,button,input,select,textarea,form')) return;
+          showScreen(screen.dataset.workspaceScreen);
+        });
       });
       controls.forEach(control => {
         control.addEventListener('pointerenter', () => showScreen(control.dataset.workspaceTarget));

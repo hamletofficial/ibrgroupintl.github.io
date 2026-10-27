@@ -140,41 +140,6 @@
     .preview-deal{padding:.48rem;border:1px solid #2a3c55;border-radius:7px;background:#16263b}.preview-deal strong{display:block;font-size:.65rem;line-height:1.35;overflow-wrap:anywhere}.preview-deal small{display:block;margin-top:.25rem;color:#91a5c0;font-size:.6rem}
     .preview-bottom{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:.65rem}.preview-mini{padding:.6rem;border:1px solid #2a3c55;border-radius:8px;background:#111f32}.preview-mini strong{display:block;font-size:.72rem}.preview-mini span{display:block;margin-top:.12rem;color:#91a5c0;font-size:.65rem}
     .preview-caption{margin:0;padding:0 1rem 1rem;color:#91a5c0;font-size:.68rem}
-
-    /* Interactive hero showcase: one full-size workspace screen at a time. */
-    .workspace-showcase{position:relative;min-width:0;align-self:stretch;padding-right:54px;margin-bottom:2rem}
-    .workspace-stack{position:relative;min-width:0;min-height:430px;perspective:1100px;isolation:isolate}
-    .workspace-switcher{position:relative;z-index:15}
-    @media(max-width:850px){.workspace-showcase{margin-bottom:2.25rem}.workspace-stack{min-height:420px}}
-    @media(max-width:560px){.workspace-showcase{padding-right:0;margin-bottom:2.5rem}.workspace-stack{min-height:430px}}
-    .workspace-screen{position:absolute;inset:0 auto auto 0;width:calc(100% - 54px);min-height:390px;height:auto;margin:0;opacity:1;overflow:hidden;transform:translateX(calc(var(--shelf-index, 0) * 18px));z-index:calc(8 - var(--shelf-index, 0));transition:opacity .28s ease,transform .38s cubic-bezier(.2,.75,.25,1),width .38s cubic-bezier(.2,.75,.25,1),box-shadow .3s ease;transform-origin:left center;cursor:pointer;box-shadow:0 18px 42px #0005}
-    .workspace-screen[hidden]{display:none!important}
-    .workspace-screen.is-active{width:100%;z-index:12;opacity:1;transform:translateX(0);cursor:default;box-shadow:0 22px 58px #0008}
-    .workspace-screen.is-behind{opacity:.96}
-    .workspace-screen.is-behind:hover,.workspace-screen.is-behind:focus-within{filter:brightness(1.12)}
-    .workspace-showcase.is-previewing .workspace-screen.is-active{animation:workspaceReveal .38s ease both}
-    @keyframes workspaceReveal{from{opacity:.8;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
-    .workspace-switcher{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
-    .workspace-switcher button{flex:1 1 auto;min-width:0;padding:.48rem .55rem;border:1px solid #365277;border-radius:8px;background:#111f32;color:#cbdcf0;font:inherit;font-size:.72rem;font-weight:750;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
-    .workspace-switcher button[aria-pressed="true"],.workspace-switcher button:hover{background:#17345d;border-color:#93c5fd;color:#fff}
-    .workspace-list{display:grid;gap:.65rem}
-    .workspace-list-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.75rem;padding:.8rem;border:1px solid #2a3c55;border-radius:10px;background:#111f32}
-    .workspace-list-row strong{display:block;color:#f8fafc;font-size:.82rem;line-height:1.4}
-    .workspace-list-row small{display:block;margin-top:.2rem;color:#91a5c0;font-size:.7rem}
-    .workspace-status{display:inline-flex;align-items:center;padding:.25rem .5rem;border:1px solid #385579;border-radius:999px;color:#bfdbfe;font-size:.65rem;font-weight:800;white-space:nowrap}
-    .workspace-resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
-    .workspace-resource{min-width:0;padding:.85rem;border:1px solid #2a3c55;border-radius:10px;background:#111f32}
-    .workspace-resource .resource-icon{font-size:1.2rem}
-    .workspace-resource strong{display:block;margin:.25rem 0;color:#f8fafc;font-size:.78rem}
-    .workspace-resource small{display:block;color:#91a5c0;font-size:.68rem;line-height:1.45}
-    .workspace-form{display:grid;gap:.65rem}
-    .workspace-form label{display:grid;gap:.25rem;color:#cbdcf0;font-size:.72rem;font-weight:750}
-    .workspace-form input,.workspace-form select,.workspace-form textarea{width:100%;min-width:0;border:1px solid #334b6b;border-radius:8px;padding:.65rem .7rem;background:#101e31;color:#f8fafc;font:inherit;font-size:.75rem}
-    .workspace-form textarea{min-height:76px;resize:vertical}
-    .workspace-form input::placeholder,.workspace-form textarea::placeholder{color:#91a5c0}
-    @media(max-width:560px){.workspace-stack{min-height:390px}.workspace-switcher button{font-size:.68rem;padding:.45rem .35rem}.workspace-list-row{padding:.65rem}.workspace-resource-grid{gap:.45rem}.workspace-resource{padding:.65rem}}
-    @media(prefers-reduced-motion:reduce){.workspace-screen,.workspace-switcher button{transition:none}.workspace-showcase.is-previewing .workspace-screen.is-active{animation:none}}
-
     /* Sustainable deal workspace preview: certification fields are illustrative, not live data. */
     .sustainability-dashboard{display:grid;gap:.7rem}
     .sustainability-scorecards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
@@ -315,9 +280,16 @@
   <main>
     <section class="hero">
       <div class="container hero-grid">
-        <div class="workspace-showcase" id="workspace-showcase">
-          <div class="workspace-stack" id="workspace-stack" aria-live="polite" aria-label="Interactive preview of Hamlet workspace pages">
-        <aside class="hero-panel product-preview workspace-screen is-active" data-workspace-screen="0" aria-label="Illustrative Hamlet deal workspace preview">
+        <div>
+          <span class="eyebrow homepage-hover-tag">Sustainable commercial leasing</span>
+          <h1>Commercial leasing<span style="color:#bfdbfe">.</span><br><span>Built around sustainability<span style="color:#fff">.</span></span></h1>
+          <p>hamlet is a commercial leasing workspace focused on sustainable properties that meet applicable energy-efficiency standards and hold valid <strong><a href="/resources/passivhaus.html">Passivhaus</a></strong> or <strong><a href="/resources/enerphit.html">EnerPHit</a></strong> certification. Discover relevant opportunities, manage leasing activity and coordinate professional relationships in one connected environment.</p>
+          <div class="actions">
+            <a class="button primary" href="/download.html"><svg class="windows-download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 200" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 93.7 0 8.2 104.6 0v93.7H0zm115.1-91.2L256 0v93.7H115.1V2.5zM0 106.3h104.6V200L0 185.4v-79.1zm115.1 0H256V200l-140.9-19.7v-74z"/></svg><span>Download Hamlet for Windows (x64)</span></a>
+            <a class="button" href="https://support.hamlet-ai.co.uk/">Read support documentation</a>
+          </div>
+        </div>
+        <aside class="hero-panel product-preview" aria-label="Illustrative Hamlet deal pipeline preview">
           <div class="preview-top">
             <div class="preview-brand"><img class="preview-mark" src="/assets/images/favicon.ico" alt="" aria-hidden="true" width="29" height="29"><strong>hamlet <span>/ workspace</span></strong></div>
             <span class="preview-badge">DEAL PIPELINE</span>
@@ -348,60 +320,8 @@
               <div class="sustainability-evidence"><span class="sustainability-evidence-icon" aria-hidden="true">✓</span><span><b>Due-diligence checkpoint</b><br>Verify certificate, issue date, asset scope and supporting evidence before relying on a rating.</span></div>
             </div>
           </div>
+          <p class="preview-caption">Illustrative dashboard only. All ratings and metrics are fictional examples, not verified property data or live certification records.</p>
         </aside>
-        <section class="hero-panel product-preview workspace-screen is-behind" data-workspace-screen="1" hidden aria-label="Illustrative broker listings page">
-          <div class="preview-top"><div class="preview-brand"><img class="preview-mark" src="/assets/images/favicon.ico" alt="" aria-hidden="true" width="29" height="29"><strong>hamlet <span>/ listings</span></strong></div><span class="preview-badge">PROPERTY LISTINGS</span></div>
-          <div class="preview-body"><div class="preview-heading"><div><h2>Broker Listings</h2><p>Commercial opportunities at a glance</p></div><span class="preview-badge">3 EXAMPLES</span></div>
-            <div class="preview-search" aria-hidden="true">⌕ &nbsp; Search by location, size or energy rating</div>
-            <div class="workspace-list">
-              <article class="workspace-list-row"><div><strong>Riverside Exchange</strong><small>London · 18,500 sq ft · EPC A · Low-carbon office</small></div><span class="workspace-status">Available</span></article>
-              <article class="workspace-list-row"><div><strong>Foundry House</strong><small>Manchester · 9,200 sq ft · EPC B · Retrofit potential</small></div><span class="workspace-status">Under offer</span></article>
-              <article class="workspace-list-row"><div><strong>Northbank Studios</strong><small>Bristol · 6,750 sq ft · Passivhaus-aligned design</small></div><span class="workspace-status">New listing</span></article>
-            </div>
-            <div class="preview-bottom"><div class="preview-mini"><strong>Energy evidence</strong><span>Review certificates and EPC details</span></div><div class="preview-mini"><strong>Listing status</strong><span>Availability and next steps</span></div></div>
-          </div>
-        </section>
-        <section class="hero-panel product-preview workspace-screen is-behind" data-workspace-screen="2" hidden aria-label="Illustrative my resources page">
-          <div class="preview-top"><div class="preview-brand"><img class="preview-mark" src="/assets/images/favicon.ico" alt="" aria-hidden="true" width="29" height="29"><strong>hamlet <span>/ resources</span></strong></div><span class="preview-badge">MY RESOURCES</span></div>
-          <div class="preview-body"><div class="preview-heading"><div><h2>My Resources</h2><p>Useful material for your next property conversation</p></div><span class="preview-badge">LIBRARY</span></div>
-            <div class="workspace-resource-grid">
-              <article class="workspace-resource"><div class="resource-icon" aria-hidden="true">⌂</div><strong>Passivhaus guide</strong><small>Certification principles and evidence to request.</small></article>
-              <article class="workspace-resource"><div class="resource-icon" aria-hidden="true">♧</div><strong>EnerPHit retrofit</strong><small>Existing-building retrofit standards and context.</small></article>
-              <article class="workspace-resource"><div class="resource-icon" aria-hidden="true">▤</div><strong>Leasing checklist</strong><small>Key documents, milestones and due-diligence prompts.</small></article>
-              <article class="workspace-resource"><div class="resource-icon" aria-hidden="true">↗</div><strong>Market briefing</strong><small>Discussion points for informed client conversations.</small></article>
-            </div>
-            <div class="preview-bottom"><div class="preview-mini"><strong>Saved resources</strong><span>Keep frequently used material close</span></div><div class="preview-mini"><strong>Next action</strong><span>Share the right resource with a client</span></div></div>
-          </div>
-        </section>
-        <section class="hero-panel product-preview workspace-screen is-behind" data-workspace-screen="3" hidden aria-label="Illustrative communications brief submission screen">
-          <div class="preview-top"><div class="preview-brand"><img class="preview-mark" src="/assets/images/favicon.ico" alt="" aria-hidden="true" width="29" height="29"><strong>hamlet <span>/ communications</span></strong></div><span class="preview-badge">COMMUNICATIONS BRIEF</span></div>
-          <div class="preview-body"><div class="preview-heading"><div><h2>Submit a Communications Brief</h2><p>Outline the message, audience and desired next step</p></div><span class="preview-badge">NEW BRIEF</span></div>
-            <form class="workspace-form" id="communications-brief-demo">
-              <label>Brief title<input name="brief-title" placeholder="e.g. Riverside Exchange launch" autocomplete="off"></label>
-              <label>Audience<select name="brief-audience"><option value="">Choose an audience</option><option>Prospective occupiers</option><option>Property owners</option><option>Broker network</option><option>Internal team</option></select></label>
-              <label>Purpose<textarea name="brief-purpose" placeholder="What needs to be communicated, and what should happen next?"></textarea></label>
-              <button class="button primary" type="submit">Preview brief summary</button><p id="communications-brief-feedback" class="preview-caption" role="status" aria-live="polite" style="padding:0"></p>
-            </form>
-          </div>
-        </section>
-          </div>
-          <div class="workspace-switcher" role="group" aria-label="Choose a workspace preview">
-            <button type="button" data-workspace-target="0" aria-pressed="true">Deal workspace</button>
-            <button type="button" data-workspace-target="1" aria-pressed="false">Broker listings</button>
-            <button type="button" data-workspace-target="2" aria-pressed="false">My resources</button>
-            <button type="button" data-workspace-target="3" aria-pressed="false">Communications brief</button>
-          </div>
-        </div>
-        <div class="hero-copy">
-          <span class="eyebrow homepage-hover-tag">Sustainable commercial leasing</span>
-          <h1>Commercial leasing<span style="color:#bfdbfe">.</span><br><span>Built around sustainability<span style="color:#fff">.</span></span></h1>
-          <p>hamlet is a commercial leasing workspace focused on sustainable properties that meet applicable energy-efficiency standards and hold valid <strong><a href="/resources/passivhaus.html">Passivhaus</a></strong> or <strong><a href="/resources/enerphit.html">EnerPHit</a></strong> certification. Discover relevant opportunities, manage leasing activity and coordinate professional relationships in one connected environment.</p>
-          <div class="actions">
-            <a class="button primary" href="/download.html"><svg class="windows-download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 200" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 93.7 0 8.2 104.6 0v93.7H0zm115.1-91.2L256 0v93.7H115.1V2.5zM0 106.3h104.6V200L0 185.4v-79.1zm115.1 0H256V200l-140.9-19.7v-74z"/></svg><span>Download Hamlet for Windows (x64)</span></a>
-            <a class="button" href="https://support.hamlet-ai.co.uk/">Read support documentation</a>
-          </div>
-        </div>
-
       </div>
     </section>
 
@@ -723,66 +643,6 @@
       }, {once:true});
     })();
   </script>
-
-  <script>
-    (() => {
-      const showcase = document.getElementById('workspace-showcase');
-      if (!showcase) return;
-      const screens = Array.from(showcase.querySelectorAll('[data-workspace-screen]'));
-      const controls = Array.from(showcase.querySelectorAll('[data-workspace-target]'));
-      if (!screens.length || !controls.length) return;
-      let active = 0;
-      function showScreen(index, animate = true) {
-        active = Math.max(0, Math.min(screens.length - 1, Number(index) || 0));
-        screens.forEach((screen, i) => {
-          const selected = i === active;
-          screen.hidden = false;
-          screen.style.setProperty('--shelf-index', String(i));
-          screen.style.zIndex = String(selected ? 12 : 8 - i);
-          screen.classList.toggle('is-active', selected);
-          screen.classList.toggle('is-behind', !selected);
-          screen.setAttribute('aria-hidden', String(!selected));
-          screen.tabIndex = selected ? 0 : -1;
-        });
-        controls.forEach((control, i) => control.setAttribute('aria-pressed', String(i === active)));
-        showcase.classList.toggle('is-previewing', animate);
-      }
-      screens.forEach(screen => {
-        screen.addEventListener('pointerenter', event => {
-          if (event.pointerType === 'mouse') showScreen(screen.dataset.workspaceScreen);
-        });
-        screen.addEventListener('focus', () => showScreen(screen.dataset.workspaceScreen));
-        screen.addEventListener('click', event => {
-          if (event.target.closest('a,button,input,select,textarea,form')) return;
-          showScreen(screen.dataset.workspaceScreen);
-        });
-      });
-      controls.forEach(control => {
-        control.addEventListener('pointerenter', () => showScreen(control.dataset.workspaceTarget));
-        control.addEventListener('focus', () => showScreen(control.dataset.workspaceTarget));
-        control.addEventListener('click', () => showScreen(control.dataset.workspaceTarget));
-      });
-      showcase.addEventListener('keydown', event => {
-        if (!['ArrowLeft', 'ArrowRight'].includes(event.key) || !controls.includes(document.activeElement)) return;
-        event.preventDefault();
-        const next = (active + (event.key === 'ArrowRight' ? 1 : -1) + screens.length) % screens.length;
-        controls[next].focus();
-      });
-      const form = document.getElementById('communications-brief-demo');
-      const feedback = document.getElementById('communications-brief-feedback');
-      if (form && feedback) form.addEventListener('submit', event => {
-        event.preventDefault();
-        const title = form.elements['brief-title'].value.trim();
-        const audience = form.elements['brief-audience'].value;
-        const purpose = form.elements['brief-purpose'].value.trim();
-        feedback.textContent = title || audience || purpose
-          ? 'Preview ready: ' + (title || 'Untitled brief') + (audience ? ' · Audience: ' + audience : '') + (purpose ? ' · Purpose captured' : '') + '. Nothing has been sent or saved.'
-          : 'Add a title, audience or purpose to preview your brief.';
-      });
-      showScreen(0, false);
-    })();
-  </script>
-
   <script src="/site-search.js?v=20261025-1" defer></script>
   <script src="/hamlet-background.js?v=20261021-2"></script>
 </body>

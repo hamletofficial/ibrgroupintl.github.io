@@ -142,8 +142,11 @@
     .preview-caption{margin:0;padding:0 1rem 1rem;color:#91a5c0;font-size:.68rem}
 
     /* Interactive hero showcase: one full-size workspace screen at a time. */
-    .workspace-showcase{position:relative;min-width:0;align-self:stretch}
-    .workspace-stack{position:relative;min-width:0;min-height:390px;perspective:1100px;isolation:isolate}
+    .workspace-showcase{position:relative;min-width:0;align-self:stretch;padding-right:54px;margin-bottom:2rem}
+    .workspace-stack{position:relative;min-width:0;min-height:430px;perspective:1100px;isolation:isolate}
+    .workspace-switcher{position:relative;z-index:15}
+    @media(max-width:850px){.workspace-showcase{margin-bottom:2.25rem}.workspace-stack{min-height:420px}}
+    @media(max-width:560px){.workspace-showcase{padding-right:0;margin-bottom:2.5rem}.workspace-stack{min-height:430px}}
     .workspace-screen{position:absolute;inset:0 auto auto 0;width:calc(100% - 54px);min-height:390px;height:auto;margin:0;opacity:1;overflow:hidden;transform:translateX(calc(var(--shelf-index, 0) * 18px));z-index:calc(8 - var(--shelf-index, 0));transition:opacity .28s ease,transform .38s cubic-bezier(.2,.75,.25,1),width .38s cubic-bezier(.2,.75,.25,1),box-shadow .3s ease;transform-origin:left center;cursor:pointer;box-shadow:0 18px 42px #0005}
     .workspace-screen[hidden]{display:none!important}
     .workspace-screen.is-active{width:100%;z-index:12;opacity:1;transform:translateX(0);cursor:default;box-shadow:0 22px 58px #0008}

@@ -9,6 +9,8 @@ on:
       - 'functions/index.js'
       - 'firestore.rules'
       - 'storage.rules'
+      - 'site-search.js'
+      - 'search-index.json'
       - 'tests/**'
       - '.github/workflows/hamlet-smoke.yml'
   pull_request:

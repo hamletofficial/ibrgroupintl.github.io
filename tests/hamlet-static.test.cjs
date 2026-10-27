@@ -5,6 +5,8 @@ const vm = require('node:vm');
 
 const html = fs.readFileSync('app/hamlet/index.html', 'utf8');
 const messagesHtml = fs.readFileSync('messages.html', 'utf8');
+const siteSearch = fs.readFileSync('site-search.js', 'utf8');
+const searchIndex = JSON.parse(fs.readFileSync('search-index.json', 'utf8'));
 const firestore = fs.readFileSync('firestore.rules', 'utf8');
 const storage = fs.readFileSync('storage.rules', 'utf8');
 const functions = fs.readFileSync('functions/index.js', 'utf8');
@@ -78,4 +80,19 @@ test('documents and saved searches have private owner rules', () => {
   assert.match(storage, /request\.auth\.uid == userId/);
   assert.match(storage, /request\.resource\.size <= 15 \* 1024 \* 1024/);
   assert.match(storage, /allow update: if false;/);
+});
+
+
+test('public search excludes protected member pages from both its index and results', () => {
+  const privateFileSet = siteSearch.match(/const privateFiles = new Set\\(\\[([\\s\\S]*?)\\]\\);/);
+  assert.ok(privateFileSet, 'expected an explicit private-page exclusion list');
+  for (const path of ['insights.html', 'dashboard.html', 'messages.html', 'settings.html', 'admin.html']) {
+    assert.ok(privateFileSet[1].includes("'" + path + "'"), 'public search must exclude protected page: ' + path);
+  }
+  for (const page of searchIndex) {
+    const path = String(page.path || page.url || '').replace(/^\\/+/, '').toLowerCase();
+    const filename = path.split('/').pop();
+    assert.notEqual(filename, 'insights.html', 'protected page must not be published in search-index.json');
+    assert.ok(!/^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication)(?:\\/|$)/i.test(path), 'private directory must not appear in public search index: ' + path);
+  }
 });

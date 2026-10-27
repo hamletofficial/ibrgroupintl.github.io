@@ -84,15 +84,15 @@ test('documents and saved searches have private owner rules', () => {
 
 
 test('public search excludes protected member pages from both its index and results', () => {
-  const privateFileSet = siteSearch.match(/const privateFiles = new Set\\(\\[([\\s\\S]*?)\\]\\);/);
+  const privateFileSet = siteSearch.match(/const privateFiles = new Set\(\[([\s\S]*?)\]\);/);
   assert.ok(privateFileSet, 'expected an explicit private-page exclusion list');
   for (const path of ['insights.html', 'dashboard.html', 'messages.html', 'settings.html', 'admin.html']) {
     assert.ok(privateFileSet[1].includes("'" + path + "'"), 'public search must exclude protected page: ' + path);
   }
   for (const page of searchIndex) {
-    const path = String(page.path || page.url || '').replace(/^\\/+/, '').toLowerCase();
+    const path = String(page.path || page.url || '').replace(/^\/+/, '').toLowerCase();
     const filename = path.split('/').pop();
     assert.notEqual(filename, 'insights.html', 'protected page must not be published in search-index.json');
-    assert.ok(!/^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication)(?:\\/|$)/i.test(path), 'private directory must not appear in public search index: ' + path);
+    assert.ok(!/^(?:app|functions|public|superuser|admin|account|accounts|auth|authentication)(?:\/|$)/i.test(path), 'private directory must not appear in public search index: ' + path);
   }
 });

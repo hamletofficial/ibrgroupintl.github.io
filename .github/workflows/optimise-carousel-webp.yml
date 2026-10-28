@@ -45,14 +45,26 @@ jobs:
             fi
           done
 
-      - name: Commit WebP assets
+      - name: Point carousel at WebP assets
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("index.html")
+          html = path.read_text()
+          names = ["ipad-grid-iii", "ipad", "ipad-grid", "ipad-backup", "ipad-grid-i", "ipad-grid-ii"]
+          for name in names:
+              html = html.replace(f"/assets/images/{name}.png", f"/assets/images/{name}.webp")
+          path.write_text(html)
+          PY
+
+      - name: Commit WebP assets and carousel references
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/images/ipad-grid-iii.webp assets/images/ipad.webp assets/images/ipad-grid.webp assets/images/ipad-backup.webp assets/images/ipad-grid-i.webp assets/images/ipad-grid-ii.webp
+          git add index.html assets/images/ipad-grid-iii.webp assets/images/ipad.webp assets/images/ipad-grid.webp assets/images/ipad-backup.webp assets/images/ipad-grid-i.webp assets/images/ipad-grid-ii.webp
           if git diff --cached --quiet; then
             echo "Optimised WebP files are already up to date."
             exit 0
           fi
-          git commit -m "Add optimised WebP carousel images"
+          git commit -m "Optimise homepage carousel images"
           git push

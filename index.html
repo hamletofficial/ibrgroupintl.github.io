@@ -96,9 +96,22 @@
     .usp .eyebrow{border-color:#7898c7;background:rgba(7,17,40,.28);color:#dbeafe}
     .usp .ticks{grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;margin-top:1.2rem}
     .usp .ticks li{border-color:rgba(191,219,254,.25);background:rgba(11,17,32,.42);color:#f8fafc;font-size:.9rem;line-height:1.45;padding:.75rem;border-radius:10px}
-    .usp-visual{position:relative;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(191,219,254,.28);border-radius:14px;background:rgba(11,17,32,.38);box-shadow:0 16px 35px rgba(0,0,0,.25)}
-    .usp-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(7,29,74,.08),rgba(7,29,74,.22));pointer-events:none}
-    .usp-visual img{display:block;width:100%;height:100%;min-height:320px;max-height:440px;object-fit:cover;object-position:center;border-radius:inherit}
+    .usp-visual{position:relative;min-width:0;align-self:stretch;display:flex;flex-direction:column;justify-content:center;overflow:hidden;border:1px solid rgba(191,219,254,.28);border-radius:14px;background:#071d4a;box-shadow:0 16px 35px rgba(0,0,0,.25)}
+    .usp-carousel{position:relative;width:100%;overflow:hidden;background:#071d4a}
+    .usp-carousel-track{display:flex;transition:transform .45s cubic-bezier(.22,.7,.2,1)}
+    .usp-carousel-slide{flex:0 0 100%;min-width:0;aspect-ratio:4/3;background:#0b1120;display:flex;align-items:center;justify-content:center}
+    .usp-carousel-slide img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;background:#0b1120}
+    .usp-carousel-control{position:absolute;z-index:2;top:50%;transform:translateY(-50%);width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(219,234,254,.6);border-radius:50%;background:rgba(7,29,74,.88);color:#fff;font-size:1.4rem;line-height:1;cursor:pointer}
+    .usp-carousel-control.prev{left:10px}.usp-carousel-control.next{right:10px}
+    .usp-carousel-control:focus-visible,.usp-carousel-dot:focus-visible{outline:3px solid #bfdbfe;outline-offset:3px}
+    .usp-carousel-caption{padding:.8rem 1rem .25rem;background:linear-gradient(135deg,#071d4a,#102b5b);color:#fff;font-size:.88rem;font-weight:750}
+    .usp-carousel-footer{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.6rem 1rem .85rem;background:linear-gradient(135deg,#071d4a,#102b5b)}
+    .usp-carousel-count{color:#dbeafe;font-size:.76rem;font-variant-numeric:tabular-nums}
+    .usp-carousel-dots{display:flex;align-items:center;gap:.45rem}
+    .usp-carousel-dot{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:#64748b;cursor:pointer}
+    .usp-carousel-dot[aria-current="true"]{background:#fff;transform:scale(1.25)}
+    @media(max-width:850px){.usp-carousel-slide{aspect-ratio:16/10}}
+    @media(prefers-reduced-motion:reduce){.usp-carousel-track{transition:none}}
     .usp-caption{position:absolute;z-index:1;left:.85rem;right:.85rem;bottom:.85rem;padding:.65rem .8rem;border:1px solid rgba(191,219,254,.25);border-radius:9px;background:rgba(7,17,40,.82);color:#dbeafe;font-size:.76rem;font-weight:700;backdrop-filter:blur(8px)}
     .ticks{list-style:none;padding:0;margin:1rem 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
     .ticks li{padding:.7rem;border:1px solid #374151;border-radius:9px}
@@ -450,9 +463,43 @@
               <li>✓ Support and policy information in reach</li>
             </ul>
           </div>
-          <div class="usp-visual">
-            <img src="/assets/images/ipad-backup.png" alt="Hamlet workspace displayed on a tablet" loading="lazy" decoding="async">
-            <div class="usp-caption">One workspace for connected commercial leasing workflows</div>
+          <div class="usp-visual" role="region" aria-label="The Hamlet Difference image carousel" aria-roledescription="carousel">
+            <div class="usp-carousel" id="hamlet-difference-carousel">
+              <div class="usp-carousel-track" id="hamlet-difference-track">
+                <div class="usp-carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 6: iPad grid iii">
+                  <img src="/assets/images/049DBB9E-C37A-4E18-A2C8-0F7DB1FB5C03.png" alt="Hamlet iPad grid iii product visual" loading="lazy" decoding="async">
+                </div>
+                <div class="usp-carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 6: iPad">
+                  <img src="/assets/images/ipad.png" alt="Hamlet iPad workspace visual" loading="lazy" decoding="async">
+                </div>
+                <div class="usp-carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 6: iPad grid">
+                  <img src="/assets/images/594DFD06-582A-45B4-AAEB-A797C7627676.png" alt="Hamlet iPad grid product visual" loading="lazy" decoding="async">
+                </div>
+                <div class="usp-carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 6: iPad backup">
+                  <img src="/assets/images/ipad-backup.png" alt="Hamlet iPad backup workspace visual" loading="lazy" decoding="async">
+                </div>
+                <div class="usp-carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 6: iPad grid i">
+                  <img src="/assets/images/B01A53E0-5C36-4092-8483-87E34CCD3412.png" alt="Hamlet iPad grid i product visual" loading="lazy" decoding="async">
+                </div>
+                <div class="usp-carousel-slide" role="group" aria-roledescription="slide" aria-label="6 of 6: iPad grid ii">
+                  <img src="/assets/images/DA565D94-771A-44B2-A9D8-25705FE05088.png" alt="Hamlet iPad grid ii product visual" loading="lazy" decoding="async">
+                </div>
+              </div>
+              <button class="usp-carousel-control prev" type="button" aria-label="Previous image" data-usp-prev>‹</button>
+              <button class="usp-carousel-control next" type="button" aria-label="Next image" data-usp-next>›</button>
+            </div>
+            <div class="usp-carousel-caption" id="usp-carousel-caption" aria-live="polite" aria-atomic="true">iPad grid iii</div>
+            <div class="usp-carousel-footer">
+              <span class="usp-carousel-count" id="usp-carousel-count">1 / 6</span>
+              <div class="usp-carousel-dots" role="group" aria-label="Choose a Hamlet product image">
+                <button class="usp-carousel-dot" type="button" data-usp-go="0" aria-label="Show iPad grid iii" aria-current="true"></button>
+                <button class="usp-carousel-dot" type="button" data-usp-go="1" aria-label="Show iPad" aria-current="false"></button>
+                <button class="usp-carousel-dot" type="button" data-usp-go="2" aria-label="Show iPad grid" aria-current="false"></button>
+                <button class="usp-carousel-dot" type="button" data-usp-go="3" aria-label="Show iPad backup" aria-current="false"></button>
+                <button class="usp-carousel-dot" type="button" data-usp-go="4" aria-label="Show iPad grid i" aria-current="false"></button>
+                <button class="usp-carousel-dot" type="button" data-usp-go="5" aria-label="Show iPad grid ii" aria-current="false"></button>
+              </div>
+            </div>
           </div>
         </div>
         <p class="notice"><strong>Important:</strong> hamlet is a workflow and networking environment, not a guarantee that a listing is accurate, a transaction will complete, or a counterparty has been independently vetted. Carry out your own commercial, legal, financial and property due diligence.</p>
@@ -727,6 +774,35 @@
         if (window.ResizeObserver) new ResizeObserver(placeSuggestions).observe(input.closest('.site-search-form'));
       }, {once:true});
     })();
+  </script>
+  <script>
+  (function(){
+    const carousel=document.getElementById('hamlet-difference-carousel');
+    const track=document.getElementById('hamlet-difference-track');
+    if(!carousel||!track)return;
+    const slides=Array.from(track.querySelectorAll('.usp-carousel-slide'));
+    const dots=Array.from(document.querySelectorAll('[data-usp-go]'));
+    const caption=document.getElementById('usp-carousel-caption');
+    const count=document.getElementById('usp-carousel-count');
+    const labels=['iPad grid iii','iPad','iPad grid','iPad backup','iPad grid i','iPad grid ii'];
+    let active=0;
+    function show(index){
+      active=(index+slides.length)%slides.length;
+      track.style.transform='translateX(-'+(active*100)+'%)';
+      slides.forEach((slide,i)=>slide.setAttribute('aria-hidden',String(i!==active)));
+      dots.forEach((dot,i)=>dot.setAttribute('aria-current',String(i===active)));
+      if(caption)caption.textContent=labels[active];
+      if(count)count.textContent=(active+1)+' / '+slides.length;
+    }
+    carousel.querySelector('[data-usp-prev]').addEventListener('click',()=>show(active-1));
+    carousel.querySelector('[data-usp-next]').addEventListener('click',()=>show(active+1));
+    dots.forEach(dot=>dot.addEventListener('click',()=>show(Number(dot.dataset.uspGo))));
+    carousel.addEventListener('keydown',event=>{
+      if(event.key==='ArrowLeft'){event.preventDefault();show(active-1)}
+      if(event.key==='ArrowRight'){event.preventDefault();show(active+1)}
+    });
+    show(0);
+  })();
   </script>
   <script src="/site-search.js?v=20261025-1" defer></script>
   <script src="/hamlet-background.js?v=20261021-2"></script>

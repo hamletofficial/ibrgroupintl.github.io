@@ -1,46 +1,45 @@
 #!/usr/bin/env python3
-"""Build extensionless directory routes for Hamlet's static GitHub Pages site.
+"""Build clean URL aliases for Hamlet's public static GitHub Pages pages.
 
-Runs only in the Pages deployment workspace. Source files remain named *.html
-in Git; the published artifact receives route aliases such as /about/index.html.
+Runs only in the disposable deployment workspace. Source files stay *.html in Git.
 """
 from pathlib import Path
 import re
-import shutil
 import sys
 
 ROOT = Path(".")
 SKIP_PARTS = {
     ".git", ".github", "node_modules", "functions", "sagat", "ryu", "ken",
-    "hamlet-ai-gateway", "worker", "vendor",
+    "hamlet-ai-gateway", "worker", "vendor", "app", "public", "superuser",
+    "admin", "account", "accounts", "auth", "authentication", "onfido", "oauth",
+}
+SKIP_FILES = {
+    "admin.html", "login.html", "editprofile.html", "invoice.html", "archive.html",
+    "dashboard.html", "live.html", "portfolio.html", "residential.html",
+    "resi-resources.html", "resources.html", "members.html", "directory.html",
+    "profile.html", "posts.html", "rankings.html", "messages.html", "requests.html",
+    "settings.html", "loggedout.html", "callback.html", "success.html",
+    "search.html", "404.html",
 }
 HTML_SUFFIX = re.compile(r"(?i)\.html$")
 ATTR_HREF = re.compile(r"""(?P<prefix>\bhref\s*=\s*)(?P<quote>["'])(?P<url>[^"'<>]+)(?P=quote)""", re.I)
-REDIRECT_SCRIPT = r"""<script id="hamlet-extensionless-canonical">
+CANONICAL_SCRIPT = r"""<script id="hamlet-extensionless-canonical">
 (function () {
   var path = window.location.pathname;
-  var clean = null;
   if (/\/index\.html$/i.test(path)) {
-    clean = path.replace(/index\.html$/i, '');
-    if (!clean) clean = '/';
+    var cleanIndex = path.replace(/index\.html$/i, '');
+    window.location.replace((cleanIndex || '/') + window.location.search + window.location.hash);
   } else if (/\.html$/i.test(path)) {
-    clean = path.slice(0, -5) + '/';
-  }
-  if (clean && clean !== path) {
-    window.location.replace(clean + window.location.search + window.location.hash);
+    window.location.replace(path.slice(0, -5) + '/' + window.location.search + window.location.hash);
   }
 })();
 </script>"""
 
 def excluded(path):
-    return any(part in SKIP_PARTS for part in path.parts)
+    return path.name.lower() in SKIP_FILES or any(part.lower() in SKIP_PARTS for part in path.parts)
 
 def clean_link(url):
-    # Preserve external links, protocol-relative links, non-page assets, and
-    # fragment-only references. Only rewrite local links whose path ends .html.
-    if not url or url.startswith(("#", "//")):
-        return url
-    if re.match(r"(?i)^[a-z][a-z0-9+.-]*:", url):
+    if not url or url.startswith(("#", "//")) or re.match(r"(?i)^[a-z][a-z0-9+.-]*:", url):
         return url
     match = re.match(r"^([^?#]*)([?#].*)?$", url)
     if not match:
@@ -49,66 +48,56 @@ def clean_link(url):
     if not HTML_SUFFIX.search(path):
         return url
     if path.lower().endswith("/index.html") or path.lower() == "index.html":
-        new_path = path[:-10]
-        if not new_path:
-            new_path = "./"
-        elif not new_path.endswith("/"):
-            new_path += "/"
+        clean = path[:-10]
+        if not clean:
+            clean = "./"
+        elif not clean.endswith("/"):
+            clean += "/"
     else:
-        new_path = path[:-5] + "/"
-    return new_path + suffix
+        clean = path[:-5] + "/"
+    return clean + suffix
 
-def add_base(html, base):
-    if re.search(r"<base\b", html, re.I):
-        return html
+def add_base(document, base):
+    if re.search(r"<base\b", document, re.I) or not re.search(r"<head\b[^>]*>", document, re.I):
+        return document
     tag = '<base href="' + base + '">'
-    if re.search(r"<head\b[^>]*>", html, re.I):
-        return re.sub(r"(<head\b[^>]*>)", r"\1\n    " + tag, html, count=1, flags=re.I)
-    return html.replace("<html", "<html", 1) if False else html
+    return re.sub(r"(<head\b[^>]*>)", lambda m: m.group(1) + "\n    " + tag,
+                  document, count=1, flags=re.I)
 
 def main():
-    html_files = sorted(
-        p for p in ROOT.rglob("*.html")
-        if p.is_file() and not excluded(p.relative_to(ROOT))
-    )
+    html_files = sorted(p for p in ROOT.rglob("*.html")
+                        if p.is_file() and not excluded(p.relative_to(ROOT)))
     if not html_files:
-        print("No HTML source files found.", file=sys.stderr)
+        print("No eligible HTML pages found.", file=sys.stderr)
         return 1
 
-    # Rewrite only HTML href attributes; JavaScript, CSS, APIs and asset URLs
-    # are left intact. This is done in the disposable deployment workspace.
     originals = {}
     for path in html_files:
-        text = path.read_text(encoding="utf-8", errors="replace")
-        text = ATTR_HREF.sub(lambda m: m.group("prefix") + m.group("quote") +
-                             clean_link(m.group("url")) + m.group("quote"), text)
-        if not re.search(r'id=["\']hamlet-extensionless-canonical["\']', text, re.I):
-            if re.search(r"</head\s*>", text, re.I):
-                text = re.sub(r"</head\s*>", REDIRECT_SCRIPT + "\n</head>", text,
-                              count=1, flags=re.I)
-        path.write_text(text, encoding="utf-8")
-        originals[path] = text
+        document = path.read_text(encoding="utf-8", errors="replace")
+        document = ATTR_HREF.sub(
+            lambda m: m.group("prefix") + m.group("quote") +
+                      clean_link(m.group("url")) + m.group("quote"), document)
+        if 'id="hamlet-extensionless-canonical"' not in document:
+            document = re.sub(r"</head\s*>", CANONICAL_SCRIPT + "\n</head>",
+                              document, count=1, flags=re.I)
+        path.write_text(document, encoding="utf-8")
+        originals[path] = document
 
     created = 0
-    skipped = 0
-    for source, text in originals.items():
-        rel = source.relative_to(ROOT)
+    for source, document in originals.items():
         if source.name.lower() == "index.html":
-            # Directory index URLs already omit the filename.
             continue
-        route_dir = source.parent / source.stem
-        target = route_dir / "index.html"
+        target = source.parent / source.stem / "index.html"
         if target.exists():
-            skipped += 1
-            continue
-        route_dir.mkdir(parents=True, exist_ok=True)
-        parent = "/" if str(source.parent) == "." else "/" + source.parent.as_posix().strip("/") + "/"
-        alias = add_base(text, parent)
-        target.write_text(alias, encoding="utf-8")
+            print(f"ERROR: route alias would overwrite existing page: {target}", file=sys.stderr)
+            return 1
+        target.parent.mkdir(parents=True, exist_ok=True)
+        parent_url = "/" if str(source.parent) == "." else "/" + source.parent.as_posix().strip("/") + "/"
+        target.write_text(add_base(document, parent_url), encoding="utf-8")
         created += 1
 
-    print(f"Extensionless route build complete: {len(html_files)} HTML files processed; "
-          f"{created} route aliases created; {skipped} existing route directories preserved.")
+    print(f"Clean URL build succeeded: {len(html_files)} public pages checked; "
+          f"{created} extensionless aliases generated.")
     return 0
 
 if __name__ == "__main__":

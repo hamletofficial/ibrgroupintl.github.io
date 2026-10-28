@@ -48,6 +48,8 @@ jobs:
         run: test -s search-index.json
       - name: Inject universal search into public HTML pages
         run: python3 scripts/inject-universal-search.py
+      - name: Build extensionless public page routes
+        run: python3 scripts/build-extensionless-routes.py
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

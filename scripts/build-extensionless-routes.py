@@ -89,8 +89,9 @@ def main():
             continue
         target = source.parent / source.stem / "index.html"
         if target.exists():
-            print(f"ERROR: route alias would overwrite existing page: {target}", file=sys.stderr)
-            return 1
+            # An existing directory index is already a valid route; never overwrite it.
+            print(f"Preserving existing route: {target}")
+            continue
         target.parent.mkdir(parents=True, exist_ok=True)
         parent_url = "/" if str(source.parent) == "." else "/" + source.parent.as_posix().strip("/") + "/"
         target.write_text(add_base(document, parent_url), encoding="utf-8")

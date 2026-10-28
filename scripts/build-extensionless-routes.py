@@ -91,7 +91,7 @@ def main():
         document = ATTR_HREF.sub(
             lambda m: m.group("prefix") + m.group("quote") +
                       clean_link(m.group("url"), path, eligible) + m.group("quote"), document)
-        if 'id="hamlet-extensionless-canonical"' not in document:
+        if path in eligible and 'id="hamlet-extensionless-canonical"' not in document:
             document = re.sub(r"</head\s*>", CANONICAL_SCRIPT + "\n</head>",
                               document, count=1, flags=re.I)
         path.write_text(document, encoding="utf-8")

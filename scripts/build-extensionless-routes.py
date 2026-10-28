@@ -2,6 +2,7 @@
 """Build clean URL aliases for Hamlet's public static GitHub Pages pages.
 
 Runs only in the disposable deployment workspace. Source files stay *.html in Git.
+Only links to eligible public HTML pages are rewritten; protected/excluded links stay intact.
 """
 from pathlib import Path
 import re
@@ -38,7 +39,7 @@ CANONICAL_SCRIPT = r"""<script id="hamlet-extensionless-canonical">
 def excluded(path):
     return path.name.lower() in SKIP_FILES or any(part.lower() in SKIP_PARTS for part in path.parts)
 
-def clean_link(url):
+def clean_link(url, source, eligible):
     if not url or url.startswith(("#", "//")) or re.match(r"(?i)^[a-z][a-z0-9+.-]*:", url):
         return url
     match = re.match(r"^([^?#]*)([?#].*)?$", url)
@@ -47,6 +48,14 @@ def clean_link(url):
     path, suffix = match.group(1), match.group(2) or ""
     if not HTML_SUFFIX.search(path):
         return url
+
+    # Resolve the actual destination so excluded/protected pages are never rewritten.
+    candidate = (ROOT / path.lstrip("/")) if path.startswith("/") else (source.parent / path)
+    candidate = candidate.resolve()
+    eligible_resolved = {p.resolve() for p in eligible}
+    if candidate not in eligible_resolved:
+        return url
+
     if path.lower().endswith("/index.html") or path.lower() == "index.html":
         clean = path[:-10]
         if not clean:
@@ -71,12 +80,13 @@ def main():
         print("No eligible HTML pages found.", file=sys.stderr)
         return 1
 
+    eligible = set(html_files)
     originals = {}
     for path in html_files:
         document = path.read_text(encoding="utf-8", errors="replace")
         document = ATTR_HREF.sub(
             lambda m: m.group("prefix") + m.group("quote") +
-                      clean_link(m.group("url")) + m.group("quote"), document)
+                      clean_link(m.group("url"), path, eligible) + m.group("quote"), document)
         if 'id="hamlet-extensionless-canonical"' not in document:
             document = re.sub(r"</head\s*>", CANONICAL_SCRIPT + "\n</head>",
                               document, count=1, flags=re.I)
@@ -89,7 +99,6 @@ def main():
             continue
         target = source.parent / source.stem / "index.html"
         if target.exists():
-            # An existing directory index is already a valid route; never overwrite it.
             print(f"Preserving existing route: {target}")
             continue
         target.parent.mkdir(parents=True, exist_ok=True)

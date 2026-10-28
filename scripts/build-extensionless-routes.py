@@ -49,21 +49,19 @@ def clean_link(url, source, eligible):
     if not HTML_SUFFIX.search(path):
         return url
 
-    # Resolve the actual destination so excluded/protected pages are never rewritten.
+    # Resolve relative links against the source file, and root-relative links against site root.
     candidate = (ROOT / path.lstrip("/")) if path.startswith("/") else (source.parent / path)
     candidate = candidate.resolve()
     eligible_resolved = {p.resolve() for p in eligible}
     if candidate not in eligible_resolved:
         return url
 
-    if path.lower().endswith("/index.html") or path.lower() == "index.html":
-        clean = path[:-10]
-        if not clean:
-            clean = "./"
-        elif not clean.endswith("/"):
-            clean += "/"
+    relative_target = candidate.relative_to(ROOT.resolve())
+    if relative_target.name.lower() == "index.html":
+        route = relative_target.parent.as_posix()
     else:
-        clean = path[:-5] + "/"
+        route = (relative_target.parent / relative_target.stem).as_posix()
+    clean = "/" if route in ("", ".") else "/" + route.strip("/") + "/"
     return clean + suffix
 
 def add_base(document, base):

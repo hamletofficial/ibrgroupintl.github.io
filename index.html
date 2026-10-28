@@ -104,7 +104,6 @@
     .usp-carousel-control{position:absolute;z-index:2;top:50%;transform:translateY(-50%);width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(219,234,254,.6);border-radius:50%;background:rgba(7,29,74,.88);color:#fff;font-size:1.4rem;line-height:1;cursor:pointer}
     .usp-carousel-control.prev{left:10px}.usp-carousel-control.next{right:10px}
     .usp-carousel-control:focus-visible,.usp-carousel-dot:focus-visible{outline:3px solid #bfdbfe;outline-offset:3px}
-    .usp-carousel-caption{padding:.8rem 1rem .25rem;background:linear-gradient(135deg,#071d4a,#102b5b);color:#fff;font-size:.88rem;font-weight:750}
     .usp-carousel-footer{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.6rem 1rem .85rem;background:linear-gradient(135deg,#071d4a,#102b5b)}
     .usp-carousel-count{color:#dbeafe;font-size:.76rem;font-variant-numeric:tabular-nums}
     .usp-carousel-dots{display:flex;align-items:center;gap:.45rem}
@@ -488,7 +487,6 @@
               <button class="usp-carousel-control prev" type="button" aria-label="Previous image" data-usp-prev>‹</button>
               <button class="usp-carousel-control next" type="button" aria-label="Next image" data-usp-next>›</button>
             </div>
-            <div class="usp-carousel-caption" id="usp-carousel-caption" aria-live="polite" aria-atomic="true">iPad grid iii</div>
             <div class="usp-carousel-footer">
               <span class="usp-carousel-count" id="usp-carousel-count">1 / 6</span>
               <div class="usp-carousel-dots" role="group" aria-label="Choose a Hamlet product image">
@@ -782,16 +780,13 @@
     if(!carousel||!track)return;
     const slides=Array.from(track.querySelectorAll('.usp-carousel-slide'));
     const dots=Array.from(document.querySelectorAll('[data-usp-go]'));
-    const caption=document.getElementById('usp-carousel-caption');
     const count=document.getElementById('usp-carousel-count');
-    const labels=['iPad grid iii','iPad','iPad grid','iPad backup','iPad grid i','iPad grid ii'];
     let active=0;
     function show(index){
       active=(index+slides.length)%slides.length;
       track.style.transform='translateX(-'+(active*100)+'%)';
       slides.forEach((slide,i)=>slide.setAttribute('aria-hidden',String(i!==active)));
       dots.forEach((dot,i)=>dot.setAttribute('aria-current',String(i===active)));
-      if(caption)caption.textContent=labels[active];
       if(count)count.textContent=(active+1)+' / '+slides.length;
     }
     carousel.querySelector('[data-usp-prev]').addEventListener('click',()=>show(active-1));

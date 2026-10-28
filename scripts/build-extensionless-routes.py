@@ -78,7 +78,13 @@ def main():
         print("No eligible HTML pages found.", file=sys.stderr)
         return 1
 
-    eligible = set(html_files)
+    # Pages with a pre-existing directory index cannot safely claim that route.
+    # Leave their legacy .html links unchanged rather than pointing at unrelated content.
+    eligible = {
+        path for path in html_files
+        if path.name.lower() == "index.html"
+        or not (path.parent / path.stem / "index.html").exists()
+    }
     originals = {}
     for path in html_files:
         document = path.read_text(encoding="utf-8", errors="replace")

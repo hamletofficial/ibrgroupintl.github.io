@@ -1,3 +1,15 @@
+/* Canonical site header copied from 404.html; shared across root, public and app/hamlet HTML. */
+.hamlet-404-header{position:relative;z-index:1000;flex:none;border-bottom:1px solid rgba(148,163,184,.13);background:rgba(7,17,31,.78)!important;background-color:rgba(7,17,31,.78)!important;background-image:none!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:#f8fafc!important}
+.hamlet-404-header .topbar-inner{width:min(1440px,100%);margin:auto;padding:16px clamp(18px,4vw,52px);display:flex;align-items:center;justify-content:space-between;gap:20px;background:transparent!important}
+.hamlet-404-header .brand{font-size:clamp(1.5rem,3vw,2rem);font-weight:850;letter-spacing:-.055em;text-decoration:none;color:#f8fafc!important;white-space:nowrap}
+.hamlet-404-header .brand span{color:#60a5fa!important}
+.hamlet-404-header .top-links{display:flex;align-items:center;gap:clamp(12px,2vw,28px);font-size:.88rem;color:#dbeafe}
+.hamlet-404-header .top-links a{color:#dbeafe!important;text-decoration:none;white-space:nowrap}
+.hamlet-404-header .top-links a:hover,.hamlet-404-header .top-links a:focus-visible{color:#60a5fa!important}
+.hamlet-404-header .top-links .signin{padding:10px 18px;border-radius:999px;background:#075bea!important;color:#fff!important;font-weight:750}
+@media(max-width:900px){.hamlet-404-header .top-links a:not(.signin){display:none}}
+@media(max-width:540px){.hamlet-404-header .topbar-inner{padding:13px 18px}}
+
 /* IBR shared appearance system. Dark mode uses high-contrast neutral surfaces. */
 html[data-appearance="dark"] {
   color-scheme: dark;

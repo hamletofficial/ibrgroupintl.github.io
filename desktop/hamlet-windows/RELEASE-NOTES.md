@@ -1,6 +1,6 @@
-# Hamlet v1.04.02 — Windows desktop build
+# Hamlet v1.04.04 — Windows desktop build
 
-Hamlet v1.04.02 brings the Windows desktop application into the platform's unified version numbering. This release candidate is intended for validation before publication.
+Hamlet v1.04.04 updates the Windows desktop branding with the refreshed orbital h icon and aligns the installer version with the platform release.
 
 ## Windows application
 
@@ -13,12 +13,12 @@ Hamlet v1.04.02 brings the Windows desktop application into the platform's unifi
 
 ## Install and verify
 
-The expected installer filename is `hamlet-Setup-1.4.2.exe`.
+The expected installer filename is `hamlet-Setup-1.4.4.exe`.
 
 After the build artifact is available, download both the installer and `SHA256SUMS.txt`. In PowerShell, run:
 
 ```powershell
-Get-FileHash .\hamlet-Setup-1.4.2.exe -Algorithm SHA256
+Get-FileHash .\hamlet-Setup-1.4.4.exe -Algorithm SHA256
 Get-Content .\SHA256SUMS.txt
 ```
 

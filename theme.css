@@ -802,3 +802,38 @@ a.site-title:has(span)::after,
 .brand-wordmark:has(span)::after {
   content: none !important;
 }
+
+/* Hamlet root-site design tokens and shared identity (central source of truth). */
+:root {
+  --hamlet-page-bg: #111827;
+  --hamlet-surface: #111827;
+  --hamlet-surface-raised: #1f2937;
+  --hamlet-header: #071D4A;
+  --hamlet-wordmark: #f8fafc;
+  --hamlet-wordmark-accent: #60a5fa;
+}
+
+/* Root pages use the same neutral charcoal canvas, regardless of legacy page CSS. */
+html body {
+  background: var(--hamlet-page-bg) !important;
+  background-color: var(--hamlet-page-bg) !important;
+}
+
+/* Standardise the visible wordmark while preserving page-specific layout. */
+a.brand, a.archive-brand, a.search-brand, a.legal-brand,
+a.pricing-brand, a.site-title, a.payment-brand, a.sector-brand,
+a.logo, .brand-wordmark {
+  color: var(--hamlet-wordmark) !important;
+  text-decoration: none;
+}
+a.brand-by-ibr, .brand-by-ibr, .brand-by-ibr,
+a.brand span[class*="by-ibr"], a.archive-brand span[class*="by-ibr"],
+a.search-brand span[class*="by-ibr"], a.site-title span[class*="by-ibr"],
+a.payment-brand span[class*="by-ibr"] {
+  display: none !important;
+}
+a.brand .brand-dot, a.search-brand .brand-dot, a.legal-brand .brand-dot,
+a.site-title .brand-dot, a.pricing-brand .brand-dot {
+  color: var(--hamlet-wordmark-accent) !important;
+}
+

@@ -352,6 +352,37 @@
     .directory-header > div:first-child { text-align: left !important; margin-left: 0 !important; padding-left: 0 !important; }
     .directory-header .directory-title,
     .directory-header .directory-intro { text-align: left !important; margin-left: 0 !important; }
+
+/* Shared responsive Hamlet header fix (mobile) */
+@media(max-width:760px){
+  .resource-nav.hamlet-404-header>.container.container-nav{
+    display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;
+    width:100%;min-width:0;box-sizing:border-box;gap:10px;
+    padding:11px 14px;margin:0 auto
+  }
+  .resource-nav.hamlet-404-header>.container.container-nav>.logo{flex:0 0 100%;width:100%;min-width:0}
+  .resource-nav.hamlet-404-header>.container.container-nav>.user-menu,
+  .resource-nav.hamlet-404-header>.container.container-nav>.topbar-actions{
+    flex:0 1 100%;width:100%;max-width:100%;min-width:0;margin-left:0!important;
+    justify-content:flex-start;align-items:center;flex-wrap:nowrap;gap:8px;
+    overflow-x:auto;overflow-y:hidden;padding:1px 1px 5px;box-sizing:border-box;
+    scrollbar-width:thin;-webkit-overflow-scrolling:touch
+  }
+  .resource-nav.hamlet-404-header .site-title{white-space:nowrap}
+  .resource-nav.hamlet-404-header .user-menu>a,.resource-nav.hamlet-404-header .user-menu>button,
+  .resource-nav.hamlet-404-header .topbar-actions>.btn{
+    flex:0 0 auto;white-space:nowrap;min-height:36px;padding:7px 11px;font-size:.8rem;line-height:1.15
+  }
+  .resource-nav.hamlet-404-header .auth-profile-chip,.resource-nav.hamlet-404-header .profile{flex:0 0 auto;min-width:0;max-width:40vw}
+  .resource-nav.hamlet-404-header .auth-profile-name,.resource-nav.hamlet-404-header [data-auth-name]{
+    display:inline-block;max-width:28vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+  }
+  .resource-nav.hamlet-404-header .auth-profile-photo,.resource-nav.hamlet-404-header .profile img{width:32px;height:32px;flex:0 0 auto}
+}
+@media(max-width:380px){
+  .resource-nav.hamlet-404-header>.container.container-nav{padding-inline:10px}
+  .resource-nav.hamlet-404-header .auth-profile-photo,.resource-nav.hamlet-404-header .profile img{display:none}
+}
 </style>
 
   <link rel="stylesheet" href="/theme.css">

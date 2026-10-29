@@ -780,11 +780,14 @@
     const previous = carousel.querySelector('[data-usp-prev]');
     const next = carousel.querySelector('[data-usp-next]');
     if (!slides.length) return;
+
     let active = 0, scrollFrame = 0, pointerStartX = 0, pointerStartScroll = 0;
-    let dragging = false, suppressClick = false;
+    let dragging = false, suppressClick = false, rotationTimer = null;
+    const rotationDelay = 5000;
+    const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function setActive(index) {
-      active = Math.max(0, Math.min(slides.length - 1, index));
+      active = (index + slides.length) % slides.length;
       slides.forEach((slide, i) => {
         slide.setAttribute('aria-hidden', String(i !== active));
         if (i === active) slide.setAttribute('aria-current', 'true');
@@ -792,31 +795,62 @@
       });
       dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === active)));
       if (count) count.textContent = (active + 1) + ' / ' + slides.length;
-      if (previous) previous.disabled = active === 0;
-      if (next) next.disabled = active === slides.length - 1;
+      // Both controls remain enabled because the carousel loops continuously.
+      if (previous) previous.disabled = false;
+      if (next) next.disabled = false;
     }
+
     function goTo(index, behavior = 'smooth') {
-      const target = Math.max(0, Math.min(slides.length - 1, index));
-      track.scrollTo({ left: slides[target].offsetLeft, behavior });
+      const target = (index + slides.length) % slides.length;
+      track.scrollTo({ left: slides[target].offsetLeft, behavior: reducedMotion() ? 'auto' : behavior });
       setActive(target);
     }
+
     function syncFromScroll() {
       scrollFrame = 0;
-      setActive(Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / (track.clientWidth || 1)))));
+      setActive(Math.round(track.scrollLeft / (track.clientWidth || 1)));
     }
+
+    function stopRotation() {
+      if (rotationTimer) window.clearInterval(rotationTimer);
+      rotationTimer = null;
+    }
+
+    function startRotation() {
+      stopRotation();
+      if (slides.length > 1 && !document.hidden && !reducedMotion()) {
+        rotationTimer = window.setInterval(() => {
+          if (!dragging) goTo(active + 1);
+        }, rotationDelay);
+      }
+    }
+
     track.addEventListener('scroll', () => {
       if (!scrollFrame) scrollFrame = window.requestAnimationFrame(syncFromScroll);
     }, { passive: true });
-    if (previous) previous.addEventListener('click', () => goTo(active - 1));
-    if (next) next.addEventListener('click', () => goTo(active + 1));
-    dots.forEach(dot => dot.addEventListener('click', () => goTo(Number(dot.dataset.uspGo))));
+    if (previous) previous.addEventListener('click', () => { goTo(active - 1); startRotation(); });
+    if (next) next.addEventListener('click', () => { goTo(active + 1); startRotation(); });
+    dots.forEach(dot => dot.addEventListener('click', () => { goTo(Number(dot.dataset.uspGo)); startRotation(); }));
+
     carousel.tabIndex = 0;
     carousel.addEventListener('keydown', event => {
       if (event.altKey || event.ctrlKey || event.metaKey) return;
-      if (event.key === 'ArrowLeft') { event.preventDefault(); goTo(active - 1); }
-      if (event.key === 'ArrowRight') { event.preventDefault(); goTo(active + 1); }
-      if (event.key === 'Home') { event.preventDefault(); goTo(0); }
-      if (event.key === 'End') { event.preventDefault(); goTo(slides.length - 1); }
+      if (event.key === 'ArrowLeft') { event.preventDefault(); goTo(active - 1); startRotation(); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); goTo(active + 1); startRotation(); }
+      if (event.key === 'Home') { event.preventDefault(); goTo(0); startRotation(); }
+      if (event.key === 'End') { event.preventDefault(); goTo(slides.length - 1); startRotation(); }
+    });
+
+    // Pause while users interact; resume after interaction ends.
+    carousel.addEventListener('mouseenter', stopRotation);
+    carousel.addEventListener('mouseleave', startRotation);
+    carousel.addEventListener('focusin', stopRotation);
+    carousel.addEventListener('focusout', event => {
+      if (!carousel.contains(event.relatedTarget)) startRotation();
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopRotation();
+      else startRotation();
     });
 
     // Native scrolling supplies touch swipes and momentum; pointer dragging supports mouse and pen.
@@ -825,6 +859,7 @@
       pointerStartX = event.clientX;
       pointerStartScroll = track.scrollLeft;
       dragging = false;
+      stopRotation();
     });
     track.addEventListener('pointermove', event => {
       if (event.pointerType === 'touch' || event.buttons !== 1) return;
@@ -837,11 +872,13 @@
       if (dragging) track.scrollLeft = pointerStartScroll - delta;
     });
     const endDrag = () => {
-      if (!dragging) return;
-      dragging = false;
-      track.classList.remove('is-dragging');
-      goTo(Math.round(track.scrollLeft / (track.clientWidth || 1)));
-      window.setTimeout(() => { suppressClick = false; }, 0);
+      if (dragging) {
+        dragging = false;
+        track.classList.remove('is-dragging');
+        goTo(Math.round(track.scrollLeft / (track.clientWidth || 1)));
+        window.setTimeout(() => { suppressClick = false; }, 0);
+      }
+      startRotation();
     };
     track.addEventListener('pointerup', endDrag);
     track.addEventListener('pointercancel', endDrag);
@@ -852,10 +889,12 @@
     }, true);
     if ('ResizeObserver' in window) new ResizeObserver(() => goTo(active, 'auto')).observe(track);
     else window.addEventListener('resize', () => goTo(active, 'auto'), { passive: true });
+
     setActive(0);
+    startRotation();
+    window.addEventListener('pagehide', stopRotation, { once: true });
   })();
-  </script>
-  <script src="/site-search.js?v=20261025-1" defer></script>
+  </script>  <script src="/site-search.js?v=20261025-1" defer></script>
   <script src="/hamlet-background.js?v=20261021-2"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-name: Build and publish Hamlet v1.04.02 for Windows
+name: Build and publish Hamlet v1.04.04 for Windows
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
       tag_name:
         description: "Release tag to build and publish"
         required: true
-        default: "v1.04.02"
+        default: "v1.04.04"
         type: string
   push:
     branches:
@@ -21,7 +21,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: hamlet-v1-04-02-windows-release-${{ github.ref }}
+  group: hamlet-v1-04-04-windows-release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -51,8 +51,8 @@ jobs:
         shell: pwsh
         run: |
           $version = (node -p "require('./package.json').version").Trim()
-          if ($version -ne "1.4.2") {
-            throw "Expected Windows package version 1.4.2, found $version."
+          if ($version -ne "1.4.4") {
+            throw "Expected Windows package version 1.4.4, found $version."
           }
 
       - name: Build Windows installer
@@ -68,7 +68,7 @@ jobs:
             throw "Expected exactly one Windows installer; found $($installers.Count)."
           }
           $installer = $installers[0]
-          if ($installer.Name -ne "hamlet-Setup-1.4.2.exe") {
+          if ($installer.Name -ne "hamlet-Setup-1.4.4.exe") {
             throw "Unexpected installer filename: $($installer.Name)"
           }
           if ($installer.Length -lt 1MB) {
@@ -91,22 +91,22 @@ jobs:
         with:
           name: hamlet-windows-${{ github.run_number }}
           path: |
-            desktop/hamlet-windows/release/hamlet-Setup-1.4.2.exe
+            desktop/hamlet-windows/release/hamlet-Setup-1.4.4.exe
             desktop/hamlet-windows/release/SHA256SUMS.txt
           if-no-files-found: error
           retention-days: 30
 
-      - name: Publish Hamlet v1.04.02 Windows release
+      - name: Publish Hamlet v1.04.04 Windows release
         if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v1.04')
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
-          name: Hamlet v1.04.02 — Windows
+          name: Hamlet v1.04.04 — Windows
           body_path: desktop/hamlet-windows/RELEASE-NOTES.md
           prerelease: false
           make_latest: true
           generate_release_notes: false
           fail_on_unmatched_files: true
           files: |
-            desktop/hamlet-windows/release/hamlet-Setup-1.4.2.exe
+            desktop/hamlet-windows/release/hamlet-Setup-1.4.4.exe
             desktop/hamlet-windows/release/SHA256SUMS.txt

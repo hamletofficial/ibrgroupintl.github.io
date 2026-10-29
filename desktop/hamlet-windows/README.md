@@ -22,16 +22,16 @@ npm start
 npm run pack:win
 ```
 
-A successful Windows package build should produce `release/hamlet-Setup-1.4.0.exe`.
+A successful Windows package build should produce `release/hamlet-Setup-1.4.4.exe`.
 
 ## Automated validation and v1.04.04 release
 
 The GitHub Actions workflow `.github/workflows/hamlet-windows-release.yml` uses Node.js 24 on a Windows runner and:
 
 1. Installs dependencies and runs JavaScript syntax, security and unit tests.
-2. Verifies the desktop package version is `1.4.0`.
+2. Verifies the desktop package version is `1.4.4`.
 3. Builds the NSIS Windows installer.
-4. Requires exactly one installer larger than 1 MB and checks that its filename is `hamlet-Setup-1.4.0.exe`.
+4. Requires exactly one installer larger than 1 MB and checks that its filename is `hamlet-Setup-1.4.4.exe`.
 5. Calculates SHA-256 and attaches the installer plus checksum to the `v1.04.04` Windows prerelease only after the preceding checks pass.
 
 To run the release build manually, open the repository's Actions tab, select **Build and publish Hamlet v1.04.04 for Windows**, choose **Run workflow** on `main`, and keep the tag as `v1.04.04`. The workflow tests and builds before publishing. The release remains a prerelease because code signing and real-device acceptance are still outstanding.
@@ -43,7 +43,7 @@ The website's browser end-to-end test runs in the repository's smoke-test workfl
 After downloading the workflow artifact, extract it and verify the installer checksum using PowerShell:
 
 ```powershell
-Get-FileHash .\\hamlet-Setup-1.4.0.exe -Algorithm SHA256
+Get-FileHash .\\hamlet-Setup-1.4.4.exe -Algorithm SHA256
 Get-Content .\\SHA256SUMS.txt
 ```
 

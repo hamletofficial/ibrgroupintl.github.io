@@ -896,3 +896,115 @@ a.site-title .brand-dot, a.pricing-brand .brand-dot {
  .hamlet-404-header>.top,.hamlet-404-header>.container-nav.topbar{padding:13px 18px}
  .hamlet-404-header .top-links a:not(.signin){display:none}
 }
+
+
+/* Harmonised header finishing pass: consistent alignment, controls and responsive spacing. */
+.hamlet-404-header{
+  min-height:68px!important;
+  height:auto!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  box-sizing:border-box;
+}
+.hamlet-404-header>.topbar-inner,
+.hamlet-404-header>.legal-topbar-inner,
+.hamlet-404-header>.header-row,
+.hamlet-404-header>.container,
+.hamlet-404-header>.container-nav,
+.hamlet-404-header>.site-header-inner,
+.hamlet-404-header>.resource-nav-inner{
+  width:min(1440px,100%)!important;
+  min-height:68px;
+  margin:0 auto!important;
+  padding:13px clamp(18px,4vw,52px)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:clamp(12px,2vw,24px)!important;
+  box-sizing:border-box!important;
+  background:transparent!important;
+}
+.hamlet-404-header .brand,
+.hamlet-404-header .legal-brand,
+.hamlet-404-header .search-brand,
+.hamlet-404-header .pricing-brand,
+.hamlet-404-header .site-title,
+.hamlet-404-header .logo{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:0!important;
+  margin:0!important;
+  line-height:1!important;
+  flex:0 0 auto;
+}
+.hamlet-404-header .brand img,
+.hamlet-404-header .brand-mark{display:none!important}
+.hamlet-404-header .top-links,
+.hamlet-404-header .topbar-actions,
+.hamlet-404-header .top-actions,
+.hamlet-404-header .user-menu,
+.hamlet-404-header .legal-actions,
+.hamlet-404-header .toplinks{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:clamp(8px,1.5vw,18px)!important;
+  min-width:0;
+}
+.hamlet-404-header .top-actions .btn,
+.hamlet-404-header .topbar-actions .btn,
+.hamlet-404-header .legal-signin,
+.hamlet-404-header .top-links .signin{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:40px;
+  padding:9px 16px;
+  border:1px solid rgba(96,165,250,.45)!important;
+  border-radius:999px!important;
+  background:#075bea!important;
+  color:#fff!important;
+  font:inherit;
+  font-size:.86rem;
+  font-weight:750;
+  line-height:1.2;
+  text-decoration:none;
+  white-space:nowrap;
+  box-shadow:none;
+}
+.hamlet-404-header .top-actions .pill{white-space:nowrap}
+.hamlet-404-header .top-links a,
+.hamlet-404-header .legal-actions a,
+.hamlet-404-header .topbar-actions a,
+.hamlet-404-header .top-actions a{
+  text-decoration:none;
+}
+@media(max-width:900px){
+  .hamlet-404-header .top-links a:not(.signin){display:none!important}
+}
+@media(max-width:600px){
+  .hamlet-404-header>.topbar-inner,
+  .hamlet-404-header>.legal-topbar-inner,
+  .hamlet-404-header>.header-row,
+  .hamlet-404-header>.container,
+  .hamlet-404-header>.container-nav,
+  .hamlet-404-header>.site-header-inner,
+  .hamlet-404-header>.resource-nav-inner{
+    padding:12px 16px!important;
+    gap:10px!important;
+  }
+  .hamlet-404-header .brand,
+  .hamlet-404-header .legal-brand,
+  .hamlet-404-header .search-brand,
+  .hamlet-404-header .pricing-brand,
+  .hamlet-404-header .site-title,
+  .hamlet-404-header .logo{font-size:1.45rem!important}
+  .hamlet-404-header .top-actions,
+  .hamlet-404-header .topbar-actions,
+  .hamlet-404-header .legal-actions{gap:7px!important}
+  .hamlet-404-header .top-actions .btn,
+  .hamlet-404-header .topbar-actions .btn,
+  .hamlet-404-header .legal-signin,
+  .hamlet-404-header .top-links .signin{min-height:36px;padding:8px 12px;font-size:.8rem}
+}

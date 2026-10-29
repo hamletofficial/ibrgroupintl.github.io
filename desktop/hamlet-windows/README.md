@@ -1,6 +1,6 @@
 # hamlet for Windows
 
-This folder contains the Electron desktop application for Hamlet. The unified v1.04 Windows release workflow runs automated checks and packages the installer on a Windows runner before publishing the Windows prerelease. The desktop build is separate from the GitHub Pages deployment.
+This folder contains the Electron desktop application for Hamlet. The unified v1.04.04 Windows release workflow runs automated checks and packages the installer on a Windows runner before publishing the Windows prerelease. The desktop build is separate from the GitHub Pages deployment.
 
 ## Current functionality
 
@@ -24,7 +24,7 @@ npm run pack:win
 
 A successful Windows package build should produce `release/hamlet-Setup-1.4.0.exe`.
 
-## Automated validation and v1.04 release
+## Automated validation and v1.04.04 release
 
 The GitHub Actions workflow `.github/workflows/hamlet-windows-release.yml` uses Node.js 24 on a Windows runner and:
 
@@ -32,9 +32,9 @@ The GitHub Actions workflow `.github/workflows/hamlet-windows-release.yml` uses 
 2. Verifies the desktop package version is `1.4.0`.
 3. Builds the NSIS Windows installer.
 4. Requires exactly one installer larger than 1 MB and checks that its filename is `hamlet-Setup-1.4.0.exe`.
-5. Calculates SHA-256 and attaches the installer plus checksum to the `v1.04` Windows prerelease only after the preceding checks pass.
+5. Calculates SHA-256 and attaches the installer plus checksum to the `v1.04.04` Windows prerelease only after the preceding checks pass.
 
-To run the release build manually, open the repository's Actions tab, select **Build and publish Hamlet v1.04 for Windows**, choose **Run workflow** on `main`, and keep the tag as `v1.04`. The workflow tests and builds before publishing. The release remains a prerelease because code signing and real-device acceptance are still outstanding.
+To run the release build manually, open the repository's Actions tab, select **Build and publish Hamlet v1.04.04 for Windows**, choose **Run workflow** on `main`, and keep the tag as `v1.04.04`. The workflow tests and builds before publishing. The release remains a prerelease because code signing and real-device acceptance are still outstanding.
 
 The website's browser end-to-end test runs in the repository's smoke-test workflow. It uses a mocked Firebase environment to exercise the deal pipeline, workspace search, deal calculator, saved searches and transaction-document upload. It does not use production credentials or establish that real identity-provider login works in Electron.
 

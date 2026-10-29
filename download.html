@@ -98,8 +98,8 @@
       <section class="latest-card" aria-labelledby="latest-title">
         <img class="release-hero-art" src="/release-download-hero.svg" alt="Download-themed illustration with a software package, downward arrow and verification check on a dark navy and royal-blue gradient" width="1600" height="900" fetchpriority="high">
         <span class="pill">Latest stable release</span>
-        <h2 id="latest-title">Hamlet v1.04.02</h2>
-        <p class="version-meta">Installer <code>hamlet-Setup-1.4.2.exe</code> · Published 22 October 2026</p>
+        <h2 id="latest-title">Hamlet v1.04.04</h2>
+        <p class="version-meta">Installer <code>hamlet-Setup-1.4.4.exe</code> · Published 29 October 2026</p>
         <p>Recommended for new installations. Download the installer from Hamlet’s dedicated Cloudflare R2 distribution domain and verify the SHA-256 checksum before running it.</p>
         <div class="release-stats">
           <span>Windows 10 / 11</span>
@@ -107,9 +107,9 @@
           <span>SHA-256 available</span>
         </div>
         <p class="archive-note"><strong>Compatibility:</strong> This installer supports 64-bit Windows (x64) only. It is not compatible with 32-bit (x86) Windows.</p>
-        <a class="button" href="https://downloads.hamlet-ai.co.uk/v1.04.02/hamlet-Setup-1.4.2.exe">Download latest .exe</a>
-        <a class="button secondary" href="https://downloads.hamlet-ai.co.uk/v1.04.02/SHA256SUMS.txt">SHA-256 checksum</a>
-        <a class="button secondary" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases/tag/v1.04.02">Release notes</a>
+        <a class="button" href="https://github.com/hamletofficial/oss/releases/download/v1.04.04/hamlet-Setup-1.4.4.exe">Download latest .exe</a>
+        <a class="button secondary" href="https://github.com/hamletofficial/oss/releases/download/v1.04.04/SHA256SUMS.txt">SHA-256 checksum</a>
+        <a class="button secondary" href="https://github.com/hamletofficial/oss/releases/tag/v1.04.04">Release notes</a>
       </section>
       <aside class="side-card">
         <div>
@@ -124,12 +124,12 @@
       <div class="archive-head">
         <div>
           <h2 id="archive-title">Download archive</h2>
-          <p>Published Windows installers, newest first. Current R2-hosted releases use Hamlet’s dedicated download domain; older releases may remain on GitHub.</p>
+          <p>Published Windows installers, newest first. Release assets are served from the official Hamlet GitHub repository. Verify each installer against its matching SHA-256 checksum.</p>
         </div>
         <div class="archive-tools">
           <label for="release-search" style="position:absolute;left:-9999px">Search releases</label>
           <input id="release-search" class="archive-search" type="search" placeholder="Search versions…" autocomplete="off">
-          <a class="mini-button" href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases">All GitHub releases ↗</a>
+          <a class="mini-button" href="https://github.com/hamletofficial/oss/releases">All GitHub releases ↗</a>
         </div>
       </div>
       <div id="release-list" class="release-list" aria-live="polite">
@@ -141,7 +141,7 @@
       <h2 id="install-title">Install and verify</h2>
       <ol>
         <li>Download the installer and the matching <code>SHA256SUMS.txt</code> file from the same release.</li>
-        <li>In PowerShell, run <code>Get-FileHash .\hamlet-Setup-1.4.2.exe -Algorithm SHA256</code> in the folder containing the latest installer. If using an older version, replace the filename with that version’s exact installer name.</li>
+        <li>In PowerShell, run <code>Get-FileHash .\hamlet-Setup-1.4.4.exe -Algorithm SHA256</code> in the folder containing the latest installer. If using an older version, replace the filename with that version’s exact installer name.</li>
         <li>Compare the computed hash with the entry for the same filename in <code>SHA256SUMS.txt</code>. The values must match exactly.</li>
         <li>If the checksum does not match, do not run the installer. Delete it and download it again from the official GitHub release.</li>
         <li>Review Windows security or publisher prompts before proceeding. Do not bypass a warning if you cannot establish that the file is authentic.</li>
@@ -182,7 +182,7 @@
       const commitsMessage = document.getElementById('github-update-message');
       const commitsCount = document.getElementById('github-update-count');
       const commitsApi = 'https://api.github.com/repos/hamletofficial/oss/commits?per_page=3';
-      const releasesApi = 'https://api.github.com/repos/hamletofficial/ibrgroupintl.github.io/releases?per_page=100';
+      const releasesApi = 'https://api.github.com/repos/hamletofficial/oss/releases?per_page=100';
       let releases = [];
       let commits = [];
       let activeCommit = 0;
@@ -327,7 +327,7 @@
             .sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
           renderArchive();
         } catch (error) {
-          listEl.innerHTML = '<div class="empty-state">The installer archive could not be loaded from GitHub right now. You can still browse the <a href="https://github.com/hamletofficial/ibrgroupintl.github.io/releases">official GitHub Releases page</a>.</div>';
+          listEl.innerHTML = '<div class="empty-state">The installer archive could not be loaded from GitHub right now. You can still browse the <a href="https://github.com/hamletofficial/oss/releases">official GitHub Releases page</a>.</div>';
         }
       }
 

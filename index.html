@@ -297,56 +297,29 @@
       .button{transition:none!important}
     }
 
+
+    /* Header matches 404.html */
+    .topbar{border-bottom:1px solid rgba(148,163,184,.13);background:rgba(7,17,31,.78);backdrop-filter:blur(16px)}
+    .topbar-inner{width:min(1440px,100%);margin:auto;padding:16px clamp(18px,4vw,52px);display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .topbar .brand{font-size:clamp(1.5rem,3vw,2rem);font-weight:850;letter-spacing:-.055em;text-decoration:none;color:#f8fafc}
+    .topbar .brand span{color:#60a5fa}
+    .top-links{display:flex;align-items:center;gap:clamp(12px,2vw,28px);font-size:.88rem;color:#dbeafe}
+    .top-links a{text-decoration:none;white-space:nowrap}.top-links a:hover{color:#60a5fa}
+    .top-links .signin{padding:10px 18px;border-radius:999px;background:#075bea;color:#fff!important;font-weight:750}
+    @media(max-width:900px){.top-links a:not(.signin){display:none}}
+    @media(max-width:540px){.topbar-inner{padding:13px 18px}}
 </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-row">
-      <div class="brand-group">
-        <a class="brand" href="/index.html" aria-label="hamlet home">hamlet.</a>
-        <a class="poppy-link" href="https://www.britishlegion.org.uk/" target="_blank" rel="noopener noreferrer" aria-label="Visit The Royal British Legion website (opens in a new tab)" title="Support the Royal British Legion">
-        <svg class="header-poppy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 48" role="img" aria-labelledby="header-poppy-title">
-          <title id="header-poppy-title">Remembrance poppy</title>
-          <defs>
-            <radialGradient id="poppy-petal" cx="35%" cy="25%" r="80%">
-              <stop offset="0" stop-color="#ff5964"/>
-              <stop offset=".58" stop-color="#e51b2b"/>
-              <stop offset="1" stop-color="#a80718"/>
-            </radialGradient>
-            <radialGradient id="poppy-centre" cx="35%" cy="25%" r="75%">
-              <stop offset="0" stop-color="#374151"/>
-              <stop offset="1" stop-color="#080d18"/>
-            </radialGradient>
-          </defs>
-          <path d="M19.7 27.2c-.4 6.1-.8 12.1-4.4 19" fill="none" stroke="#267343" stroke-width="2.1" stroke-linecap="round"/>
-          <path d="M17.5 38.2c-4.8-3.6-8.7-3.2-11.3.2 4.3 2.6 8.1 2.7 11.3-.2Z" fill="#2f8550" stroke="#6abf83" stroke-width=".65" stroke-linejoin="round"/>
-          <path d="M20 25.5C14.2 33 5.1 30.4 3.5 23.7c-1.2-5.1 2.7-9.1 8-8.3-2.1-5.4.7-10.4 5.5-10.6 4.4-.2 6.6 4.1 5.3 9.1 4.1-4.4 9.4-3.3 11.4.8 2 4.1-.7 8.1-5.1 9.6 2.8 3.4 1.7 7.8-2 9.1-2.5.9-4.9-.1-6.6-2.5Z" fill="url(#poppy-petal)" stroke="#ff8b91" stroke-width=".75" stroke-linejoin="round"/>
-          <path d="M20 25.3c-3.6-2.2-5.2-5.3-4.4-8.3.7-2.4 2.4-3.5 4.4-3.5s3.7 1.1 4.4 3.5c.8 3-.8 6.1-4.4 8.3Z" fill="#c20d20" opacity=".78"/>
-          <circle cx="20" cy="22.5" r="5.2" fill="url(#poppy-centre)" stroke="#f8fafc" stroke-width=".8"/>
-          <circle cx="20" cy="22.5" r="3.35" fill="none" stroke="#9ca3af" stroke-width=".45" opacity=".8"/>
-          <circle cx="20" cy="22.5" r="1.6" fill="#05070c"/>
-          <g fill="#f9fafb" opacity=".92">
-            <circle cx="17.3" cy="20.6" r=".45"/>
-            <circle cx="22.5" cy="19.9" r=".4"/>
-            <circle cx="22.6" cy="24.7" r=".45"/>
-            <circle cx="17.5" cy="24.4" r=".4"/>
-            <circle cx="20" cy="18.8" r=".35"/>
-          </g>
-        </svg>
-        </a>
-      </div>
-      <div class="site-search" role="search">
-        <form class="site-search-form" id="site-search-form" action="/search.html" method="get" autocomplete="off">
-          <svg class="site-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"></circle><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
-          <input class="site-search-input" id="site-search-input" name="q" type="search" placeholder="Search all pages…" aria-label="Search all Hamlet pages" aria-controls="site-search-results" aria-expanded="false" minlength="2">
-          <button class="site-search-submit" type="submit">Search</button>
-        </form>
-        <div class="site-search-results" id="site-search-results" role="listbox" aria-label="Search suggestions" hidden></div>
-      </div>
-      <nav class="nav" aria-label="Main navigation">
-        <a class="button" href="#how-to-use">How it works</a>
-        <a class="button" href="/contact.html">Contact support</a>
-        <a class="button primary" id="homepage-auth-button" href="/login.html">Log in</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="hamlet home">hamlet<span>.</span></a>
+      <nav class="top-links" aria-label="Main navigation">
+        <a href="/live.html">Live Properties</a>
+        <a href="/portfolio.html">Portfolio</a>
+        <a href="/resources/index.html">Resources</a>
+        <a href="https://support.hamlet-ai.co.uk/">Support</a>
+        <a class="signin" href="/login.html">Sign in</a>
       </nav>
     </div>
   </header>

@@ -153,19 +153,6 @@ function createIco(png) {
   return Buffer.concat([header, entry, png]);
 }
 
-const faviconPath = path.resolve(__dirname, "../../assets/images/favicon.ico");
-let png = null;
-try {
-  png = readPngFromIco(fs.readFileSync(faviconPath));
-} catch {
-  // A source favicon is optional; the deterministic fallback remains available.
-}
-
-if (png) {
-  fs.writeFileSync("icon.ico", createIco(png));
-  console.log("Generated Hamlet Windows icon from assets/images/favicon.ico.");
-} else {
-  drawFallbackMark();
-  fs.writeFileSync("icon.ico", createIco(createPngFromPixels()));
-  console.log("Generated fallback Hamlet Windows icon.");
-}
+drawFallbackMark();
+fs.writeFileSync("icon.ico", createIco(createPngFromPixels()));
+console.log("Generated Hamlet v1.04.04 orbital icon.");

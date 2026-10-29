@@ -849,3 +849,47 @@ a.site-title .brand-dot, a.pricing-brand .brand-dot {
   color: var(--hamlet-wordmark-accent) !important;
 }
 
+
+
+/* Apply the 404 header's visual system to legacy header variants without removing auth controls. */
+.hamlet-404-header{width:100%;min-height:68px;box-sizing:border-box}
+.hamlet-404-header>.container,
+.hamlet-404-header>.container-nav,
+.hamlet-404-header>.legal-topbar-inner,
+.hamlet-404-header>.topbar-inner,
+.hamlet-404-header>.header-row,
+.hamlet-404-header>.topbar,
+.hamlet-404-header>.top,
+.hamlet-404-header>.site-header-inner,
+.hamlet-404-header>.resource-nav-inner,
+.hamlet-404-header>.container-nav.topbar{
+  width:min(1440px,100%);margin-inline:auto;padding:16px clamp(18px,4vw,52px);
+  display:flex;align-items:center;justify-content:space-between;gap:20px;box-sizing:border-box;
+  background:transparent!important;background-image:none!important;box-shadow:none!important;
+}
+.hamlet-404-header .logo,.hamlet-404-header .brand,.hamlet-404-header .site-title,
+.hamlet-404-header .legal-brand,.hamlet-404-header .search-brand,.hamlet-404-header .pricing-brand{
+  color:#f8fafc!important;font-size:clamp(1.5rem,3vw,2rem);font-weight:850;letter-spacing:-.055em;text-decoration:none;white-space:nowrap;
+}
+.hamlet-404-header .brand span,.hamlet-404-header .site-title span,.hamlet-404-header .legal-brand span,
+.hamlet-404-header .search-brand span,.hamlet-404-header .pricing-brand span{color:#60a5fa!important}
+.hamlet-404-header .top-links,.hamlet-404-header .topbar-actions,.hamlet-404-header .user-menu,
+.hamlet-404-header .legal-actions,.hamlet-404-header .top-actions,.hamlet-404-header .toplinks{
+  display:flex;align-items:center;justify-content:flex-end;gap:clamp(10px,2vw,22px);color:#dbeafe;
+}
+.hamlet-404-header .top-links a,.hamlet-404-header .legal-actions a,
+.hamlet-404-header .toplinks a,.hamlet-404-header .topbar-actions a{
+  color:#dbeafe!important;text-decoration:none;
+}
+.hamlet-404-header .top-links .signin,.hamlet-404-header .legal-signin{
+  padding:10px 18px;border-radius:999px;background:#075bea!important;color:#fff!important;font-weight:750;
+}
+.hamlet-404-header button,.hamlet-404-header .btn{
+  border-radius:999px;
+}
+@media(max-width:900px){
+ .hamlet-404-header>.container,.hamlet-404-header>.container-nav,.hamlet-404-header>.legal-topbar-inner,
+ .hamlet-404-header>.topbar-inner,.hamlet-404-header>.header-row,.hamlet-404-header>.topbar,
+ .hamlet-404-header>.top,.hamlet-404-header>.container-nav.topbar{padding:13px 18px}
+ .hamlet-404-header .top-links a:not(.signin){display:none}
+}

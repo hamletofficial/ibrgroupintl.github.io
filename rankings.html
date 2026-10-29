@@ -42,6 +42,29 @@
     .status{margin:.8rem 0 0;color:var(--muted);font-size:.88rem;line-height:1.5}.status.error{color:#b91c1c}.status.success{color:var(--green)}
     .resource-footer{border-top:1px solid var(--line);padding:22px 1rem 30px;text-align:center;color:var(--muted);font-size:.82rem}.resource-footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-bottom:8px}.resource-footer a{color:var(--muted);text-decoration:none}.resource-footer a:hover{color:var(--blue);text-decoration:underline}
     @media(max-width:650px){.topbar{align-items:flex-start;flex-direction:column}.topbar-actions{width:100%}.rank-card{grid-template-columns:44px minmax(0,1fr);gap:.7rem}.rank-number{width:40px;height:40px}.rank-score{grid-column:2;text-align:left}.rank-score strong{white-space:normal}.hero,.panel{padding:1.1rem}}
+    /* Mobile-specific navigation: keep the wordmark clear and let action links scroll horizontally. */
+    .resource-nav.hamlet-404-header{width:100%;min-width:0;overflow:visible}
+    .resource-nav.hamlet-404-header>.container.container-nav.topbar{width:100%;max-width:1440px;min-width:0;margin:0 auto;padding:12px clamp(16px,4vw,32px);display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;box-sizing:border-box}
+    .resource-nav.hamlet-404-header .logo{flex:0 0 auto;min-width:0}
+    .resource-nav.hamlet-404-header a.site-title{display:inline-flex;align-items:center;font-size:1.55rem;line-height:1;font-weight:850;letter-spacing:-.045em;white-space:nowrap;text-decoration:none;color:#fff}
+    .resource-nav.hamlet-404-header .topbar-actions{flex:0 1 auto;width:auto;min-width:0;display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:nowrap}
+    .resource-nav.hamlet-404-header .profile{flex:0 1 auto;min-width:0;max-width:200px;gap:6px}
+    .resource-nav.hamlet-404-header .profile [data-auth-name]{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .resource-nav.hamlet-404-header .topbar-actions>.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 12px;white-space:nowrap;line-height:1.15}
+    @media(max-width:760px){
+      .resource-nav.hamlet-404-header>.container.container-nav.topbar{flex-wrap:wrap;gap:10px;padding:11px 14px}
+      .resource-nav.hamlet-404-header .logo{width:100%}
+      .resource-nav.hamlet-404-header .topbar-actions{width:100%;max-width:100%;justify-content:flex-start;overflow-x:auto;overflow-y:hidden;padding:1px 1px 5px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+      .resource-nav.hamlet-404-header .topbar-actions>.btn{flex:0 0 auto;min-height:36px;padding:7px 11px;font-size:.8rem}
+      .resource-nav.hamlet-404-header .profile{max-width:40vw}
+      .resource-nav.hamlet-404-header .profile img{width:32px;height:32px;flex:0 0 auto}
+      .resource-nav.hamlet-404-header .profile [data-auth-name]{max-width:28vw}
+    }
+    @media(max-width:380px){
+      .resource-nav.hamlet-404-header>.container.container-nav.topbar{padding-inline:10px}
+      .resource-nav.hamlet-404-header .profile img{display:none}
+      .resource-nav.hamlet-404-header .profile{max-width:34vw}
+    }
   
     /* Housekeeping: align rankings with Hamlet's dark workspace and keep controls readable. */
     :root{color-scheme:dark;--ink:#f3f4f6;--muted:#cbd5e1;--line:#374151;--green:#86efac}

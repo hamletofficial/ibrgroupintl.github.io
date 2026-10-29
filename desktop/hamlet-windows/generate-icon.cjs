@@ -42,22 +42,63 @@ function readPngFromIco(ico) {
 }
 
 function drawFallbackMark() {
-  // Solid royal-navy tile with a clean white lowercase "h".
+  // Draw the v1.04.04 orbital-h mark in RGBA pixels so the Windows icon
+  // matches the scalable SVG without requiring an image-processing dependency.
+  const blue = [7, 29, 74, 255];
+  const cyan = [34, 211, 238, 255];
+  const royal = [20, 120, 255, 255];
+  const white = [255, 255, 255, 255];
+
+  function blend(a, b, t) {
+    return a.map((value, i) => Math.round(value + (b[i] - value) * t));
+  }
+  function roundedRectContains(x, y, left, top, right, bottom, radius) {
+    const cx = Math.max(left + radius, Math.min(x, right - radius));
+    const cy = Math.max(top + radius, Math.min(y, bottom - radius));
+    return (x - cx) ** 2 + (y - cy) ** 2 <= radius ** 2;
+  }
+
   for (let y = 0; y < SIZE; y++) {
-    for (let x = 0; x < SIZE; x++) setPixel(x, y, navy);
+    for (let x = 0; x < SIZE; x++) {
+      const t = Math.min(1, (x + y) / (SIZE * 1.6));
+      const bg = blend([7, 60, 168, 255], blue, t);
+      if (roundedRectContains(x, y, 8, 8, 248, 248, 48)) {
+        setPixel(x, y, bg);
+      } else {
+        setPixel(x, y, [0, 0, 0, 0]);
+      }
+    }
   }
-  // Slightly rounded-looking, proportioned strokes at 256px scale.
-  for (let y = 46; y < 210; y++) {
-    for (let x = 62; x < 90; x++) setPixel(x, y, white);
+
+  // Open orbital ring with a blue-to-cyan gradient.
+  const cx = 128, cy = 128, radius = 83, thickness = 7;
+  for (let y = 18; y < 238; y++) {
+    for (let x = 18; x < 238; x++) {
+      const dx = x - cx, dy = y - cy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (Math.abs(dist - radius) > thickness) continue;
+      const angle = (Math.atan2(dy, dx) * 180 / Math.PI + 360) % 360;
+      // Two deliberate breaks keep the orbit dynamic and legible at small sizes.
+      if ((angle > 145 && angle < 166) || (angle > 35 && angle < 53)) continue;
+      const t = Math.max(0, Math.min(1, (x + y) / (SIZE * 2)));
+      setPixel(x, y, blend(royal, cyan, t));
+    }
   }
-  for (let y = 110; y < 138; y++) {
-    for (let x = 88; x < 190; x++) setPixel(x, y, white);
+
+  // White lowercase h with a substantial stem and rounded-looking arch.
+  for (let y = 57; y < 199; y++) {
+    for (let x = 83; x < 111; x++) setPixel(x, y, white);
   }
-  for (let y = 110; y < 210; y++) {
-    for (let x = 162; x < 190; x++) setPixel(x, y, white);
+  for (let y = 101; y < 128; y++) {
+    for (let x = 106; x < 174; x++) {
+      const dx = x - 140, dy = y - 128;
+      if (dx * dx + dy * dy <= 34 * 34) setPixel(x, y, white);
+    }
+  }
+  for (let y = 119; y < 199; y++) {
+    for (let x = 145; x < 173; x++) setPixel(x, y, white);
   }
 }
-
 function crc32(buffer) {
   let crc = 0xffffffff;
   for (const byte of buffer) {

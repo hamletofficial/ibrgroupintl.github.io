@@ -14,7 +14,7 @@
 <script defer src="/firebase-config.js"></script>
 </head>
 <body>
-<header class="top"><a class="brand" href="/app/hamlet/">hamlet</a><div class="toplinks"><a class="btn" href="/app/hamlet/">My Pipeline</a><a class="btn" href="/app/public/live.html">Live Properties</a><button class="btn" id="authBtn" type="button">Checking sign-in…</button></div></header>
+<header class="top hamlet-404-header"><a class="brand" href="/app/hamlet/">hamlet</a><div class="toplinks"><a class="btn" href="/app/hamlet/">My Pipeline</a><a class="btn" href="/app/public/live.html">Live Properties</a><button class="btn" id="authBtn" type="button">Checking sign-in…</button></div></header>
 <section id="loginGate" class="wrap" hidden><section class="panel" style="max-width:560px;margin:48px auto;text-align:center"><div class="eyebrow">Secure Hamlet workspace</div><h1>Sign in required</h1><p>Sign in with your Hamlet account to access the AI Assistant. The assistant workspace remains hidden until Firebase confirms your authenticated session.</p><div class="actions" style="justify-content:center"><a class="btn primary" id="loginRedirect" href="/login.html?redirect=%2Fapp%2Fhamlet%2Fai-assistant.html">Sign in to Hamlet</a><a class="btn" href="/app/hamlet/">Back to My Pipeline</a></div><p class="hint" id="gateStatus" role="status" aria-live="polite">Checking Firebase authentication…</p></section></section>
 <main class="wrap" id="assistantWorkspace" hidden>
 <div class="eyebrow">Hamlet workspace tools</div><h1>AI Assistant</h1>

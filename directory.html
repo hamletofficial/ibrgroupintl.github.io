@@ -212,7 +212,7 @@
     .profile-card:hover{transform:translateY(-2px)}
     .member-person{display:flex;flex-direction:column;align-items:center;width:100%}
     .profile-card img{flex:0 0 auto}
-    .profile-card .name{overflow-wrap:anywhere}
+    .profile-card .name{overflow-wrap:anywhere}.member-username{display:block;margin:-.05rem 0 .55rem;color:#7dd3fc;font-size:.84rem;font-weight:700;letter-spacing:.015em;overflow-wrap:anywhere;text-align:center}.directory-grid.list-view .member-username{text-align:left}
     .member-tags{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.4rem;margin:.2rem 0 .65rem}
     .member-badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:4px 8px;border:1px solid #cbd5e1;color:#475569;background:#f8fafc;font-size:.72rem;line-height:1.25;font-weight:800}
     .member-badge.identity-verified{color:#166534;background:#f0fdf4;border-color:#bbf7d0}
@@ -669,7 +669,8 @@
         const online = isOnline(data);
         const card = makeElement('article', 'profile-card');
         card.dataset.uid = member.uid;
-        card.dataset.search = (name + ' ' + String(data.bio || '')).toLocaleLowerCase();
+        const username = typeof data.username === 'string' && /^[a-z0-9_]{3,20}$/i.test(data.username.trim()) ? data.username.trim().toLowerCase() : '';
+        card.dataset.search = (name + ' ' + (username ? '@' + username + ' ' + username : '') + ' ' + String(data.bio || '')).toLocaleLowerCase();
         card.dataset.firstName = String(data.firstName || '').trim().toLocaleLowerCase();
         card.dataset.lastName = String(data.lastName || '').trim().toLocaleLowerCase();
         card.dataset.online = String(online);
@@ -693,6 +694,7 @@
           if (emailTick) nameRow.appendChild(emailTick);
         }
         main.appendChild(nameRow);
+        if (username) main.appendChild(makeElement('div', 'member-username', '@' + username));
         const tags = makeElement('div', 'member-tags');
         const identity = makeElement(identityVerified ? 'span' : 'a', 'member-badge' + (identityVerified ? ' identity-verified' : ' identity-unverified-link'),
           identityVerified ? 'Identity verified' : 'Identity unverified');

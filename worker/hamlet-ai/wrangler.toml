@@ -3,6 +3,9 @@ main = "src/index.js"
 compatibility_date = "2026-10-19"
 workers_dev = true
 
+# Required by `npx wrangler preview` in Cloudflare Workers Builds.
+previews = {}
+
 [vars]
 FIREBASE_PROJECT_ID = "wale-491805"
 AI_MODEL = "gpt-5.2-pro"

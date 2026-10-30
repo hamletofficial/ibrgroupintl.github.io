@@ -139,7 +139,8 @@ button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed;opacity
     <div class="header-row">
       <a class="brand" href="/index.html" aria-label="hamlet home">hamlet</a>
       <nav class="header-actions" aria-label="Main navigation">
-        <a class="button" href="/login.html?next=%2Fportfolio.html">Sign In</a>
+        <a class="button" href="/login.html?next=%2Fportfolio.html" id="portfolioSignIn">Sign In</a>
+        <button class="button" type="button" id="portfolioSignOut" hidden>Sign Out</button>
       </nav>
     </div>
   </header>
@@ -166,9 +167,54 @@ button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed;opacity
   </footer>
 </div>
 <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script defer src="/firebase-config.js"></script>
 <script defer src="/page-transition.js"></script>
+
+<script>
+(function(){
+  'use strict';
+  window.addEventListener('load', function(){
+    var signIn=document.getElementById('portfolioSignIn');
+    var signOut=document.getElementById('portfolioSignOut');
+    if(!signIn||!signOut)return;
+    var next=window.location.pathname+window.location.search+window.location.hash;
+    signIn.href='/login.html?next='+encodeURIComponent(next);
+    signOut.hidden=true;
+    if(!window.firebase||!window.firebase.auth||!window.firebaseConfig){
+      console.error('Portfolio authentication unavailable: Firebase SDK or configuration is missing.');
+      return;
+    }
+    try{
+      if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);
+      var auth=firebase.auth();
+      auth.onAuthStateChanged(function(user){
+        signIn.hidden=!!user;
+        signOut.hidden=!user;
+      },function(error){
+        console.error('Portfolio authentication state could not be determined:',error);
+        signIn.hidden=false;
+        signOut.hidden=true;
+      });
+      signOut.addEventListener('click',async function(){
+        signOut.disabled=true;
+        try{
+          await auth.signOut();
+        }catch(error){
+          console.error('Portfolio sign-out failed:',error);
+          window.alert('Unable to sign out right now. Please try again.');
+        }finally{
+          signOut.disabled=false;
+        }
+      });
+    }catch(error){
+      console.error('Portfolio authentication initialisation failed:',error);
+    }
+  },{once:true});
+})();
+</script>
+
 <script>
 (function(){
   'use strict';

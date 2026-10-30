@@ -140,7 +140,7 @@ button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed;opacity
       <a class="brand" href="/index.html" aria-label="hamlet home">hamlet</a>
       <nav class="header-actions" aria-label="Main navigation">
         <a class="button" href="/login.html?next=%2Fportfolio.html" id="portfolioSignIn">Sign In</a>
-        <button class="button" type="button" id="portfolioSignOut" hidden>Sign Out</button>
+        <button class="button" type="button" id="portfolioSignOut" style="display:none">Sign Out</button>
       </nav>
     </div>
   </header>
@@ -181,7 +181,7 @@ button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed;opacity
     if(!signIn||!signOut)return;
     var next=window.location.pathname+window.location.search+window.location.hash;
     signIn.href='/login.html?next='+encodeURIComponent(next);
-    signOut.hidden=true;
+    signOut.style.display='none';
     if(!window.firebase||!window.firebase.auth||!window.firebaseConfig){
       console.error('Portfolio authentication unavailable: Firebase SDK or configuration is missing.');
       return;
@@ -190,12 +190,12 @@ button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed;opacity
       if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);
       var auth=firebase.auth();
       auth.onAuthStateChanged(function(user){
-        signIn.hidden=!!user;
-        signOut.hidden=!user;
+        signIn.style.display=user?'none':'inline-flex';
+        signOut.style.display=user?'inline-flex':'none';
       },function(error){
         console.error('Portfolio authentication state could not be determined:',error);
-        signIn.hidden=false;
-        signOut.hidden=true;
+        signIn.style.display='inline-flex';
+        signOut.style.display='none';
       });
       signOut.addEventListener('click',async function(){
         signOut.disabled=true;

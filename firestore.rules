@@ -11,7 +11,9 @@ service cloud.firestore {
 
     // Public username resolver. Username documents are unique and owner-controlled.
     match /usernames/{username} {
-      allow read: if true;
+      // Allow direct username resolution, but prevent bulk enumeration of the registry.
+      allow get: if true;
+      allow list: if false;
       allow create: if request.auth != null
         && username.matches('^[a-z0-9_]{3,20}
       // Members must always be able to read their own saved profile for authenticated headers/settings, even when their profile is not public.

@@ -50,7 +50,7 @@
           || (typeof data.photoUrl === 'string' && data.photoUrl.trim())
           || FALLBACK_PHOTO;
         var email = typeof data.email === 'string' ? data.email.trim() : '';
-        return { name: name, photo: photo, email: email };
+        return { name: name, photo: photo, email: email, username: typeof data.username === 'string' ? data.username.trim().toLowerCase() : '' };
       } catch (error) {
         return { name: 'IBR Member', photo: FALLBACK_PHOTO, email: '' };
       }

@@ -281,6 +281,7 @@
     article.appendChild(header);
 
     getAuthorProfile(data.ownerUid).then(function (author) {
+      authorLink.href = author.username ? '/profile.html?username=' + encodeURIComponent(author.username) : '/profile.html?uid=' + encodeURIComponent(data.ownerUid || '');
       authorLink.replaceChildren(document.createTextNode(author.name));
       if (global.IBRVerifiedTick && global.IBRVerifiedTick.isValidEmail(author.email)) {
         var verifiedTick = global.IBRVerifiedTick.create(author.email);

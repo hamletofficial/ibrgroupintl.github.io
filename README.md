@@ -114,3 +114,4 @@ Use concise commit messages that describe the user-visible change or technical f
 - [UX/UI roadmap](UX-UI-ROADMAP.md)
 
 End of file
+By Alfred A B Mayaki

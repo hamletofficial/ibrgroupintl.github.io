@@ -5,6 +5,24 @@
 .hamlet-404-header .brand span{color:#60a5fa!important}
 .hamlet-404-header .brand{display:inline-flex;align-items:center;gap:0;min-width:0}
 .hamlet-404-header .brand-mark{display:none!important}
+
+/* Global wordmark positioning fix: keep Hamlet branding anchored to the header's left content edge. */
+.hamlet-404-header>.top>.brand,
+.hamlet-404-header .brand,
+.hamlet-404-header .legal-brand,
+.hamlet-404-header .search-brand,
+.hamlet-404-header .pricing-brand,
+.hamlet-404-header .site-title,
+.hamlet-404-header .logo{
+  position:relative!important;
+  inset:auto!important;
+  transform:none!important;
+  align-self:center!important;
+  margin:0!important;
+  padding:0!important;
+  white-space:nowrap!important;
+}
+.hamlet-404-header>.top>.brand{flex:0 0 auto!important}
 .hamlet-404-header .brand img{display:none!important}
 .hamlet-404-header .top-links{display:flex;align-items:center;gap:clamp(12px,2vw,28px);font-size:.88rem;color:#dbeafe}
 .hamlet-404-header .top-links a{color:#dbeafe!important;text-decoration:none;white-space:nowrap}
@@ -913,7 +931,8 @@ a.site-title .brand-dot, a.pricing-brand .brand-dot {
 .hamlet-404-header>.container,
 .hamlet-404-header>.container-nav,
 .hamlet-404-header>.site-header-inner,
-.hamlet-404-header>.resource-nav-inner{
+.hamlet-404-header>.resource-nav-inner,
+.hamlet-404-header>.top{
   width:min(1440px,100%)!important;
   min-height:68px;
   margin:0 auto!important;
@@ -1007,4 +1026,166 @@ a.site-title .brand-dot, a.pricing-brand .brand-dot {
   .hamlet-404-header .topbar-actions .btn,
   .hamlet-404-header .legal-signin,
   .hamlet-404-header .top-links .signin{min-height:36px;padding:8px 12px;font-size:.8rem}
+}
+
+
+/* Mobile header hardening: keep controls in horizontal rows and prevent collisions. */
+.site-search-submit,
+.site-search-submit:visited,
+.site-search-submit:hover,
+.site-search-submit:focus,
+.site-search-submit:active,
+.site-search-form button[type="submit"],
+.site-search-form input[type="submit"] {
+  color:#071d4a!important;
+  -webkit-text-fill-color:#071d4a!important;
+  background:#fff!important;
+  border:1px solid #bfdbfe!important;
+  font-weight:800!important;
+  text-shadow:none!important;
+  opacity:1!important;
+}
+.site-search-submit:hover,
+.site-search-form button[type="submit"]:hover {
+  background:#dbeafe!important;
+  color:#071d4a!important;
+  -webkit-text-fill-color:#071d4a!important;
+}
+.site-search-submit:focus-visible,
+.site-search-form button[type="submit"]:focus-visible {
+  outline:3px solid #93c5fd!important;
+  outline-offset:2px!important;
+}
+.site-search-form,
+.site-search { min-width:0; max-width:100%; box-sizing:border-box; }
+.site-search-form { display:flex; align-items:center; }
+.site-search-input { min-width:0; flex:1 1 auto; }
+
+@media (max-width:760px) {
+  .hamlet-404-header { height:auto!important; min-height:0!important; }
+  .hamlet-404-header>.container,
+  .hamlet-404-header>.container-nav,
+  .hamlet-404-header>.legal-topbar-inner,
+  .hamlet-404-header>.topbar-inner,
+  .hamlet-404-header>.header-row,
+  .hamlet-404-header>.topbar,
+  .hamlet-404-header>.top,
+  .hamlet-404-header>.site-header-inner,
+  .hamlet-404-header>.resource-nav-inner,
+  .hamlet-404-header>.search-header-inner {
+    width:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+    height:auto!important;
+    padding:10px 14px!important;
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:wrap!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:8px 12px!important;
+    box-sizing:border-box!important;
+  }
+  .hamlet-404-header .brand,
+  .hamlet-404-header .logo,
+  .hamlet-404-header .site-title,
+  .hamlet-404-header .legal-brand,
+  .hamlet-404-header .search-brand,
+  .hamlet-404-header .pricing-brand {
+    flex:0 0 auto!important;
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  .hamlet-404-header .user-menu,
+  .hamlet-404-header .top-links,
+  .hamlet-404-header .topbar-actions,
+  .hamlet-404-header .top-actions,
+  .hamlet-404-header .legal-actions,
+  .hamlet-404-header .toplinks {
+    flex:1 1 100%!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:wrap!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:7px!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+  .hamlet-404-header .user-menu>a,
+  .hamlet-404-header .user-menu>button,
+  .hamlet-404-header .top-links>a,
+  .hamlet-404-header .topbar-actions>a,
+  .hamlet-404-header .top-actions>a,
+  .hamlet-404-header .legal-actions>a,
+  .hamlet-404-header .toplinks>a {
+    flex:0 1 auto!important;
+    min-width:0!important;
+    max-width:100%!important;
+    white-space:nowrap;
+  }
+  .hamlet-404-header .auth-profile-chip,
+  .hamlet-404-header .profile {
+    flex:0 1 auto!important;
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  .hamlet-404-header .auth-profile-name,
+  .hamlet-404-header [data-auth-name] {
+    max-width:34vw!important;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .hamlet-404-header .site-search,
+  .hamlet-404-header .site-search-form {
+    flex:1 1 100%!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+  .site-header .header-row {
+    min-width:0;
+    height:auto;
+    flex-wrap:wrap!important;
+    justify-content:flex-start!important;
+    gap:8px!important;
+    padding-block:10px;
+  }
+  .site-header .header-row>.brand-group {
+    flex:0 0 auto;
+    min-width:0;
+    max-width:100%;
+  }
+  .site-header .header-row>nav.nav {
+    flex:1 1 100%;
+    width:100%;
+    min-width:0;
+    justify-content:flex-start;
+    flex-wrap:wrap!important;
+    gap:6px;
+  }
+  .site-header .header-row>.site-search,
+  .site-header .header-row>form.site-search-form {
+    flex:1 1 100%!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  .search-header-inner {
+    flex-wrap:wrap!important;
+    gap:10px!important;
+  }
+}
+@media (max-width:380px) {
+  .hamlet-404-header>.container,
+  .hamlet-404-header>.container-nav,
+  .hamlet-404-header>.search-header-inner { padding-inline:10px!important; }
+  .hamlet-404-header .auth-profile-photo,
+  .hamlet-404-header .profile img { display:none!important; }
+  .site-search-submit { flex:0 0 auto; padding-inline:10px!important; }
 }

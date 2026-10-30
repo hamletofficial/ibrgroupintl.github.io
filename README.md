@@ -15,7 +15,7 @@ This repository contains the public website and much of the client-side Hamlet a
 |---|---|---|
 | Public website | Root-level `*.html` pages, `index.css`, `index.js` | Homepage, company information, sectors, fees, pricing, policies and contact |
 | Member community | `members.html`, `directory.html`, `profile.html`, `editprofile.html`, `posts.html`, `messages.html`, `settings.html` | Member profiles, directory, social updates, messaging and account settings |
-| Property and portfolio | `live.html`, `portfolio.html`, `app/public/` | Property listings and portfolio-related experiences |
+| Property and portfolio | `app/public/live.html`, `portfolio.html`, `app/public/` | Property listings and portfolio-related experiences |
 | Deal workspace | `app/hamlet/`, `hamlet-workspace.css`, `hamlet-workspace.js` | Deal pipeline, deal information and workspace interface |
 | Broker intelligence | `rankings.html`, `insights.html`, `hamlet-ai-assistants.js` | Broker rankings, insights and AI-assistant integration points |
 | Shared visual system | `theme.css`, `theme.js`, `mobile-compat.css`, `mobile-compat.js` | Shared dark theme and responsive compatibility |

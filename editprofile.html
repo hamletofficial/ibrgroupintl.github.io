@@ -188,7 +188,38 @@
     <style>
       .mail-header-icon { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:9px; text-decoration:none; font-size:1.15rem; transition:background-color .2s ease, transform .2s ease; }
       .mail-header-icon:hover, .mail-header-icon:focus-visible { background:rgba(255,255,255,.14); transform:translateY(-1px); }
-    </style>
+    
+/* Shared responsive Hamlet header fix (mobile) */
+@media(max-width:760px){
+  .resource-nav.hamlet-404-header>.container.container-nav{
+    display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;
+    width:100%;min-width:0;box-sizing:border-box;gap:10px;
+    padding:11px 14px;margin:0 auto
+  }
+  .resource-nav.hamlet-404-header>.container.container-nav>.logo{flex:0 0 100%;width:100%;min-width:0}
+  .resource-nav.hamlet-404-header>.container.container-nav>.user-menu,
+  .resource-nav.hamlet-404-header>.container.container-nav>.topbar-actions{
+    flex:0 1 100%;width:100%;max-width:100%;min-width:0;margin-left:0!important;
+    justify-content:flex-start;align-items:center;flex-wrap:nowrap;gap:8px;
+    overflow-x:auto;overflow-y:hidden;padding:1px 1px 5px;box-sizing:border-box;
+    scrollbar-width:thin;-webkit-overflow-scrolling:touch
+  }
+  .resource-nav.hamlet-404-header .site-title{white-space:nowrap}
+  .resource-nav.hamlet-404-header .user-menu>a,.resource-nav.hamlet-404-header .user-menu>button,
+  .resource-nav.hamlet-404-header .topbar-actions>.btn{
+    flex:0 0 auto;white-space:nowrap;min-height:36px;padding:7px 11px;font-size:.8rem;line-height:1.15
+  }
+  .resource-nav.hamlet-404-header .auth-profile-chip,.resource-nav.hamlet-404-header .profile{flex:0 0 auto;min-width:0;max-width:40vw}
+  .resource-nav.hamlet-404-header .auth-profile-name,.resource-nav.hamlet-404-header [data-auth-name]{
+    display:inline-block;max-width:28vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+  }
+  .resource-nav.hamlet-404-header .auth-profile-photo,.resource-nav.hamlet-404-header .profile img{width:32px;height:32px;flex:0 0 auto}
+}
+@media(max-width:380px){
+  .resource-nav.hamlet-404-header>.container.container-nav{padding-inline:10px}
+  .resource-nav.hamlet-404-header .auth-profile-photo,.resource-nav.hamlet-404-header .profile img{display:none}
+}
+</style>
 
   <link rel="stylesheet" href="/theme.css">
   <script src="/theme.js"></script>
@@ -252,6 +283,11 @@
               <input id="lastNameInput" class="form-control" type="text" maxlength="50" placeholder="Last name">
             </div>
             <div class="form-row">
+              <label class="form-label" for="usernameInput">Username</label>
+              <input id="usernameInput" class="form-control" type="text" minlength="3" maxlength="20" pattern="[a-z0-9_]{3,20}" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="e.g. alfred_mayaki" required>
+              <small class="muted">Choose a unique username (3–20 characters). Use lowercase letters, numbers or underscores. This appears in your public profile and portfolio links.</small>
+            </div>
+            <div class="form-row">
               <label class="form-label" for="emailInput">Email</label>
               <input id="emailInput" class="form-control" type="email" maxlength="100" placeholder="Email" disabled>
             </div>
@@ -273,7 +309,7 @@
 
     <footer class="resource-footer" role="contentinfo">
       <div class="container" style="text-align:center">
-        <div style="margin-bottom:4px;color:var(--muted);font-size:0.95rem;">v1.04.02</div>
+        <div style="margin-bottom:4px;color:var(--muted);font-size:0.95rem;">v1.04.04</div>
         <p style="margin:0;color:var(--muted)">&copy; 2026 <a href="https://www.ibrecruitment.com/" target="_blank" rel="noopener noreferrer">Impact in Business Recruitment Group Limited</a>. All rights reserved.</p>
       </div>
     </footer>
@@ -301,6 +337,7 @@
       const firstNameInput = document.getElementById('firstNameInput');
       const lastNameInput = document.getElementById('lastNameInput');
       const emailInput = document.getElementById('emailInput');
+      const usernameInput = document.getElementById('usernameInput');
       const bioInput = document.getElementById('bioInput');
       const saveProfileBtn = document.getElementById('saveProfileBtn');
       const profileStatus = document.getElementById('profileStatus');
@@ -318,6 +355,7 @@
         firstNameInput.value = normalize(data.firstName, 50);
         lastNameInput.value = normalize(data.lastName, 50);
         emailInput.value = currentUser.email || '';
+        usernameInput.value = normalize(data.username, 20).toLowerCase();
         bioInput.value = normalize(data.bio, 1000);
         profileDocStatus.textContent = result.exists ? 'Profile record: found' : 'Profile record: not saved yet';
       }
@@ -326,8 +364,15 @@
         const firstName = normalize(firstNameInput.value, 50);
         const lastName = normalize(lastNameInput.value, 50);
         const bio = normalize(bioInput.value, 1000);
+        const username = normalize(usernameInput.value, 20).toLowerCase();
+        if (!/^[a-z0-9_]{3,20}$/.test(username)) {
+          profileStatus.textContent = 'Choose a username of 3–20 characters using lowercase letters, numbers or underscores.';
+          usernameInput.focus();
+          return;
+        }
         const profilePayload = {
           uid: currentUser.uid,
+          username,
           firstName,
           lastName,
           bio,
@@ -339,11 +384,37 @@
         try {
           saveProfileBtn.disabled = true;
           profileStatus.textContent = 'Saving profile...';
-          if (window.ibrProfileService) {
-            await window.ibrProfileService.saveProfile(currentUser.uid, profilePayload);
-          } else {
-            await db.collection('publicProfiles').doc(currentUser.uid).set(profilePayload, { merge: true });
-          }
+          const profileRef = db.collection('publicProfiles').doc(currentUser.uid);
+          const usernameRef = db.collection('usernames').doc(username);
+          await db.runTransaction(async function (transaction) {
+            const profileSnapshot = await transaction.get(profileRef);
+            const usernameSnapshot = await transaction.get(usernameRef);
+            const oldUsername = profileSnapshot.exists
+              ? String((profileSnapshot.data() || {}).username || '').trim().toLowerCase()
+              : '';
+            let oldUsernameRef = null;
+            let oldUsernameSnapshot = null;
+            if (oldUsername && oldUsername !== username) {
+              oldUsernameRef = db.collection('usernames').doc(oldUsername);
+              oldUsernameSnapshot = await transaction.get(oldUsernameRef);
+            }
+            if (usernameSnapshot.exists && String((usernameSnapshot.data() || {}).uid || '') !== currentUser.uid) {
+              throw new Error('That username is already taken. Please choose another.');
+            }
+            if (!usernameSnapshot.exists) {
+              transaction.set(usernameRef, {
+                uid: currentUser.uid,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              });
+            }
+            if (oldUsernameRef && oldUsernameSnapshot && oldUsernameSnapshot.exists
+                && String((oldUsernameSnapshot.data() || {}).uid || '') === currentUser.uid) {
+              transaction.delete(oldUsernameRef);
+            }
+            transaction.set(profileRef, Object.assign({}, profilePayload, {
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }), { merge: true });
+          });
           profileDocStatus.textContent = 'Profile record: saved';
           profileStatus.textContent = 'Profile saved successfully.';
         } catch (err) {

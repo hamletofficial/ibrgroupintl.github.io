@@ -226,6 +226,19 @@
 #membersShell .security-note strong,
 #membersShell .security-note p { color: #e2e8f0 !important; }
 #membersShell .member-commercial-links { border-top-color: #374151 !important; }
+
+/* Shared responsive Hamlet header fix (mobile) */
+@media(max-width:760px){
+  .resource-nav.hamlet-404-header>.container.container-nav{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;width:100%;min-width:0;box-sizing:border-box;gap:10px;padding:11px 14px;margin:0 auto}
+  .resource-nav.hamlet-404-header>.container.container-nav>.logo{flex:0 0 100%;width:100%;min-width:0}
+  .resource-nav.hamlet-404-header>.container.container-nav>.user-menu,.resource-nav.hamlet-404-header>.container.container-nav>.topbar-actions{flex:0 1 100%;width:100%;max-width:100%;min-width:0;margin-left:0!important;justify-content:flex-start;align-items:center;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden;padding:1px 1px 5px;box-sizing:border-box;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+  .resource-nav.hamlet-404-header .site-title{white-space:nowrap}
+  .resource-nav.hamlet-404-header .user-menu>a,.resource-nav.hamlet-404-header .user-menu>button,.resource-nav.hamlet-404-header .topbar-actions>.btn{flex:0 0 auto;white-space:nowrap;min-height:36px;padding:7px 11px;font-size:.8rem;line-height:1.15}
+  .resource-nav.hamlet-404-header .auth-profile-chip,.resource-nav.hamlet-404-header .profile{flex:0 0 auto;min-width:0;max-width:40vw}
+  .resource-nav.hamlet-404-header .auth-profile-name,.resource-nav.hamlet-404-header [data-auth-name]{display:inline-block;max-width:28vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .resource-nav.hamlet-404-header .auth-profile-photo,.resource-nav.hamlet-404-header .profile img{width:32px;height:32px;flex:0 0 auto}
+}
+@media(max-width:380px){.resource-nav.hamlet-404-header>.container.container-nav{padding-inline:10px}.resource-nav.hamlet-404-header .auth-profile-photo,.resource-nav.hamlet-404-header .profile img{display:none}}
 </style>
   </head>
 <body class="auth-pending">
@@ -400,10 +413,10 @@
           <div class="guide-number" aria-hidden="true">9</div>
           <div>
             <h2>Hamlet release notes — Windows v1.04 and platform updates (17 October 2026)</h2>
-            <p><strong>Hamlet for Windows v1.04.02 is the current stable release.</strong> The installer is <code>hamlet-Setup-1.4.2.exe</code> (approximately 89.2 MiB). The official Cloudflare R2 release also provides a matching SHA-256 checksum file so you can verify the download before running it. Release packaging checks the installer build and filename and calculates the checksum.</p>
+            <p><strong>Hamlet for Windows v1.04.04 is the current stable release.</strong> The installer is <code>hamlet-Setup-1.4.2.exe</code> (approximately 89.2 MiB). The official Cloudflare R2 release also provides a matching SHA-256 checksum file so you can verify the download before running it. Release packaging checks the installer build and filename and calculates the checksum.</p>
             <p><strong>Property features and safeguards:</strong> residential property listings and residential resource management have been added. Public views show published listings, while Firestore rules restrict access to published records and authorised owners. Residential listings are tracked in the super-administrator dashboard, and listings show the saved publisher name and profile photo. The residential pages' profile headers have been aligned with the site's saved-profile behaviour, alongside form-spacing and back-button contrast improvements.</p>
             <p><strong>Navigation and consistency:</strong> the Pricing and Support buttons have been removed from the shared navigation to reduce horizontal overflow, and the separate Pricing button has been removed from the Sector Coverage page header. The Pricing page itself and the external <a href="https://support.hamlet-ai.co.uk/">Hamlet Support Centre</a> remain available at their existing destinations. Recent work has also covered member/profile presentation, favicon consistency, legal-page updates and product documentation.</p>
-            <p><strong>Download and support:</strong> visit <a href="/download.html">Hamlet for Windows downloads</a> for the official v1.04.02 installer, checksum and installation guidance. For assistance, visit the <a href="https://support.hamlet-ai.co.uk/">Hamlet Support Centre</a>.</p>
+            <p><strong>Download and support:</strong> visit <a href="/download.html">Hamlet for Windows downloads</a> for the official v1.04.04 installer, checksum and installation guidance. For assistance, visit the <a href="https://support.hamlet-ai.co.uk/">Hamlet Support Centre</a>.</p>
           </div>
         </article>
         <article class="member-guide-card member-rankings-card">
@@ -433,7 +446,7 @@
     </main>
     <footer class="resource-footer" role="contentinfo">
       <div class="container" style="text-align:center">
-        <div style="margin-bottom:4px;color:var(--muted);font-size:0.95rem;">v1.04.02</div>
+        <div style="margin-bottom:4px;color:var(--muted);font-size:0.95rem;">v1.04.04</div>
         <nav class="footer-links" aria-label="Legal" style="margin:8px 0 6px; font-size:0.88rem; font-weight:400;">
           <a href="/terms.html" style="color:#64748b; text-decoration:none; margin:0 8px;">Terms</a>
           <a href="/privacy.html" style="color:#64748b; text-decoration:none; margin:0 8px;">Privacy</a>

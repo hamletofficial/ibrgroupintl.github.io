@@ -50,7 +50,7 @@
           || (typeof data.photoUrl === 'string' && data.photoUrl.trim())
           || FALLBACK_PHOTO;
         var email = typeof data.email === 'string' ? data.email.trim() : '';
-        return { name: name, photo: photo, email: email };
+        return { name: name, photo: photo, email: email, username: typeof data.username === 'string' ? data.username.trim().toLowerCase() : '' };
       } catch (error) {
         return { name: 'IBR Member', photo: FALLBACK_PHOTO, email: '' };
       }
@@ -281,6 +281,7 @@
     article.appendChild(header);
 
     getAuthorProfile(data.ownerUid).then(function (author) {
+      authorLink.href = author.username ? '/profile.html?username=' + encodeURIComponent(author.username) : '/profile.html?uid=' + encodeURIComponent(data.ownerUid || '');
       authorLink.replaceChildren(document.createTextNode(author.name));
       if (global.IBRVerifiedTick && global.IBRVerifiedTick.isValidEmail(author.email)) {
         var verifiedTick = global.IBRVerifiedTick.create(author.email);

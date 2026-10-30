@@ -57,7 +57,30 @@
     .ownership{padding:.9rem 1rem;border-left:4px solid var(--green);background:#f4fbf6;color:#28543a;border-radius:8px;margin-bottom:1rem;font-size:.88rem;line-height:1.5}
     .broker-rankings-button{position:fixed;left:1rem;bottom:1rem;z-index:30;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:.8rem 1rem;border:1px solid #0f766e;border-radius:10px;background:#0f766e;color:#fff;text-decoration:none;font-weight:400;box-shadow:0 6px 20px rgba(2,6,23,.22)}.broker-rankings-button:hover{background:#115e59;border-color:#115e59}@media(max-width:520px){.broker-rankings-button{left:.65rem;bottom:.65rem;min-height:44px;padding:.7rem .85rem}}
     .hidden{display:none!important}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem}.profile{display:flex;align-items:center;gap:.65rem;color:#fff}.profile img{width:38px;height:38px;border-radius:50%;object-fit:cover}.topbar-actions{display:flex;align-items:center;gap:.6rem}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem}.profile{display:flex;align-items:center;gap:.65rem;color:#fff;min-width:0}.profile img{width:38px;height:38px;border-radius:50%;object-fit:cover;flex:0 0 auto}.topbar-actions{display:flex;align-items:center;gap:.6rem;min-width:0}
+    /* Dashboard header: preserve a single-row mobile layout without squeezing the account controls. */
+    .resource-nav.hamlet-404-header{width:100%;min-width:0}
+    .resource-nav.hamlet-404-header>.container.container-nav.topbar{width:100%;max-width:1440px;min-width:0;min-height:68px;margin:0 auto;padding:12px clamp(16px,4vw,32px);display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;box-sizing:border-box}
+    .resource-nav.hamlet-404-header .logo{flex:0 1 auto;min-width:0}
+    .resource-nav.hamlet-404-header a.site-title{display:inline-flex;align-items:center;font-size:1.55rem;line-height:1;font-weight:850;letter-spacing:-.045em;white-space:nowrap;text-decoration:none;color:#fff}
+    .resource-nav.hamlet-404-header .topbar-actions{flex:0 0 auto;width:auto;justify-content:flex-end;align-items:center;gap:8px}
+    .resource-nav.hamlet-404-header .profile{min-width:0;max-width:min(42vw,260px)}
+    .resource-nav.hamlet-404-header .profile [data-auth-name]{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .resource-nav.hamlet-404-header #authActionBtn{min-height:40px;padding:8px 15px;white-space:nowrap;line-height:1.15}
+    @media(max-width:600px){
+      .resource-nav.hamlet-404-header>.container.container-nav.topbar{min-height:60px;padding:10px 14px;gap:8px}
+      .resource-nav.hamlet-404-header a.site-title{font-size:1.4rem}
+      .resource-nav.hamlet-404-header .topbar-actions{gap:6px}
+      .resource-nav.hamlet-404-header .profile{max-width:38vw;gap:6px}
+      .resource-nav.hamlet-404-header .profile img{width:32px;height:32px}
+      .resource-nav.hamlet-404-header #authActionBtn{min-height:36px;padding:7px 11px;font-size:.8rem}
+    }
+    @media(max-width:380px){
+      .resource-nav.hamlet-404-header>.container.container-nav.topbar{padding-inline:10px}
+      .resource-nav.hamlet-404-header .profile img{display:none}
+      .resource-nav.hamlet-404-header .profile{max-width:32vw}
+      .resource-nav.hamlet-404-header #authActionBtn{padding-inline:9px}
+    }
     @media(max-width:800px){.dashboard{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-section-label{grid-column:1/-1}.form-grid{grid-template-columns:1fr}.property-details-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.field.full{grid-column:auto}.property-details-grid .field.full{grid-column:1/-1}.property-meta{grid-template-columns:1fr 1fr}.topbar{align-items:flex-start;flex-direction:column}.topbar-actions{width:100%}}
     @media(max-width:520px){.dashboard{grid-template-columns:1fr}.residential-dashboard-grid{grid-template-columns:1fr}.dashboard-section-label{grid-column:1}.hero-message-btn{width:100%}.resource-shell{padding:0 .65rem}.hero,.panel{padding:1.1rem}.property-meta{grid-template-columns:1fr}}
   /* Dark transparent header override */
@@ -229,7 +252,7 @@
       async function loadResources(){
         resourceList.setAttribute('aria-busy','true');
         try{
-          const myPortfolioLink=document.getElementById('myPublicPortfolioLink');if(myPortfolioLink)myPortfolioLink.href='/portfolio.html?uid='+encodeURIComponent(currentUser.uid);const myResidentialPortfolioLink=document.getElementById('myResidentialPortfolioLink');if(myResidentialPortfolioLink)myResidentialPortfolioLink.href='/portfolio.html?uid='+encodeURIComponent(currentUser.uid);const copyPortfolioBtn=document.getElementById('copyPortfolioLinkBtn');if(copyPortfolioBtn)copyPortfolioBtn.addEventListener('click',async function(){const status=document.getElementById('portfolioLinkStatus'),url=window.location.origin+'/portfolio.html?uid='+encodeURIComponent(currentUser.uid);try{await navigator.clipboard.writeText(url);status.textContent='Your public portfolio link has been copied.';}catch(e){status.textContent='Your public portfolio link: '+url;}});const snap=await db.collection('commercialProperties').where('ownerUid','==',currentUser.uid).get();
+          const memberProfileSnap=await db.collection('publicProfiles').doc(currentUser.uid).get();const memberUsername=String((memberProfileSnap.data()||{}).username||'').trim().toLowerCase();const portfolioQuery=memberUsername?'username='+encodeURIComponent(memberUsername):'';const portfolioHref=memberUsername?'/portfolio.html?'+portfolioQuery:'/editprofile.html';const myPortfolioLink=document.getElementById('myPublicPortfolioLink');if(myPortfolioLink)myPortfolioLink.href=portfolioHref;const myResidentialPortfolioLink=document.getElementById('myResidentialPortfolioLink');if(myResidentialPortfolioLink)myResidentialPortfolioLink.href=portfolioHref;const copyPortfolioBtn=document.getElementById('copyPortfolioLinkBtn');if(copyPortfolioBtn)copyPortfolioBtn.addEventListener('click',async function(){const status=document.getElementById('portfolioLinkStatus');if(!memberUsername){status.textContent='Choose a username in Edit Profile before sharing your public portfolio.';return;}const url=window.location.origin+'/portfolio.html?'+portfolioQuery;try{await navigator.clipboard.writeText(url);status.textContent='Your public portfolio link has been copied.';}catch(e){status.textContent='Your public portfolio link: '+url;}});const snap=await db.collection('commercialProperties').where('ownerUid','==',currentUser.uid).get();
           // Migrate older owner-held submissions into the public-safe projection
           // when the broker opens their workspace. Private ownerEmail is excluded.
           const publicKeys=['ownerUid','ownerName','propertyName','propertyType','address','postcode','availability','size','askingRent','contactName','contactEmail','propertyUrl','status','description','sustainabilityStandard','sustainabilityStatus','certificationClass','certificateReference','certifier','certificationDate','certificateUrl','sustainabilityNotes','photoUrls','createdAt'];

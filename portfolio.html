@@ -294,11 +294,12 @@ button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed;opacity
     var params=new URLSearchParams(window.location.search);
     portfolioUid=(params.get('uid')||'').trim();
     var requestedUsername=(params.get('username')||'').trim().toLowerCase();
+    if(requestedUsername&&!/^[a-z0-9_]{3,20}$/.test(requestedUsername)){showError();return;}
     if((!portfolioUid&&!requestedUsername)||portfolioUid.length>128){
       document.getElementById('pageTitle').textContent='Portfolio link required';
       document.getElementById('portfolioIntro').textContent='Each Hamlet member has an individual public portfolio. Open a broker’s portfolio from one of their listings or ask them to share their portfolio link.';
       document.getElementById('portfolioToolbar').hidden=true;
-      list.innerHTML='<div class="empty">No member UID was provided. This page does not display a central repository of property submissions.</div>';
+      list.innerHTML='<div class="empty">No member username was provided. Open a broker’s public portfolio link or ask them to share it.</div>';
       count.textContent='Member portfolio not specified';
       return;
     }

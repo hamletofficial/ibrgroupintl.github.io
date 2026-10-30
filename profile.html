@@ -133,9 +133,11 @@ window.addEventListener('load',function(){
  if(typeof postsUnsubscribe==='function')postsUnsubscribe();postsUnsubscribe=null;
  if(!user){activeUser=null;document.body.classList.remove('has-sidebar');nav.style.display='none';signIn.style.display='inline-flex';signOut.style.display='none';message('Sign in required','Please sign in to view member profiles.',true);return}
  document.body.classList.add('has-sidebar');nav.style.display='block';signIn.style.display='none';signOut.style.display='inline-flex';
- const uid=(new URLSearchParams(location.search).get('uid')||user.uid).trim();
- if(!uid||uid.length>128){message('Profile not found','The profile address is invalid.',false);return}
+ const params=new URLSearchParams(location.search),requestedUsername=(params.get('username')||'').trim().toLowerCase();
+ let uid=(params.get('uid')||user.uid).trim();
  try{
+ if(requestedUsername){if(!/^[a-z0-9_]{3,20}$/.test(requestedUsername)){message('Profile not found','The username in this profile link is invalid.',false);return}const usernameDoc=await db.collection('usernames').doc(requestedUsername).get();if(!usernameDoc.exists){message('Profile not found','No member uses that username.',false);return}uid=String((usernameDoc.data()||{}).uid||'').trim();}
+ if(!uid||uid.length>128){message('Profile not found','The profile address is invalid.',false);return}
  const profileResult=window.ibrProfileService
   ? await window.ibrProfileService.getProfile(uid)
   : await db.collection('publicProfiles').doc(uid).get().then(function(snap){return {exists:snap.exists,data:snap.exists?(snap.data()||{}):{}}});

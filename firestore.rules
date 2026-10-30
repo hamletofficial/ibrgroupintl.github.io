@@ -9,37 +9,62 @@ service cloud.firestore {
         && request.auth.uid == '6epDJRISlBbRPWKosDZZWuiGQzK2';
     }
 
-    // Public username resolver. Username documents are unique and owner-controlled.
+    // Public username registry. Exact lookups are allowed; enumeration is not.
     match /usernames/{username} {
-      // Allow direct username resolution, but prevent bulk enumeration of the registry.
       allow get: if true;
       allow list: if false;
-      allow create: if request.auth != null
-        && username.matches('^[a-z0-9_]{3,20}
-      // Members must always be able to read their own saved profile for authenticated headers/settings, even when their profile is not public.
-      allow read: if isSuperAdmin()
-        || (request.auth != null
-          && (request.auth.uid == userId || resource.data.isPublic == true));
 
-      // Clients cannot claim successful Onfido verification. A trusted server
-      // using the Admin SDK must set onfidoVerified after verification.
+      allow create: if request.auth != null
+        && username.matches('^[a-z0-9_]{3,20}$')
+        && request.resource.data.keys().hasOnly(['uid', 'createdAt'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+
+      // A claimed username is immutable; its owner may release it when changing names.
+      allow update: if false;
+      allow delete: if request.auth != null
+        && resource.data.uid == request.auth.uid;
+    }
+
+    match /publicProfiles/{userId} {
+      // Owners can always read their own profile; public visitors see public profiles.
+      allow read: if isSuperAdmin()
+        || (request.auth != null && request.auth.uid == userId)
+        || resource.data.isPublic == true;
+
+      // New profiles cannot self-assert verification or broker-ranking metrics.
       allow create: if request.auth != null
         && request.auth.uid == userId
+        && request.resource.data.uid == userId
         && request.resource.data.isPublic == true
         && request.resource.data.username is string
-        && request.resource.data.username.matches('^[a-z0-9_]{3,20}
+        && request.resource.data.username.matches('^[a-z0-9_]{3,20}$')
+        && (!('onfidoVerified' in request.resource.data)
           || request.resource.data.onfidoVerified == false)
-        && !request.resource.data.keys().hasAny(['closedDealCount','closedDealValueTotal','averageClosedDealValue','rankingsUpdatedAt']);
+        && !request.resource.data.keys().hasAny([
+          'closedDealCount',
+          'closedDealValueTotal',
+          'averageClosedDealValue',
+          'rankingsUpdatedAt'
+        ]);
 
-      // Clients may edit other profile fields, but cannot add, change, or remove
-      // the identity-verification flag.
+      // Owners may update profile fields, but not verification or ranking fields.
       allow update: if request.auth != null
         && request.auth.uid == userId
+        && request.resource.data.uid == userId
         && request.resource.data.isPublic is bool
         && request.resource.data.username is string
-        && request.resource.data.username.matches('^[a-z0-9_]{3,20},'closedDealCount','closedDealValueTotal','averageClosedDealValue','rankingsUpdatedAt']);
+        && request.resource.data.username.matches('^[a-z0-9_]{3,20}$')
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny([
+          'onfidoVerified',
+          'closedDealCount',
+          'closedDealValueTotal',
+          'averageClosedDealValue',
+          'rankingsUpdatedAt'
+        ]);
 
-      allow delete: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null
+        && request.auth.uid == userId;
     }
 
     // Browser push tokens are private to the signed-in account that registered them.

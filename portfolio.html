@@ -293,7 +293,8 @@ button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed;opacity
   function init(){
     var params=new URLSearchParams(window.location.search);
     portfolioUid=(params.get('uid')||'').trim();
-    if(!portfolioUid||portfolioUid.length>128){
+    var requestedUsername=(params.get('username')||'').trim().toLowerCase();
+    if((!portfolioUid&&!requestedUsername)||portfolioUid.length>128){
       document.getElementById('pageTitle').textContent='Portfolio link required';
       document.getElementById('portfolioIntro').textContent='Each Hamlet member has an individual public portfolio. Open a broker’s portfolio from one of their listings or ask them to share their portfolio link.';
       document.getElementById('portfolioToolbar').hidden=true;
@@ -301,12 +302,19 @@ button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed;opacity
       count.textContent='Member portfolio not specified';
       return;
     }
-    var canonical=document.querySelector('link[rel="canonical"]');if(canonical)canonical.href=window.location.origin+window.location.pathname+'?uid='+encodeURIComponent(portfolioUid);
-    var ogUrl=document.querySelector('meta[property="og:url"]');if(ogUrl)ogUrl.content=window.location.origin+window.location.pathname+'?uid='+encodeURIComponent(portfolioUid);
     try{
       if(!window.firebase||!window.firebaseConfig)throw new Error('Firebase configuration unavailable');
       if(!firebase.apps.length)firebase.initializeApp(window.firebaseConfig);
-      var db=firebase.firestore();Promise.all([db.collection('publicProperties').where('ownerUid','==',portfolioUid).get(),db.collection('publicResidentialProperties').where('ownerUid','==',portfolioUid).get()]).then(function(snapshots){
+      var db=firebase.firestore();
+      var resolveOwner=requestedUsername?db.collection('usernames').doc(requestedUsername).get().then(function(snap){if(!snap.exists)throw new Error('Username not found');return String((snap.data()||{}).uid||'');}):Promise.resolve(portfolioUid);
+      resolveOwner.then(function(resolvedUid){
+        portfolioUid=resolvedUid;
+        if(!portfolioUid)throw new Error('Portfolio owner could not be resolved');
+        var publicUrl=window.location.origin+window.location.pathname+(requestedUsername?'?username='+encodeURIComponent(requestedUsername):'?uid='+encodeURIComponent(portfolioUid));
+        var canonical=document.querySelector('link[rel="canonical"]');if(canonical)canonical.href=publicUrl;
+        var ogUrl=document.querySelector('meta[property="og:url"]');if(ogUrl)ogUrl.content=publicUrl;
+        return Promise.all([db.collection('publicProperties').where('ownerUid','==',portfolioUid).get(),db.collection('publicResidentialProperties').where('ownerUid','==',portfolioUid).get()]);
+      }).then(function(snapshots){
         records=snapshots[0].docs.map(function(doc){return{id:'commercial-'+doc.id,data:Object.assign({},doc.data()||{},{_category:'commercial'})};}).concat(snapshots[1].docs.map(function(doc){return{id:'residential-'+doc.id,data:Object.assign({},doc.data()||{},{_category:'residential'})};}));
         records.sort(function(a,b){return dateMillis(b.data.createdAt)-dateMillis(a.data.createdAt);});
         var ownerName=records.map(function(item){return String(item.data.ownerName||'').trim();}).find(Boolean);

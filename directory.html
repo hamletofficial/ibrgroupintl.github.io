@@ -685,7 +685,7 @@
         person.appendChild(avatar);
         const main = makeElement('div', 'member-main');
         const nameRow = makeElement('a', 'name', name);
-        nameRow.href = '/profile.html?uid=' + encodeURIComponent(member.uid);
+        nameRow.href = data.username ? '/profile.html?username=' + encodeURIComponent(data.username) : '/profile.html?uid=' + encodeURIComponent(member.uid);
         nameRow.style.textDecoration = 'none';
         nameRow.setAttribute('aria-label', 'View profile for ' + name);
         if (emailListed) {

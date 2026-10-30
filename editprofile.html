@@ -283,6 +283,11 @@
               <input id="lastNameInput" class="form-control" type="text" maxlength="50" placeholder="Last name">
             </div>
             <div class="form-row">
+              <label class="form-label" for="usernameInput">Username</label>
+              <input id="usernameInput" class="form-control" type="text" minlength="3" maxlength="20" pattern="[a-z0-9_]{3,20}" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="e.g. alfred_mayaki" required>
+              <small class="muted">Choose a unique username (3–20 characters). Use lowercase letters, numbers or underscores. This appears in your public profile and portfolio links.</small>
+            </div>
+            <div class="form-row">
               <label class="form-label" for="emailInput">Email</label>
               <input id="emailInput" class="form-control" type="email" maxlength="100" placeholder="Email" disabled>
             </div>
@@ -332,6 +337,7 @@
       const firstNameInput = document.getElementById('firstNameInput');
       const lastNameInput = document.getElementById('lastNameInput');
       const emailInput = document.getElementById('emailInput');
+      const usernameInput = document.getElementById('usernameInput');
       const bioInput = document.getElementById('bioInput');
       const saveProfileBtn = document.getElementById('saveProfileBtn');
       const profileStatus = document.getElementById('profileStatus');
@@ -349,6 +355,7 @@
         firstNameInput.value = normalize(data.firstName, 50);
         lastNameInput.value = normalize(data.lastName, 50);
         emailInput.value = currentUser.email || '';
+        usernameInput.value = normalize(data.username, 20).toLowerCase();
         bioInput.value = normalize(data.bio, 1000);
         profileDocStatus.textContent = result.exists ? 'Profile record: found' : 'Profile record: not saved yet';
       }
@@ -357,8 +364,15 @@
         const firstName = normalize(firstNameInput.value, 50);
         const lastName = normalize(lastNameInput.value, 50);
         const bio = normalize(bioInput.value, 1000);
+        const username = normalize(usernameInput.value, 20).toLowerCase();
+        if (!/^[a-z0-9_]{3,20}$/.test(username)) {
+          profileStatus.textContent = 'Choose a username of 3–20 characters using lowercase letters, numbers or underscores.';
+          usernameInput.focus();
+          return;
+        }
         const profilePayload = {
           uid: currentUser.uid,
+          username,
           firstName,
           lastName,
           bio,
@@ -370,11 +384,37 @@
         try {
           saveProfileBtn.disabled = true;
           profileStatus.textContent = 'Saving profile...';
-          if (window.ibrProfileService) {
-            await window.ibrProfileService.saveProfile(currentUser.uid, profilePayload);
-          } else {
-            await db.collection('publicProfiles').doc(currentUser.uid).set(profilePayload, { merge: true });
-          }
+          const profileRef = db.collection('publicProfiles').doc(currentUser.uid);
+          const usernameRef = db.collection('usernames').doc(username);
+          await db.runTransaction(async function (transaction) {
+            const profileSnapshot = await transaction.get(profileRef);
+            const usernameSnapshot = await transaction.get(usernameRef);
+            const oldUsername = profileSnapshot.exists
+              ? String((profileSnapshot.data() || {}).username || '').trim().toLowerCase()
+              : '';
+            let oldUsernameRef = null;
+            let oldUsernameSnapshot = null;
+            if (oldUsername && oldUsername !== username) {
+              oldUsernameRef = db.collection('usernames').doc(oldUsername);
+              oldUsernameSnapshot = await transaction.get(oldUsernameRef);
+            }
+            if (usernameSnapshot.exists && String((usernameSnapshot.data() || {}).uid || '') !== currentUser.uid) {
+              throw new Error('That username is already taken. Please choose another.');
+            }
+            if (!usernameSnapshot.exists) {
+              transaction.set(usernameRef, {
+                uid: currentUser.uid,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              });
+            }
+            if (oldUsernameRef && oldUsernameSnapshot && oldUsernameSnapshot.exists
+                && String((oldUsernameSnapshot.data() || {}).uid || '') === currentUser.uid) {
+              transaction.delete(oldUsernameRef);
+            }
+            transaction.set(profileRef, Object.assign({}, profilePayload, {
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }), { merge: true });
+          });
           profileDocStatus.textContent = 'Profile record: saved';
           profileStatus.textContent = 'Profile saved successfully.';
         } catch (err) {

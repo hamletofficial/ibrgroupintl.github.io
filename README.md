@@ -112,3 +112,5 @@ Use concise commit messages that describe the user-visible change or technical f
 - [Page standards](PAGE-STANDARDS.md)
 - [Profile service documentation](PROFILE-SERVICE.md)
 - [UX/UI roadmap](UX-UI-ROADMAP.md)
+
+End of file

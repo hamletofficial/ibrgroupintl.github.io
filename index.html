@@ -557,6 +557,47 @@
     </section>
   </main>
 
+
+  <section id="cookieConsentBar" class="hamlet-cookie-banner" role="region" aria-label="Cookie consent" aria-describedby="hamlet-cookie-description" hidden>
+    <div class="hamlet-cookie-copy">
+      <span class="hamlet-cookie-kicker">Your privacy matters</span>
+      <h2>Choose how Hamlet uses cookies</h2>
+      <p id="hamlet-cookie-description">We use essential cookies to keep Hamlet working. With your permission, we can also use optional cookies to understand site performance and remember your preferences. You can change your choice at any time.</p>
+      <div class="hamlet-cookie-links"><a href="/cookies.html">Cookie policy</a><a href="/privacy.html">Privacy policy</a></div>
+    </div>
+    <div class="hamlet-cookie-actions">
+      <button class="hamlet-cookie-button secondary" id="cookieManageBtn" type="button">Manage preferences</button>
+      <button class="hamlet-cookie-button secondary" id="cookieDeclineBtn" type="button">Reject optional</button>
+      <button class="hamlet-cookie-button primary" id="cookieAcceptBtn" type="button">Accept all</button>
+    </div>
+  </section>
+
+  <dialog id="hamletCookieDialog" class="hamlet-cookie-dialog" aria-labelledby="hamlet-cookie-dialog-title">
+    <form method="dialog" class="hamlet-cookie-dialog-inner">
+      <div class="hamlet-cookie-dialog-heading">
+        <div><span class="hamlet-cookie-kicker">Privacy settings</span><h2 id="hamlet-cookie-dialog-title">Manage cookie preferences</h2></div>
+        <button class="hamlet-cookie-close" type="submit" value="close" aria-label="Close preferences">×</button>
+      </div>
+      <p>Essential cookies are always active because they support core site functionality and security. You can choose whether to allow optional categories.</p>
+      <div class="hamlet-cookie-category">
+        <div><strong>Essential</strong><small>Required for sign-in, security and core site functions.</small></div>
+        <span class="hamlet-cookie-always">Always on</span>
+      </div>
+      <label class="hamlet-cookie-category" for="hamletAnalyticsConsent">
+        <span><strong>Analytics</strong><small>Help us understand site usage and improve Hamlet.</small></span>
+        <input id="hamletAnalyticsConsent" type="checkbox">
+      </label>
+      <label class="hamlet-cookie-category" for="hamletFunctionalConsent">
+        <span><strong>Functional</strong><small>Remember preferences and improve convenience.</small></span>
+        <input id="hamletFunctionalConsent" type="checkbox">
+      </label>
+      <div class="hamlet-cookie-dialog-actions">
+        <button class="hamlet-cookie-button secondary" id="cookieSaveBtn" type="button">Save my choices</button>
+        <button class="hamlet-cookie-button primary" id="cookieDialogAcceptBtn" type="button">Accept all</button>
+      </div>
+    </form>
+  </dialog>
+
   <hr class="page-footer-divider" aria-hidden="true" style="width:100%; margin:0; border:0; border-top:1px solid #48699e;">
 
   <footer>
@@ -781,5 +822,80 @@
   })();
   </script>  <script src="/site-search.js?v=20261025-1" defer></script>
   <script src="/hamlet-background.js?v=20261021-2"></script>
+
+  <style id="hamlet-cookie-consent-styles">
+    .hamlet-cookie-banner{position:fixed;z-index:2147483000;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:1.35rem;width:min(1040px,calc(100% - 32px));padding:1.25rem 1.35rem;border:1px solid #48699e;border-radius:16px;background:rgba(17,24,39,.98);color:#f8fafc;box-shadow:0 24px 70px rgba(0,0,0,.58),0 0 0 1px rgba(147,197,253,.08);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);animation:hamlet-cookie-enter .35s ease-out both}
+    .hamlet-cookie-banner[hidden]{display:none!important}
+    .hamlet-cookie-copy{min-width:0}.hamlet-cookie-kicker{display:block;margin-bottom:.25rem;color:#93c5fd;font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .hamlet-cookie-copy h2,.hamlet-cookie-dialog h2{margin:0 0 .35rem;color:#fff;font-size:1.12rem;line-height:1.25;letter-spacing:-.02em}
+    .hamlet-cookie-copy p,.hamlet-cookie-dialog p{margin:0;color:#cbd5e1;font-size:.84rem;line-height:1.55}
+    .hamlet-cookie-links{display:flex;gap:1rem;margin-top:.55rem}.hamlet-cookie-links a{color:#bfdbfe;font-size:.78rem;font-weight:700;text-underline-offset:3px}
+    .hamlet-cookie-actions{display:flex;align-items:center;justify-content:flex-end;gap:.55rem;flex-wrap:wrap}
+    .hamlet-cookie-button{min-height:42px;padding:.62rem .9rem;border:1px solid #64748b;border-radius:9px;font:700 .82rem inherit;cursor:pointer;white-space:nowrap;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+    .hamlet-cookie-button:hover{transform:translateY(-1px);border-color:#bfdbfe}
+    .hamlet-cookie-button.secondary{background:#1f2937;color:#f8fafc}.hamlet-cookie-button.secondary:hover{background:#29384d}
+    .hamlet-cookie-button.primary{border-color:#fff;background:#fff;color:#071d4a}.hamlet-cookie-button.primary:hover{background:#dbeafe}
+    .hamlet-cookie-dialog{width:min(520px,calc(100% - 28px));max-width:none;max-height:min(86vh,760px);padding:0;border:1px solid #48699e;border-radius:18px;background:#111827;color:#f8fafc;box-shadow:0 28px 90px #000b}
+    .hamlet-cookie-dialog::backdrop{background:rgba(2,6,23,.72);backdrop-filter:blur(4px)}
+    .hamlet-cookie-dialog-inner{padding:1.35rem}.hamlet-cookie-dialog-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.7rem}
+    .hamlet-cookie-dialog-heading h2{margin-top:.2rem}.hamlet-cookie-close{width:34px;height:34px;border:1px solid #475569;border-radius:8px;background:#1f2937;color:#fff;font-size:1.35rem;line-height:1;cursor:pointer}
+    .hamlet-cookie-category{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:.75rem;padding:.85rem;border:1px solid #374151;border-radius:10px;background:#172235}
+    .hamlet-cookie-category strong,.hamlet-cookie-category small{display:block}.hamlet-cookie-category strong{font-size:.88rem}.hamlet-cookie-category small{max-width:350px;margin-top:.15rem;color:#cbd5e1;font-size:.75rem;line-height:1.45}
+    .hamlet-cookie-always{color:#bfdbfe;font-size:.75rem;font-weight:800;white-space:nowrap}
+    .hamlet-cookie-category input{width:19px;height:19px;flex:0 0 auto;accent-color:#2563eb}
+    .hamlet-cookie-dialog-actions{display:flex;justify-content:flex-end;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+    @keyframes hamlet-cookie-enter{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}
+    @media(max-width:760px){.hamlet-cookie-banner{grid-template-columns:1fr;gap:.9rem;bottom:max(10px,env(safe-area-inset-bottom));width:calc(100% - 20px);padding:1rem;border-radius:14px}.hamlet-cookie-copy h2{font-size:1rem}.hamlet-cookie-copy p{font-size:.8rem}.hamlet-cookie-actions{display:grid;grid-template-columns:1fr 1fr}.hamlet-cookie-actions #cookieManageBtn{grid-column:1/-1}.hamlet-cookie-button{width:100%;white-space:normal}.hamlet-cookie-dialog-inner{padding:1rem}.hamlet-cookie-dialog-actions{display:grid;grid-template-columns:1fr}.hamlet-cookie-dialog-actions .hamlet-cookie-button{width:100%}}
+    @media(prefers-reduced-motion:reduce){.hamlet-cookie-banner,.hamlet-cookie-button{animation:none;transition:none}}
+  </style>
+
+
+  <script id="hamlet-cookie-consent-script">
+    (() => {
+      'use strict';
+      const cookieName = 'ibr_cookie_consent_v1';
+      const banner = document.getElementById('cookieConsentBar');
+      const dialog = document.getElementById('hamletCookieDialog');
+      if (!banner || !dialog) return;
+      const readCookie = () => {
+        const prefix = cookieName + '=';
+        const item = document.cookie.split(';').map(part => part.trim()).find(part => part.startsWith(prefix));
+        if (!item) return null;
+        try { return decodeURIComponent(item.slice(prefix.length)); } catch (_) { return item.slice(prefix.length); }
+      };
+      const saveChoice = value => {
+        const expiry = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+        document.cookie = cookieName + '=' + encodeURIComponent(value) + '; expires=' + expiry.toUTCString() + '; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
+      };
+      const hideBanner = () => { banner.hidden = true; };
+      const showBanner = () => { banner.hidden = false; };
+      const analytics = document.getElementById('hamletAnalyticsConsent');
+      const functional = document.getElementById('hamletFunctionalConsent');
+      const openPreferences = () => {
+        if (typeof dialog.showModal === 'function') dialog.showModal();
+        else dialog.setAttribute('open', '');
+      };
+      if (!readCookie()) showBanner();
+      document.getElementById('cookieAcceptBtn').addEventListener('click', () => {
+        saveChoice('accepted'); hideBanner();
+      });
+      document.getElementById('cookieDeclineBtn').addEventListener('click', () => {
+        saveChoice('declined'); hideBanner();
+      });
+      document.getElementById('cookieManageBtn').addEventListener('click', openPreferences);
+      document.getElementById('cookieDialogAcceptBtn').addEventListener('click', () => {
+        analytics.checked = true; functional.checked = true;
+        saveChoice('accepted'); dialog.close(); hideBanner();
+      });
+      document.getElementById('cookieSaveBtn').addEventListener('click', () => {
+        saveChoice('custom:analytics=' + (analytics.checked ? '1' : '0') + ',functional=' + (functional.checked ? '1' : '0'));
+        dialog.close(); hideBanner();
+      });
+      dialog.addEventListener('click', event => {
+        if (event.target === dialog) dialog.close();
+      });
+    })();
+  </script>
+
 </body>
 </html>
